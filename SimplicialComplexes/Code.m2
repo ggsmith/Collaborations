@@ -36,6 +36,8 @@ SimplicialComplex = new Type of HashTable
 SimplicialComplex.synonym = "simplicial complex"
 net SimplicialComplex := Delta -> net Delta.facets
 
+ideal SimplicialComplex := Ideal => D -> D.ideal
+monomialIdeal SimplicialComplex := MonomialIdeal => D -> monomialIdeal ideal D
 ring SimplicialComplex := PolynomialRing => D -> D.ring
 coefficientRing SimplicialComplex := Ring => D -> coefficientRing ring D
 
@@ -43,10 +45,10 @@ dim SimplicialComplex := ZZ => (cacheValue symbol dim) (D ->
     max apply(first entries facets D, s -> # support(s)) - 1)
 
 
-newSimplicialComplex := (I,F) ->
+newSimplicialComplex := (I, F) ->
      new SimplicialComplex from {
 	  symbol ring => ring I,
-	  symbol faceIdeal => I,
+	  symbol ideal => I,
 	  symbol facets => F,
 	  symbol cache => new CacheTable
 	  }
@@ -73,7 +75,7 @@ simplicialComplex List := SimplicialComplex => facets -> (
 -- frame procedure of simplicialComplex now renamed (unchanged)
 -- to simplicialComplexM to allow as input also a list of faces
 -- added by Janko 
-simplicialComplexM=method()
+simplicialComplexM = method()
 simplicialComplexM List := SimplicialComplex => (faces) -> (
      if #faces === 0 then error "expected at least one facet";
      R := class faces#0;
@@ -86,7 +88,7 @@ simplicialComplexM List := SimplicialComplex => (faces) -> (
 
 dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
      newSimplicialComplex(monomialIdeal complement D.facets,
-	  complement generators D.faceIdeal)
+	  complement generators ideal D)
      )
 
 
@@ -94,23 +96,21 @@ dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
 ------------------------------------------------------
 -- added option to return a list of Faces
 -- added by Janko
-
 facets = method(Options=>{useFaceClass=>false})
 facets SimplicialComplex := opts -> D -> (
     if opts.useFaceClass then return(matrixToFaces(D.facets));
     D.facets)
 
------------------------------------------------------
 
 
-ideal SimplicialComplex := Ideal => D -> ideal D.faceIdeal
-monomialIdeal SimplicialComplex := (D) -> D.faceIdeal
+SimplicialComplex == SimplicialComplex := (D, E) -> ideal(D) === ideal(E)
+
 
 link = method()
 link(SimplicialComplex, RingElement) := (D,f) -> (
      simplicialComplex monomialIdeal((ideal support f) + ((ideal D) : f)))
 
-SimplicialComplex == SimplicialComplex := (D,E) -> D.faceIdeal === E.faceIdeal
+
 
 lcmMonomials = (L) -> (
      R := ring L#0;
@@ -150,31 +150,31 @@ new MutableHashTable from toList apply(-1..dim C,j->j=>f j))
 -- convert Matrix with Monomials to List of Faces
 -- added by Janko
 
-matrixToFaces=method()
-matrixToFaces(Matrix):=M->(
-if M==0 then return({});
-apply((entries M)#0,face))
+matrixToFaces = method()
+matrixToFaces Matrix := M -> (
+    if M == 0 then return {};
+    apply ((entries M)#0, face)
+    )
 
--------------------------------------------------
 
-facesM=method()
+facesM = method()
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
-     R := ring D;
-     if not D.cache.?faces then (
-         D.cache.faces = new MutableHashTable;
-	 B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
-	 D.cache.faces.ideal = substitute(D.faceIdeal,B);
-	 );
-     if r < -1 or r > dim D then matrix(R, {{}})
-     else (
-	  if not D.cache.faces#?r then (
-               J := D.cache.faces.ideal;
-               D.cache.faces#r = substitute(matrix basis(r+1,coker gens J), vars R));
-     	  D.cache.faces#r
-     ))
+    R := ring D;
+    if not D.cache.?faces then (
+	D.cache.faces = new MutableHashTable;
+	B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
+	D.cache.faces.ideal = substitute(ideal D,B);
+	);
+    if r < -1 or r > dim D then matrix(R, {{}})
+    else (
+	if not D.cache.faces#?r then (
+	    J := D.cache.faces.ideal;
+	    D.cache.faces#r = substitute(matrix basis(r+1,coker gens J), vars R));
+	D.cache.faces#r
+     	)
+    )
 
-protect labels
-protect ones
+
 boundary = method()
 boundary (ZZ,SimplicialComplex) := (r,D) -> (
      R := ring D;
@@ -198,49 +198,49 @@ boundary (ZZ,SimplicialComplex) := (r,D) -> (
      )
 
 chainComplex SimplicialComplex := (D) -> (
-     d := dim D;
-     C := if d < -1 then (ring D)^0[-1]
-          else if d === -1 then (ring D)^1
-          else chainComplex apply(0..d, r -> boundary(r,D));
-     if D.cache.?labels then C[0] else C[1]
-     )
+    d := dim D;
+    C := if d < -1 then (ring D)^0[-1]
+    else if d === -1 then (ring D)^1
+    else chainComplex apply(0..d, r -> boundary(r,D));
+    if D.cache.?labels then C[0] else C[1]
+    )
 
 -------- Labelled code ---------------------
 makeLabels = (D,L,i) -> (
-     -- D is a simplicial complex
-     -- L is a list of monomials 
-     -- i is an integer
-     F := first entries faces(i,D);
-     Sext := D.cache.labels.ring;
-     if #F == 0 
-     then matrix{{1_Sext}} 
-     else
-          matrix {apply(F, m -> (
-			 s := rawIndices raw m;
-	       		 lcmM L_s
-			 ))}
+    -- D is a simplicial complex
+    -- L is a list of monomials 
+    -- i is an integer
+    F := first entries faces(i,D);
+    Sext := D.cache.labels.ring;
+    if #F == 0 
+    then matrix{{1_Sext}} 
+    else
+    matrix {apply(F, m -> (
+		s := rawIndices raw m;
+		lcmM L_s
+		))}
      )
 
-L=null						    -- used as a key below
+L=null	  						    -- used as a key below
 
 label = method()
-label(SimplicialComplex, List) := (D,L) -> (
-     if #L === 0 then
-	  remove(D.cache,symbol labels)
-     else (
-	  D.cache.labels = new MutableHashTable;
-	  S := ring(L#0);
-	  M := monoid [Variables=>#L]; 
-	  Sext := S M;
-	  D.cache.labels.ring = Sext;
-     	  L = apply(#L, i -> L_i * Sext_i);
-	  D.cache.labels.L = L;
-	  D.cache.labels.ones = map(S, Sext, toList(#L:1_S));
-	  D.cache.labels#-1 = matrix{{1_Sext}};
-	  for i from 0 to dim D do
-	       D.cache.labels#i = makeLabels(D,L,i);
-	  )
-     )
+label (SimplicialComplex, List) := (D,L) -> (
+    if #L === 0 then 
+    	remove(D.cache, symbol labels)
+    else (    
+	D.cache.labels = new MutableHashTable;
+	S := ring(L#0);
+	M := monoid [Variables=>#L]; 
+	Sext := S M;
+	D.cache.labels.ring = Sext;
+	L = apply(#L, i -> L_i * Sext_i);
+	D.cache.labels.L = L;
+	D.cache.labels.ones = map(S, Sext, toList(#L:1_S));
+	D.cache.labels#-1 = matrix{{1_Sext}};
+	for i from 0 to dim D do
+	    D.cache.labels#i = makeLabels(D,L,i);
+	)
+    )
 
 simplicialChainComplex = method()
 simplicialChainComplex (List,SimplicialComplex) := (L, D) -> (

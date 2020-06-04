@@ -1357,28 +1357,6 @@ doc ///
     C1==C2
 ///
 
-doc ///
-  Key
-    faceIdeal
-  Headline
-    Key to simplicial complex.
-  Description
-   Text
-      This is a @TO Key@ to a @TO SimplicialComplex@ C storing its Stanley-Reisner ideal, which will be returned by C.faceIdeal.
-
-      The Stanley-Reisner ideal of C can also be obtained by @TO ideal@ C.
-
-   Example
-    K=QQ;
-    R=K[x_1..x_5];
-    C=simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)
-    C.faceIdeal
-    ideal C
-  SeeAlso
-   (ideal,SimplicialComplex)
-///
-
-
 
 doc ///
   Key    
