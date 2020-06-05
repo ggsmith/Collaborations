@@ -19,19 +19,13 @@ newPackage(
     "SimplicialComplexes",
     AuxiliaryFiles => true,
     Version => "1.3", 
-    Date => "4 June 2020",
+    Date => "5 June 2020",
     Authors => {
-	{Name     => "Sorin Popescu", 
-	 Email    => "sorin@math.sunysb.edu", 
-	 HomePage => "http://www.math.sunysb.edu/~sorin/"},
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
-	 HomePage => "http://www.mast.queensu.ca/~ggsmith"},
-	{Name     => "Mike Stillman", 
-	 Email    => "mike@math.cornell.edu", 
-	 HomePage => "http://www.math.cornell.edu/~mike"}
+	 HomePage => "http://www.mast.queensu.ca/~ggsmith"}
 	},
-    Headline => "simplicial complexes",
+    Headline => "routines for working with abstract simplicial complexes",
     DebuggingMode => true,
     PackageExports => {"GenericInitialIdeal"}
     )

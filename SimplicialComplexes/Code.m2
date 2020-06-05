@@ -33,8 +33,10 @@ rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
 -- Basic features of the simplicial complex datatype
 ------------------------------------------------------------------------------
 SimplicialComplex = new Type of HashTable
-SimplicialComplex.synonym = "simplicial complex"
-net SimplicialComplex := Delta -> net Delta.facets
+SimplicialComplex.synonym = "abstract simplicial complex"
+expression SimplicialComplex := Delta -> expression Delta.facets
+net SimplicialComplex := net @@ expression
+--net SimplicialComplex := Delta -> net Delta.facets
 
 ideal SimplicialComplex := Ideal => D -> D.ideal
 monomialIdeal SimplicialComplex := MonomialIdeal => D -> monomialIdeal ideal D
