@@ -18,8 +18,8 @@
 newPackage(
     "SimplicialComplexes",
     AuxiliaryFiles => true,
-    Version => "1.3", 
-    Date => "5 June 2020",
+    Version => "2.0", 
+    Date => "6 June 2020",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
@@ -27,31 +27,23 @@ newPackage(
 	},
     Headline => "routines for working with abstract simplicial complexes",
     DebuggingMode => true,
-    PackageExports => {"GenericInitialIdeal"}
+    PackageExports => {"Polyhedra", "GenericInitialIdeal"}
     )
 
 export {
     "SimplicialComplex",
     "simplicialComplex",
     "boundary",
-    "fVector",
-    "isPure",
     "label",
-    "faces",
-    "facets",
     "link",
     "simplicialChainComplex",
     "buchbergerComplex",
     "lyubeznikComplex",
     "superficialComplex",
     "Face",
-    "vertices",
     "face",
-    "useFaceClass",
     "isSubface",
     "isFaceOf",
-    "skeleton",
-    "Flag",
     "algebraicShifting",
     "Multigrading",
     "star",

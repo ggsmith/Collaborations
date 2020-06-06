@@ -34,12 +34,14 @@ rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
 ------------------------------------------------------------------------------
 SimplicialComplex = new Type of HashTable
 SimplicialComplex.synonym = "abstract simplicial complex"
-expression SimplicialComplex := Delta -> expression Delta.facets
-net SimplicialComplex := net @@ expression
---net SimplicialComplex := Delta -> net Delta.facets
 
-ideal SimplicialComplex := Ideal => D -> D.ideal
-monomialIdeal SimplicialComplex := MonomialIdeal => D -> monomialIdeal ideal D
+-- 'facets' method defined in Polyhedra
+facets SimplicialComplex := Matrix => D -> D.facets
+expression SimplicialComplex := D -> expression facets D
+net SimplicialComplex := net @@ expression
+
+ideal SimplicialComplex := Ideal => D -> ideal D.ideal
+monomialIdeal SimplicialComplex := MonomialIdeal => D -> D.ideal
 ring SimplicialComplex := PolynomialRing => D -> D.ring
 coefficientRing SimplicialComplex := Ring => D -> coefficientRing ring D
 
@@ -98,10 +100,9 @@ dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
 ------------------------------------------------------
 -- added option to return a list of Faces
 -- added by Janko
-facets = method(Options=>{useFaceClass=>false})
-facets SimplicialComplex := opts -> D -> (
-    if opts.useFaceClass then return(matrixToFaces(D.facets));
-    D.facets)
+-- facets = method(Options=>{useFaceClass=>false})
+
+
 
 
 
@@ -133,19 +134,23 @@ lcmM = (L) -> (
 -- to return also a list of Faces
 -- added by Janko
 
-faces = method(Options=>{useFaceClass=>false})
-faces(ZZ,SimplicialComplex) := opt->(r,D) -> (
-if opt.useFaceClass then (
-   matrixToFaces(facesM(r,D))
-) else (
-   facesM(r,D))
-)
+--faces = method(Options=>{useFaceClass=>false})
+
+-- 'faces' method defined in Polyhedra
+faces (ZZ, SimplicialComplex) := Matrix => (r, D) -> (
+    -*
+    if opt.useFaceClass then (
+   	matrixToFaces(facesM(r,D))
+	) 
+    *-
+    facesM(r,D)
+    )
 
 -- list of list of all faces
-faces SimplicialComplex := opt->(C)->(
-j:=0;
-f := j -> faces(j,C,opt);
-new MutableHashTable from toList apply(-1..dim C,j->j=>f j))
+faces SimplicialComplex := HashTable => D -> (
+    j := 0;
+    f := j -> faces(j, D);
+    new HashTable from toList apply(-1..dim D,j->j=>f j))
 
 
 -------------------------------------------------
@@ -271,24 +276,28 @@ homology(SimplicialComplex) := GradedModule => opts -> Delta -> (
 -- Fixed fVector to make it work also when the underlying ring is  multigraded.
 -- Added the option Flag to return the finer f-vector for the multigraded case.
 
-fVector = method(TypicalValue => List, Options => {Flag => false})
-fVector SimplicialComplex := opts -> D -> (
-     I := ideal D;
-     if not opts.Flag then (
-         S := newRing(ring D, Degrees => {#(gens ring D):1});
-         maptoS := map(S, ring D);
-         I = maptoS(I);
+-- fVector = method(TypicalValue => List, Options => {Flag => false})
+fVector SimplicialComplex := D -> (
+    I := ideal D;
+    -*
+    if not opts.Flag then (
+	S := newRing(ring D, Degrees => {#(gens ring D):1});
+	maptoS := map(S, ring D);
+	I = maptoS(I);
      );
+     *-	   
      N := poincare cokernel generators I;
+     -*
      if opts.Flag then (
-     if not isBalanced(D) then (
-         stderr << "-- the grading does not correspond to a proper d-coloring." << endl;
-         return new HashTable from {}
-     );
-         R := newRing(ring N, Degrees => apply(gens ring N, g -> apply(gens ring N, f -> if index(f) == index(g) then 1 else 0)));
+     	 if not isBalanced(D) then (
+             stderr << "-- the grading does not correspond to a proper d-coloring." << endl;
+             return new HashTable from {}
+     	     );
+     	 R := newRing(ring N, Degrees => apply(gens ring N, g -> apply(gens ring N, f -> if index(f) == index(g) then 1 else 0)));
          maptoR := map(R, ring N);
          N = maptoR(N);
-     );
+     	 );
+     *-	   
      if N == 0 then (
          new HashTable from {-1 => 0}
      )
@@ -298,18 +307,21 @@ fVector SimplicialComplex := opts -> D -> (
          supp := apply(flatten entries monomials(N), m -> degree m);
          allsubsets := apply(subsets(#(gens ring N)), s -> apply(toList(0..#(gens ring N)-1), l -> if member(l,s) then 1 else 0));
          flagh := L -> coefficient((flatten entries monomials part(L, N))#0, part(L, N));
-     flagf := M -> sum(supp, m -> if all(m,M, (i,j) -> j >= i) then flagh(m) else 0);
-     h := j -> sum(supp, s -> if sum(s)==j then flagh(s) else 0);
-     f := j -> sum(0..j+1, i -> binomial(d-i, d-j-1)*h(i));
-     if opts.Flag then (
-         new HashTable from apply(allsubsets, j -> j => flagf(j))
-     )
-     else new HashTable from prepend(-1=>1, apply(toList(0..d-1), j -> j => f(j)))
-     )
+     	 flagf := M -> sum(supp, m -> if all(m,M, (i,j) -> j >= i) then flagh(m) else 0);
+     	 h := j -> sum(supp, s -> if sum(s)==j then flagh(s) else 0);
+     	 f := j -> sum(0..j+1, i -> binomial(d-i, d-j-1)*h(i));
+	 -*
+     	 if opts.Flag then (
+             new HashTable from apply(allsubsets, j -> j => flagf(j))
+     	     )
+	 else
+	 *-
+     	 new HashTable from prepend(-1=>1, apply(toList(0..d-1), j -> j => f(j)))
+     	 )
      )
 
--- Check if the grading on the ring defines a proper (dim(D)+1)-coloring on D. Used by fVector. Not exported.
-
+-- Check if the grading on the ring defines a proper (dim(D)+1)-coloring on
+-- D. Used by fVector. Not exported.
 isBalanced = (D) -> (
      d := dim D +1;
      m := true;
@@ -364,8 +376,9 @@ algebraicShifting SimplicialComplex := opts -> S -> (
     )
     )
 -- Compute the i-th skeleton of a simplicial complex
-skeleton = method ()
-skeleton (ZZ, SimplicialComplex) :=  (n, S) -> (
+--skeleton = method ()
+-- method defined in the Polyhedra package
+skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, S) -> (
      simplicialComplex(flatten entries faces(n,S))
      )
 
@@ -394,7 +407,8 @@ boundary SimplicialComplex := (D) -> (
      	 simplicialComplex L
      )
 
-isPure = method(TypicalValue => Boolean)
+
+-- method defined in the Polyhedra package
 isPure SimplicialComplex := Boolean => (D) -> (
      F := first entries facets D;
      L := unique apply(F, m -> # support m);
@@ -519,7 +533,9 @@ superficialComplex(MonomialIdeal) := (I) -> (
 Face = new Type of MutableHashTable
 
 -- vertices of a face
-vertices=method()
+-- vertices=method()
+
+-- 'vertices' method defined in 'Polyhedra" package
 vertices Face := F -> F.vertices
 
 -- pretty print
@@ -563,10 +579,11 @@ isSubface(Face,Face):=(F,G)->(
 isSubset(set vertices F,set vertices G))
 
 -- test if a face is a face of a complex
-isFaceOf=method()
-isFaceOf(Face,SimplicialComplex):=(F,C)->(
-fc:=facets(C,useFaceClass=>true);
-#(select(1,fc,G->isSubface(F,G)))>0)
+isFaceOf = method()
+isFaceOf (Face,SimplicialComplex) := (F,C) -> (
+    fc := facets(C);    
+    #(select(1,fc, G -> isSubface(F,G)))>0
+    )
 
 
 -- substitute a face to another ring
