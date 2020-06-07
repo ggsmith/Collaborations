@@ -19,7 +19,7 @@ newPackage(
     "SimplicialComplexes",
     AuxiliaryFiles => true,
     Version => "2.0", 
-    Date => "6 June 2020",
+    Date => "7 June 2020",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
@@ -31,23 +31,27 @@ newPackage(
     )
 
 export {
+    -- types
     "SimplicialComplex",
-    "simplicialComplex",
-    "boundary",
+    "Face",
+    -- methods
+    "algebraicShifting",    
+    "bartnetteSphereComplex",
+    "boundary",    
+    "buchbergerComplex",
+    "face",  
+    "isFaceOf",    
+    "isSubface", 
+    "joinSimplicial",    
     "label",
     "link",
-    "simplicialChainComplex",
-    "buchbergerComplex",
-    "lyubeznikComplex",
+    "lyubeznikComplex",   
+    "star",	
+    "simplicialComplex",
+    "simplicialChainComplex", 
     "superficialComplex",
-    "Face",
-    "face",
-    "isSubface",
-    "isFaceOf",
-    "algebraicShifting",
-    "Multigrading",
-    "star",
-    "joinSimplicial"
+    -- symbol
+    "Multigrading"    
     }
 
 protect labels

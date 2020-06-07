@@ -35,7 +35,7 @@ S2 = simplicialComplex {a,b}
 J = S1 * S2
 T = ring J
 assert((fVector(S1 * S2))#1 == (fVector(S1))#1 + (fVector(S1))#0*(fVector(S2))#0)
-assert(star(J, x*y*z) == J)
+assert(star(J, x*y*z) === J)
 assert(#(flatten entries facets(star(J, a))) == 1)
 ///
 
@@ -85,8 +85,8 @@ assert(dim skeleton(2,cross) == 2)
 -- assert((fVector(skeleton(2,cross)))#1 == (fVector(cross))#1)
 multishifted = algebraicShifting(cross, Multigrading => true)
 stdshifted = algebraicShifting(cross)
-assert( cross == multishifted)
-assert( cross != stdshifted)
+assert (cross === multishifted)
+assert (cross =!= stdshifted)
 ///
 
 
@@ -122,7 +122,7 @@ TEST///
 S = QQ[a..f]
 D = simplicialComplex({a*b*c,b*c*d,d*e*f})
 stD = star(D, d)
-assert(star(D, d) == simplicialComplex({d*e*f,b*c*d}))
+assert(star(D, d) === simplicialComplex({d*e*f,b*c*d}))
 v = getSymbol "v"
 T = QQ[v]
 conev = stD * simplicialComplex({v})
@@ -146,21 +146,21 @@ assert( C.dd^2 == 0 )
 assert(HH_0(void) == 0)
 assert(HH_-1(void) == 0)
 fVector void
-assert(boundary void  == void)
+assert(boundary void  === void)
 irrelevant = simplicialComplex monomialIdeal gens R
 assert isPure irrelevant
 assert(dim irrelevant === -1)
 assert(faces(0,irrelevant) == 0)
 assert(numgens source faces(-1,irrelevant) === 1)
-assert(irrelevant == dual irrelevant)
+assert(irrelevant === dual irrelevant)
 C = chainComplex irrelevant
 assert( C.dd^2 == 0 )
 assert(HH_0(irrelevant) == 0)
 assert(HH_-1(irrelevant) == R^1)
 assert(fVector irrelevant === new HashTable from {-1=>1})
-assert(boundary irrelevant  == void)
+assert(boundary irrelevant  === void)
 D5 = simplicialComplex {1_R}
-D5 == irrelevant
+D5 === irrelevant
 ///
 
 
@@ -203,8 +203,7 @@ label(D,{})
 ------------------------------------------------------------------------------
 -- torus  : Munkres page 15 example 3 
 TEST ///
-kk = QQ
-R = kk[a..j]
+R = QQ[a..j]
 D = simplicialComplex{a*b*i, a*e*i, i*b*j, j*c*b, j*c*a, j*a*e,
      e*i*f, i*h*f, i*h*j, j*e*d, j*g*d, j*h*g, g*h*f, f*e*d,
      d*f*a, f*b*a, f*g*c, f*b*c, g*c*a, g*d*a}
@@ -333,12 +332,12 @@ TEST ///
 R = ZZ[a..e]
 D = simplicialComplex {b*c,c*a,a*e,a*d,c*d,d*e}
 I = ideal D
-assert(link(D,a) == simplicialComplex{c,d,e})
+assert(link(D,a) === simplicialComplex{c,d,e})
 
 D = simplicialComplex {b*c,c*a,a*e,a*d,c*d,d*e,a*c*d,a*d*e}
-assert(link(D,a) == simplicialComplex{c*d,d*e})
-assert(link(D,a*d) == simplicialComplex{c,e})
-assert(link(D,c*d) == simplicialComplex{a})
+assert(link(D,a) === simplicialComplex{c*d,d*e})
+assert(link(D,a*d) === simplicialComplex{c,e})
+assert(link(D,c*d) === simplicialComplex{a})
 ///
 
 
@@ -420,7 +419,7 @@ R = QQ[x_0..x_4]
 D1 = simplicialComplex monomialIdeal(x_0*x_1*x_2*x_3*x_4)
 S = QQ[x_0..x_4,T]
 D2 = simplicialComplex monomialIdeal(x_0*x_1*x_2*x_3*x_4,T)
-assert(substitute(D1,S)==D2)
+assert(substitute(D1,S) === D2)
 ///
 
 

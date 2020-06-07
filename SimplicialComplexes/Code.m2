@@ -1,5 +1,7 @@
 -- -*- coding: utf-8 -*-
 ------------------------------------------------------------------------------
+-- Simplicial Complexes CODE
+------------------------------------------------------------------------------
 -- Copyright 2006--2020 Sorin Popescu, Gregory G. Smith, and Mike Stillman
 --
 -- This program is free software: you can redistribute it and/or modify it
@@ -14,20 +16,6 @@
 -- You should have received a copy of the GNU General Public License along
 -- with this program.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------
--- Simplicial Complexes
-------------------------------------------------------------------------------
-complement := local complement
-complement = (m) -> (
-     A := ring m;
-     F := matrix{{product gens A}};
-     contract(m, F)
-     )
-
---- kludge to access parts of the 'Core'
-raw = value Core#"private dictionary"#"raw";
-rawIndices = value Core#"private dictionary"#"rawIndices";
-rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
-
 
 ------------------------------------------------------------------------------
 -- Basic features of the simplicial complex datatype
@@ -37,80 +25,112 @@ SimplicialComplex.synonym = "abstract simplicial complex"
 
 -- 'facets' method defined in Polyhedra
 facets SimplicialComplex := Matrix => D -> D.facets
+-- older version of facets had an option 'useFaceClass'
+-- TODO: how should we handle backwards compatiblity?
+
 expression SimplicialComplex := D -> expression facets D
 net SimplicialComplex := net @@ expression
 
-ideal SimplicialComplex := Ideal => D -> ideal D.ideal
-monomialIdeal SimplicialComplex := MonomialIdeal => D -> D.ideal
+ideal SimplicialComplex := Ideal => D -> ideal D.monomialIdeal
+monomialIdeal SimplicialComplex := MonomialIdeal => D -> D.monomialIdeal
 ring SimplicialComplex := PolynomialRing => D -> D.ring
 coefficientRing SimplicialComplex := Ring => D -> coefficientRing ring D
 
-dim SimplicialComplex := ZZ => (cacheValue symbol dim) (D -> 
-    max apply(first entries facets D, s -> # support(s)) - 1)
-
-
-newSimplicialComplex := (I, F) ->
-     new SimplicialComplex from {
-	  symbol ring => ring I,
-	  symbol ideal => I,
-	  symbol facets => F,
-	  symbol cache => new CacheTable
-	  }
-     
-simplicialComplex = method()     
+dim SimplicialComplex := ZZ => (cacheValue symbol dim) (
+    D -> max apply(first entries facets D, s -> # support(s)) - 1
+    )
+   
+simplicialComplex = method()   
+simplicialComplex List := SimplicialComplex => L -> (
+    facetsList := select(L, r -> r =!= 0);
+    -- need at least one facet to determine the ring   
+    if # facetsList === 0 then 
+        error "-- expected at least one facet";
+    if not same apply(facetsList, class) then 
+	error "-- expect all elements in the list to have same type";
+    if class L#0 === Face then 
+	facetsList = apply(facetsList, j -> product vertices j);
+    S := ring (facetsList#0);
+    G := matrix {{product gens S}};
+    -- the monomialIdeal constructor verifies that the elements all lie in the
+    -- same commutative polynomial ring
+    I := monomialIdeal contract (matrix{facetsList}, G);
+    -- remove any non-maximal faces from 'facetsList'
+    I = monomialIdeal mingens I;
+    -- contracting with G complements the support of the monomials
+    F := sort contract (gens I, G);
+    -- Alexander duality for monomial ideals in part of the 'Core'
+    I = dual I;
+    new SimplicialComplex from {
+	symbol ring           => S,
+	symbol monomialIdeal  => I,
+	symbol facets         => F,
+	symbol cache          => new CacheTable
+	}
+    )
 simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
-     R := ring I;
-     if not isPolynomialRing R or isQuotientRing R then 
-	 error "-- expected a polynomial ring";
-     if not isSquareFree I then
-         error "-- expected squarefree monomial ideal";
-     newSimplicialComplex(I, complement generators dual I)
-     )
-simplicialComplex List := SimplicialComplex => facets -> (
-     if #facets === 0 then error "-- expected at least one facet";
-     if class facets#0 === Face then (
-        return simplicialComplexM(apply(facets,j->product vertices j));
-     ) else (
-        return simplicialComplexM(facets))
-)
+    S := ring I;
+    J := dual I;
+    -- the void complex is the special case that has no facets
+    if J == 0 then (
+	return new SimplicialComplex from {
+	    symbol ring           => S,
+	    symbol monomialIdeal  => monomialIdeal 1_S,
+	    symbol facets         => map(S^1, S^0, 0),
+	    symbol cache          => new CacheTable
+	    }
+	);    
+    G := matrix {{product gens S}};
+    -- contracting with G complements the support of the monomials    
+    F := sort contract (gens J, G);
+    new SimplicialComplex from {
+	symbol ring           => S,
+	symbol monomialIdeal  => I,
+	symbol facets         => F,
+	symbol cache          => new CacheTable
+	}       
+    )
+
+isWellDefined SimplicialComplex := Boolean => D -> (
+    -- TODO
+    true
+    )
 
 
----------------------------------------------------------
--- frame procedure of simplicialComplex now renamed (unchanged)
--- to simplicialComplexM to allow as input also a list of faces
--- added by Janko 
-simplicialComplexM = method()
-simplicialComplexM List := SimplicialComplex => (faces) -> (
-     if #faces === 0 then error "expected at least one facet";
-     R := class faces#0;
-     if not isPolynomialRing R or not all(faces, m -> class m === R) then error "expected elements of a polynomial ring";
-     I := matrix {faces};
-     L := monomialIdeal complement I;
-     J := dual L;
-     newSimplicialComplex(J, complement generators L)
-     )
-
+------------------------------------------------------------------------------
+-- more advanced constructors 
+------------------------------------------------------------------------------
 dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
-     newSimplicialComplex(monomialIdeal complement D.facets,
-	  complement generators ideal D)
-     )
+    -- Alexander duality for monomial ideals in part of the 'Core'    
+    simplicialComplex dual monomialIdeal D)
+
+bartnetteSphereComplex = method()
+bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 8 then 
+	error "-- expected a polynomial  ring with at least 8 generators";
+    simplicialComplex {S_0*S_1*S_2*S_6, S_0*S_1*S_2*S_7, S_0*S_1*S_3*S_4,
+      S_0*S_1*S_3*S_6, S_0*S_1*S_4*S_7, S_0*S_2*S_3*S_5, S_0*S_3*S_4*S_7,
+      S_0*S_3*S_5*S_6, S_1*S_2*S_4*S_5, S_1*S_2*S_4*S_6, S_1*S_2*S_5*S_7,
+      S_1*S_3*S_4*S_6, S_1*S_4*S_5*S_7, S_0*S_2*S_3*S_7, S_0*S_2*S_5*S_6,
+      S_2*S_4*S_5*S_6, S_2*S_3*S_5*S_7, S_3*S_4*S_5*S_6, S_3*S_4*S_5*S_7}
+    )
+
+---- inspired by Sage math 
+--   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html
+-- TODO: add brucknerGrunbaumComplex
+-- TODO: add chessboardComplex
+-- TODO: add dunceHatComplex
+-- TODO: add kleinBottleComplex
+-- TODO: add realProjectiveSpaceComplex (ZZ == dimension)
+-- TODO: add simplexComplex (ZZ == dimension)
+-- TODO: add surfaceComplex (ZZ == genus)
 
 
 
-------------------------------------------------------
--- added option to return a list of Faces
--- added by Janko
--- facets = method(Options=>{useFaceClass=>false})
-
-
-
-
-
-SimplicialComplex == SimplicialComplex := (D, E) -> ideal(D) === ideal(E)
 
 
 link = method()
-link(SimplicialComplex, RingElement) := (D,f) -> (
+link (SimplicialComplex, RingElement) := SimplicialComplex => (D,f) -> (
      simplicialComplex monomialIdeal((ideal support f) + ((ideal D) : f)))
 
 
@@ -180,6 +200,13 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
 	D.cache.faces#r
      	)
     )
+
+
+--- kludge to access parts of the 'Core'
+raw = value Core#"private dictionary"#"raw";
+rawIndices = value Core#"private dictionary"#"rawIndices";
+rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
+
 
 
 boundary = method()
