@@ -60,6 +60,7 @@ simplicialComplex List := SimplicialComplex => L -> (
     -- contracting with G complements the support of the monomials
     F := sort contract (gens I, G);
     -- Alexander duality for monomial ideals in part of the 'Core'
+    --   the dual method checks that I is squarefree
     I = dual I;
     new SimplicialComplex from {
 	symbol ring           => S,
@@ -148,7 +149,7 @@ isWellDefined SimplicialComplex := Boolean => D -> (
     -- check whether the facets correspond to the monomialIdeal
     S := ring D;
     G := matrix {{product gens S}};
-    if D.facets =!= sort contract (gens monomialIdeal D, G) then (
+    if D.facets =!= sort contract (gens dual monomialIdeal D, G) then (
 	if debugLevel > 0 then
 	    << "-- expected '.facets' to list the facets corresponding to `.monomialIdeal' << "endl;
     	return false
