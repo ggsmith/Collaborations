@@ -19,7 +19,7 @@ newPackage(
     "SimplicialComplexes",
     AuxiliaryFiles => true,
     Version => "2.0", 
-    Date => "7 June 2020",
+    Date => "11 June 2020",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 

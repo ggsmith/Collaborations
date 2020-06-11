@@ -92,10 +92,69 @@ simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
     )
 
 isWellDefined SimplicialComplex := Boolean => D -> (
-    -- TODO
+    -- CHECK DATA STRUCTURE
+    -- check keys
+    K := keys D;
+    expectedKeys := set {symbol ring, symbol monomialIdeal, symbol facets, symbol cache};
+    if set K =!= expectedKeys then (
+	if debugLevel > 0 then (
+	    added := toList (K - expectedKeys);
+	    missing := toList (expectedKeys - K);
+	    if # added > 0 then 
+	        << "-- unexpected key(s): " << toString added << endl;
+	    if # missing > 0 then 
+	        << "-- missing key(s): " << toString missing << endl;
+	    );
+	return false
+	);
+    -- check types
+    if not instance (D.ring, PolynomialRing) then (
+	if debugLevel > 0 then 
+	    << "-- expected `.ring' to be a PolynomialRing" << endl;
+	return false
+	);
+    if not instance (D.monomialIdeal, MonomialIdeal) then (
+	if debugLevel > 0 then 
+	    << "-- expected `.monomialIdeal' to be a MonomialIdeal" << endl;
+	return false
+	);
+    if ring D.monomialIdeal =!= D.ring then (
+	if debugLevel > 0 then 
+	    << "-- expected the ring of `.monomialIdeal' to be `.ring'" << endl;
+	return false
+	);     
+    if not instance (D.facets, Matrix) then (
+	if debugLevel > 0 then 
+	    << "-- expected `.facets' to be a Matrix" << endl;
+	return false
+	);        
+    if ring D.facets =!= D.ring then (
+	if debugLevel > 0 then 
+	    << "-- expected the ring of `.facets' to be `.ring'" << endl;
+	return false
+	); 
+    if not instance (D.cache, CacheTable) then (
+    	if debugLevel > 0 then 
+	    << "-- expected `.cache' to be a CacheTable" << endl;
+    	return false
+	);     
+    -- CHECK MATHEMATICAL STRUCTURE
+    -- check whether the monomialIdeal is square free
+    if not isSquareFree D.monomialIdeal then (
+	if debugLevel > 0 then 
+	    << "-- expected `.monomialIdeal' to be square free" << endl;
+	return false
+	);   
+    -- check whether the facets correspond to the monomialIdeal
+    S := ring D;
+    G := matrix {{product gens S}};
+    if D.facets =!= sort contract (gens monomialIdeal D, G) then (
+	if debugLevel > 0 then
+	    << "-- expected '.facets' to list the facets corresponding to `.monomialIdeal' << "endl;
+    	return false
+	);	    
     true
     )
-
 
 ------------------------------------------------------------------------------
 -- more advanced constructors 
