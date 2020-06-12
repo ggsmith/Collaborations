@@ -71,6 +71,8 @@ simplicialComplex List := SimplicialComplex => L -> (
     )
 simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
     S := ring I;
+    -- Alexander duality for monomial ideals in part of the 'Core'
+    --   the dual method checks that I is squarefree    
     J := dual I;
     -- the void complex is the special case that has no facets
     if J == 0 then (
@@ -174,6 +176,7 @@ bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
       S_1*S_3*S_4*S_6, S_1*S_4*S_5*S_7, S_0*S_2*S_3*S_7, S_0*S_2*S_5*S_6,
       S_2*S_4*S_5*S_6, S_2*S_3*S_5*S_7, S_3*S_4*S_5*S_6, S_3*S_4*S_5*S_7}
     )
+
 
 ---- inspired by Sage math 
 --   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html

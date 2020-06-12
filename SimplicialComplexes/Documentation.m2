@@ -66,11 +66,6 @@ doc ///
 		"Birkhäuser Boston, Inc., Boston, MA, 1983. ",
 		"ISBN: 0-8176-3112-7" }
 	    }@	
-	Text 
-	    This package is not intended to handle abstract simplicial
-	    complexes with a very large number of vertices.  Indeed,
-	    computations in a polynomial ring with very large number of
-	    variables are typically prohibitive.
 	Text
             @SUBSECTION "Contributors"@
 	Text
@@ -80,6 +75,10 @@ doc ///
 	    @HREF("https://www.math.stonybrook.edu/~sorin/", "Sorin Popescu")@,
 	    @HREF("http://www.math.cornell.edu/~mike/","Mike Stillman")@, and
 	    @HREF("https://www.mis.mpg.de/nlalg/nlalg-people/lorenzo-venturello.html", "Lorenzo Venturello")@.
+    Caveat
+    	This package is not intended to handle abstract simplicial complexes
+	with a large number of vertices, because computations in a polynomial
+	ring with large number of variables are typically prohibitive.
     SeeAlso
         "making an abstract simplicial complex"
 	"finding attributes and properties"
@@ -96,7 +95,7 @@ doc ///
         information about the basic constructors
     Description
         Text
-	    An {\em abstract simplicial complex} on the finite set is a family
+	    An {\em abstract simplicial complex} on a finite set is a family
 	    of subsets that is closed under taking subsets.  The elements in
 	    the abstract simplicial complex are called its {\em faces}.  The
 	    faces having cardinality 1 are its {\em vertices} and the
@@ -138,7 +137,7 @@ doc ///
         the class of all abstract simplicial complexes
     Description
         Text
-	    An {\em abstract simplicial complex} on the finite set is a family
+	    An {\em abstract simplicial complex} on a finite set is a family
 	    of subsets that is closed under taking subsets.  The elements in
 	    the abstract simplicial complex are called its {\em faces}.  The
 	    faces having cardinality 1 are its {\em vertices} and the
@@ -190,8 +189,8 @@ doc ///
 	    used when outputing or printing; see @TO (net, SimplicialComplex)@.
 	Text
      	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@
-     	    is a simplicial sphere with 5 vertices, a minimal nonface
-     	    that corresponds to the interior of the sphere, and 5 facets.
+     	    is a simplicial sphere with 5 vertices, 5 tetrahedral facets, and 
+	    a minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
 	    D = simplicialComplex monomialIdeal (a*b*c*d*e)
@@ -288,9 +287,9 @@ doc ///
 	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  This method
             returns the defining ideal.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@
-     	    is a simplicial sphere with 5 vertices and a minimal nonface
-     	    that corresponds to the interior of the sphere.	    
+     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
+     	    minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
 	    D = simplicialComplex {b*c*d*e, a*c*d*e, a*b*d*e, a*b*c*e, a*b*c*d}
@@ -360,9 +359,9 @@ doc ///
             "polynomial ring")@.  This method returns the defining monomial
             ideal.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@
-     	    is a simplicial sphere with 5 vertices and a minimal nonface
-     	    that corresponds to the interior of the sphere.
+     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
+     	    minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
 	    D = simplicialComplex {b*c*d*e, a*c*d*e, a*b*d*e, a*b*c*e, a*b*c*d}
@@ -429,9 +428,9 @@ doc ///
             simplicial complex are a subset of variables in the polynomial
             ring.  This method returns the defining polynomial ring.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@
-     	    is a simplicial sphere with 5 vertices and a minimal nonface
-     	    that corresponds to the interior of the sphere.
+     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
+     	    minimal nonface that corresponds to the interior of the sphere.	    
     	Example
 	    S = ZZ[a..e];
 	    D = simplicialComplex {b*c*d*e, a*c*d*e, a*b*d*e, a*b*c*e, a*b*c*d}
@@ -499,11 +498,11 @@ doc ///
             @TO2(coefficientRing, "coefficient ring")@ of this polynomial
             ring.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@
-     	    is a simplicial sphere with 5 vertices and a minimal nonface
-     	    that corresponds to the interior of the sphere.  We construct this
-     	    abstract simplicial complex using three different polynomial
-     	    rings.	    
+     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
+     	    minimal nonface that corresponds to the interior of the sphere.
+     	    We construct this abstract simplicial complex using three
+     	    different polynomial rings.
     	Example
 	    S = ZZ[a..e];
 	    D = simplicialComplex {b*c*d*e, a*c*d*e, a*b*d*e, a*b*c*e, a*b*c*d}
@@ -570,9 +569,9 @@ doc ///
 	    the maximum of the dimensions of its faces or it is 
 	    {\tt - infinity} if $D$ is the void complex which has no faces.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@
-     	    is a simplicial 3-sphere with 5 vertices and a minimal nonface
-     	    that corresponds to the interior of the sphere.
+     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
+     	    minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
 	    D = simplicialComplex {b*c*d*e, a*c*d*e, a*b*d*e, a*b*c*e, a*b*c*d}
@@ -651,8 +650,8 @@ doc ///
 	    the simplicial complex.
 	Text
      	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
-     	    a simplicial 3-sphere with 5 vertices, 5 facets, and a
-     	    minimal nonface that corresponds to the interior of the sphere.
+     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
+     	    minimal nonface that corresponds to the interior of the sphere.	
     	Example
 	    S = ZZ[a..e];
 	    D = simplicialComplex {a*b*d*e, b*c*d*e, a*b*c*e, a*b*c*d, a*c*d*e}
@@ -726,7 +725,7 @@ doc ///
 	    whose minimal nonfaces correspond to the generaters of {\tt I}
     Description
         Text
-	    An {\em abstract simplicial complex} on the finite set is a family
+	    An {\em abstract simplicial complex} on a finite set is a family
 	    of subsets that is closed under taking subsets.  The elements in
 	    the abstract simplicial complex are called its {\em faces}.  The
 	    faces having cardinality 1 are its {\em vertices} and the
@@ -746,7 +745,7 @@ doc ///
 	    corresponding abstract simplicial complex.
 	Text
      	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
-     	    a simplicial 3-sphere with 5 vertices, 5 facets, and a
+     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
      	    minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
@@ -886,6 +885,79 @@ doc ///
 ------------------------------------------------------------------------------
 doc ///
     Key
+        (dual, SimplicialComplex)
+    Headline
+        make the Alexander dual of an abstract simplicial complex
+    Usage
+        dual D
+    Inputs
+	D : SimplicialComplex
+    Outputs
+        : SimplicialComplex
+	    that is the Alexander dual of {\tt D}
+    Description
+        Text
+            The Alexander dual of an abstract simplicial complex $D$ is the
+            abstract simplicial complex whose faces are the complements of the
+            nonfaces in $D$.  
+	Text
+	    The Alexander dual of a square is the disjoint union of two edges.
+    	Example
+	    S = ZZ[a..d];
+	    D = simplicialComplex {a*b, b*c, c*d, a*d}
+	    dual D  
+	    assert (dual D === simplicialComplex {a*c, b*d} and dual dual D === D)
+    	Text
+            The Alexander dual is homotopy equivalent to the complement of $D$
+     	    in the sphere generated by all of the variables in the 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@ of $D$.  In
+     	    particular, it depends on the number of variables.
+     	Example
+	    S' = ZZ[a..e];
+	    D' = simplicialComplex {a*b, b*c, c*d, a*d}
+	    dual D'
+     	    assert (dual D' === simplicialComplex {b*d*e, a*c*e, a*b*c*d} and 
+		dual dual D' === D')
+	Text
+	    The projective dimension of the Stanley-Reisner ring of $D$ equals
+     	    the regularity of the Stanley-Reisner ideal of the Alexander dual
+     	    of $D$; see Theorem 5.59 in Miller-Sturmfels' 
+	    {\em Combinatorial Commutative Algebra}.
+    	Example     
+     	    S'' = QQ[a..h];
+	    D'' =  bartnetteSphereComplex S'' 
+	    dual D''
+	    pdim comodule ideal D''
+	    regularity ideal dual D''
+	    assert (pdim comodule ideal D'' === regularity ideal dual D'')
+	Text
+            Alexander duality interchanges extremal Betti numbers of the
+     	    Stanley-Reisner ideals.  Following Example 3.2 in
+     	    Bayer-Charalambous-Popescu's
+     	    @HREF("https://arxiv.org/abs/math/9804052", "Extremal betti
+     	    numbers and applications to monomial ideals")@ we have the
+     	    following.
+    	Example
+	    S = QQ[x_0 .. x_6];
+	    D = simplicialComplex {x_0*x_1*x_3, x_1*x_3*x_4, x_1*x_2*x_4,
+	        x_2*x_4*x_5, x_2*x_3*x_5, x_3*x_5*x_6, x_3*x_4*x_6,
+	        x_0*x_4*x_6, x_0*x_4*x_5, x_0*x_1*x_5, x_1*x_5*x_6,
+	        x_1*x_2*x_6, x_0*x_2*x_6, x_0*x_2*x_3}
+	    I = ideal D
+	    J = ideal dual D
+	    betti res I
+	    betti res J
+    SeeAlso 
+        "making an abstract simplicial complex"        
+        (dual, MonomialIdeal)
+	(pdim, Module)
+	(regularity, Module)
+	(betti, Resolution)
+///
+
+
+doc ///
+    Key
         (bartnetteSphereComplex, PolynomialRing)
 	bartnetteSphereComplex
     Headline
@@ -914,6 +986,14 @@ doc ///
 		ideal D === ideal(b*c*d, a*c*e, c*d*e, a*b*f, b*d*f, a*e*f,
 		    c*d*g, a*e*g, b*f*g, b*d*h, c*e*h, a*f*h, g*h) and
 		apply(-1..3, i -> (fVector D)#i) === (1,8,27,38,19))
+	Text
+	    The vertices in the Bartnette sphere are the first 8 variables in
+	    the given polynomial ring.
+	Example
+	    S' = QQ[x_0..x_10];
+	    D' = bartnetteSphereComplex S'
+	    monomialIdeal D'
+    	    assert (dim D' === 3 and isPure D')	    
     	Text
 	    Our enumeration of the vertices follows Example 9.5.23 in Jesús A
             De Loera, Jörg Rambau, and Francisco Santos, 
@@ -922,6 +1002,7 @@ doc ///
 	    Algorithms and Computation in Mathematics 25, Springer-Verlag,
 	    Berlin, 2010.	    
     SeeAlso
+        "making an abstract simplicial complex"            
     	(isPure, SimplicialComplex)
 ///
 
@@ -1165,62 +1246,7 @@ document {
      SeeAlso => {SimplicialComplexes
 	  }
      }
-document { 
-     Key => (dual,SimplicialComplex),
-     Headline => "the Alexander dual of a simplicial complex",
-     Usage => "dual D",
-     Inputs => {
-	  "D"
-          },
-     Outputs => {
-	  SimplicialComplex => {"the Alexander dual of ", TT "D"}
-          },
-     "The Alexander dual of ", TT "D", " is the simplicial complex
-     whose faces are the complements of the nonfaces of ", TT "D", ".
-     The Alexander dual of a square is the disjoint union of
-     two edges.",
-     EXAMPLE {
-	  "R = ZZ[a..d];",
-	  "D = simplicialComplex {a*b,b*c,c*d,d*a}",
-          "dual D"
-	  },
-     PARA{},
-     "The Alexander dual is homotopy equivalent to the complement of ", TT "D", " in the sphere generated
-     by all of the variables in the ", TO2((ring,SimplicialComplex),"ring"),
-     " of ", TT "D", ".  In particular, it depends on the number of variables.",
-     EXAMPLE {
-	  "R = ZZ[a..e]",
-	  "E = simplicialComplex {a*b,b*c,c*d,d*a}",
-          "dual E"
-          },
-     "The projective dimension of the face ring of D equals the
-     regularity of the face ideal of the Alexander dual of D
-     see e.g., Corollary 5.59 of Miller-Sturmfels, Combinatorial
-     Commutative Algebra.",
-     EXAMPLE {
-	  "R = QQ[a..f];",
-	  "D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)",
-	  "A = dual D",
-	  "pdim (R^1/(ideal D))",
-	  "regularity ideal A"
-	  },
-     PARA{},
-     "Alexander duality interchanges extremal betti numbers of the face ideals.
-     Following example 3.2 in Bayer-Charalambous-Popescu, ", EM "Extremal betti
-     numbers and applications to monomial ideals", ", we have ",
-     EXAMPLE {
-	  "R = QQ[x0,x1,x2,x3,x4,x5,x6];",
-	  "D = simplicialComplex {x0*x1*x3, x1*x3*x4, x1*x2*x4, x2*x4*x5,
-	       x2*x3*x5, x3*x5*x6, x3*x4*x6, x0*x4*x6,
-	       x0*x4*x5, x0*x1*x5, x1*x5*x6, x1*x2*x6,
-	       x0*x2*x6, x0*x2*x3}",
-	  "I = ideal D",
-	  "J = ideal dual D",
-	  "betti res I",
-	  "betti res J"
-	  },
-     SeeAlso => {SimplicialComplexes, (dual,MonomialIdeal)}
-     }
+
 
 ///
 -- Greg and Mike were working on this when Greg had to go home

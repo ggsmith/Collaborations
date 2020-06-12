@@ -19,13 +19,13 @@ newPackage(
     "SimplicialComplexes",
     AuxiliaryFiles => true,
     Version => "2.0", 
-    Date => "11 June 2020",
+    Date => "12 June 2020",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
 	 HomePage => "http://www.mast.queensu.ca/~ggsmith"}
 	},
-    Headline => "routines for working with abstract simplicial complexes",
+    Headline => "exploring abstract simplicial complexes within commutative algebra",
     DebuggingMode => true,
     PackageExports => {"Polyhedra", "GenericInitialIdeal"}
     )
