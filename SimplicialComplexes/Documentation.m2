@@ -1048,38 +1048,49 @@ doc ///
 	    irrelevant = simplexComplex (-1, S)
 	    monomialIdeal irrelevant
 	    dim irrelevant
-	    assert (facets irrelevant === matrix {{1_S}} and dim irrelevant === -1)
+	    F = fVector irrelevant
+	    assert (facets irrelevant === matrix {{1_S}} and dim irrelevant === -1 and F#-1 === 1)
     	Example
 	    D0 = simplexComplex (0, S)
 	    monomialIdeal D0
 	    dim D0
-	    assert (facets D0 === matrix {{a}} and dim D0 === 0)
+	    F0 = fVector D0
+	    assert (facets D0 === matrix {{a}} and dim D0 === 0 and 
+		all(-1..0, i -> F0#i === binomial(0+1,i+1)))
     	Example
 	    D1 = simplexComplex (1, S)
 	    monomialIdeal D1
 	    dim D1
-	    assert (facets D1 === matrix {{a*b}} and dim D1 === 1)	    
+	    F1 = fVector D1
+	    assert (facets D1 === matrix {{a*b}} and dim D1 === 1 and
+		all(-1..1, i -> F1#i === binomial(1+1,i+1)))	    	    
     	Example
 	    D2 = simplexComplex (2, S)
 	    monomialIdeal D2
 	    dim D2
-	    assert (facets D2 === matrix {{a*b*c}} and dim D2 === 2)	 
+	    F2 = fVector D2	    
+	    assert (facets D2 === matrix {{a*b*c}} and dim D2 === 2 and
+		all(-1..2, i -> F2#i === binomial(2+1,i+1)))	 
     	Example
 	    D3 = simplexComplex (3, S)
 	    monomialIdeal D3
 	    dim D3
-	    assert (facets D3 === matrix {{a*b*c*d}} and dim D3 === 3)	 
+	    F3 = fVector D3
+	    assert (facets D3 === matrix {{a*b*c*d}} and dim D3 === 3 and
+		all(-1..3, i -> F3#i === binomial(3+1,i+1)))	 
     	Example
 	    D4 = simplexComplex (4, S)
 	    monomialIdeal D4
 	    dim D4
-	    assert (facets D4 === matrix {{a*b*c*d*e}} and dim D4 === 4)
+	    F4 = fVector D4
+	    assert (facets D4 === matrix {{a*b*c*d*e}} and dim D4 === 4 and
+		all(-1..4, i -> F4#i === binomial(4+1,i+1)))
 	Text
 	    The vertices in the $d$-simplex are the first $d+1$ variables in
 	    the given polynomial ring.	    
     SeeAlso
         "making an abstract simplicial complex"            
-    	(isPure, SimplicialComplex)
+    	(fVector, SimplicialComplex)
 ///
 
  
