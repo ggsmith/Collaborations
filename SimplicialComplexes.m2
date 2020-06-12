@@ -47,6 +47,7 @@ export {
     "link",
     "lyubeznikComplex",   
     "star",	
+    "simplexComplex",
     "simplicialComplex",
     "simplicialChainComplex", 
     "superficialComplex",

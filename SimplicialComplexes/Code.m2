@@ -159,17 +159,14 @@ isWellDefined SimplicialComplex := Boolean => D -> (
     true
     )
 
-------------------------------------------------------------------------------
--- more advanced constructors 
-------------------------------------------------------------------------------
-dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
-    -- Alexander duality for monomial ideals in part of the 'Core'    
-    simplicialComplex dual monomialIdeal D)
 
+------------------------------------------------------------------------------
+-- constructors for classic examples
+------------------------------------------------------------------------------
 bartnetteSphereComplex = method()
 bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 8 then 
-	error "-- expected a polynomial  ring with at least 8 generators";
+	error "-- expected a polynomial ring with at least 8 generators";
     simplicialComplex {S_0*S_1*S_2*S_6, S_0*S_1*S_2*S_7, S_0*S_1*S_3*S_4,
       S_0*S_1*S_3*S_6, S_0*S_1*S_4*S_7, S_0*S_2*S_3*S_5, S_0*S_3*S_4*S_7,
       S_0*S_3*S_5*S_6, S_1*S_2*S_4*S_5, S_1*S_2*S_4*S_6, S_1*S_2*S_5*S_7,
@@ -177,6 +174,16 @@ bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
       S_2*S_4*S_5*S_6, S_2*S_3*S_5*S_7, S_3*S_4*S_5*S_6, S_3*S_4*S_5*S_7}
     )
 
+simplexComplex = method()
+simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
+    if n === -1 then 
+	return simplicialComplex {1_S};
+    if n < -1 then 
+        error "-- expected integer greater than -1";
+    if numgens S < n + 1 then 
+	error "-- expected a polynomial ring with at least " << n+1 << " generators";
+    simplicialComplex {product(n+1, i -> S_i)}
+    )
 
 ---- inspired by Sage math 
 --   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html
@@ -185,11 +192,15 @@ bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
 -- TODO: add dunceHatComplex
 -- TODO: add kleinBottleComplex
 -- TODO: add realProjectiveSpaceComplex (ZZ == dimension)
--- TODO: add simplexComplex (ZZ == dimension)
 -- TODO: add surfaceComplex (ZZ == genus)
 
 
-
+------------------------------------------------------------------------------
+-- more advanced constructors 
+------------------------------------------------------------------------------
+dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
+    -- Alexander duality for monomial ideals in part of the 'Core'    
+    simplicialComplex dual monomialIdeal D)
 
 
 link = method()
