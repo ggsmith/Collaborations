@@ -185,6 +185,8 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     simplicialComplex {product(n+1, i -> S_i)}
     )
 
+
+
 ---- inspired by Sage math 
 --   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html
 -- TODO: add brucknerGrunbaumComplex
@@ -202,10 +204,51 @@ dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
     -- Alexander duality for monomial ideals in part of the 'Core'    
     simplicialComplex dual monomialIdeal D)
 
-
 link = method()
-link (SimplicialComplex, RingElement) := SimplicialComplex => (D,f) -> (
-     simplicialComplex monomialIdeal((ideal support f) + ((ideal D) : f)))
+link (SimplicialComplex, RingElement) := SimplicialComplex => (D, f) -> (
+    if isUnit f then return D;
+    simplicialComplex ((monomialIdeal support f) + (monomialIdeal D : f))
+    )
+
+
+
+
+boundary = method()
+boundary SimplicialComplex := SimplicialComplex => D -> (
+     F := first entries facets D;
+     L := flatten apply (F, m -> apply(support m, x -> m // x));
+     if #L === 0 then 
+         simplicialComplex monomialIdeal (1_(ring D))
+     else
+     	 simplicialComplex L
+     )
+
+-- Compute the i-th skeleton of a simplicial complex
+--skeleton = method ()
+-- method defined in the Polyhedra package
+skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, S) -> (
+     simplicialComplex(flatten entries faces(n,S))
+     )
+
+-- Compute the star w.r.t. a face
+star = method ()
+star (SimplicialComplex, RingElement) := (S, f) -> (simplicialComplex(monomialIdeal(S):monomialIdeal(f)))
+
+-- The simplicial join of two simplicial complexes defined over different rings
+joinSimplicial = method ()
+joinSimplicial (SimplicialComplex, SimplicialComplex) := (A, B) -> (
+     T := tensor(ring A, ring B);
+     f := map(T, ring A);
+     g := map(T, ring B);
+     return simplicialComplex(monomialIdeal(f(ideal(A))+g(ideal(B))));
+     )
+
+SimplicialComplex * SimplicialComplex := joinSimplicial
+
+
+
+
+
 
 
 
@@ -283,7 +326,6 @@ rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
 
 
 
-boundary = method()
 boundary (ZZ,SimplicialComplex) := (r,D) -> (
      R := ring D;
      if D.cache.?labels then (
@@ -476,37 +518,7 @@ algebraicShifting SimplicialComplex := opts -> S -> (
     return simplicialComplex sI
     )
     )
--- Compute the i-th skeleton of a simplicial complex
---skeleton = method ()
--- method defined in the Polyhedra package
-skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, S) -> (
-     simplicialComplex(flatten entries faces(n,S))
-     )
 
--- Compute the star w.r.t. a face
-star = method ()
-star (SimplicialComplex, RingElement) := (S, f) -> (simplicialComplex(monomialIdeal(S):monomialIdeal(f)))
-
--- The simplicial join of two simplicial complexes defined over different rings
-joinSimplicial = method ()
-joinSimplicial (SimplicialComplex, SimplicialComplex) := (A, B) -> (
-     T := tensor(ring A, ring B);
-     f := map(T, ring A);
-     g := map(T, ring B);
-     return simplicialComplex(monomialIdeal(f(ideal(A))+g(ideal(B))));
-     )
-
-SimplicialComplex * SimplicialComplex := joinSimplicial
-
-
-boundary SimplicialComplex := (D) -> (
-     F := first entries facets D;
-     L := flatten apply(F, m -> apply(support m, x -> m//x));
-     if #L === 0 then 
-         simplicialComplex monomialIdeal (1_(ring D))
-     else
-     	 simplicialComplex L
-     )
 
 
 -- method defined in the Polyhedra package

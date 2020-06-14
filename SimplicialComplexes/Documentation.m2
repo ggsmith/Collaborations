@@ -1124,6 +1124,102 @@ doc ///
 ///
  
  
+doc /// 
+    Key 
+        (link, SimplicialComplex, RingElement)
+	link
+    Headline
+        make the link of a face in an abstract simplicial complex
+    Usage
+        link(D, f)
+    Inputs
+        D : SimplicialComplex
+	f : RingElement
+	    that is a monomial representing a face of {\tt D}
+    Outputs
+        : SimplicialComplex
+	   the link of {\tt f} in {\tt D}
+    Description
+        Text
+    	    The link of a face $F$ inside the abstract simplicial complex $D$
+    	    is the set of faces that are disjoint from $F$ but whose unions
+    	    with $F$ lie in $D$.
+	Text
+	    Following Example 1.39 in Miller-Sturmfels' {\em Combinatorial
+	    Commutative Algebra}, we consider a simplicial complex with 6
+	    facet.  The link of the vertex $a$ consists of the vertex $e$
+	    along with the proper faces of the triangle $b*c*d$.  The link of
+	    the vertex $c$ is pure of dimension $1$; its four facets being the
+	    three edges of the triangle $a*b*d$ plus the extra edge $b*e$.
+	    The link of $e$ consists of the vertex $a$ along with the edge
+	    $b*c$.  The link of the edge $b*c$ consists of the three remaining
+	    vertices.  Finally, the link of the edge $a*e$ is the irrelevant
+	    complex.	    
+	Example
+	    S = QQ[a..e];
+	    D = simplicialComplex monomialIdeal (d*e, a*b*e, a*c*e, a*b*c*d)
+	    link (D, a)
+	    link (D, c)
+	    link (D, e)
+	    link (D, b*c)
+	    link (D, a*e)
+	    assert (facets link (D, a) === matrix {{e, c*d, b*d, b*c}} and 
+		facets link (D, c) === matrix {{b*e, b*d, a*d, a*b}} and 
+		facets link (D, e) === matrix {{a, b*c}} and
+		facets link (D, b*c) === matrix {{e,d,a}} and 
+		facets link (D, a*e) === matrix {{1_S}} and 
+		isPure link (D, c) and dim link (D, a*e) === -1)
+	Text
+	    The link of the empty face equals the original simplicial complex.
+	Example
+	    link(D, 1_S)
+	    void = simplicialComplex monomialIdeal 1_S
+	    link (void, 1_S)
+	    assert (link (D, 1_S) === D and link(void, 1_S) === void)
+	Text
+	    The dual version of Hochster's formula (see Corollary 1.40 in
+	    Miller-Sturmfels) relates the Betti numbers of a Stanley-Reisner
+	    ideal with the reduced homology of a link in the Alexander dual
+	    simplicial complex.
+	Example
+	    betti res ideal D
+	    S' = QQ[a..e, DegreeRank => 5];
+	    D' = simplicialComplex monomialIdeal (d*e, a*b*e, a*c*e, a*b*c*d)  
+	    prune Tor_0(S'^1/gens S',ideal D')  	    
+	    hilbertFunction({1,1,1,1,0}, Tor_0(S'^1/gens S',ideal D')) === rank HH_(-1) (link (dual D', e))
+	    hilbertFunction({1,1,0,0,1}, Tor_0(S'^1/gens S',ideal D')) === rank HH_(-1) (link (dual D', c*d))
+	    hilbertFunction({1,0,1,0,1}, Tor_0(S'^1/gens S',ideal D')) === rank HH_(-1) (link (dual D', b*d))
+	    hilbertFunction({0,0,0,1,1}, Tor_0(S'^1/gens S',ideal D')) === rank HH_(-1) (link (dual D', a*b*c))
+	    prune Tor_1(S'^1/gens S',ideal D')
+	    hilbertFunction({1,1,1,0,1}, Tor_1(S'^1/gens S',ideal D')) === rank HH_0 (link (dual D', d))	    	    	    
+	    hilbertFunction({1,1,0,1,1}, Tor_1(S'^1/gens S',ideal D')) === rank HH_0 (link (dual D', c)) 		    
+	    hilbertFunction({1,0,1,1,1}, Tor_1(S'^1/gens S',ideal D')) === rank HH_0 (link (dual D', b))	    	    	    
+	    hilbertFunction({1,1,1,1,1}, Tor_1(S'^1/gens S',ideal D')) === rank HH_0 (link (dual D', 1_S')) 		    
+	    prune Tor_2(S'^1/gens S',ideal D')
+	    hilbertFunction({1,1,1,1,1}, Tor_2(S'^1/gens S',ideal D')) === rank HH_1 (link (dual D', 1_S'))	    	    	    
+	Text
+    	    The Reisner criterion for the Cohen-Macaulay property of the
+    	    Stanley-Reisner ring involves links, see Theorem 5.53 in
+    	    Miller-Sturmfels.  Specifically, an abstract simplicial complex
+    	    {\tt D} is Cohen-Macaulay if and only if, for all faces {\tt F} in
+    	    {\tt D} and all {\tt i} such that {\tt i < dim link(D, F)}, the
+    	    {\tt i}-th reduced homology of {\tt link(D, F)} vanishes.
+	Example 
+	    S'' = QQ[a..h];
+	    B = bartnetteSphereComplex S''
+	    pdim comodule ideal B === codim ideal B  -- B is Cohen-Macaulay
+    	    -- directly verify the Reisner criterion
+	    all (flatten apply(-1..2, i -> first entries (faces B)#i), f -> (
+		     L := link (B, f);
+		     all (-1..dim L - 1, j -> HH_j(L) == 0)))
+    SeeAlso
+        "making an abstract simplicial complex"
+	(dual, SimplicialComplex)
+	bartnetteSphereComplex     
+	(pdim, Module)
+	(codim, Ideal)
+///
+ 
 
 document { 
      Key => boundary,
@@ -1307,32 +1403,7 @@ document {
      -- Caveat => {},
      -- SeeAlso => {}
      }
-document { 
-     Key => {link,(link,SimplicialComplex,RingElement)},
-     Headline => "link of a face in a simplicial complex",
-     Usage => "link(D,f)",
-     Inputs => {
-	  "D" => SimplicialComplex,
-	  "f" => RingElement => {"a monomial representing a face of the simplicial complex ", TT "D"}
-          },
-     Outputs => {
-	  SimplicialComplex => {"the link of ", TT "f", " in ", TT "D"}
-          },
-     TEX "The link of a face $f$ in $D$ is the simplicial complex whose faces 
-     are the subsets $g$ whose intersection
-     with $f$ is empty, where $f \\cup g$ is a face of $D$.",
-     EXAMPLE {
-	  "R = QQ[x0,x1,x2,x3,x4,x5,x6];",
-	  "D = simplicialComplex {x0*x1*x3, x1*x3*x4, x1*x2*x4, x2*x4*x5,
-	       x2*x3*x5, x3*x5*x6, x3*x4*x6, x0*x4*x6,
-	       x0*x4*x5, x0*x1*x5, x1*x5*x6, x1*x2*x6,
-	       x0*x2*x6, x0*x2*x3}",
-	  "link(D,x0)",
-	  "link(D,x0*x2)"
-	  },
-     SeeAlso => {SimplicialComplexes
-	  }
-     }
+
 
 
 ///
