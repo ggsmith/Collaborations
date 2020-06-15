@@ -1271,38 +1271,48 @@ document {
 	  },
      SeeAlso => {SimplicialComplexes, (chainComplex,SimplicialComplex), faces}
      }
+
  
- 
-document { 
-     Key => (boundary,SimplicialComplex),
-     Headline => "the boundary simplicial complex of D",
-     Usage => "boundary D",
-     Inputs => {
-	  "D"
-          },
-     Outputs => {
-	  SimplicialComplex => {"the boundary simplicial complex, 
-	   i.e. the subcomplex of ", TT "D", 
-	   " consisting of all nonmaximal faces of ", TT "D"},
-          },
-     "The boundary of the standard 3-simplex is the 2-sphere.",
-     EXAMPLE {
-          "R = ZZ[a..d];",
-          "D = simplicialComplex{a*b*c*d}",
-	  "sphere = boundary D",
-	  "fVector sphere",
-	  "fVector D"  
-	  },
-     "Facets may be of different dimensions.",
-     EXAMPLE {
-          "R = ZZ[a..g];",
-          "D = simplicialComplex{a*b*c,a*d,d*f,g*c,e,f*g}",
-	  "E = boundary D",
-	  "fVector D",
-	  "fVector E"
-	  },
-     SeeAlso => {SimplicialComplexes, fVector, isPure, facets}
-     }
+doc /// 
+     Key 
+         (boundary,SimplicialComplex)
+     Headline 
+         the boundary simplicial complex of D
+     Usage
+     	 boundary D
+     Inputs
+     	 D : SimplicialComplex
+     Outputs
+     	 : SimplicialComplex
+	     that is the boundary of {\tt D}
+     Description
+     	 Text
+     	     The boundary of an abstract simplicial complex $D$ is the subcomplex consisting
+	     of all nonmaximal faces of $D$. Equivalently, it is the subcomplex consisting of
+	     all non-facets of $D$.
+	 Text
+	     The boundary of the 3-simplex is the 2-sphere.
+	 Example
+	     R = ZZ[a..d];
+	     D = simplicialComplex{a*b*c*d}
+	     sphere = boundary D
+	     fVector sphere
+	     fVector D
+	 Text
+	     The facets of $D$ need not be of the same dimension (i.e. $D$ is not a pure simplicial 
+	     complex), which means the boundary facets will not be of the same dimension.
+	 Example
+	     R = ZZ[a..g];
+	     D = simplicialComplex{a*b*c,a*d,d*f,g*c,e,f*g}
+	     E = boundary D
+	     fVector D
+	     fVector E
+     SeeAlso
+	 "making an abstract simplicial complex"
+         (facets, SimplicialComplex)
+	 (isPure, SimplicialComplex)
+         (fVector, SimplicialComplex)
+///
 
 
 document { 
