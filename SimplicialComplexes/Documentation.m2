@@ -964,7 +964,7 @@ doc ///
         (dual, MonomialIdeal)
 	(pdim, Module)
 	(regularity, Module)
-	(betti, Resolution)
+	(betti, GradedModule)
 ///
 
 
@@ -1228,90 +1228,114 @@ document {
      }
  
  
-document { 
-     Key => (boundary,ZZ,SimplicialComplex),
-     Headline => "the boundary map from i-faces to (i-1)-faces",
-     Usage => "M = boundary(i,D)",
-     Inputs => {
-	  "i",
-	  "D"
-          },
-     Outputs => {
-	  "M" => Matrix => {"the boundary map from ", TT "i", 
-	       "-faces to ", TT "(i-1)", "-faces of ", TT "D"}
-          },
-     "The columns of the matrix ", TT "M", " are indexed by the ", TT "i", "-faces of
-     ", TT "D", ", and the rows are indexed by the ", TT "(i-1)", "-faces, in the order
-     given by ", TO faces, ".  ", TT "M", " is defined over the ", 
-     TO2((coefficientRing,SimplicialComplex),"coefficient ring"), " of ", TT "D", ".",
-     "The boundary maps for the standard 3-simplex, defined over ", TT "ZZ", ".",
-     EXAMPLE {
-	  "R = ZZ[a..d];",
-	  "D = simplicialComplex {a*b*c*d}",
-	  "boundary(0,D)",
-	  "faces(0,D)",
-          "boundary(1,D)",
-	  "faces(1,D)",
-	  "boundary(2,D)",
-	  "faces(2,D)",
-	  "boundary(3,D)",
-	  "faces(3,D)",
-	  "boundary(4,D)"
-	  },
-     "The boundary maps depend on the ",
-     TO2((coefficientRing,SimplicialComplex),"coefficient ring"), 
-     " as the following examples illustrate.",
-     EXAMPLE {
-	  "R = QQ[a..f];",
-	  "D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);",
-	  "boundary(1,D)",
-	  "R' = ZZ/2[a..f];",
-	  "D' = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);",
-	  "boundary(1,D')"
-	  },
-     SeeAlso => {SimplicialComplexes, (chainComplex,SimplicialComplex), faces}
-     }
+doc ///
+    Key
+        (boundary, ZZ, SimplicialComplex)
+    Headline
+        make a boundary map between oriented faces
+    Usage 
+        boundary(i, D)
+    Inputs
+        i : ZZ
+	    which gives the dimension of faces in the source of the map
+	D : SimplicialComplex
+    Outputs 
+	: Matrix
+	    that represents the boundary map from {\tt i}-faces to {\tt
+	    (i-1)}-faces of {\tt D}
+    Description
+    	Text
+    	    The boundary maps, up to sign, form the differential in the
+    	    augmented oriented chain complex associated to an abstract
+    	    simplicial complex.
+        Text
+            The columns of the output matrix are indexed by the $i$-faces of
+     	    the abstract simplicial complex $D$ and the rows are indexed by
+     	    the $(i-1)$-faces, in the order given by 
+	    @TO2((faces, ZZ, SimplicialComplex), "faces")@ method.  The
+	    entries in this matrix are $-1$, $0$, $1$ depending on whether the
+	    row index is an oriented face of the column index, but the
+	    underlying ring of this matrix is the @TO2((coefficientRing,
+	    SimplicialComplex), "coefficient ring")@ of $D$.
+	Text
+	    The boundary maps for the standard 3-simplex, defined over 
+	    @TO ZZ@, are:
+    	Example
+	    S = ZZ[a..d];
+	    D = simplicialComplex {a*b*c*d}
+	    boundary (0, D)
+	    boundary (1, D)
+	    boundary (2, D)
+	    boundary (3, D)	    
+    	    fVector D	    	    	    
+    	    C = chainComplex D	    
+	    assert (C.dd_0 == - boundary (0, D) and
+	    	C.dd_1 == - boundary (1, D) and
+	    	C.dd_2 == - boundary (2, D) and	   
+		C.dd_3 == - boundary (3, D)) 
+    	Text
+            The boundary maps may depend on the coefficient ring as the
+            following examples illustrate.
+    	Example     
+	    S = QQ[a..f];
+	    D = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
+	    boundary (1, D)
+	    S' = ZZ/2[a..f];
+	    D' = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
+	    boundary (1, D')
+    SeeAlso
+        (chainComplex,SimplicialComplex)
+///
 
  
 doc /// 
-     Key 
-         (boundary,SimplicialComplex)
-     Headline 
-         the boundary simplicial complex of D
-     Usage
-     	 boundary D
-     Inputs
-     	 D : SimplicialComplex
-     Outputs
-     	 : SimplicialComplex
-	     that is the boundary of {\tt D}
-     Description
-     	 Text
-     	     The boundary of an abstract simplicial complex $D$ is the subcomplex consisting
-	     of all nonmaximal faces of $D$. Equivalently, it is the subcomplex consisting of
-	     all non-facets of $D$.
-	 Text
-	     The boundary of the 3-simplex is the 2-sphere.
-	 Example
-	     R = ZZ[a..d];
-	     D = simplicialComplex{a*b*c*d}
-	     sphere = boundary D
-	     fVector sphere
-	     fVector D
-	 Text
-	     The facets of $D$ need not be of the same dimension (i.e. $D$ is not a pure simplicial 
-	     complex), which means the boundary facets will not be of the same dimension.
-	 Example
-	     R = ZZ[a..g];
-	     D = simplicialComplex{a*b*c,a*d,d*f,g*c,e,f*g}
-	     E = boundary D
-	     fVector D
-	     fVector E
-     SeeAlso
-	 "making an abstract simplicial complex"
-         (facets, SimplicialComplex)
-	 (isPure, SimplicialComplex)
-         (fVector, SimplicialComplex)
+    Key 
+        (boundary, SimplicialComplex)
+    Headline 
+        make a new simplicial complex from the non-maximal faces
+    Usage
+     	boundary D
+    Inputs
+     	D : SimplicialComplex
+    Outputs
+     	: SimplicialComplex
+	     whose faces are the non-maximal faces in {\tt D}
+    Description
+     	Text
+     	    The boundary of an abstract simplicial complex $D$ is the
+	    subcomplex consisting of all nonmaximal faces of
+	    $D$. Equivalently, it is the subcomplex consisting of all
+	    non-facets of $D$.
+	Text
+	    The boundary of the 3-simplex is the 2-sphere.
+	Example
+	    S = ZZ[a..d];
+	    D = simplicialComplex {a*b*c*d}
+	    sphere = boundary D
+	    fVector sphere
+	    fVector D
+	    assert (ideal sphere === ideal (a*b*c*d) and dim sphere === dim D - 1)
+	Text
+	    The facets of $D$ need not be of the same dimension, which means
+	    the boundary facets will not be of the same dimension.
+	Example
+	     S' = QQ[a..g];
+	     D' = simplicialComplex {e, f*g, c*g, d*f, a*d, a*b*c}
+	     D'' = boundary D'
+	     fVector D'
+	     fVector D''
+	     assert (dim D'' === dim D' - 1) 
+	Text
+	    The boundary of the irrelevant complex is the void complex.
+	Example
+	    irrelevant = simplicialComplex {1_S}
+	    boundary irrelevant
+	    assert (dim boundary irrelevant === - infinity)
+    SeeAlso
+	"making an abstract simplicial complex"
+        (facets, SimplicialComplex)
+	(isPure, SimplicialComplex)
+        (fVector, SimplicialComplex)
 ///
 
 
