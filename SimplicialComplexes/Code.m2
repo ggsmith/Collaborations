@@ -93,6 +93,10 @@ simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
 	symbol cache          => new CacheTable
 	}       
     )
+simplicialComplex Matrix := SimplicialComplex => f -> (
+    if numrows f =!= 1 then error "-- expected a matrix with 1 row";
+    simplicialComplex first entries f
+    )
 
 isWellDefined SimplicialComplex := Boolean => D -> (
     -- CHECK DATA STRUCTURE
@@ -210,25 +214,25 @@ link (SimplicialComplex, RingElement) := SimplicialComplex => (D, f) -> (
     simplicialComplex ((monomialIdeal support f) + (monomialIdeal D : f))
     )
 
-
-
-
 boundary = method()
 boundary SimplicialComplex := SimplicialComplex => D -> (
      F := first entries facets D;
-     L := flatten apply (F, m -> apply(support m, x -> m // x));
+     L := flatten apply (F, m -> apply (support m, x -> m // x));
      if #L === 0 then 
-         simplicialComplex monomialIdeal (1_(ring D))
-     else
-     	 simplicialComplex L
+         return simplicialComplex monomialIdeal (1_(ring D));
+     simplicialComplex L
      )
 
--- Compute the i-th skeleton of a simplicial complex
---skeleton = method ()
--- method defined in the Polyhedra package
-skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, S) -> (
-     simplicialComplex(flatten entries faces(n,S))
-     )
+-- 'skeleton' method defined in the `Polyhedra' package
+skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, D) -> (
+    S := ring D;
+    if n < -1 then return simplicialComplex monomialIdeal 1_S;
+    if n === -1 then return simplicialComplex {1_S};
+    if n >= dim D then return D;
+    simplicialComplex matrix {apply(toList(0..n), i -> faces(i,D))}
+    )
+
+
 
 -- Compute the star w.r.t. a face
 star = method ()
