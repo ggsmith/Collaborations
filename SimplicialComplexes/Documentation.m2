@@ -1753,78 +1753,75 @@ document {
      }
 
 doc ///
-     Key 
-         joinSimplicial
-	 (joinSimplicial,SimplicialComplex,SimplicialComplex)
-     Headline
-         the join of two simplicial complexes
-     Usage
-         joinSimplicial(D,E)
-     Inputs
-         D : SimplicialComplex
-         E : SimplicialComplex
-     Outputs
-         : SimplicialComplex
-             that is the join of {\tt D} and {\tt E}
-     Description
-     	 Text
-             The join of two simplicial complexes $D$ and $E$ is the simplicial complex whose faces
-             are the union of faces of $D$ and $E$. If $D$ is the simplicial complex consisting of a
-             single vertex then the join is the cone over $E$. If $D$ consists of two isolated vertices
-             then the join is the suspension of $E$.
-     	 Text
-             The cone over a bow-tie complex.
-     	 Example
-             R = QQ[x_1..x_5];
-             bowtie = simplicialComplex {x_1*x_2*x_3, x_3*x_4*x_5};
-             S = QQ[v];
-             singleton = simplicialComplex {v};
-             joinSimplicial(bowtie,singleton)
-	 Text
-             The octahedron is the suspension of a square.
-         Example
-             R' = QQ[a..d];
-             square = simplicialComplex {a*b, b*c, c*d, a*d};
-             S' = QQ[p,q];
-             poles = simplicialComplex {p, q};
-             octahedron = joinSimplicial(poles,square)
-         Text
-             The join of an exagon and a pentagon.
-         Example
-         R'' = ZZ[x_1..x_6];
-         exagon = simplicialComplex {x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_6,x_1*x_6};
-         S'' = ZZ[y_1..y_5];
-         pentagon = simplicialComplex {y_1*y_2,y_2*y_3,y_3*y_4,y_4*y_5,y_1*y_5};
-         sphere = joinSimplicial(exagon,pentagon)
-         fVector(sphere)
-      Caveat
-           The two simplicial complexes have to be defined over different polynomial rings.
-      SeeAlso
-          SimplicialComplexes
-	  (symbol *,SimplicialComplex,SimplicialComplex)
+    Key 
+        joinSimplicial
+        (joinSimplicial,SimplicialComplex,SimplicialComplex)
+    Headline
+        the join of two simplicial complexes
+    Usage
+        joinSimplicial(D,E)
+    Inputs
+        D : SimplicialComplex  
+        E : SimplicialComplex
+    Outputs
+        : SimplicialComplex
+            that is the join of {\tt D} and {\tt E}
+    Description
+        Text
+            The join of two simplicial complexes $D$ and $E$ is the simplicial complex whose faces
+            are the union of faces of $D$ and $E$. If $D$ is the simplicial complex consisting of a
+            single vertex then the join is the cone over $E$. If $D$ consists of two isolated vertices
+            then the join is the suspension of $E$.
+        Text
+            The cone over a bow-tie complex.
+     	Example
+            R = QQ[x_1..x_5];
+            bowtie = simplicialComplex {x_1*x_2*x_3, x_3*x_4*x_5};
+            S = QQ[v];
+            singleton = simplicialComplex {v};
+            joinSimplicial(bowtie,singleton)
+	Text
+            The octahedron is the suspension of a square.
+        Example
+            R' = QQ[a..d];
+            square = simplicialComplex {a*b, b*c, c*d, a*d};
+            S' = QQ[p,q];
+            poles = simplicialComplex {p, q};
+            octahedron = joinSimplicial(poles,square)
+        Text
+            The join of a hexagon and a pentagon.
+        Example
+            R'' = ZZ[x_1..x_6];
+            hexagon = simplicialComplex {x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_6,x_1*x_6};
+            S'' = ZZ[y_1..y_5];
+            pentagon = simplicialComplex {y_1*y_2,y_2*y_3,y_3*y_4,y_4*y_5,y_1*y_5};
+            sphere = joinSimplicial(hexagon,pentagon)
+            fVector(sphere)
+    Caveat
+        The two simplicial complexes have to be defined over different polynomial rings.
+    SeeAlso
+	(symbol *,SimplicialComplex,SimplicialComplex)
 ///
 
 doc ///
-     Key 
-         (symbol *,SimplicialComplex,SimplicialComplex)
-     Headline 
-         the join of two simplicial complexes
-     Usage
-         J = D * E
-     Inputs => {
-         D : SimplicialComplex
-         E : SimplicialComplex
-     Outputs
-         J : SimplicialComplex
-	     that is the join of {\tt D} and {\tt E}
-     Description
-         Text
-	     Computes the join of {\tt D} and {\tt E}. 
-     SeeAlso
-         joinSimplicial
+    Key 
+        (symbol *,SimplicialComplex,SimplicialComplex)
+    Headline 
+        the join of two simplicial complexes
+    Usage
+        J = D * E
+    Inputs
+        D : SimplicialComplex
+        E : SimplicialComplex
+    Outputs
+        J : SimplicialComplex
+	    that is the join of {\tt D} and {\tt E}
+    Description
+        Text
+	    Computes the join of $D$ and $E$. 
+    SeeAlso
+        joinSimplicial
 ///
-
-
 
 doc ///
   Key
