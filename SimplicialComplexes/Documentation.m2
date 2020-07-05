@@ -1490,27 +1490,8 @@ document {
           },
      SeeAlso => {SimplicialComplexes, (dim,SimplicialComplex),facets}
      }
+
  
-
-document { 
-     Key => {label, (label,SimplicialComplex,List)},
-     Headline => "labels with monomials the faces of simplicial complex",
-     -- Usage => "",
-     -- Inputs => {
-     --      },
-     -- Outputs => {
-     --      },
-     -- Consequences => {
-     --      },     
-     -- "description",
-     -- EXAMPLE {
-     --      },
-     -- Caveat => {},
-     -- SeeAlso => {}
-     }
-
-
-
 ///
 -- Greg and Mike were working on this when Greg had to go home
 -- 7/13/05  Good example though!
@@ -2182,35 +2163,7 @@ doc ///
 ///
 
 
-doc ///
-  Key    
-    (chainComplex,SimplicialComplex)
-    simplicialChainComplex
-    (simplicialChainComplex,List,SimplicialComplex)
-  Headline
-    The chain complex of boundary maps.
-  Usage
-    chainComplex C
-  Inputs
-    C:SimplicialComplex
-  Outputs
-    :ChainComplex
-  Description
-   Text
-     The @TO ChainComplex@ of @TO boundary@ maps from i-faces to (i-1)-faces.
 
-   Example
-    R = QQ[a..f];
-    D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);
-    R' = ZZ/2[a..f];
-    D' = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);
-    c = chainComplex D
-    c' = chainComplex D'
-    c.dd_1
-    c'.dd_1
-  SeeAlso
-   boundary
-///
 
 
 doc ///

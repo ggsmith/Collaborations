@@ -214,8 +214,8 @@ link (SimplicialComplex, RingElement) := SimplicialComplex => (D, f) -> (
     simplicialComplex ((monomialIdeal support f) + (monomialIdeal D : f))
     )
 
-boundary = method()
-boundary SimplicialComplex := SimplicialComplex => D -> (
+boundary = method(Options => {Labels => {}})
+boundary SimplicialComplex := opts -> D -> (
      F := first entries facets D;
      L := flatten apply (F, m -> apply (support m, x -> m // x));
      if #L === 0 then 
@@ -328,44 +328,14 @@ raw = value Core#"private dictionary"#"raw";
 rawIndices = value Core#"private dictionary"#"rawIndices";
 rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
 
-
-
-boundary (ZZ,SimplicialComplex) := (r,D) -> (
-     R := ring D;
-     if D.cache.?labels then (
-	  m1 := D.cache.labels#r;
-	  m2 := D.cache.labels#(r-1);
-	  Sext := D.cache.labels.ring;
-     	  ones := D.cache.labels.ones;
-	  S := target ones;
-	  F := source map(S^1,, ones m2);
-	  bd := ones map(Sext, rawKoszulMonomials(numgens Sext, raw m2,raw m1));
-	  bd = map(F,,bd);
-	  bd
-	  )
-     else (
-     	  b1 := faces(r,D);
-     	  b2 := faces(r-1,D);
-     	  ones = map(coefficientRing R,R, toList(numgens R:1));
-     	  ones map(R, rawKoszulMonomials(numgens R,raw b2,raw b1))
-     	  )
-     )
-
-chainComplex SimplicialComplex := (D) -> (
-    d := dim D;
-    C := if d < -1 then (ring D)^0[-1]
-    else if d === -1 then (ring D)^1
-    else chainComplex apply(0..d, r -> boundary(r,D));
-    if D.cache.?labels then C[0] else C[1]
-    )
-
--------- Labelled code ---------------------
 makeLabels = (D,L,i) -> (
     -- D is a simplicial complex
     -- L is a list of monomials 
     -- i is an integer
+    S := ring L#0;
+    M := monoid [Variables=>#L];
+    Sext := S M;
     F := first entries faces(i,D);
-    Sext := D.cache.labels.ring;
     if #F == 0 
     then matrix{{1_Sext}} 
     else
@@ -373,37 +343,40 @@ makeLabels = (D,L,i) -> (
 		s := rawIndices raw m;
 		lcmM L_s
 		))}
-     )
+    )
 
-L=null	  						    -- used as a key below
-
-label = method()
-label (SimplicialComplex, List) := (D,L) -> (
-    if #L === 0 then 
-    	remove(D.cache, symbol labels)
-    else (    
-	D.cache.labels = new MutableHashTable;
-	S := ring(L#0);
-	M := monoid [Variables=>#L]; 
+boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
+    L := opts.Labels;
+    if not L == {} then (
+	S := ring L#0;
+	M := monoid [Variables=>#L];
 	Sext := S M;
-	D.cache.labels.ring = Sext;
-	L = apply(#L, i -> L_i * Sext_i);
-	D.cache.labels.L = L;
-	D.cache.labels.ones = map(S, Sext, toList(#L:1_S));
-	D.cache.labels#-1 = matrix{{1_Sext}};
-	for i from 0 to dim D do
-	    D.cache.labels#i = makeLabels(D,L,i);
+	L = apply(#L, i -> L_i*Sext_i);
+	ones := map(S, Sext, toList(#L:1_S));
+	m1 := makeLabels(D,L,r);
+	m2 := matrix{{1_Sext}};
+	if not r == 0  then m2 = makeLabels(D,L,r-1);
+	F := source map(S^1,, ones m2);
+	bd := ones map(Sext, rawKoszulMonomials(numgens Sext, raw m2,raw m1));
+	bd = map(F,,bd);
+	bd
+	)
+    else (
+    	R := ring D;	
+	b1 := faces(r,D);
+	b2 := faces(r-1,D);
+	ones = map(coefficientRing R,R, toList(numgens R:1));
+	ones map(R, rawKoszulMonomials(numgens R,raw b2,raw b1))
 	)
     )
 
-simplicialChainComplex = method()
-simplicialChainComplex (List,SimplicialComplex) := (L, D) -> (
-     label(D,L);
-     d := dim D;
-     C := chainComplex(apply(0..d, r -> boundary(r,L,D)));
-     -- label(D,{}) -- removes cached labels
-     C
-     )
+chainComplex SimplicialComplex := {Labels => {}} >> opts -> (D) -> (
+    d := dim D;
+    C := if d < -1 then (ring D)^0[-1]
+    else if d === -1 then (ring D)^1
+    else chainComplex apply(0..d, r -> boundary(r,D,Labels => opts.Labels));
+    if opts.Labels == {} then C[1] else C[0]
+    )
 
 homology(ZZ,SimplicialComplex,Ring) := Module => opts -> (i,Delta,R) -> (
      homology(i, chainComplex Delta ** R))

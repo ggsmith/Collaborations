@@ -43,19 +43,17 @@ export {
     "isFaceOf",    
     "isSubface", 
     "joinSimplicial",    
-    "label",
     "link",
     "lyubeznikComplex",   
     "star",	
     "simplexComplex",
     "simplicialComplex",
-    "simplicialChainComplex", 
     "superficialComplex",
     -- symbol
     "Multigrading"    
     }
 
-protect labels
+exportMutable "Labels"
 protect ones
 
 ------------------------------------------------------------------------------
@@ -87,3 +85,4 @@ installPackage "SimplicialComplexes"
 check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
+

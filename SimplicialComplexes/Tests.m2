@@ -192,11 +192,9 @@ ideal dual D == monomialIdeal (a*b*c*d, a*b*e, a*c*e, d*e)
 fVector boundary D
 boundary D
 S = ZZ/32003[u,v,w,x,y]
-label(D, {u,v,w,x,y})
-C = chainComplex D
+C = chainComplex(D, Labels => {u,v,w,x,y})
 assert( C.dd^2 == 0 )
 prune HH(C)
-label(D,{})
 ///
 
 
@@ -267,8 +265,7 @@ D = simplicialComplex monomialIdeal product gens R
 D = dual simplicialComplex monomialIdeal gens R
 S = ZZ/32003[u,v,x,y,z]
 L = {x^2, x*y, x*z, y^2, y*z}
-label(D,L)
-C = chainComplex D
+C = chainComplex(D, Labels => L)
 assert( C.dd^2 == 0 )
 ///
 
@@ -348,11 +345,10 @@ S=ZZ/32003[x,y,z]
 L={x^3,x*y,x*z,y^2,y*z,z^2}
 R = ZZ/32003[a..f]
 D = buchbergerComplex(L,R)
-label(D,L)
 -- peek D.cache.labels
-boundary(0,D)
-boundary(1,D)
-C = chainComplex D
+boundary(0,D,Labels=>L)
+boundary(1,D,Labels=>L)
+C = chainComplex(D,Labels=>L)
 assert(C.dd^2 == 0)
 prune(HH C)
 scan(0..dim D, i -> assert(HH_(i+1)(C) == 0))
@@ -361,8 +357,7 @@ assert isHomogeneous C
 C.dd
 ----
 E = lyubeznikComplex(L,R)
-label(E,L)
-B = chainComplex E
+B = chainComplex(E,Labels=>L)
 assert(B.dd^2 == 0)
 betti B
 prune(HH B)
@@ -371,8 +366,7 @@ assert(HH_0(B) == S^1/(ideal L))
 assert isHomogeneous B
 ----
 F = superficialComplex(L,R)
-label(F,L)
-A = chainComplex F
+A = chainComplex(F,Labels=>L)
 betti A
 prune(HH A)
 scan(0..dim F, i -> assert(HH_(i+1)(A) == 0))
@@ -388,14 +382,12 @@ S=ZZ/32003[x,y,z]
 L={y*z,x^2*z^2,x^2*y^2}
 R = ZZ/32003[a..c]
 D = buchbergerComplex(L,R)
-label(D,L)
-C = chainComplex D
+C = chainComplex(D,Labels=>L)
 assert(C.dd^2 == 0)
 betti C
 prune(HH C)
 E = superficialComplex(L,R)
-label(E,L)
-betti chainComplex E
+betti chainComplex(E,Labels=>L)
 ///
 
 
