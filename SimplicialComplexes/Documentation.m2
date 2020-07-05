@@ -1177,26 +1177,35 @@ doc ///
 	    link (void, 1_S)
 	    assert (link (D, 1_S) === D and link(void, 1_S) === void)
 	Text
+	    If $G$ is a face in the link of some face $F$, then $F$ is a face
+	    in the link of $G$.
+	Example
+	    S' = ZZ/101[a..g];
+	    hexagon = simplicialComplex {a*b*c, a*c*d, a*d*e, a*e*f, a*f*g, a*b*g}  
+	    link (hexagon, a*b)  
+	    link (hexagon, g)
+	    link (hexagon, c)	
+	Text
 	    The dual version of Hochster's formula (see Corollary 1.40 in
 	    Miller-Sturmfels) relates the Betti numbers of a Stanley-Reisner
 	    ideal with the reduced homology of a link in the Alexander dual
 	    simplicial complex.
 	Example
 	    betti res ideal D
-	    S' = QQ[a..e, DegreeRank => 5];
-	    D' = simplicialComplex monomialIdeal (d*e, a*b*e, a*c*e, a*b*c*d)  
-	    prune Tor_0(S'^1/gens S',ideal D')  	    
-	    hilbertFunction({1,1,1,1,0}, Tor_0(S'^1/gens S',ideal D')) === rank HH_(-1) (link (dual D', e))
-	    hilbertFunction({1,1,0,0,1}, Tor_0(S'^1/gens S',ideal D')) === rank HH_(-1) (link (dual D', c*d))
-	    hilbertFunction({1,0,1,0,1}, Tor_0(S'^1/gens S',ideal D')) === rank HH_(-1) (link (dual D', b*d))
-	    hilbertFunction({0,0,0,1,1}, Tor_0(S'^1/gens S',ideal D')) === rank HH_(-1) (link (dual D', a*b*c))
-	    prune Tor_1(S'^1/gens S',ideal D')
-	    hilbertFunction({1,1,1,0,1}, Tor_1(S'^1/gens S',ideal D')) === rank HH_0 (link (dual D', d))	    	    	    
-	    hilbertFunction({1,1,0,1,1}, Tor_1(S'^1/gens S',ideal D')) === rank HH_0 (link (dual D', c)) 		    
-	    hilbertFunction({1,0,1,1,1}, Tor_1(S'^1/gens S',ideal D')) === rank HH_0 (link (dual D', b))	    	    	    
-	    hilbertFunction({1,1,1,1,1}, Tor_1(S'^1/gens S',ideal D')) === rank HH_0 (link (dual D', 1_S')) 		    
-	    prune Tor_2(S'^1/gens S',ideal D')
-	    hilbertFunction({1,1,1,1,1}, Tor_2(S'^1/gens S',ideal D')) === rank HH_1 (link (dual D', 1_S'))	    	    	    
+	    R = QQ[a..e, DegreeRank => 5];
+	    C = simplicialComplex monomialIdeal (d*e, a*b*e, a*c*e, a*b*c*d)  
+	    prune Tor_0(R^1/gens R,ideal C)  	    
+	    hilbertFunction({1,1,1,1,0}, Tor_0(R^1/gens R, ideal C)) === rank HH_(-1) (link (dual C, e))
+	    hilbertFunction({1,1,0,0,1}, Tor_0(R^1/gens R, ideal C)) === rank HH_(-1) (link (dual C, c*d))
+	    hilbertFunction({1,0,1,0,1}, Tor_0(R^1/gens R, ideal C)) === rank HH_(-1) (link (dual C, b*d))
+	    hilbertFunction({0,0,0,1,1}, Tor_0(R^1/gens R, ideal C)) === rank HH_(-1) (link (dual C, a*b*c))
+	    prune Tor_1(R^1/gens R, ideal C)
+	    hilbertFunction({1,1,1,0,1}, Tor_1(R^1/gens R, ideal C)) === rank HH_0 (link (dual C, d))	    	    	    
+	    hilbertFunction({1,1,0,1,1}, Tor_1(R^1/gens R, ideal C)) === rank HH_0 (link (dual C, c)) 		    
+	    hilbertFunction({1,0,1,1,1}, Tor_1(R^1/gens R, ideal C)) === rank HH_0 (link (dual C, b))	    	    	    
+	    hilbertFunction({1,1,1,1,1}, Tor_1(R^1/gens R, ideal C)) === rank HH_0 (link (dual C, 1_R)) 		    
+	    prune Tor_2(R^1/gens R, ideal C)
+	    hilbertFunction({1,1,1,1,1}, Tor_2(R^1/gens R, ideal C)) === rank HH_1 (link (dual C, 1_R))	    	    	    
 	Text
     	    The Reisner criterion for the Cohen-Macaulay property of the
     	    Stanley-Reisner ring involves links, see Theorem 5.53 in
@@ -1215,6 +1224,7 @@ doc ///
     SeeAlso
         "making an abstract simplicial complex"
 	(dual, SimplicialComplex)
+	(star, SimplicialComplex, RingElement)
 	bartnetteSphereComplex     
 	(pdim, Module)
 	(codim, Ideal)
@@ -1349,6 +1359,67 @@ doc ///
 ///
 
 
+
+doc ///
+    Key 
+        (star, SimplicialComplex, RingElement)
+	star
+    Headline
+        make the star of a face 
+    Usage
+        star(D, f)
+    Inputs
+        D : SimplicialComplex
+        f : RingElement
+	    a monomial representing a subset of the vertices in {\tt D} 
+    Outputs
+        : SimplicialComplex
+	    that consists of all faces in {\tt D} whose union with {\tt f} is
+	    also a face in {\tt D}
+    Description
+        Text
+    	    Given a subset $f$ of the vertices in an abstract simplicial
+	    complex $D$, the {\em star} of $f$ is the set of faces $g$ in $D$
+	    such that the union of $g$ and $f$ is also a face in $D$.  This
+	    set forms a subcomplex of $D$.  When the subset $f$ is not face in
+	    $D$, the star of $f$ is a void complex (having no facets).	    
+    	Text
+	    In the "bowtie" complex, we see that a star may the entire
+	    complex, a proper subcomplex, or the void complex.
+	Example
+	    S = ZZ[a..e];
+	    bowtie = simplicialComplex {a*b*c, c*d*e}	    
+    	    star (bowtie, c)
+	    star (bowtie, a*b)
+	    star (bowtie, a*d)
+	    assert (star (bowtie, c) === bowtie and 
+		star (bowtie, a*b) === simplicialComplex {a*b*c} and
+		star (bowtie, a*d) === simplicialComplex monomialIdeal 1_S)
+
+    SeeAlso
+	"making an abstract simplicial complex"    
+    	(faces, SimplicialComplex)
+	(link, SimplicialComplex, RingElement)
+///
+
+///
+-- need another example for star; to be added when suspension is completed?
+   	Text
+	    Given any face $G$ in the link of a face $F$, the link of $F$ in
+	    the star of $G$ is the suspension of $G$ and the link of $F$ in
+	    the link $G$.
+	Example
+	    S' = ZZ/101[a..g];
+	    hexagon = simplicialComplex {a*b*c, a*c*d, a*d*e, a*e*f, a*f*g, a*b*g}  
+	    link (hexagon, a*b)  
+	    link (hexagon, g)
+	    link(star(hexagon, g), a*b)
+	    (simplicialComplex {g}) * link(link(hexagon,g), a*b)
+	    link (hexagon, c)
+	    link 
+    	    star(hexagon, g)
+	    link(star(hexagon, g), a*b)	
+///
 
 doc ///
     Key
@@ -1700,38 +1771,7 @@ document {
 --These are documented in the above node.
 undocumented { "Multigrading" }
 
-document {
-     Key => {star,(star,SimplicialComplex,RingElement)},
-     Headline => "star of a face in a simplicial complex",
-     Usage => "star(D,f)",
-     Inputs => {
-      "D" => SimplicialComplex,
-      "f" => RingElement => {"a monomial representing a face of the simplicial complex ", TT "D"}
-          },
-     Outputs => {
-      SimplicialComplex => {"the star of ", TT "f", " in ", TT "D"}
-          },
-     TEX "The star of a face $f$ in $D$ is the simplicial complex whose faces
-     are the subsets $g$ with $f \\cup g$ is a face of $D$.",
-     PARA {},
-     " The bow-tie complex.",
-     EXAMPLE {
-      "R = QQ[x_1..x_5];",
-      "bowtie = simplicialComplex {x_1*x_2*x_3,x_3*x_4*x_5}",
-      "star(bowtie,x_3)",
-      "star(bowtie,x_1*x_2)"
-      },
-     PARA {},
-     " The 3-simplex and a copy of its boundary glued along a triangle.",
-     EXAMPLE {
-      "R = QQ[a..e];",
-      "D = simplicialComplex {a*b*c*d, b*c*e, b*d*e, c*d*e}",
-      "star(D,b*c*d)",
-      "star(D,b)"
-      },
-     SeeAlso => {SimplicialComplexes, link
-      }
-     }
+
 
 doc ///
     Key 
