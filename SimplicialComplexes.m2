@@ -50,11 +50,10 @@ export {
     "simplicialComplex",
     "superficialComplex",
     -- symbol
-    "Multigrading"    
+    "Multigrading",
+    "Labels"    
     }
 
-exportMutable "Labels"
-protect ones
 
 ------------------------------------------------------------------------------
 -- CODE
