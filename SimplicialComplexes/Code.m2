@@ -249,13 +249,6 @@ joinSimplicial (SimplicialComplex, SimplicialComplex) := (A, B) -> (
 
 SimplicialComplex * SimplicialComplex := joinSimplicial
 
-
-
-
-
-
-
-
 lcmMonomials = (L) -> (
      R := ring L#0;
      x := max \ transpose apply(L, i -> first exponents i);
@@ -328,13 +321,10 @@ raw = value Core#"private dictionary"#"raw";
 rawIndices = value Core#"private dictionary"#"rawIndices";
 rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
 
-makeLabels = (D,L,i) -> (
+makeLabels = (D,L,i,Sext) -> (
     -- D is a simplicial complex
     -- L is a list of monomials 
     -- i is an integer
-    S := ring L#0;
-    M := monoid [Variables=>#L];
-    Sext := S M;
     F := first entries faces(i,D);
     if #F == 0 
     then matrix{{1_Sext}} 
@@ -353,9 +343,9 @@ boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
 	Sext := S M;
 	L = apply(#L, i -> L_i*Sext_i);
 	ones := map(S, Sext, toList(#L:1_S));
-	m1 := makeLabels(D,L,r);
+	m1 := makeLabels(D,L,r,Sext);
 	m2 := matrix{{1_Sext}};
-	if not r == 0  then m2 = makeLabels(D,L,r-1);
+	if not r == 0  then m2 = makeLabels(D,L,r-1,Sext);
 	F := source map(S^1,, ones m2);
 	bd := ones map(Sext, rawKoszulMonomials(numgens Sext, raw m2,raw m1));
 	bd = map(F,,bd);
