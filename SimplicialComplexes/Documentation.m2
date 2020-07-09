@@ -1016,6 +1016,47 @@ doc ///
     SeeAlso
         "making an abstract simplicial complex"            
     	(isPure, SimplicialComplex)
+	(poincareSphereComplex, PolynomialRing)	
+///
+
+
+doc ///
+    Key
+        (poincareSphereComplex, PolynomialRing)
+	poincareSphereComplex
+    Headline
+        make a 16 vertex triangulation of the Poincaré homology sphere
+    Usage
+        poincareSphereComplex S
+    Inputs
+        S : PolynomialRing
+	    that has at least 16 generators
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    The Poincaré homology sphere is a homology 3-sphere; it has the
+	    same homology groups as a 3-sphere.
+    	Example
+	    S = ZZ/101[a..q];
+	    D = poincareSphereComplex S
+	    dim D 
+	    fVector D
+	    assert (dim D === 3 and isPure D and 
+		apply(-1..3, i -> (fVector D)#i) === (1,16,106,180,90))
+	    prune HH chainComplex D
+	Text
+	    This abstract simplicial complex is Cohen-Macaulay.
+    	Text
+	    Our enumeration of the vertices follows Theorem 5 in 
+	    Anders Björner and Frank H. Lutz, "Simplicial manifolds,
+	    bistellar flips and a 16-vertex triangulation of the Poincaré
+	    homology 3-sphere", Experimental Mathematics {\bf 9} (2000)
+	    275–289.
+    SeeAlso
+        "making an abstract simplicial complex"  
+    	(isPure, SimplicialComplex)
+	(bartnetteSphereComplex, PolynomialRing)          	
 ///
 
 
