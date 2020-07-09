@@ -124,8 +124,11 @@ doc ///
     	    @SUBSECTION "Classic examples of abstract simplicial complexes"@
 	Text
     	    @UL {
+		TO (simplexComplex, ZZ, PolynomialRing),		
 		TO (bartnetteSphereComplex, PolynomialRing),
-		TO (simplexComplex, ZZ, PolynomialRing)		
+		TO (poincareSphereComplex, PolynomialRing),
+		TO (nonPiecewiseLinearSphereComplex, PolynomialRing),
+		TO (rudinBallComplex, PolynomialRing),
     	    }@
     	Text
     	    @SUBSECTION "Basic operations producing abstract simplicial complexes"@
@@ -1022,46 +1025,6 @@ doc ///
 
 doc ///
     Key
-        (poincareSphereComplex, PolynomialRing)
-	poincareSphereComplex
-    Headline
-        make a 16 vertex triangulation of the Poincaré homology sphere
-    Usage
-        poincareSphereComplex S
-    Inputs
-        S : PolynomialRing
-	    that has at least 16 generators
-    Outputs
-        : SimplicialComplex
-    Description
-    	Text
-	    The Poincaré homology sphere is a homology 3-sphere; it has the
-	    same homology groups as a 3-sphere.
-    	Example
-	    S = ZZ/101[a..q];
-	    D = poincareSphereComplex S
-	    dim D 
-	    fVector D
-	    assert (dim D === 3 and isPure D and 
-		apply(-1..3, i -> (fVector D)#i) === (1,16,106,180,90))
-	    prune HH chainComplex D
-	Text
-	    This abstract simplicial complex is Cohen-Macaulay.
-    	Text
-	    Our enumeration of the vertices follows Theorem 5 in 
-	    Anders Björner and Frank H. Lutz, "Simplicial manifolds,
-	    bistellar flips and a 16-vertex triangulation of the Poincaré
-	    homology 3-sphere", Experimental Mathematics {\bf 9} (2000)
-	    275–289.
-    SeeAlso
-        "making an abstract simplicial complex"  
-    	(isPure, SimplicialComplex)
-	(bartnetteSphereComplex, PolynomialRing)          	
-///
-
-
-doc ///
-    Key
         (simplexComplex, ZZ, PolynomialRing)
 	simplexComplex
     Headline
@@ -1133,6 +1096,140 @@ doc ///
         "making an abstract simplicial complex"            
     	(fVector, SimplicialComplex)
 ///
+
+
+doc ///
+    Key
+        (poincareSphereComplex, PolynomialRing)
+	poincareSphereComplex
+    Headline
+        make a 16 vertex Poincaré homology sphere
+    Usage
+        poincareSphereComplex S
+    Inputs
+        S : PolynomialRing
+	    that has at least 16 generators
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    The Poincaré homology sphere is a homology 3-sphere; it has the
+	    same homology groups as a 3-sphere.  Following Theorem 5 in Anders
+	    Björner and Frank H. Lutz's "Simplicial manifolds, bistellar flips
+	    and a 16-vertex triangulation of the Poincaré homology 3-sphere",
+	    Experimental Mathematics {\bf 9} (2000) 275–289, this method
+	    returns a Poincaré homology sphere with 16 vertices.
+    	Example
+	    S = ZZ/101[a..q];
+	    D = poincareSphereComplex S
+	    dim D 
+	    fVector D
+	    assert (dim D === 3 and isPure D and 
+		apply(-1..3, i -> (fVector D)#i) === (1,16,106,180,90))
+	    prune HH chainComplex D
+	Text
+	    This abstract simplicial complex is Cohen-Macaulay.
+	Text
+	    Our enumeration of the vertices also follows the {\tt poincare}
+	    example in Masahiro Hachimori's
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
+	    "simplicial complex libary")@.	
+    SeeAlso
+        "making an abstract simplicial complex"  
+    	(isPure, SimplicialComplex)
+	nonPiecewiseLinearSphereComplex
+///
+
+
+doc ///
+    Key
+        (nonPiecewiseLinearSphereComplex, PolynomialRing)
+	nonPiecewiseLinearSphereComplex
+    Headline
+        make a 18 vertex triangulation of non-PL 5-sphere
+    Usage
+        nonPiecewiseLinearSphereComplex S
+    Inputs
+        S : PolynomialRing
+	    that has at least 18 generators
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    A piecewise linear (PL) sphere is a manifold which is PL
+	    homeomorphic to the boundary of a simplex. All the spheres in
+	    dimensions less than or equal to 3 are PL, but there are non-PL
+	    spheres in dimensions larger than or equal to 5.  
+	Text
+	    As described in Theorem 7 in Anders Björner and Frank H. Lutz's
+	    "Simplicial manifolds, bistellar flips and a 16-vertex
+	    triangulation of the Poincaré homology 3-sphere", Experimental
+	    Mathematics {\bf 9} (2000) 275–289, this method returns a non-PL
+	    5-sphere constructed from the @TO2(poincareSphereComplex,
+	    "Björner–Lutz homology sphere")@ by taking a double suspension.
+    	Example
+	    S = ZZ/101[a..s];
+	    D = nonPiecewiseLinearSphereComplex S
+	    dim D 
+	    fVector D
+	    assert (dim D === 5 and isPure D and 
+		apply(-1..5, i -> (fVector D)#i) === (1,18,141,515,930,807,269))
+	Text
+	    This abstract simplicial complex is Cohen-Macaulay.
+	Text
+	    Our enumeration of the vertices follows the {\tt nonplsphere}
+	    example in Masahiro Hachimori's
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
+	    "simplicial complex libary")@.
+    SeeAlso
+        "making an abstract simplicial complex"  
+	poincareSphereComplex
+    	(isPure, SimplicialComplex)	         	
+///
+
+
+doc ///
+    Key
+        (rudinBallComplex, PolynomialRing)
+	rudinBallComplex
+    Headline
+        make a 14 vertex nonshellable 3-ball with a convex realization
+    Usage
+        rudinBallComplex S
+    Inputs
+        S : PolynomialRing
+	    that has at least 14 generators
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+    	    As described in Mary Ellen Rudin's
+    	    @HREF("https://www.ams.org/journals/bull/1958-64-03/S0002-9904-1958-10168-8/S0002-9904-1958-10168-8.pdf",
+    	    "\"An unshellable triangulation of a tetrahedron\"")@, Bulletin of
+    	    the American Mathematical Society {\bf 64} (1958) 90–91, this
+    	    method returns triangulation of a 3-ball with 14 vertices and 41
+    	    facets that is not shellable.  This abstract simplicial complex
+    	    has a convex realization.
+    	Example
+	    S = ZZ/101[a..s];
+	    D = rudinBallComplex S
+	    dim D 
+	    fVector D
+	    assert (dim D === 3 and isPure D and 
+		apply(-1..3, i -> (fVector D)#i) === (1,14,66,94,41))
+	Text
+	    Our enumeration of the vertices follows the {\tt rudin}
+	    example in Masahiro Hachimori's
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
+	    "simplicial complex libary")@.
+    SeeAlso
+        "making an abstract simplicial complex"  
+	poincareSphereComplex
+    	(isPure, SimplicialComplex)	         	
+///
+
+
+
 
  
  

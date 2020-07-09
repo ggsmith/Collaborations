@@ -178,45 +178,6 @@ bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
       S_2*S_4*S_5*S_6, S_2*S_3*S_5*S_7, S_3*S_4*S_5*S_6, S_3*S_4*S_5*S_7}
     )
 
-poincareSphereComplex = method()
-poincareSphereComplex PolynomialRing := SimplicialComplex => S -> (
-    if numgens S < 16 then
-        error "-- expected a polynomial ring with at least 16 generators";    
-    simplicialComplex {S_0*S_1*S_3*S_8, S_0*S_1*S_3*S_(14),
-	S_0*S_1*S_5*S_(13), S_0*S_1*S_5*S_(14), S_0*S_1*S_8*S_(13),
-	S_0*S_2*S_3*S_(11), S_0*S_2* S_3*S_(14), S_0*S_2* S_6*S_9,
-	S_0*S_2*S_6*S_(11), S_0*S_2* S_9* S_(14), S_0*S_3*S_8*S_(11),
-	S_0*S_4*S_5*S_(12), S_0*S_4*S_5*S_(13), S_0*S_4*S_7*S_(10),
-	S_0*S_4*S_7*S_(12), S_0*S_4*S_(10)*S_(13), S_0*S_5*S_(12)* S_(14),
-	S_0*S_6*S_7*S_9, S_0*S_6*S_7*S_(10), S_0*S_6*S_(10)*S_(11),
-	S_0*S_7*S_9*S_(12), S_0*S_8*S_(10)*S_(11), S_0*S_8*S_(10)*S_(13),
-	S_0*S_9*S_(12)*S_(14), S_1*S_2*S_4*S_9, S_1*S_2*S_4*S_(10),
-	S_1*S_2*S_6*S_9, S_1*S_2*S_6*S_(12), S_1*S_2*S_(10)*S_(12),
-	S_1*S_3*S_8*S_(12), S_1*S_3*S_(10)*S_(12), S_1*S_3*S_(10)*S_(14),
-	S_1*S_4*S_7*S_(10), S_1*S_4*S_7*S_(11), S_1*S_4*S_9*S_(11),
-	S_1*S_5*S_9*S_(11), S_1*S_5*S_9*S_(13), S_1*S_5*S_(11)*S_(14),
-	S_1*S_6*S_8*S_(12), S_1*S_6*S_8*S_(13), S_1*S_6*S_9*S_(13),
-	S_1*S_7*S_(10)*S_(14), S_1*S_7*S_(11)*S_(14), S_2*S_3*S_4*S_(13),
-	S_2*S_3*S_4*S_(14), S_2*S_3*S_(11)*S_(13), S_2*S_4*S_9*S_(14),
-	S_2*S_4*S_(10)*S_(13), S_2*S_6*S_(11)*S_(12),
-	S_2*S_(10)*S_(12)*S_(13), S_2*S_(11)*S_(12)*S_(13), S_3*S_4*S_5*S_6,
-	S_3*S_4*S_5*S_(13), S_3*S_4*S_6*S_(14), S_3*S_5*S_6*S_(10),
-	S_3*S_5*S_9*S_(10), S_3*S_5*S_9*S_(13), S_3*S_6*S_(10)*S_(14),
-	S_3*S_7*S_8*S_(11), S_3*S_7*S_8*S_(12), S_3*S_7*S_9*S_(12),
-	S_3*S_7*S_9*S_(13), S_3*S_7*S_(11)*S_(13), S_3*S_9*S_(10)*S_(12),
-	S_4*S_5*S_6*S_(12), S_4*S_6*S_8*S_(12), S_4*S_6*S_8*S_(14),
-	S_4*S_7*S_8*S_(11), S_4*S_7*S_8*S_(12), S_4*S_8*S_9*S_(11),
-	S_4*S_8*S_9*S_(14), S_5*S_6*S_(10)*S_(11), S_5*S_6*S_(11)*S_(12),
-	S_5*S_9*S_(10)*S_(11), S_5*S_(11)*S_(12)*S_(14), S_6*S_7*S_9*S_(13),
-	S_6*S_7*S_(10)*S_(14), S_6*S_7*S_(13)*S_(14), S_6*S_8*S_(13)*S_(14),
-	S_7*S_(11)*S_(13)*S_(14), S_8*S_9*S_(10)*S_(11),
-	S_8*S_9*S_(10)*S_(15), S_8*S_9*S_(14)*S_(15),
-	S_8*S_(10)*S_(13)*S_(15), S_8*S_(13)*S_(14)*S_(15),
-	S_9*S_(10)*S_(12)*S_(15), S_9*S_(12)*S_(14)*S_(15),
-	S_(10)*S_(12)*S_(13)*S_(15), S_(11)*S_(12)*S_(13)*S_(14),
-	S_(12)*S_(13)*S_(14)*S_(15) }
-    )
-
 simplexComplex = method()
 simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n === -1 then 
@@ -226,6 +187,38 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if numgens S < n + 1 then 
 	error "-- expected a polynomial ring with at least " << n+1 << " generators";
     simplicialComplex {product(n+1, i -> S_i)}
+    )
+
+
+
+-- Masahiro Hachimori created a library of interesting simplicial complexes; see
+--   http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html
+hachimoriFile := currentFileDirectory | "hachimoriLibrary.txt"
+hachimoriTable := hashTable apply (lines get hachimoriFile, x -> (
+    	if notify then stderr << "--loading file " << hachimoriFile << endl;
+    	value x
+	)
+    )
+
+poincareSphereComplex = method()
+poincareSphereComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 16 then
+        error "-- expected a polynomial ring with at least 16 generators";    
+    simplicialComplex apply(hachimoriTable#0, f -> product(f, i -> S_i))
+    )
+
+nonPiecewiseLinearSphereComplex = method()
+nonPiecewiseLinearSphereComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 18 then
+        error "-- expected a polynomial ring with at least 18 generators";    
+    simplicialComplex apply(hachimoriTable#1, f -> product(f, i -> S_i))
+    )
+
+rudinBallComplex = method()
+rudinBallComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 14 then
+        error "-- expected a polynomial ring with at least 14 generators";    
+    simplicialComplex apply(hachimoriTable#5, f -> product(f, i -> S_i))
     )
 
 
