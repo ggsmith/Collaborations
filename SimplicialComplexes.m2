@@ -37,9 +37,12 @@ export {
     -- methods
     "algebraicShifting",    
     "bartnetteSphereComplex",
+    "bjornerComplex",
     "boundary",    
     "buchbergerComplex",
+    "dunceHatComplex",
     "face",  
+    "grunbaumBallComplex",
     "isFaceOf",    
     "isSubface", 
     "joinSimplicial",    
@@ -52,6 +55,7 @@ export {
     "simplexComplex",
     "simplicialComplex",
     "superficialComplex",
+    "zieglerBallComplex",
     -- symbol
     "Multigrading",
     "Labels"    

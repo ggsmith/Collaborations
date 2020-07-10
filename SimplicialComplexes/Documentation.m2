@@ -126,9 +126,12 @@ doc ///
     	    @UL {
 		TO (simplexComplex, ZZ, PolynomialRing),		
 		TO (bartnetteSphereComplex, PolynomialRing),
+		TO (dunceHatComplex, PolynomialRing),		
 		TO (poincareSphereComplex, PolynomialRing),
 		TO (nonPiecewiseLinearSphereComplex, PolynomialRing),
 		TO (rudinBallComplex, PolynomialRing),
+		TO (grunbaumBallComplex, PolynomialRing),
+		TO (zieglerBallComplex, PolynomialRing)				
     	    }@
     	Text
     	    @SUBSECTION "Basic operations producing abstract simplicial complexes"@
@@ -1177,7 +1180,7 @@ doc ///
 	Text
 	    This abstract simplicial complex is Cohen-Macaulay.
 	Text
-	    Our enumeration of the vertices follows the {\tt nonplsphere}
+	    Our enumeration of the vertices follows the {\tt nonpl sphere}
 	    example in Masahiro Hachimori's
 	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
 	    "simplicial complex libary")@.
@@ -1224,10 +1227,174 @@ doc ///
 	    "simplicial complex libary")@.
     SeeAlso
         "making an abstract simplicial complex"  
-	poincareSphereComplex
+	grunbaumBallComplex
+	zieglerBallComplex	
     	(isPure, SimplicialComplex)	         	
 ///
 
+
+doc ///
+    Key
+        (grunbaumBallComplex, PolynomialRing)
+	grunbaumBallComplex
+    Headline
+        make a 14 vertex nonshellable 3-ball with 29 facets
+    Usage
+        grunbaumBallComplex S
+    Inputs
+        S : PolynomialRing
+	    that has at least 14 generators
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    Attributed to F. Alberto Grünbaum, this method returns a triangulation
+    	    of a 3-ball with 14 vertices and 29 facets that is not shellable.	    
+    	Example
+	    S = ZZ/101[a..s];
+	    D = grunbaumBallComplex S
+	    dim D 
+	    fVector D
+	    assert (dim D === 3 and isPure D and 
+		apply(-1..3, i -> (fVector D)#i) === (1,14,54,70,29))
+	Text
+	    Our enumeration of the vertices follows the {\tt gruenbaum}
+	    example in Masahiro Hachimori's
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
+	    "simplicial complex libary")@.
+    SeeAlso
+        "making an abstract simplicial complex"  
+	rudinBallComplex
+	zieglerBallComplex
+    	(isPure, SimplicialComplex)	         	
+///
+
+
+doc ///
+    Key
+        (zieglerBallComplex, PolynomialRing)
+	zieglerBallComplex
+    Headline
+        make a 10 vertex nonshellable 3-ball with 21 facets
+    Usage
+        zieglerBallComplex S
+    Inputs
+        S : PolynomialRing
+	    that has at least 10 generators
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    As appears on page 167 of Günter M. Ziegler's "Shelling polyhedral
+	    3-balls and 4-polytopes", Discrete & Computational Geometry {\bf
+	    19} (1998) 159–174, this method returns a non-shellable 3-ball
+	    with 10 vertices and 21 facets.
+    	Example
+	    S = ZZ/101[a..n];
+	    D = zieglerBallComplex S
+	    dim D 
+	    fVector D
+	    assert (dim D === 3 and isPure D and 
+		apply(-1..3, i -> (fVector D)#i) === (1,10,38,50,21))
+	Text
+	    Our enumeration of the vertices follows the {\tt ziegler}
+	    example in Masahiro Hachimori's
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
+	    "simplicial complex libary")@.
+    SeeAlso
+        "making an abstract simplicial complex"  
+	rudinBallComplex
+	grunbaumBallComplex
+    	(isPure, SimplicialComplex)	         	
+///
+
+
+doc ///
+    Key
+        (dunceHatComplex, PolynomialRing)
+	dunceHatComplex
+    Headline
+        make a 8 vertex realization of the dunce hat
+    Usage
+        dunceHatComplex S
+    Inputs
+        S : PolynomialRing
+	    that has at least 8 generators
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    The @HREF("https://en.wikipedia.org/wiki/Dunce_hat_(topology)",
+	    "dunce hat")@ is a compact topological space formed by taking a
+	    solid triangle and gluing all three sides together, with the
+	    orientation of one side reversed. Simply gluing two sides oriented
+	    in the same direction would yield a cone much like the dunce cap,
+	    but the gluing of the third side results in identifying the base
+	    of the cap with a line joining the base to the point.
+    	Text	
+	    Following Erik Christopher Zeeman's "On the dunce hat".  Topology
+	    {\bf 2} (1964) 341–358, this method returns non-collapsible but
+	    contractible example of an abstract simplicial complex.
+    	Example
+	    S = ZZ/101[a..h];
+	    D = dunceHatComplex S
+	    dim D 
+	    fVector D
+	    assert (dim D === 2 and isPure D and 
+		apply(-1..2, i -> (fVector D)#i) === (1,8,24,17))
+	Text
+	    Our enumeration of the vertices follows the {\tt dunce hat}
+	    example in Masahiro Hachimori's
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
+	    "simplicial complex libary")@.
+    SeeAlso
+        "making an abstract simplicial complex"  
+	rudinBallComplex
+	grunbaumBallComplex
+    	(isPure, SimplicialComplex)	         	
+///
+
+
+doc ///
+    Key
+        (bjornerComplex, PolynomialRing)
+	bjornerComplex
+    Headline
+        make a 6 vertex example which is shellable but not extenably so
+    Usage
+        bjornerComplex S
+    Inputs
+        S : PolynomialRing
+	    that has at least 6 generators
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    Attributed to Anders Bjorner, this method return a absract
+	    shellable simplicial complex which has non-zero homology.	    
+    	Text	
+	    Following Erik Christopher Zeeman's "On the dunce hat".  Topology
+	    {\bf 2} (1964) 341–358, this method returns non-collapsible but
+	    contractible example of an abstract simplicial complex.
+    	Example
+	    S = ZZ/101[a..f];
+	    D = bjornerComplex S
+	    dim D 
+	    fVector D
+	    assert (dim D === 2 and isPure D and 
+		apply(-1..2, i -> (fVector D)#i) === (1,6,15,11))
+	    prune HH chainComplex D
+	Text
+	    Our enumeration of the vertices follows the {\tt bjorner}
+	    example in Masahiro Hachimori's
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
+	    "simplicial complex libary")@.
+    SeeAlso
+        "making an abstract simplicial complex"  
+	rudinBallComplex
+	grunbaumBallComplex
+    	(isPure, SimplicialComplex)	         	
+///
 
 
 

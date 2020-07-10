@@ -221,7 +221,33 @@ rudinBallComplex PolynomialRing := SimplicialComplex => S -> (
     simplicialComplex apply(hachimoriTable#5, f -> product(f, i -> S_i))
     )
 
+grunbaumBallComplex = method()
+grunbaumBallComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 14 then
+        error "-- expected a polynomial ring with at least 14 generators";    
+    simplicialComplex apply(hachimoriTable#6, f -> product(f, i -> S_i))
+    )
 
+zieglerBallComplex = method()
+zieglerBallComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 14 then
+        error "-- expected a polynomial ring with at least 14 generators";    
+    simplicialComplex apply(hachimoriTable#7, f -> product(f, i -> S_i))
+    )
+
+dunceHatComplex = method()
+dunceHatComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 8 then
+        error "-- expected a polynomial ring with at least 8 generators";    
+    simplicialComplex apply(hachimoriTable#12, f -> product(f, i -> S_i))
+    )
+
+bjornerComplex = method()
+bjornerComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 6 then
+        error "-- expected a polynomial ring with at least 6 generators";    
+    simplicialComplex apply(hachimoriTable#13, f -> product(f, i -> S_i))
+    )
 
 ---- inspired by Sage math 
 --   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html
