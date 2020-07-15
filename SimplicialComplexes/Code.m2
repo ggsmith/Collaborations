@@ -383,15 +383,17 @@ makeLabels = (D,L,i,Sext) -> (
     -- D is a simplicial complex
     -- L is a list of monomials 
     -- i is an integer
-    F := first entries faces(i,D);
+    Vertices := indices product flatten entries facets D;
+    F := flatten entries faces(i,D);
     if #F == 0 
     then matrix{{1_Sext}} 
     else
     matrix {apply(F, m -> (
 		s := rawIndices raw m;
-		lcmM L_s
+		lcmM L_(apply(s,i -> position(Vertices, j -> j == i)))
 		))}
     )
+
 
 boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
     L := opts.Labels;
