@@ -394,7 +394,6 @@ makeLabels = (D,L,i,Sext) -> (
 		))}
     )
 
-
 boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
     L := opts.Labels;
     if not L == {} then (
@@ -421,6 +420,15 @@ boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
     )
 
 chainComplex SimplicialComplex := {Labels => {}} >> opts -> (D) -> (
+    if facets D == 0 
+    then Vertices := {}
+    else Vertices := indices product flatten entries facets D;
+    if not opts.Labels == {} then(
+    	if not #opts.Labels == #Vertices 
+	then error "-- expected number of labels to equal the number of vertices.";
+	if not all(opts.Labels, m -> #(listForm m) ===1)
+	then error "-- expected Labels to be a list of monomials"
+	);
     d := dim D;
     C := if d < -1 then (ring D)^0[-1]
     else if d === -1 then (ring D)^1
