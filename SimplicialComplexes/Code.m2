@@ -301,7 +301,7 @@ SimplicialComplex * SimplicialComplex := (A, B) -> (
      T := ring A ** ring B;
      inclusionIntoA := map(T, ring A);
      inclusionIntoB := map(T, ring B);
-     return simplicialComplex(monomialIdeal(inclusionIntoA(ideal(A))+inclusionIntoB(ideal(B))));
+     simplicialComplex(monomialIdeal(inclusionIntoA(ideal(A))+inclusionIntoB(ideal(B))))
      )
 
 lcmMonomials = (L) -> (

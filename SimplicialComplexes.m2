@@ -45,7 +45,6 @@ export {
     "grunbaumBallComplex",
     "isFaceOf",    
     "isSubface", 
-    "joinSimplicial",    
     "link",
     "lyubeznikComplex", 
     "nonPiecewiseLinearSphereComplex",

@@ -1376,8 +1376,10 @@ doc ///
     	Text
 	    Attributed to
 	    @HREF("https://en.wikipedia.org/wiki/Anders_Björner", "Anders
-	    Björner")@, this method return a absract shellable simplicial
-	    complex which has non-zero homology.	    
+	    Björner")@, this method return a
+	    @HREF("https://en.wikipedia.org/wiki/Shelling_(topology)",
+	    "shellable")@ abstract simplicial complex which has non-zero
+	    homology.
     	Example
 	    S = ZZ/101[a..f];
 	    D = bjornerComplex S
@@ -2082,8 +2084,8 @@ undocumented { "Multigrading" }
 
 doc ///
     Key 
-        (symbol *,SimplicialComplex,SimplicialComplex)
-        "join of simplicial complexes"
+        (symbol *, SimplicialComplex, SimplicialComplex)
+        "join of two abstract simplicial complexes"
     Headline
         the join of two simplicial complexes
     Usage
