@@ -126,6 +126,7 @@ doc ///
     	    @UL {
 		TO (simplexComplex, ZZ, PolynomialRing),		
 		TO (bartnetteSphereComplex, PolynomialRing),
+		TO (bjornerComplex, PolynomialRing),
 		TO (dunceHatComplex, PolynomialRing),		
 		TO (poincareSphereComplex, PolynomialRing),
 		TO (nonPiecewiseLinearSphereComplex, PolynomialRing),
@@ -1106,7 +1107,7 @@ doc ///
         (poincareSphereComplex, PolynomialRing)
 	poincareSphereComplex
     Headline
-        make a 16 vertex Poincaré homology sphere
+        make a Poincaré homology sphere with 16 vertices
     Usage
         poincareSphereComplex S
     Inputs
@@ -1116,12 +1117,14 @@ doc ///
         : SimplicialComplex
     Description
     	Text
-	    The Poincaré homology sphere is a homology 3-sphere; it has the
-	    same homology groups as a 3-sphere.  Following Theorem 5 in Anders
-	    Björner and Frank H. Lutz's "Simplicial manifolds, bistellar flips
-	    and a 16-vertex triangulation of the Poincaré homology 3-sphere",
-	    Experimental Mathematics {\bf 9} (2000) 275–289, this method
-	    returns a Poincaré homology sphere with 16 vertices.
+	    The Poincaré
+	    @HREF("https://en.wikipedia.org/wiki/Homology_sphere", "homology
+	    sphere")@ is a homology 3-sphere; it has the same homology groups
+	    as a 3-sphere.  Following Theorem 5 in Anders Björner and Frank
+	    H. Lutz's "Simplicial manifolds, bistellar flips and a 16-vertex
+	    triangulation of the Poincaré homology 3-sphere", Experimental
+	    Mathematics {\bf 9} (2000) 275–289, this method returns a Poincaré
+	    homology sphere with 16 vertices.
     	Example
 	    S = ZZ/101[a..q];
 	    D = poincareSphereComplex S
@@ -1149,7 +1152,7 @@ doc ///
         (nonPiecewiseLinearSphereComplex, PolynomialRing)
 	nonPiecewiseLinearSphereComplex
     Headline
-        make a 18 vertex triangulation of non-PL 5-sphere
+        make a triangulation of non-PL 5-sphere with 18 vertices
     Usage
         nonPiecewiseLinearSphereComplex S
     Inputs
@@ -1159,10 +1162,11 @@ doc ///
         : SimplicialComplex
     Description
     	Text
-	    A piecewise linear (PL) sphere is a manifold which is PL
+	    A @HREF("https://en.wikipedia.org/wiki/Piecewise_linear_manifold",
+	    "piecewise linear (PL)")@ sphere is a manifold which is PL
 	    homeomorphic to the boundary of a simplex. All the spheres in
 	    dimensions less than or equal to 3 are PL, but there are non-PL
-	    spheres in dimensions larger than or equal to 5.  
+	    spheres in dimensions larger than or equal to 5.
 	Text
 	    As described in Theorem 7 in Anders Björner and Frank H. Lutz's
 	    "Simplicial manifolds, bistellar flips and a 16-vertex
@@ -1180,7 +1184,7 @@ doc ///
 	Text
 	    This abstract simplicial complex is Cohen-Macaulay.
 	Text
-	    Our enumeration of the vertices follows the {\tt nonpl sphere}
+	    Our enumeration of the vertices follows the {\tt nonplsphere}
 	    example in Masahiro Hachimori's
 	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
 	    "simplicial complex libary")@.
@@ -1196,7 +1200,7 @@ doc ///
         (rudinBallComplex, PolynomialRing)
 	rudinBallComplex
     Headline
-        make a 14 vertex nonshellable 3-ball with a convex realization
+        make a nonshellable 3-ball with 14 vertices and 41 facets
     Usage
         rudinBallComplex S
     Inputs
@@ -1238,7 +1242,7 @@ doc ///
         (grunbaumBallComplex, PolynomialRing)
 	grunbaumBallComplex
     Headline
-        make a 14 vertex nonshellable 3-ball with 29 facets
+        make a nonshellable 3-ball with 14 vertices and 29 facets
     Usage
         grunbaumBallComplex S
     Inputs
@@ -1275,7 +1279,7 @@ doc ///
         (zieglerBallComplex, PolynomialRing)
 	zieglerBallComplex
     Headline
-        make a 10 vertex nonshellable 3-ball with 21 facets
+        make a nonshellable 3-ball with 10 vertices and 21 facets
     Usage
         zieglerBallComplex S
     Inputs
@@ -1314,7 +1318,7 @@ doc ///
         (dunceHatComplex, PolynomialRing)
 	dunceHatComplex
     Headline
-        make a 8 vertex realization of the dunce hat
+        make a realization of the dunce hat with 8 vertices
     Usage
         dunceHatComplex S
     Inputs
@@ -1332,7 +1336,7 @@ doc ///
 	    but the gluing of the third side results in identifying the base
 	    of the cap with a line joining the base to the point.
     	Text	
-	    Following Erik Christopher Zeeman's "On the dunce hat".  Topology
+	    Following Erik Christopher Zeeman's "On the dunce hat", Topology
 	    {\bf 2} (1964) 341–358, this method returns non-collapsible but
 	    contractible example of an abstract simplicial complex.
     	Example
@@ -1360,7 +1364,7 @@ doc ///
         (bjornerComplex, PolynomialRing)
 	bjornerComplex
     Headline
-        make a 6 vertex example which is shellable but not extenably so
+        make a shellable 2-polyhedron with 6 vertices that is not extendably shellable
     Usage
         bjornerComplex S
     Inputs
@@ -1370,12 +1374,10 @@ doc ///
         : SimplicialComplex
     Description
     	Text
-	    Attributed to Anders Bjorner, this method return a absract
-	    shellable simplicial complex which has non-zero homology.	    
-    	Text	
-	    Following Erik Christopher Zeeman's "On the dunce hat".  Topology
-	    {\bf 2} (1964) 341–358, this method returns non-collapsible but
-	    contractible example of an abstract simplicial complex.
+	    Attributed to
+	    @HREF("https://en.wikipedia.org/wiki/Anders_Björner", "Anders
+	    Björner")@, this method return a absract shellable simplicial
+	    complex which has non-zero homology.	    
     	Example
 	    S = ZZ/101[a..f];
 	    D = bjornerComplex S
