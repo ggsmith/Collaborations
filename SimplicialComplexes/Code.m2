@@ -286,18 +286,20 @@ skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, D) -> (
     )
 
 
-
--- Compute the star w.r.t. a face
 star = method ()
 star (SimplicialComplex, RingElement) := (S, f) -> (simplicialComplex(monomialIdeal(S):monomialIdeal(f)))
 
 -- The simplicial join of two simplicial complexes defined over different rings 
-SimplicialComplex * SimplicialComplex := (A, B) -> (
-     T := ring A ** ring B;
-     inclusionIntoA := map(T, ring A);
-     inclusionIntoB := map(T, ring B);
-     simplicialComplex(monomialIdeal(inclusionIntoA(ideal(A))+inclusionIntoB(ideal(B))))
+SimplicialComplex * SimplicialComplex := (D, D') -> (
+     S := ring D ** ring D';
+     fromD := map(S, ring D);
+     fromD' := map(S, ring D');
+     simplicialComplex monomialIdeal(fromD ideal D + fromD' ideal D')
      )
+
+
+
+
 
 lcmMonomials = (L) -> (
      R := ring L#0;

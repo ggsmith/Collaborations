@@ -142,7 +142,8 @@ doc ///
 		TO (boundary, SimplicialComplex),
 		TO (link, SimplicialComplex, RingElement),
 		TO (skeleton, ZZ, SimplicialComplex),
-		TO (star, SimplicialComplex, RingElement)
+		TO (star, SimplicialComplex, RingElement),
+		TO (symbol *, SimplicialComplex, SimplicialComplex)
     	    }@		
     SeeAlso
         "finding attributes and properties"
@@ -1721,12 +1722,77 @@ doc ///
 	    assert (star (bowtie, c) === bowtie and 
 		star (bowtie, a*b) === simplicialComplex {a*b*c} and
 		star (bowtie, a*d) === simplicialComplex monomialIdeal 1_S)
-
     SeeAlso
 	"making an abstract simplicial complex"    
     	(faces, SimplicialComplex)
 	(link, SimplicialComplex, RingElement)
 ///
+
+
+doc ///
+    Key 
+        (symbol *, SimplicialComplex, SimplicialComplex)
+        "join of two abstract simplicial complexes"
+    Headline
+        make the join 
+    Usage
+        J = D * E
+    Inputs
+        D : SimplicialComplex  
+        E : SimplicialComplex
+    Outputs
+        J : SimplicialComplex
+            that is the join of {\tt D} and {\tt E}
+    Description
+        Text
+            The join of two simplicial complexes $D$ and $E$ is a new
+            simplicial complex whose faces are disjoint unions of a face in
+            $D$ and a face in $E$.
+        Text
+            If $E$ is the simplicial complex consisting of a single vertex,
+            then the join $D*E$ is the
+            @HREF("https://en.wikipedia.org/wiki/Cone_(topology)", "cone")@
+            over $D$.  For example, the cone over a bow-tie complex.
+     	Example
+            R = QQ[a..e];
+            bowtie = simplicialComplex {a*b*c, c*d*e}
+            S = QQ[f];
+            singleton = simplicialComplex {f};
+	    C = bowtie * singleton
+	    assert (dim C === dim bowtie + 1)
+	Text
+	    If $E$ is a 1-sphere (consisting of two isolated vertices), then
+            the join $D * E$ is the
+            @HREF("https://en.wikipedia.org/wiki/Suspension_(topology)",
+            "suspension")@ of $D$.  For example, the octahedron is the
+            suspension of a square.
+        Example
+	    R = QQ[a..d];
+            square = simplicialComplex {a*b, b*c, c*d, a*d}
+            S = QQ[e,f];
+            oneSphere = simplicialComplex {e, f}
+	    octahedron = square * oneSphere
+	    faces octahedron
+	    assert (dim octahedron === dim square + 1)
+        Text
+            The join of a hexagon and a pentagon is a 3-sphere.
+        Example
+            R = ZZ[a..f];
+            hexagon = simplicialComplex {a*b, b*c, c*d, d*e, e*f, a*f}
+            S = ZZ[g..k];
+            pentagon = simplicialComplex {g*h, h*i, i*j, j*k, g*k}
+            threeSphere = hexagon * pentagon
+	    prune HH threeSphere
+	    assert (dim threeSphere === 3)
+    Caveat
+        If the variables in the ring of $D$ and the ring of $E$ are not
+        disjoint, then names of vertices in the join may not be
+        understandable.
+    SeeAlso
+	"making an abstract simplicial complex"      
+        (faces, SimplicialComplex)
+///
+
 
 ///
 -- need another example for star; to be added when suspension is completed?
@@ -2097,56 +2163,6 @@ document {
 --These are documented in the above node.
 undocumented { "Multigrading" }
 
-
-
-doc ///
-    Key 
-        (symbol *, SimplicialComplex, SimplicialComplex)
-        "join of two abstract simplicial complexes"
-    Headline
-        the join of two simplicial complexes
-    Usage
-        J = D * E
-    Inputs
-        D : SimplicialComplex  
-        E : SimplicialComplex
-    Outputs
-        J : SimplicialComplex
-            that is the join of {\tt D} and {\tt E}
-    Description
-        Text
-            The join of two simplicial complexes $D$ and $E$ is the simplicial complex whose faces
-            are the union of faces of $D$ and $E$. If $D$ is the simplicial complex consisting of a
-            single vertex then the join is the cone over $E$. If $D$ consists of two isolated vertices
-            then the join is the suspension of $E$.
-        Text
-            The cone over a bow-tie complex.
-     	Example
-            R = QQ[x_1..x_5];
-            bowtie = simplicialComplex {x_1*x_2*x_3, x_3*x_4*x_5};
-            S = QQ[v];
-            singleton = simplicialComplex {v};
-	    C = bowtie * singleton
-	Text
-            The octahedron is the suspension of a square.
-        Example
-            R' = QQ[a..d];
-            square = simplicialComplex {a*b, b*c, c*d, a*d};
-            S' = QQ[p,q];
-            poles = simplicialComplex {p, q};
-	    octahedron = square * poles
-        Text
-            The join of a hexagon and a pentagon.
-        Example
-            R'' = ZZ[x_1..x_6];
-            hexagon = simplicialComplex {x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_6,x_1*x_6};
-            S'' = ZZ[y_1..y_5];
-            pentagon = simplicialComplex {y_1*y_2,y_2*y_3,y_3*y_4,y_4*y_5,y_1*y_5};
-            sphere = hexagon * pentagon;
-            fVector(sphere)
-    Caveat
-        The two simplicial complexes have to be defined over different polynomial rings.
-///
 
 doc ///
   Key
