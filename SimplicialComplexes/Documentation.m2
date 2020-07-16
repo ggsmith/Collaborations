@@ -2080,17 +2080,17 @@ undocumented { "Multigrading" }
 
 doc ///
     Key 
-        joinSimplicial
-        (joinSimplicial,SimplicialComplex,SimplicialComplex)
+        (symbol *,SimplicialComplex,SimplicialComplex)
+        "join of simplicial complexes"
     Headline
         the join of two simplicial complexes
     Usage
-        joinSimplicial(D,E)
+        J = D * E
     Inputs
         D : SimplicialComplex  
         E : SimplicialComplex
     Outputs
-        : SimplicialComplex
+        J : SimplicialComplex
             that is the join of {\tt D} and {\tt E}
     Description
         Text
@@ -2105,7 +2105,7 @@ doc ///
             bowtie = simplicialComplex {x_1*x_2*x_3, x_3*x_4*x_5};
             S = QQ[v];
             singleton = simplicialComplex {v};
-            joinSimplicial(bowtie,singleton)
+	    C = bowtie * singleton
 	Text
             The octahedron is the suspension of a square.
         Example
@@ -2113,7 +2113,7 @@ doc ///
             square = simplicialComplex {a*b, b*c, c*d, a*d};
             S' = QQ[p,q];
             poles = simplicialComplex {p, q};
-            octahedron = joinSimplicial(poles,square)
+	    octahedron = square * poles
         Text
             The join of a hexagon and a pentagon.
         Example
@@ -2121,32 +2121,10 @@ doc ///
             hexagon = simplicialComplex {x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_6,x_1*x_6};
             S'' = ZZ[y_1..y_5];
             pentagon = simplicialComplex {y_1*y_2,y_2*y_3,y_3*y_4,y_4*y_5,y_1*y_5};
-            sphere = joinSimplicial(hexagon,pentagon)
+            sphere = hexagon * pentagon;
             fVector(sphere)
     Caveat
         The two simplicial complexes have to be defined over different polynomial rings.
-    SeeAlso
-	(symbol *,SimplicialComplex,SimplicialComplex)
-///
-
-doc ///
-    Key 
-        (symbol *,SimplicialComplex,SimplicialComplex)
-    Headline 
-        the join of two simplicial complexes
-    Usage
-        J = D * E
-    Inputs
-        D : SimplicialComplex
-        E : SimplicialComplex
-    Outputs
-        J : SimplicialComplex
-	    that is the join of {\tt D} and {\tt E}
-    Description
-        Text
-	    Computes the join of $D$ and $E$. 
-    SeeAlso
-        joinSimplicial
 ///
 
 doc ///

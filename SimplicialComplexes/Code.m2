@@ -296,16 +296,13 @@ skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, D) -> (
 star = method ()
 star (SimplicialComplex, RingElement) := (S, f) -> (simplicialComplex(monomialIdeal(S):monomialIdeal(f)))
 
--- The simplicial join of two simplicial complexes defined over different rings
-joinSimplicial = method ()
-joinSimplicial (SimplicialComplex, SimplicialComplex) := (A, B) -> (
-     T := tensor(ring A, ring B);
-     f := map(T, ring A);
-     g := map(T, ring B);
-     return simplicialComplex(monomialIdeal(f(ideal(A))+g(ideal(B))));
+-- The simplicial join of two simplicial complexes defined over different rings 
+SimplicialComplex * SimplicialComplex := (A, B) -> (
+     T := ring A ** ring B;
+     inclusionIntoA := map(T, ring A);
+     inclusionIntoB := map(T, ring B);
+     return simplicialComplex(monomialIdeal(inclusionIntoA(ideal(A))+inclusionIntoB(ideal(B))));
      )
-
-SimplicialComplex * SimplicialComplex := joinSimplicial
 
 lcmMonomials = (L) -> (
      R := ring L#0;
