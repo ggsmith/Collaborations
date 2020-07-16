@@ -417,9 +417,8 @@ boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
     )
 
 chainComplex SimplicialComplex := {Labels => {}} >> opts -> (D) -> (
-    if facets D == 0 
-    then Vertices := {}
-    else Vertices := indices product flatten entries facets D;
+    Vertices := if facets D == 0 then {} 
+    	else indices product flatten entries facets D;
     if not opts.Labels == {} then(
     	if not #opts.Labels == #Vertices 
 	then error "-- expected number of labels to equal the number of vertices.";
