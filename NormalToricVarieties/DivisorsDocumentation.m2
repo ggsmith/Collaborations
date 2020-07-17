@@ -34,7 +34,7 @@ doc ///
     		TO (isAmple, ToricDivisor),
     		TO (isVeryAmple, ToricDivisor),
     		TO (vertices, ToricDivisor),
-    		TO (latticePoints, ToricDivisor),
+    		--TO (latticePoints, ToricDivisor),
 		TO (monomials, ToricDivisor),
     		TO (polytope, ToricDivisor)
 	    }@
@@ -2008,7 +2008,7 @@ doc ///
     	    V5 = vertices (FF2_2 + FF2_3)
 	    vertices polytope (FF2_2 + FF2_3)
     	    X4 = normalToricVariety(-V5) -- isomorphic Hirzebruch surface
-	    assert (set rays X === set rays FF2)
+	    assert (set rays X4 === set rays FF2)
 	Text
 	    Unlike many classic sources, the method assumes that the rays in
 	    the underlying fan of the normal toric variety correspond to the
@@ -2078,7 +2078,7 @@ doc ///
 	    the underlying fan of the normal toric variety correspond to the
 	    {\em outer} normal vectors of the polytope.  To obtain the
 	    lattices points where the rays are treated as the inner normal
-	    vectors use @TO(latticesPoints, Polyhedron)@.
+	    vectors use @TO(latticePoints, Polyhedron)@.
     SeeAlso
         "working with divisors"
     	(normalToricVariety, Matrix)
