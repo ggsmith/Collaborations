@@ -45,7 +45,6 @@ export {
     "grunbaumBallComplex",
     "isFaceOf",    
     "isSubface", 
-    "joinSimplicial",    
     "link",
     "lyubeznikComplex", 
     "nonPiecewiseLinearSphereComplex",
@@ -91,4 +90,3 @@ installPackage "SimplicialComplexes"
 check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
-

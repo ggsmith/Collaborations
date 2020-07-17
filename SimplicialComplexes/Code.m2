@@ -167,17 +167,6 @@ isWellDefined SimplicialComplex := Boolean => D -> (
 ------------------------------------------------------------------------------
 -- constructors for classic examples
 ------------------------------------------------------------------------------
-bartnetteSphereComplex = method()
-bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
-    if numgens S < 8 then 
-	error "-- expected a polynomial ring with at least 8 generators";
-    simplicialComplex {S_0*S_1*S_2*S_6, S_0*S_1*S_2*S_7, S_0*S_1*S_3*S_4,
-      S_0*S_1*S_3*S_6, S_0*S_1*S_4*S_7, S_0*S_2*S_3*S_5, S_0*S_3*S_4*S_7,
-      S_0*S_3*S_5*S_6, S_1*S_2*S_4*S_5, S_1*S_2*S_4*S_6, S_1*S_2*S_5*S_7,
-      S_1*S_3*S_4*S_6, S_1*S_4*S_5*S_7, S_0*S_2*S_3*S_7, S_0*S_2*S_5*S_6,
-      S_2*S_4*S_5*S_6, S_2*S_3*S_5*S_7, S_3*S_4*S_5*S_6, S_3*S_4*S_5*S_7}
-    )
-
 simplexComplex = method()
 simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n === -1 then 
@@ -198,6 +187,13 @@ hachimoriTable := hashTable apply (lines get hachimoriFile, x -> (
     	if notify then stderr << "--loading file " << hachimoriFile << endl;
     	value x
 	)
+    )
+
+bartnetteSphereComplex = method()
+bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 8 then 
+	error "-- expected a polynomial ring with at least 8 generators";
+    simplicialComplex apply(hachimoriTable#-1, f -> product(f, i -> S_i))
     )
 
 poincareSphereComplex = method()
@@ -253,7 +249,6 @@ bjornerComplex PolynomialRing := SimplicialComplex => S -> (
 --   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html
 -- TODO: add brucknerGrunbaumComplex
 -- TODO: add chessboardComplex
--- TODO: add dunceHatComplex
 -- TODO: add kleinBottleComplex
 -- TODO: add realProjectiveSpaceComplex (ZZ == dimension)
 -- TODO: add surfaceComplex (ZZ == genus)
@@ -291,21 +286,20 @@ skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, D) -> (
     )
 
 
-
--- Compute the star w.r.t. a face
 star = method ()
 star (SimplicialComplex, RingElement) := (S, f) -> (simplicialComplex(monomialIdeal(S):monomialIdeal(f)))
 
--- The simplicial join of two simplicial complexes defined over different rings
-joinSimplicial = method ()
-joinSimplicial (SimplicialComplex, SimplicialComplex) := (A, B) -> (
-     T := tensor(ring A, ring B);
-     f := map(T, ring A);
-     g := map(T, ring B);
-     return simplicialComplex(monomialIdeal(f(ideal(A))+g(ideal(B))));
+-- The simplicial join of two simplicial complexes defined over different rings 
+SimplicialComplex * SimplicialComplex := (D, D') -> (
+     S := ring D ** ring D';
+     fromD := map(S, ring D);
+     fromD' := map(S, ring D');
+     simplicialComplex monomialIdeal(fromD ideal D + fromD' ideal D')
      )
 
-SimplicialComplex * SimplicialComplex := joinSimplicial
+
+
+
 
 lcmMonomials = (L) -> (
      R := ring L#0;
@@ -420,9 +414,8 @@ boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
     )
 
 chainComplex SimplicialComplex := {Labels => {}} >> opts -> (D) -> (
-    if facets D == 0 
-    then Vertices := {}
-    else Vertices := indices product flatten entries facets D;
+    Vertices := if facets D == 0 then {} 
+    	else indices product flatten entries facets D;
     if not opts.Labels == {} then(
     	if not #opts.Labels == #Vertices 
 	then error "-- expected number of labels to equal the number of vertices.";

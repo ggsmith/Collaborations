@@ -51,7 +51,7 @@ assert(dim skel == 1)
 S = ZZ[v]
 v = simplicialComplex {v}
 -- the cone is contractible
-conewrtv = joinSimplicial(v, RP2)
+conewrtv = v * RP2
 assert(prune HH_1 conewrtv == 0)
 ///
 
