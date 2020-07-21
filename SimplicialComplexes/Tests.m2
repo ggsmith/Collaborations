@@ -486,3 +486,18 @@ R = QQ[a..e]
 D = simplicialComplex monomialIdeal(a*b*c*d*e)
 -- assert(D==simplicialComplex facets(D,useFaceClass =>true))
 ///
+------------------------------------------------------------------------------
+--Testing different labellings of simplicial complexes
+TEST///
+A = QQ[x_0..x_4]
+D = simplicialComplex{A_0*A_2*A_3,A_2*A_3*A_4}
+vertices D
+S = QQ[x_0..x_3]
+-- This complex should be a minimal free resolution of ideal {S_0*S_1,S_3,S_1*S_2,S_0*S_2}
+C = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
+assert((for i to length C list rank C_i) == (for i to dim D + 1 list (fVector D)#(i-1)))
+assert(all(1..length C, i -> ((homology C)_i == 0)))
+-- This complex is not a minimal free resolution. It is not even exact.
+C = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
+assert(not (homology C)_1 == 0)
+///
