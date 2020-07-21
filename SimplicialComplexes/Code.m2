@@ -377,20 +377,25 @@ makeLabels = (D,L,i,Sext) -> (
     -- D is a simplicial complex
     -- L is a list of monomials 
     -- i is an integer
-    Vertices := indices product flatten entries facets D;
+    Vertices := vertices D;
     F := flatten entries faces(i,D);
     if #F == 0 
     then matrix{{1_Sext}} 
     else
     matrix {apply(F, m -> (
 		s := rawIndices raw m;
-		lcmM L_(apply(s,i -> position(Vertices, j -> j == i)))
+		lcmM L_(apply(s,i -> position(Vertices, j -> index j == i)))
 		))}
     )
 
 boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
     L := opts.Labels;
     if not L == {} then (
+	Vertices := vertices D;
+	if not #L == #Vertices 
+	then error "-- expected number of labels to equal the number of vertices.";
+	if not all(L, m -> size m === 1)
+	then error "-- expected Labels to be a list of monomials";
 	S := ring L#0;
 	M := monoid [Variables=>#L];
 	Sext := S M;
@@ -414,12 +419,11 @@ boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
     )
 
 chainComplex SimplicialComplex := {Labels => {}} >> opts -> (D) -> (
-    Vertices := if facets D == 0 then {} 
-    	else indices product flatten entries facets D;
+    Vertices := vertices D;
     if not opts.Labels == {} then(
     	if not #opts.Labels == #Vertices 
 	then error "-- expected number of labels to equal the number of vertices.";
-	if not all(opts.Labels, m -> #(listForm m) ===1)
+	if not all(opts.Labels, m -> size m === 1)
 	then error "-- expected Labels to be a list of monomials"
 	);
     d := dim D;
@@ -678,6 +682,11 @@ Face = new Type of MutableHashTable
 
 -- 'vertices' method defined in 'Polyhedra" package
 vertices Face := F -> F.vertices
+vertices SimplicialComplex := D -> (
+    if product first entries facets D == 1 
+    then {}
+    else support product(first entries facets D)
+    )
 
 -- pretty print
 net Face := (f)-> (
