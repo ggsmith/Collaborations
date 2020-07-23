@@ -180,38 +180,35 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
 
 -- Frank Lutz has enumerated all 2 and 3-manifolds with less than 10 vertices;
 -- see http://page.math.tu-berlin.de/~lutz/stellar/3-manifolds.html
--- TODO: I've only done 2-manifolds with less than 9 vertices here.
--- Since we're likely to have multiple files for the various dimensions,
--- I've formatted it differently. I realize this function is pointless with
--- only one file.
-small2ManifoldsFile := currentFileDirectory | "small2ManifoldsLibrary2.txt"
+small2ManifoldsFile := currentFileDirectory | "small2ManifoldsLibrary.txt"
 small2ManifoldsTable := hashTable apply( lines get small2ManifoldsFile, x -> (
 	if notify then stderr << "--loading file " << small2ManifoldsFile << endl;
 	x = value x;
         (x#0,x#1) => x#2
 	)
     )
-
+-- TODO: Want to add in 3-manifolds too. Either make a new method or
+-- add another option to check for dimension.
 small2Manifold = method()
-small2Manifold (ZZ,ZZ,PolynomialRing) := SimplicialComplex => opts -> (v,i,S) -> (
-    --if v < 4 or i < 0 then
-    --error "-- expected at least 4 vertices or nonnegative index";
-    --if v === 4 and i > 1 then
-    --error "-- there is only one 2-manifold with 4 vertices";
-    --if v === 5 and i > 1 then
-    --error "-- there is only one 2-manifold with 5 vertices";
-    --if v === 6 and i > 3 then
-    --error "-- there are only 3 2-manifolds with 6 vertices";
-    --if v === 7 and i > 9 then
-    --error "-- there are only 9 2-manifolds with 7 vertices";
-    --if v === 8 and i > 3 then
-    --error "-- there are only 43 2-manifolds with 8 vertices";
-    --if v === 9 and i > 3 then
-    --error "-- there are only 655 2-manifolds with 9 vertices";
-    --if v > 9 then 
-    --error "-- database doesn't include 2-manifolds with more than 9 vertices";
-    --if numgens S < i then 
-    --error ("-- expected a polynomial ring with at least" | toString v | "generators");
+small2Manifold (ZZ,ZZ,PolynomialRing) := SimplicialComplex => (v,i,S) -> (
+    if v < 4 or i < 0 then
+        error "-- expected at least 4 vertices or nonnegative index";
+    if v === 4 and i > 0 then
+        error "-- there is only one 2-manifold with 4 vertices";
+    if v === 5 and i > 0 then
+        error "-- there is only one 2-manifold with 5 vertices";
+    if v === 6 and i > 2 then
+        error "-- there are only 3 2-manifolds with 6 vertices";
+    if v === 7 and i > 8 then
+        error "-- there are only 9 2-manifolds with 7 vertices";
+    if v === 8 and i > 42 then
+        error "-- there are only 43 2-manifolds with 8 vertices";
+    if v === 9 and i > 654 then
+        error "-- there are only 655 2-manifolds with 9 vertices";
+    if v > 9 then 
+        error "-- database doesn't include 2-manifolds with more than 9 vertices";
+    if numgens S < v then 
+        error ("-- expected a polynomial ring with at least " | toString v | " generators");
     -- Since Frank Lutz starts counting at 1 instead of 0, we shift everything down.
     simplicialComplex apply(small2ManifoldsTable#(v,i+1), f -> product(f, i -> S_(i-1)))
     )
@@ -229,7 +226,7 @@ bartnetteSphereComplex = method()
 bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 8 then 
 	error "-- expected a polynomial ring with at least 8 generators";
-    SimplicialComplex apply(hachimoriTable#-1, f -> product(f, i -> S_i))
+    simplicialComplex apply(hachimoriTable#-1, f -> product(f, i -> S_i))
     )
 
 poincareSphereComplex = method()

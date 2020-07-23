@@ -53,6 +53,7 @@ export {
     "star",	
     "simplexComplex",
     "simplicialComplex",
+    "small2Manifold",
     "superficialComplex",
     "zieglerBallComplex",
     -- symbol
