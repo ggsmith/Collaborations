@@ -34,7 +34,7 @@ doc ///
     		TO (isAmple, ToricDivisor),
     		TO (isVeryAmple, ToricDivisor),
     		TO (vertices, ToricDivisor),
-    		TO (latticePoints, ToricDivisor),
+    		--TO (latticePoints, ToricDivisor),
 		TO (monomials, ToricDivisor),
     		TO (polytope, ToricDivisor)
 	    }@

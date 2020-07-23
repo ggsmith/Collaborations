@@ -140,6 +140,7 @@ assert isPure void
 assert(dim void == -infinity)
 assert(faces(0,void) == 0)
 assert(faces(-1,void) == 0)
+assert(vertices void == {})
 dual void
 C = chainComplex void
 assert( C.dd^2 == 0 )
@@ -171,7 +172,6 @@ D6 = simplicialComplex monomialIdeal gens R
 time A6 = dual D6
 time C = chainComplex A6;
 assert( C.dd^2 == 0 )
-C
 time prune HH(C)
 fVector D6
 
@@ -222,11 +222,12 @@ fVector boundary D
 -- Klein bottle : Munkres page 18 example 5 
 TEST ///
 kk = ZZ/2
-R = kk[a..j]
+R = kk[a..k]
 D = simplicialComplex {a*b*i, a*e*i, b*i*j, b*c*j, a*c*j, 
      a*d*j, e*f*i, f*h*i, h*i*j, d*e*j, e*g*j, g*h*j, 
      f*g*h, d*e*f, a*d*f, a*b*f, c*f*g, b*c*f, a*c*g, a*e*g}
 isPure D
+assert(vertices D == toList(a..j))
 C = chainComplex D
 assert( C.dd^2 == 0 )
 prune HH(C)
@@ -260,13 +261,19 @@ fVector D
 ------------------------------------------------------------------------------
 -- Simplex with labelling 
 TEST ///
-R = ZZ[a..e]
-D = simplicialComplex monomialIdeal product gens R
-D = dual simplicialComplex monomialIdeal gens R
+R = ZZ[a..f]
+D = simplicialComplex{product toList (b..f)}
+assert(vertices D == toList(b..f))
+facets dual D == facets D
 S = ZZ/32003[u,v,x,y,z]
 L = {x^2, x*y, x*z, y^2, y*z}
 C = chainComplex(D, Labels => L)
 assert( C.dd^2 == 0 )
+l = length C
+assert((for i to l list rank C_i) == for i to l list (fVector D)#(i-1))
+H = homology C
+assert(H_0 == S^1/ideal L)
+assert(all(1..l, i -> H_i == 0))
 ///
 
 
@@ -478,4 +485,19 @@ TEST ///
 R = QQ[a..e]
 D = simplicialComplex monomialIdeal(a*b*c*d*e)
 -- assert(D==simplicialComplex facets(D,useFaceClass =>true))
+///
+------------------------------------------------------------------------------
+--Testing different labellings of simplicial complexes
+TEST///
+A = QQ[x_0..x_4]
+D = simplicialComplex{A_0*A_2*A_3,A_2*A_3*A_4}
+vertices D
+S = QQ[x_0..x_3]
+-- This complex should be a minimal free resolution of ideal {S_0*S_1,S_3,S_1*S_2,S_0*S_2}
+C = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
+assert((for i to length C list rank C_i) == (for i to dim D + 1 list (fVector D)#(i-1)))
+assert(all(1..length C, i -> ((homology C)_i == 0)))
+-- This complex is not a minimal free resolution. It is not even exact.
+C = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
+assert(not (homology C)_1 == 0)
 ///
