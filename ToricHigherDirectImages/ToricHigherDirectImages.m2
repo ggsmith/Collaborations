@@ -23,7 +23,7 @@ newPackage(
 	{Name     => "Alexandre Zotine", 
 	 Email    => "18az45@queensu.ca"}
 	},
-    Headline => "dink",
+    Headline => "wonk",
     DebuggingMode => true,
     PackageExports => {"NormalToricVarieties"}
     )
@@ -42,17 +42,15 @@ export {
 needsPackage("NormalToricVarieties")
 
 conePreimages = method();
-conePreimages ToricMap := phi -> (
-    -- Need to check if the map is toric and proper --
-    if not(isWellDefined(phi)) then error("not toric");
-    if not(isProper(phi)) then error("not proper");
+conePreimages (ToricMap,ZZ) := (phi,k) -> (
     X := source(phi);
     Y := target(phi);
     M := matrix(phi);
-    preimages = hashTable (
+    -- Hashtable indexed by maximal cones in the target.
+    hashTable (
 	for tau in max(Y) list (
     	    tau => for sigma in max(X) list (
-		-- use inRelativeInterior method from ToricMaps --
+		-- use inRelativeInterior method from ToricMaps
 	    	taucone := coneFromVData((transpose matrix rays(Y))_tau);
 	        sigmainterior := ((transpose matrix rays(X))_sigma)*(transpose matrix {for i to dim X - 1 list 1});
 	        if contains(taucone,M*sigmainterior) then sigma

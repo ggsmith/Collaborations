@@ -181,36 +181,38 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
 -- Frank Lutz has enumerated all 2 and 3-manifolds with less than 10 vertices;
 -- see http://page.math.tu-berlin.de/~lutz/stellar/3-manifolds.html
 small2ManifoldsFile := currentFileDirectory | "small2ManifoldsLibrary.txt"
-small2ManifoldsTable := hashTable apply( lines get small2ManifoldsFile, x -> (
-	if notify then stderr << "--loading file " << small2ManifoldsFile << endl;
-	x = value x;
-        (x#0,x#1) => x#2
+small3ManifoldsFile := currentFileDirectory | "small3ManifoldsLibrary.txt"
+-- Do we want separate methods for the two dimensions? (there are two more files
+-- consisting of 2/3-manifolds with ten vertices. There are around 42000/120000
+-- of each respectively)
+smallManifoldsTable := memoize(d -> (
+	local manifoldsFile;
+	if d === 2 then manifoldsFile = small2ManifoldsFile
+	else if d === 3 then manifoldsFile = small3ManifoldsFile;
+	if notify then stderr << "--loading file " << manifoldsFile << endl;
+	hashTable apply( lines get manifoldsFile, x -> (
+		x = value x;
+        	(x#0,x#1) => x#2
+		)
+	    )
 	)
-    )
--- TODO: Want to add in 3-manifolds too. Either make a new method or
--- add another option to check for dimension.
-small2Manifold = method()
-small2Manifold (ZZ,ZZ,PolynomialRing) := SimplicialComplex => (v,i,S) -> (
+    );
+smallManifold = method()
+smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
+    if d < 2 or d > 3 then
+    	error "-- expected dimension two or three";
     if v < 4 or i < 0 then
-        error "-- expected at least 4 vertices or nonnegative index";
-    if v === 4 and i > 0 then
-        error "-- there is only one 2-manifold with 4 vertices";
-    if v === 5 and i > 0 then
-        error "-- there is only one 2-manifold with 5 vertices";
-    if v === 6 and i > 2 then
-        error "-- there are only 3 2-manifolds with 6 vertices";
-    if v === 7 and i > 8 then
-        error "-- there are only 9 2-manifolds with 7 vertices";
-    if v === 8 and i > 42 then
-        error "-- there are only 43 2-manifolds with 8 vertices";
-    if v === 9 and i > 654 then
-        error "-- there are only 655 2-manifolds with 9 vertices";
+        error "-- expected at least four vertices or nonnegative index";
+    -- Should there be error checking on the indices? There are only so
+    -- many 2/3-manifolds of a certain number of vertices. But if this
+    -- method takes the dimension as input, then those numbers change...
     if v > 9 then 
-        error "-- database doesn't include 2-manifolds with more than 9 vertices";
+        error "-- database doesn't include manifolds with more than nine vertices";
     if numgens S < v then 
         error ("-- expected a polynomial ring with at least " | toString v | " generators");
-    -- Since Frank Lutz starts counting at 1 instead of 0, we shift everything down.
-    simplicialComplex apply(small2ManifoldsTable#(v,i+1), f -> product(f, i -> S_(i-1)))
+    -- Since Frank Lutz starts counting at 1 instead of 0, there is
+    -- some appropriate index shifting.
+    simplicialComplex apply((smallManifoldsTable(d))#(v,i+1), f -> product(f, i -> S_(i-1)))
     )
 
 -- Masahiro Hachimori created a library of interesting simplicial complexes; see
