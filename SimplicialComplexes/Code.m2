@@ -302,8 +302,8 @@ link (SimplicialComplex, RingElement) := SimplicialComplex => (D, f) -> (
     simplicialComplex ((monomialIdeal support f) + (monomialIdeal D : f))
     )
 
-boundary = method(Options => {Labels => {}})
-boundary SimplicialComplex := opts -> D -> (
+boundary = method()
+boundary SimplicialComplex := D -> (
      F := first entries facets D;
      L := flatten apply (F, m -> apply (support m, x -> m // x));
      if #L === 0 then 
@@ -422,7 +422,8 @@ makeLabels = (D,L,i,Sext) -> (
 		))}
     )
 
-boundary (ZZ,SimplicialComplex) := opts -> (r,D) -> (
+boundaryMap = method(Options => {Labels => {}})
+boundaryMap (ZZ,SimplicialComplex) := opts -> (r,D) -> (
     L := opts.Labels;
     if not L == {} then (
 	Vertices := vertices D;
@@ -463,7 +464,7 @@ chainComplex SimplicialComplex := {Labels => {}} >> opts -> (D) -> (
     d := dim D;
     C := if d < -1 then (ring D)^0[-1]
     else if d === -1 then (ring D)^1
-    else chainComplex apply(0..d, r -> boundary(r,D,Labels => opts.Labels));
+    else chainComplex apply(0..d, r -> boundaryMap(r,D,Labels => opts.Labels));
     if opts.Labels == {} then C[1] else C[0]
     )
 

@@ -282,11 +282,11 @@ assert(all(1..l, i -> H_i == 0))
 TEST ///
 R = ZZ/101[a..e]
 D = simplicialComplex monomialIdeal product gens R
-boundary(0,D)
-boundary(1,D)
-boundary(2,D)
-boundary(3,D)
-boundary(4,D)
+boundaryMap(0,D)
+boundaryMap(1,D)
+boundaryMap(2,D)
+boundaryMap(3,D)
+boundaryMap(4,D)
 C = chainComplex D
 assert( C.dd^2 == 0 )
 HH_3(C)
@@ -353,8 +353,8 @@ L={x^3,x*y,x*z,y^2,y*z,z^2}
 R = ZZ/32003[a..f]
 D = buchbergerComplex(L,R)
 -- peek D.cache.labels
-boundary(0,D,Labels=>L)
-boundary(1,D,Labels=>L)
+boundaryMap(0,D,Labels=>L)
+boundaryMap(1,D,Labels=>L)
 C = chainComplex(D,Labels=>L)
 assert(C.dd^2 == 0)
 prune(HH C)

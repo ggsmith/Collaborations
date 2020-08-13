@@ -139,7 +139,7 @@ doc ///
 	Text
     	    @UL {
 		TO (dual, SimplicialComplex),
-		TO (boundary, SimplicialComplex),
+		TO (boundaryMap,ZZ, SimplicialComplex),
 		TO (link, SimplicialComplex, RingElement),
 		TO (skeleton, ZZ, SimplicialComplex),
 		TO (star, SimplicialComplex, RingElement),
@@ -840,7 +840,7 @@ doc ///
         (chainComplex, SimplicialComplex)
 	[(chainComplex, SimplicialComplex), Labels]
     Headline
-        Creates the chain complex associated to a simplicial complex.
+        create the chain complex associated to a simplicial complex.
     Usage
     	chainComplex D
     Inputs
@@ -848,34 +848,37 @@ doc ///
 	Labels => List	  
 	    L of monomials in a polynomial ring, one for each vertex of D.
     Outputs
-    	: ChainComplex	 
+    	C : ChainComplex	 
     Description
     	Text
-	    When no labels are given, this function returns C_{*}(D;k), the chain complex 
-	    associated to D with coefficents in k, where k is the coefficient ring
-	    of D (see @TO(coefficientRing,SimplicialComplex)@). When labels 
-	    are given, this function returns the homogenization of C(D;k) we get by 
-	    labelling the i^{th} vertex of D by the i^{th} monomial in L. For more 
-	    information on homogenization of chain complexes by monomial ideals can be
+	    When no labels are given, this function returns C, the reduced simplicial
+	    chain complex associated to D with coefficents in k, where k is the 
+	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). When 
+	    labels are given, this function returns the homogenization of C we get by 
+	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
+	    information about homogenization of chain complexes by monomial ideals can be
 	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
 	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
 	Example
-	    A = QQ[x_0..x_3]
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3}
+	    A = QQ[x_0..x_3];
+	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
 	    C = chainComplex D
+	    prune homology C
 	Text
 	    We can view the attaching maps for C. Notice that the sign changes when we use 
-	    @TO(boundary,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
+	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
 	    alway be the case for unlabelled simplicial comlexes, while the sign will 
 	    agree when we use a labelling.
 	Example
 	    C.dd
-	    C.dd_1, boundary(1,D)
-	Text
-	    Using the Lables option, we can homogenize a C to construct a resolutions of 
-	    the monomial ideal I = (x_0x_1,x_1x_2,x_0x_2,x_3).
+    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
+        Text
+	    Using the Lables option, we can homogenize a simplicial chain complex to 
+	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
 	Example
-	    S = QQ[x_0..x_3]
+	    A = QQ[x_0..x_3];
+	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
+	    S = QQ[x_0..x_3];
 	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
 	    prune homology F
     	Text
@@ -883,11 +886,11 @@ doc ///
 	    Similar to the first example, we can also also view the differential for F.
 	Example
 	   F.dd
-	   F.dd_3, boundary(2,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
+	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
 	Text
     	    The order of the monomial labels will have an effect on what the output is.
 	    For example, after swapping the first two labels in the example above, we 
-	    will no longer get a resolution of I.	
+	    will no longer get a resolution.	
 	Example
 	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
 	    G.dd
@@ -896,7 +899,7 @@ doc ///
     	"making an abstract simplicial complex"
 	(coefficientRing,SimplicialComplex)
 	(ChainComplexMap)
-	(boundary,ZZ,SimplicialComplex)
+	(boundaryMap,ZZ,SimplicialComplex)
 	(resolution, Ideal)
 	(homology,ChainComplex)
 ///
@@ -1880,11 +1883,11 @@ doc ///
 
 doc ///
     Key
-        (boundary, ZZ, SimplicialComplex)
+        (boundaryMap, ZZ, SimplicialComplex)
     Headline
         make a boundary map between oriented faces
     Usage 
-        boundary(i, D)
+        boundaryMap(i, D)
     Inputs
         i : ZZ
 	    which gives the dimension of faces in the source of the map
@@ -1913,26 +1916,26 @@ doc ///
     	Example
 	    S = ZZ[a..d];
 	    D = simplicialComplex {a*b*c*d}
-	    boundary (0, D)
-	    boundary (1, D)
-	    boundary (2, D)
-	    boundary (3, D)	    
+	    boundaryMap (0, D)
+	    boundaryMap (1, D)
+	    boundaryMap (2, D)
+	    boundaryMap (3, D)	    
     	    fVector D	    	    	    
     	    C = chainComplex D	    
-	    assert (C.dd_0 == - boundary (0, D) and
-	    	C.dd_1 == - boundary (1, D) and
-	    	C.dd_2 == - boundary (2, D) and	   
-		C.dd_3 == - boundary (3, D)) 
+	    assert (C.dd_0 == - boundaryMap (0, D) and
+	    	C.dd_1 == - boundaryMap (1, D) and
+	    	C.dd_2 == - boundaryMap (2, D) and	   
+		C.dd_3 == - boundaryMap (3, D)) 
     	Text
             The boundary maps may depend on the coefficient ring as the
             following examples illustrate.
     	Example     
 	    S = QQ[a..f];
 	    D = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
-	    boundary (1, D)
+	    boundaryMap (1, D)
 	    S' = ZZ/2[a..f];
 	    D' = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
-	    boundary (1, D')
+	    boundaryMap (1, D')
     SeeAlso
         (chainComplex,SimplicialComplex)
 ///
@@ -2100,7 +2103,7 @@ document {
      computed.",
      SeeAlso => {SimplicialComplexes,
 	  facets,
-	  boundary,
+	  boundaryMap,
 	  fVector
 	  }
      }
@@ -2613,7 +2616,7 @@ doc ///
     prune homology(1,D)
   SeeAlso
     (homology,ZZ,SimplicialComplex,Ring)
-   boundary
+   boundaryMap
    (chainComplex,SimplicialComplex)
 ///
 
@@ -2642,7 +2645,7 @@ doc ///
     prune homology(1,D,ZZ/2)
   SeeAlso
     (homology,ZZ,SimplicialComplex)
-   boundary
+   boundaryMap
    (chainComplex,SimplicialComplex)
 ///
 
