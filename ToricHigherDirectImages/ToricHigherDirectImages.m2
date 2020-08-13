@@ -46,14 +46,14 @@ conePreimages (ToricMap,ZZ) := (phi,k) -> (
     X := source(phi);
     Y := target(phi);
     M := matrix(phi);
-    -- Hashtable indexed by maximal cones in the target.
+    -- Hashtable indexed by the k-dimensional cones in the target.
     hashTable (
-	for tau in max(Y) list (
+	for tau in orbits(Y,k) list (
     	    tau => for sigma in max(X) list (
 		-- use inRelativeInterior method from ToricMaps
-	    	taucone := coneFromVData((transpose matrix rays(Y))_tau);
 	        sigmainterior := ((transpose matrix rays(X))_sigma)*(transpose matrix {for i to dim X - 1 list 1});
-	        if contains(taucone,M*sigmainterior) then sigma
+		-- From ToricMaps: computes if a vector is in the interior of a cone.
+	        if isRelativeInterior(tau,sigmainterior) then sigma
 	        else continue
 		)
 	    )

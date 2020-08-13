@@ -1486,7 +1486,56 @@ doc ///
     	(isPure, SimplicialComplex)	         	
 ///
 
-
+doc /// 
+    Key 
+        (smallManifold, ZZ, ZZ, ZZ, PolynomialRing)
+    	smallManifold
+    Headline 
+        get a small manifold from Frank Lutz' database
+    Usage 
+        smoothFanoToricVariety (d,v,i,R)
+    Inputs
+        d : ZZ 
+	    equal to dimension of the manifold
+	v : ZZ
+	    equal to the number of vertices
+        i : ZZ 
+	    indexing a small d-manifold in the database
+        R : PolynomialRing 
+	    that specifies the base ring of the complex	    
+    Outputs 
+        : SimplicialComplex
+	    a complex corresponding to a triangulation of a d-manifold
+    Description
+        Text
+            This function accesses a database of all small triangulated 
+	    2 or 3-manifolds with at most ten vertices. The classifications
+	    of these triangulations are due to many authors; a survey of these
+	    results was written by Frank Lutz ( "Triangulated Manifolds with 
+	    Few Vertices: Combinatorial Manifolds", @HREF("https://arxiv.org/abs/math/0506372", 
+	    "arXiv:math/0506372v1")@. 
+	Text
+	    Up to isomorphism, there is one 2-manifold with four vertices, 
+	    one with five vertices, three with six, nine with seven, 43 with eight,
+	    655 with nine, and 42426 with ten. For 3-manifolds, there is one with 
+	    five vertices, two with six, five with seven, 39 with eight, and 1297 
+	    with nine.
+        Example
+            R = ZZ[a..j];
+	    M = smallManifold(2,9,100,R)
+	Text
+	    @SUBSECTION "Acknowledgements"@
+    	Text
+            Thanks to @HREF("http://page.math.tu-berlin.de/~lutz/",
+            "Frank Lutz")@ for his database found at @HREF("http://www.grdb.co.uk",
+            "Small Manifolds Databases")@.
+    Caveat
+    	The database for 2-manifolds with ten vertices is rather large, and so loading
+	the file takes several seconds.
+    SeeAlso
+        "making an abstract simplicial complex"
+        SimplicialComplex
+///
 
  
  
