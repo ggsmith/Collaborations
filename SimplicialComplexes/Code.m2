@@ -734,6 +734,33 @@ lyubeznikResolution List := L -> (
     chainComplex(lyubeznikComplex(L),Labels=>L)
     )
 
+scarfSimplicialComplex = method()
+scarfSimplicialComplex List := L -> (
+    A :=QQ[vars(0..#L-1)];
+    LcmLattice := for F in remove(subsets L,0) list lcm F;
+    ScarfMultidegrees := for m in LcmLattice list(
+    	if #positions(LcmLattice,k -> k == m) > 1
+    	then continue
+    	else m
+    	);
+    ScarfFaces := for F in remove(subsets L, 0) list(
+    	if member(lcm F, ScarfMultidegrees)
+    	then F
+    	else continue
+    	);
+    D := simplicialComplex(for F in ScarfFaces list(
+	    vertexLabel := m -> position(L,k -> k ==m);
+	    product(for m in F list A_(vertexLabel(m)))
+	    )
+    	):
+    D
+    )
+
+scarfChainComplex = method()
+scarfChainComplex List := L ->(
+    chainComplex(scarfSimplicialComplex L, Labels => L)
+    )
+
 
 
 -----------------------------------------------------------------------

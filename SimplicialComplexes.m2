@@ -49,6 +49,8 @@ export {
     "link",
     "lyubeznikComplex", 
     "lyubeznikResolution",
+    "scarfSimplicialComplex",
+    "scarfChainComplex",
     "nonPiecewiseLinearSphereComplex",
     "poincareSphereComplex", 
     "rudinBallComplex", 

@@ -1994,6 +1994,38 @@ doc ///
         lyubeznikComplex
 ///
 
+doc ///
+    Key 
+        scarfSimplicialComplex
+    Headline
+        create the scarf simplicial complex for a list of monomials
+    Usage
+        scarfSimplicialComplex L
+    Inputs
+        L : List
+    Outputs
+        : ChainComplex
+    Description
+    SeeAlso
+        scarfChainComplex
+///
+
+doc ///
+    Key 
+        scarfChainComplex
+    Headline
+        create the scarf chain complex for a list of monomials.
+    Usage
+        scarfChainComplex L
+    Inputs
+        L : List
+    Outputs
+        : ChainComplex
+    Description
+    SeeAlso
+    	scarfSimplicialComplex
+///
+
 document { 
      Key => {(isPure,SimplicialComplex)},
      Headline => "whether the facets are equidimensional",
