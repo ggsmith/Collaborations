@@ -2010,7 +2010,7 @@ document {
 
 
 document { 
-     Key => {lyubeznikComplex, (lyubeznikComplex,List,Ring), (lyubeznikComplex,MonomialIdeal)},
+     Key => {lyubeznikComplex},
      Headline => "Simplicial complex supporting the Lyubeznik resolution of a  monomial ideal",
      Usage => "lyubeznikComplex(L,R)\nlyubeznikComplex I",
      -- Inputs => {
@@ -2027,26 +2027,53 @@ document {
      SeeAlso => {SimplicialComplexes}
      }
 
-document { 
-     Key => {superficialComplex, (superficialComplex,List,Ring), (superficialComplex,MonomialIdeal)},
-     Headline => "Simplicial complex supporting a superficial resolution of a monomial ideal",
-     Usage => "superficialComplex(L,R)\nsuperficialComplex I",
-     -- Inputs => {
-     --      },
-     -- Outputs => {
-     --      },
-     -- Consequences => {
-     --      },     
-     -- "description",
-     -- EXAMPLE {
-     --      },
-     -- Caveat => {},
+doc ///
+    Key 
+        lyubeznikResolution
+    Headline
+        create the lyubeznik resolution of an ordered set of monomials.
+    Usage
+        lyubeznikResolution L
+    Inputs
+        L : List
+    Outputs
+        : Resolution
+    Description
+    SeeAlso
+        lyubeznikComplex
+///
 
-     SeeAlso => {SimplicialComplexes}
-     }
+doc ///
+    Key 
+        scarfSimplicialComplex
+    Headline
+        create the scarf simplicial complex for a list of monomials
+    Usage
+        scarfSimplicialComplex L
+    Inputs
+        L : List
+    Outputs
+        : ChainComplex
+    Description
+    SeeAlso
+        scarfChainComplex
+///
 
-
-
+doc ///
+    Key 
+        scarfChainComplex
+    Headline
+        create the scarf chain complex for a list of monomials.
+    Usage
+        scarfChainComplex L
+    Inputs
+        L : List
+    Outputs
+        : ChainComplex
+    Description
+    SeeAlso
+    	scarfSimplicialComplex
+///
 
 document { 
      Key => {(isPure,SimplicialComplex)},
