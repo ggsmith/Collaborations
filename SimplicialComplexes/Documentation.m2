@@ -1961,7 +1961,7 @@ document {
 
 
 document { 
-     Key => {lyubeznikComplex, (lyubeznikComplex,List,Ring), (lyubeznikComplex,MonomialIdeal)},
+     Key => {lyubeznikComplex},
      Headline => "Simplicial complex supporting the Lyubeznik resolution of a  monomial ideal",
      Usage => "lyubeznikComplex(L,R)\nlyubeznikComplex I",
      -- Inputs => {
@@ -1978,26 +1978,21 @@ document {
      SeeAlso => {SimplicialComplexes}
      }
 
-document { 
-     Key => {superficialComplex, (superficialComplex,List,Ring), (superficialComplex,MonomialIdeal)},
-     Headline => "Simplicial complex supporting a superficial resolution of a monomial ideal",
-     Usage => "superficialComplex(L,R)\nsuperficialComplex I",
-     -- Inputs => {
-     --      },
-     -- Outputs => {
-     --      },
-     -- Consequences => {
-     --      },     
-     -- "description",
-     -- EXAMPLE {
-     --      },
-     -- Caveat => {},
-
-     SeeAlso => {SimplicialComplexes}
-     }
-
-
-
+doc ///
+    Key 
+        lyubeznikResolution
+    Headline
+        create the lyubeznik resolution of an ordered set of monomials.
+    Usage
+        lyubeznikResolution L
+    Inputs
+        L : List
+    Outputs
+        : Resolution
+    Description
+    SeeAlso
+        lyubeznikComplex
+///
 
 document { 
      Key => {(isPure,SimplicialComplex)},

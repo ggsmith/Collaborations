@@ -48,6 +48,7 @@ export {
     "isSubface", 
     "link",
     "lyubeznikComplex", 
+    "lyubeznikResolution",
     "nonPiecewiseLinearSphereComplex",
     "poincareSphereComplex", 
     "rudinBallComplex", 
@@ -55,7 +56,6 @@ export {
     "simplexComplex",
     "simplicialComplex",
     "smallManifold",
-    "superficialComplex",
     "zieglerBallComplex",
     -- symbol
     "Multigrading",

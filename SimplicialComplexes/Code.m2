@@ -637,72 +637,103 @@ buchbergerComplex(MonomialIdeal) := (I) -> (
 -- (see Eisenbud-Hosten-Popescu)                                        --
 --------------------------------------------------------------------------
 
-isSuperficial = method()
-isSuperficial List := (L) -> (
+--isSuperficial = method()
+--isSuperficial List := (L) -> (
 -- isSuperficial cheks if a list of monomials is already superficially oredred
 -- that is every monomial in the list does not strictly divide the lcm of the previous ones
-     R := ring(L_0);
-     all(1..#L-1, i-> (previous:=lcmMonomials(take(L,i)); 
-	       (previous//product(support previous))//(L_i) == 0))
-     )
+--     R := ring(L_0);
+--     all(1..#L-1, i-> (previous:=lcmMonomials(take(L,i)); 
+--	       (previous//product(support previous))//(L_i) == 0))
+--     )
 
-faceLyubeznik = (m,L) -> (
+--faceLyubeznik = (m,L) -> (
 -- true iff the monomial m (in #L vars) defines a face in the Lyubeznik complex
-     x := rawIndices raw m;
-     all(0..#L-1, i -> (L1:=L_(select(x, j->j>i));
-	       if (#L1==0) then true else lcmMonomials(L1)//L_i == 0)))
+--     x := rawIndices raw m;
+--     all(0..#L-1, i -> (L1:=L_(select(x, j->j>i));
+--	       if (#L1==0) then true else lcmMonomials(L1)//L_i == 0)))
 
-lyubeznikComplex = method()
-lyubeznikComplex(List,Ring) := (L,R) -> (
-     if not isSuperficial(L) then error "expected a superficially ordered list of monomials";
-     P := ideal apply(gens R, x -> x^2);
-     nonfaces := {};
-     d := 1;
-     while (L1 := flatten entries basis(d,coker gens P); #L1 > 0) do (
-	  L1 = select(L1, m -> not faceLyubeznik(m,L));
-	  << "new nonfaces in degree " << d << ": " << L1 << endl;	  
-	  nonfaces = join(nonfaces,L1);
-	  if #nonfaces > 0 then
-	      P = P + ideal nonfaces;
-	  d = d+1;
-          );
-     simplicialComplex monomialIdeal matrix(R, {nonfaces})
-     )
+--lyubeznikComplex = method()
+--lyubeznikComplex(List,Ring) := (L,R) -> (
+--     if not isSuperficial(L) then error "expected a superficially ordered list of monomials";
+--     P := ideal apply(gens R, x -> x^2);
+--     nonfaces := {};
+--     d := 1;
+--     while (L1 := flatten entries basis(d,coker gens P); #L1 > 0) do (
+--	  L1 = select(L1, m -> not faceLyubeznik(m,L));
+--	  << "new nonfaces in degree " << d << ": " << L1 << endl;	  
+--	  nonfaces = join(nonfaces,L1);
+--	  if #nonfaces > 0 then
+--	      P = P + ideal nonfaces;
+--	  d = d+1;
+--          );
+--     simplicialComplex monomialIdeal matrix(R, {nonfaces})
+--     )
 
-lyubeznikComplex(MonomialIdeal) := (I) -> (
-     lyubeznikComplex(flatten entries gens I, ring I))
+--lyubeznikComplex(MonomialIdeal) := (I) -> (
+--     lyubeznikComplex(flatten entries gens I, ring I))
 
 
-faceSuperficial = (m,L) -> (
+--faceSuperficial = (m,L) -> (
 -- true iff the monomial m (in #L vars) defines a face in the Superficial complex
-     x := rawIndices raw m;
-     R := ring(L_0);
-     all(0..#L-1, n -> (smallerMons := L_(select(x, j->j<n+1)); 
-	                largerMons := L_(select(x, j->j>n));
-	                smallerLcmRed := if (#smallerMons==0) then 1_R else lcmMRed(smallerMons);
-			lcmMonomials(join({smallerLcmRed}, largerMons))//L_n==0)))
+--     x := rawIndices raw m;
+--    R := ring(L_0);
+--     all(0..#L-1, n -> (smallerMons := L_(select(x, j->j<n+1)); 
+--	                largerMons := L_(select(x, j->j>n));
+--	                smallerLcmRed := if (#smallerMons==0) then 1_R else lcmMRed(smallerMons);
+--			lcmMonomials(join({smallerLcmRed}, largerMons))//L_n==0)))
    
 
 
-superficialComplex = method()
-superficialComplex(List, Ring) := (L,R) -> (
-     if not isSuperficial(L) then error "expected a superficially ordered list of monomials";
-     P := ideal apply(gens R, x -> x^2);
-     nonfaces := {};
-     d := 1;
-     while (L1 := flatten entries basis(d,coker gens P); #L1 > 0) do (
-	  L1 = select(L1, m -> not faceSuperficial(m,L));
-	  << "new nonfaces in degree " << d << ": " << L1 << endl;	  
-	  nonfaces = join(nonfaces,L1);
-	  if #nonfaces > 0 then
-	      P = P + ideal nonfaces;
-	  d = d+1;
-          );
-     simplicialComplex monomialIdeal nonfaces
-     )
+--superficialComplex = method()
+--superficialComplex(List, Ring) := (L,R) -> (
+--     if not isSuperficial(L) then error "expected a superficially ordered list of monomials";
+--     P := ideal apply(gens R, x -> x^2);
+--     nonfaces := {};
+--     d := 1;
+--     while (L1 := flatten entries basis(d,coker gens P); #L1 > 0) do (
+--	  L1 = select(L1, m -> not faceSuperficial(m,L));
+--	  << "new nonfaces in degree " << d << ": " << L1 << endl;	  
+--	  nonfaces = join(nonfaces,L1);
+--	  if #nonfaces > 0 then
+--	      P = P + ideal nonfaces;
+--	  d = d+1;
+--          );
+--     simplicialComplex monomialIdeal nonfaces
+--     )
 
-superficialComplex(MonomialIdeal) := (I) -> (
-     superficialComplex(flatten entries gens I, ring I))
+--superficialComplex(MonomialIdeal) := (I) -> (
+--     superficialComplex(flatten entries gens I, ring I))
+
+
+lyubeznikComplex = method()
+lyubeznikComplex List := L -> (
+    Facets := for m in L list {m};
+    FacetsNew := Facets;
+    A := QQ[vars(0..#L-1)];
+    for i from 2 to #L do(
+    	for F in subsets(L,i) do(
+    	    rootF := position(L,m -> product F % m == 0);    
+    	    if not all(subsets(F,i-1), G -> member(G,Facets))
+    	    then continue
+    	    else if not member(L#(rootF),F)
+    	    then continue
+    	    else FacetsNew = append(select(FacetsNew, G -> not all(G, m -> member(m,F))),F);
+    	    );
+    	Facets = FacetsNew;
+    	);    
+    D := simplicialComplex(for F in Facets list(
+	    vertexLabel := m -> position(L,k -> k ==m);
+	    product(for m in F list A_(vertexLabel(m)))
+	    )
+    	);
+    D
+    )
+
+lyubeznikResolution = method()
+lyubeznikResolution List := L -> (
+    chainComplex(lyubeznikComplex(L),Labels=>L)
+    )
+
 
 
 -----------------------------------------------------------------------
