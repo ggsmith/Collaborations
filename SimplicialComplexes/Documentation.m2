@@ -2092,29 +2092,37 @@ doc///
     	scarfSimplicialComplex
 ///
 
-document { 
-     Key => {(isPure,SimplicialComplex)},
-     Headline => "whether the facets are equidimensional",
-     Usage => "isPure D",
-     Inputs => {
-	  "D" => SimplicialComplex
-          },
-     Outputs => {
-	  Boolean => {TO true, " if the facets of ", TT "D", " all have the same dimension, 
-	       and ", TO false, " otherwise"}
-          },
-     EXAMPLE {
-          "R = ZZ[a..f];",
-	  "D = simplicialComplex {a*b*c, a*b*d, d*e*f} ",
-	  "isPure D"
-	  },
-     EXAMPLE {
-	  "E = simplicialComplex {a*b*c, b*d, d*e*f} ",
-	  "isPure E"
-          },
-     SeeAlso => {SimplicialComplexes, (dim,SimplicialComplex),facets}
-     }
-
+doc /// 
+    Key
+        (isPure,SimplicialComplex)
+    Headline
+        returns whether the facets are equidimensional
+    Usage
+        isPure D
+    Inputs
+        D : SimplicialComplex
+    Outputs
+        : Boolean
+	    which is true if the facets of {\tt D} are of the same dimension,
+	    and false otherwise.
+    Description
+        Text
+	    The simplicial complex below is a triangulated fish.
+        Example
+            R = ZZ[a..f];
+	    D = simplicialComplex {a*b*c, a*b*d, d*e*f};
+	    isPure D
+	Text
+	    By removing an edge of one of the triangles, we obtain a 
+	    simplicial complex with a lower dimensional facet.
+        Example
+	    D' = simplicialComplex {a*b*c, b*d, d*e*f}
+	    isPure D'
+    SeeAlso
+        SimplicialComplexes 
+	(dim,SimplicialComplex)
+	facets
+///
  
 ///
 -- Greg and Mike were working on this when Greg had to go home
