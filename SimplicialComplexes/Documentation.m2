@@ -2191,76 +2191,75 @@ document {
 -------------------------------------------------------------
 -- 20/07/2018 Lorenzo: new/modified documentation
 
+doc ///
+    Key
+        (fVector,SimplicialComplex)
+    Headline
+        the f-vector of a simplicial complex
+    Usage
+        f = fVector D
+    Inputs
+        D : SimplicialComplex
+    Outputs
+        f : List
+	    where the {\tt i}-th entry is the number of faces
+	    in {\tt D} of dimension {\tt i} for {\tt -1 <= i <= dim D},
+	    or of squarefree degree {\tt i}.
+    Description
+        Text
+            The pentagonal bipyramid has 7 vertices, 15 edges
+            and 10 triangles.
+	Example
+            R = ZZ[a..g];
+            biPyramid = simplicialComplex monomialIdeal(a*g, b*d, b*e, c*e, c*f, d*f);
+            fVector biPyramid
+	Text
+            Every simplicial complex other than the void
+            complex has a unique face of dimension -1.
+        Example
+            void = simplicialComplex monomialIdeal 1_R;
+            fVector void
+	Text
+            For a larger example we consider the polarization
+            of an Artinian monomial ideal from section 3.2 in
+            Miller-Sturmfels, Combinatorial Commutative Algebra.
+        Example
+            S = ZZ[x_1..x_4, y_1..y_4, z_1..z_4];
+            I = monomialIdeal(x_1*x_2*x_3*x_4, y_1*y_2*y_3*y_4, z_1*z_2*z_3*z_4, x_1*x_2*x_3*y_1*y_2*z_1, x_1*y_1*y_2*y_3*z_1*z_2, x_1*x_2*y_1*z_1*z_2*z_3);
+	    D = simplicialComplex I;
+	    fVector D
+    SeeAlso
+        SimplicialComplexes
+        faces
+///
 
-document {
-     Key => {(fVector,SimplicialComplex)},
-     Headline => "the f-vector of a simplicial complex",
-     Usage => "f = fVector D",
-     Inputs => {
-      "D" => SimplicialComplex
-          },
-     Outputs => {
-      "f" => {"such that ", TT "f#i",
-      " is the number of faces in ", TT "D",
-      " of dimension ", TT "i", " for ", TT "-1 <= i <= dim D", " or of squarefree degree ", TT "i."}
-          },
-     "The pentagonal bipyramid has 7 vertices, 15 edges
-     and 10 triangles.",
-     EXAMPLE {
-      "R = ZZ[a..g];",
-      "biPyramid = simplicialComplex monomialIdeal(
-      a*g, b*d, b*e, c*e, c*f, d*f)",
-      "f = fVector biPyramid",
-      "f#0",
-      "f#1",
-      "f#2"
-          },
-     "Every simplicial complex other than the void
-     complex has a unique face of dimension -1.",
-     EXAMPLE {
-      "void = simplicialComplex monomialIdeal 1_R",
-      "fVector void"
-      },
-     "For a larger examp;le we consider the polarization
-     of an artinian monomial ideal from section 3.2 in
-     Miller-Sturmfels, Combinatorial Commutative Algebra.",
-     EXAMPLE {
-      "S = ZZ[x_1..x_4, y_1..y_4, z_1..z_4];",
-      "I = monomialIdeal(x_1*x_2*x_3*x_4,
-           y_1*y_2*y_3*y_4,
-           z_1*z_2*z_3*z_4,
-           x_1*x_2*x_3*y_1*y_2*z_1,
-           x_1*y_1*y_2*y_3*z_1*z_2,
-           x_1*x_2*y_1*z_1*z_2*z_3);",
-          "D = simplicialComplex I;",
-      "fVector D"
-      },
-      "The boundary of the 3-dimensional cross-polytope is
-      3-colorable. If we define this simplicial complex over
-      a ", TT "Z^3", "-graded ring we can ask for its flag
-      f-vector.",
-      EXAMPLE {
-      "grading = {{1,0,0},{1,0,0},{0,1,0},{0,1,0},{0,0,1},{0,0,1}};",
-      "S = ZZ[x_1..x_6, Degrees => grading];",
-      "I = monomialIdeal(x_1*x_2,x_3*x_4,x_5*x_6);",
-      "fVector simplicialComplex I",
-      },
-      
-     Caveat => {
-     "The option ", TT "Flag", " checks if the multigrading corresponds to a properly d-coloring of "
-     , TT "D", ", where d is the dimension of ", TT "D", " plus one. If it is not the case the output
-     is an empty HashTable."
-     },
-     PARA{},
-     "The f-vector is computed using the Hilbert series
-     of the Stanley-Reisner ideal.  For example, see
-     Hosten and Smith's
-     chapter Monomial Ideals, in Computations in
-     Algebraic Geometry with Macaulay2, Springer 2001.",
-     SeeAlso => {SimplicialComplexes,
-      faces}
-     }
---fVector(simplicialComplex I, Flag => true)
+-*
+
+
+    Caveat
+        The f-vector is computed using the Hilbert series
+        of the Stanley-Reisner ideal. For example, see
+        Hosten and Smith's chapter Monomial Ideals, in 
+	@HREF("https://www.springer.com/gp/book/9783540422303", 
+	"Computations in Algebraic Geometry with Macaulay2")@,
+	Springer 2001.
+    Sasha: As far as I'm aware, the flag functionality isn't currently implemented. 
+    When/if it is, this example should be added to the documentation above.
+	Text
+	    The option {\tt Flag}, checks if the multigrading corresponds to
+	    a proper d-coloring of {\tt D}, where d is the dimension of {\tt D}
+	    plus one. If that is not the case, then the output is an empty HashTable.
+	Text
+            The boundary of the 3-dimensional cross-polytope is
+            3-colorable. If we define this simplicial complex over
+            a {\tt Z^3}-graded ring, we can ask for its flag
+            f-vector.
+        Example
+            grading = {{1,0,0},{1,0,0},{0,1,0},{0,1,0},{0,0,1},{0,0,1}};
+            S = ZZ[x_1..x_6, Degrees => grading];
+            I = monomialIdeal(x_1*x_2,x_3*x_4,x_5*x_6);
+            fVector(simplicialComplex I, Flag => true)
+*-
 
 document {
      Key => {algebraicShifting,(algebraicShifting,SimplicialComplex),[algebraicShifting,Multigrading]},

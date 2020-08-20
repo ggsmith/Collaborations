@@ -557,6 +557,7 @@ fVector SimplicialComplex := D -> (
 
 -- Check if the grading on the ring defines a proper (dim(D)+1)-coloring on
 -- D. Used by fVector. Not exported.
+-*
 isBalanced = (D) -> (
      d := dim D +1;
      m := true;
@@ -566,6 +567,7 @@ isBalanced = (D) -> (
      apply(flatten entries faces(1,D), f -> if max(degree f) > 1 then m = false);
      return m;
      );
+*-
 
 -- helper functions for algebraicShifting. Not exported.
 shiftMonomial = (m) -> (
