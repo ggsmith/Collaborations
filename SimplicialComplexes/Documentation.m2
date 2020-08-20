@@ -1924,7 +1924,9 @@ doc ///
 
 doc ///
     Key
-        (boundaryMap, ZZ, SimplicialComplex)
+	boundaryMap
+	(boundaryMap, ZZ, SimplicialComplex)        
+	[boundaryMap, Labels]
     Headline
         make a boundary map between oriented faces
     Usage 
@@ -1933,6 +1935,7 @@ doc ///
         i : ZZ
 	    which gives the dimension of faces in the source of the map
 	D : SimplicialComplex
+	Labels => List
     Outputs 
 	: Matrix
 	    that represents the boundary map from {\tt i}-faces to {\tt
@@ -2001,67 +2004,89 @@ document {
      }
 
 
-document { 
-     Key => {lyubeznikComplex},
-     Headline => "Simplicial complex supporting the Lyubeznik resolution of a  monomial ideal",
-     Usage => "lyubeznikComplex(L,R)\nlyubeznikComplex I",
-     -- Inputs => {
-     --      },
-     -- Outputs => {
-     --      },
-     -- Consequences => {
-     --      },     
-     -- "description",
-     -- EXAMPLE {
-     --      },
-     -- Caveat => {},
+doc ///
+     Key
+         lyubeznikComplex 
+	 [lyubeznikComplex,MonomialOrder]
+         (lyubeznikComplex,List,Ring)
+	 (lyubeznikComplex,MonomialIdeal,Ring)
+     Headline
+         create a simplicial complex supporting a Lyubeznik resolution of a  monomial ideal
+     Usage
+         lyubeznikComplex(L,R)
+	 lyubeznikComplex(M,R)
+     Inputs
+         L : List
+	 M : MonomialIdeal
+	 R : PolynomialRing
+	 MonomialOrder => List
 
-     SeeAlso => {SimplicialComplexes}
-     }
+     -- Outputs
+     Description
+
+     SeeAlso 
+         SimplicialComplexes
+	 lyubeznikResolution
+///
 
 doc ///
     Key 
         lyubeznikResolution
+	[lyubeznikResolution,MonomialOrder]
+        (lyubeznikResolution,List)
+	(lyubeznikResolution,MonomialIdeal)
     Headline
         create the lyubeznik resolution of an ordered set of monomials.
     Usage
         lyubeznikResolution L
+	lyubeznikResolution M
     Inputs
         L : List
+	M : MonomialIdeal
+	MonomialOrder => List
     Outputs
-        : Resolution
+        F : Resolution
     Description
     SeeAlso
         lyubeznikComplex
 ///
 
-doc ///
+doc///
     Key 
         scarfSimplicialComplex
+	(scarfSimplicialComplex,List,Ring)
+	(scarfSimplicialComplex,MonomialIdeal,Ring)
     Headline
         create the scarf simplicial complex for a list of monomials
     Usage
-        scarfSimplicialComplex L
+        scarfSimplicialComplex(L,R)
+	scarfSimplicialComplex(M,R)
     Inputs
         L : List
+	M : MonomialIdeal
+	R : Ring
     Outputs
-        : ChainComplex
+        D : SimplicialComplex
     Description
     SeeAlso
         scarfChainComplex
 ///
 
-doc ///
+doc///
     Key 
         scarfChainComplex
+	(scarfChainComplex,List)
+	(scarfChainComplex,MonomialIdeal)
     Headline
         create the scarf chain complex for a list of monomials.
     Usage
         scarfChainComplex L
+	scarfChainComplex M
     Inputs
         L : List
+	M : MonomialIdeal
     Outputs
-        : ChainComplex
+        C : ChainComplex
     Description
     SeeAlso
     	scarfSimplicialComplex
