@@ -174,7 +174,7 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n < -1 then 
         error "-- expected integer greater than -1";
     if numgens S < n + 1 then 
-	error "-- expected a polynomial ring with at least " << n+1 << " generators";
+	error concatenate("-- expected a polynomial ring with at least ",toString(n+1)," generators");
     simplicialComplex {product(n+1, i -> S_i)}
     )
 
@@ -327,14 +327,14 @@ link (SimplicialComplex, RingElement) := SimplicialComplex => (D, f) -> (
     simplicialComplex ((monomialIdeal support f) + (monomialIdeal D : f))
     )
 
-boundary = method()
-boundary SimplicialComplex := D -> (
-     F := first entries facets D;
-     L := flatten apply (F, m -> apply (support m, x -> m // x));
-     if #L === 0 then 
-         return simplicialComplex monomialIdeal (1_(ring D));
-     simplicialComplex L
-     )
+--boundary = method()
+--boundary SimplicialComplex := D -> (
+--     F := first entries facets D;
+--     L := flatten apply (F, m -> apply (support m, x -> m // x));
+--     if #L === 0 then 
+--         return simplicialComplex monomialIdeal (1_(ring D));
+--     simplicialComplex L
+--     )
 
 -- 'skeleton' method defined in the `Polyhedra' package
 skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, D) -> (
@@ -487,8 +487,8 @@ chainComplex SimplicialComplex := {Labels => {}} >> opts -> (D) -> (
 	then error "-- expected Labels to be a list of monomials"
 	);
     d := dim D;
-    C := if d < -1 then (ring D)^0[-1]
-    else if d === -1 then (ring D)^1
+    C := if d < -1 then (coefficientRing(ring D))^0[-1]
+    else if d === -1 then (coefficientRing(ring D))^1
     else chainComplex apply(0..d, r -> boundaryMap(r,D,Labels => opts.Labels));
     if opts.Labels == {} then C[1] else C[0]
     )
@@ -730,11 +730,25 @@ buchbergerComplex(MonomialIdeal) := (I) -> (
 --     superficialComplex(flatten entries gens I, ring I))
 
 
-lyubeznikComplex = method()
-lyubeznikComplex List := L -> (
+lyubeznikComplex = method(Options => {MonomialOrder => {}})
+lyubeznikComplex (List,Ring) := opts -> (M,A) -> (
+    if M == {}
+    then return simplicialComplex({1_A});
+    if not all(M, m -> size m == 1) then 
+    error "-- expected a list of monomials";
+    if not all(M, m -> member(m,flatten entries mingens ideal M)) then 
+    error "-- expected minimal generators of a monomial ideal";
+    if not class A === PolynomialRing then
+    error"-- expected a polynomial ring";
+    L := M;
+    if not opts.MonomialOrder == {} 
+    then(
+	if not sort opts.MonomialOrder == toList(0..#M-1) then
+	error concatenate("-- MonomialOrder should be a permutation of {0,...,",toString(#M-1),"}");
+ 	L = M_(opts.MonomialOrder)
+	);
     Facets := for m in L list {m};
     FacetsNew := Facets;
-    A := QQ[vars(0..#L-1)];
     for i from 2 to #L do(
     	for F in subsets(L,i) do(
     	    rootF := position(L,m -> product F % m == 0);    
@@ -754,14 +768,38 @@ lyubeznikComplex List := L -> (
     D
     )
 
-lyubeznikResolution = method()
-lyubeznikResolution List := L -> (
-    chainComplex(lyubeznikComplex(L),Labels=>L)
+lyubeznikComplex(MonomialIdeal,Ring) := opts -> (I,R) -> (
+    MinGens := first entries mingens I;
+    lyubeznikComplex(MinGens, R, MonomialOrder => opts.MonomialOrder)
     )
 
+lyubeznikResolution = method(Options => {MonomialOrder => {}})
+lyubeznikResolution List := opts -> L -> (
+    MO := opts.MonomialOrder;
+    x := getSymbol"SimplicialComplexVertex";
+    R := QQ[x_0..x_(#L-1)];
+    if opts.MonomialOrder == {}
+    then return chainComplex(lyubeznikComplex(L,R),Labels=>L)
+    else return chainComplex(lyubeznikComplex(L,R),Labels=>L_MO)
+    )
+
+lyubeznikResolution MonomialIdeal := opts -> I -> (
+    if numgens I == 0 
+    then return ((ring I)^1)[0];
+    MinGens := flatten entries mingens I; 
+    MO := opts.MonomialOrder;
+    R := QQ[vars(0..(numgens I)-1)];
+    if opts.MonomialOrder == {}
+    then return(
+	chainComplex(lyubeznikComplex(I,R,MonomialOrder=>MO),Labels=>MinGens)
+	)
+    else return(
+	 chainComplex(lyubeznikComplex(I,R,MonomialOrder=>MO),Labels=>MinGens_MO)
+	 )
+     )
+     
 scarfSimplicialComplex = method()
-scarfSimplicialComplex List := L -> (
-    A :=QQ[vars(0..#L-1)];
+scarfSimplicialComplex (List,Ring) := (L,A) -> (
     LcmLattice := for F in remove(subsets L,0) list lcm F;
     ScarfMultidegrees := for m in LcmLattice list(
     	if #positions(LcmLattice,k -> k == m) > 1
@@ -777,16 +815,30 @@ scarfSimplicialComplex List := L -> (
 	    vertexLabel := m -> position(L,k -> k ==m);
 	    product(for m in F list A_(vertexLabel(m)))
 	    )
-    	):
+    	);
     D
+    )
+
+scarfSimplicialComplex (MonomialIdeal,Ring) := (I,A) -> (
+    if numgens I == 0 
+    then return ((coefficientRing(ring I))^1)[0];
+    scarfSimplicialComplex(first entries mingens I,A)
     )
 
 scarfChainComplex = method()
 scarfChainComplex List := L ->(
-    chainComplex(scarfSimplicialComplex L, Labels => L)
+    x := getSymbol"SimplicialComplexVertex";
+    A := QQ[x_0..x_(#L-1)];
+    chainComplex(scarfSimplicialComplex(L,A), Labels=>L)
     )
 
-
+scarfChainComplex MonomialIdeal := I -> (
+    if numgens I == 0 
+    then return ((ring I)^1)[0];
+    x := getSymbol"SimplicialComplexVertex";
+    A := QQ[x_0..x_((numgens I)-1)];
+    chainComplex(scarfSimplicialComplex(I,A), Labels=>(first entries mingens I))
+    )
 
 -----------------------------------------------------------------------
 -- Defining a class Face

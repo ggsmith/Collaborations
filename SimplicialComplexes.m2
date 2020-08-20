@@ -38,7 +38,7 @@ export {
     "algebraicShifting",    
     "bartnetteSphereComplex",
     "bjornerComplex",
-    "boundary",
+--    "boundary",
     "boundaryMap",    
     "buchbergerComplex",
     "dunceHatComplex",
@@ -94,3 +94,6 @@ installPackage "SimplicialComplexes"
 check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
+
+
+

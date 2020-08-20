@@ -147,7 +147,7 @@ assert( C.dd^2 == 0 )
 assert(HH_0(void) == 0)
 assert(HH_-1(void) == 0)
 fVector void
-assert(boundary void  === void)
+-- assert(boundary void  === void)
 irrelevant = simplicialComplex monomialIdeal gens R
 assert isPure irrelevant
 assert(dim irrelevant === -1)
@@ -157,9 +157,9 @@ assert(irrelevant === dual irrelevant)
 C = chainComplex irrelevant
 assert( C.dd^2 == 0 )
 assert(HH_0(irrelevant) == 0)
-assert(HH_-1(irrelevant) == R^1)
+assert(HH_-1(irrelevant) == (coefficientRing R)^1)
 assert(fVector irrelevant === new HashTable from {-1=>1})
-assert(boundary irrelevant  === void)
+-- assert(boundary irrelevant  === void)
 D5 = simplicialComplex {1_R}
 D5 === irrelevant
 ///
@@ -189,8 +189,8 @@ D = simplicialComplex monomialIdeal(a*d, a*e, b*c*d, d*e, c*e, b*e)
 assert not isPure D
 fVector D
 ideal dual D == monomialIdeal (a*b*c*d, a*b*e, a*c*e, d*e)
-fVector boundary D
-boundary D
+-- fVector boundary D
+-- boundary D
 S = ZZ/32003[u,v,w,x,y]
 C = chainComplex(D, Labels => {u,v,w,x,y})
 assert( C.dd^2 == 0 )
@@ -214,8 +214,8 @@ C' = chainComplex D'
 assert( C'.dd^2 == 0 )
 prune HH(C')
 fVector D
-boundary D
-fVector boundary D
+-- boundary D
+-- fVector boundary D
 ///
 
 ------------------------------------------------------------------------------
@@ -346,39 +346,66 @@ assert(link(D,c*d) === simplicialComplex{a})
 
 
 ------------------------------------------------------------------------------
--- Buchberger/Lyubeznik/Superficial complexes of a monomial ideal
+-- Buchberger/Lyubeznik/Scarf complexes of a monomial ideal
 TEST ///
 S=ZZ/32003[x,y,z]
-L={x^3,x*y,x*z,y^2,y*z,z^2}
+L1={x^3,x*y,x*z,y^2,y*z,z^2}
 R = ZZ/32003[a..f]
-D = buchbergerComplex(L,R)
+D = buchbergerComplex(L1,R)
 -- peek D.cache.labels
-boundaryMap(0,D,Labels=>L)
-boundaryMap(1,D,Labels=>L)
-C = chainComplex(D,Labels=>L)
+boundaryMap(0,D,Labels=>L1)
+boundaryMap(1,D,Labels=>L1)
+C = chainComplex(D,Labels=>L1)
 assert(C.dd^2 == 0)
 prune(HH C)
 scan(0..dim D, i -> assert(HH_(i+1)(C) == 0))
-assert(HH_0(C) == S^1/(ideal L))
+assert(HH_0(C) == S^1/(ideal L1))
 assert isHomogeneous C
 C.dd
 ----
-E = lyubeznikComplex(L,R)
-B = chainComplex(E,Labels=>L)
+E = lyubeznikComplex(L1,R)
+B = chainComplex(E,Labels=>L1)
 assert(B.dd^2 == 0)
 betti B
 prune(HH B)
 scan(0..dim E, i -> assert(HH_(i+1)(B) == 0))
-assert(HH_0(B) == S^1/(ideal L))
+assert(HH_0(B) == S^1/(ideal L1))
 assert isHomogeneous B
-----
-F = superficialComplex(L,R)
-A = chainComplex(F,Labels=>L)
-betti A
-prune(HH A)
-scan(0..dim F, i -> assert(HH_(i+1)(A) == 0))
-assert(HH_0(A) == S^1/(ideal L))
-assert isHomogeneous A
+
+L2 = {S_0^2,S_1^3,S_1*S_2}
+M2 = monomialIdeal L2
+LC2 = lyubeznikComplex(L2,R)
+LR2 = lyubeznikResolution(M2)
+assert((prune HH LR2)_0 == coker gens M2)
+assert all(1..length LR2, i -> (prune HH LR2)_i == 0)
+SSC2 = scarfSimplicialComplex(M2,R)
+SCC2 = scarfChainComplex(L2)
+
+
+
+sort first entries mingens M2
+
+
+L3 = {S_0*S_1,S_1*S_2,S_0*S_2}
+M3 = monomialIdeal L3
+lyubeznikComplex(M3,R)
+LR3 = lyubeznikResolution(L3)
+assert((prune HH LR3)_0 == coker gens M3)
+assert all(1..length LR3, i -> (prune HH LR3)_i == 0)
+SSC3 = scarfSimplicialComplex(L3,R)
+SCC3 = scarfChainComplex(M3)
+
+
+
+lyubeznikComplex(monomialIdeal(0_S),R)
+lyubeznikComplex(monomialIdeal(1_S),R)
+lyubeznikResolution(monomialIdeal(0_S))
+lyubeznikResolution(monomialIdeal(1_S))
+scarfSimplicialComplex(monomialIdeal(0_S),R)
+scarfSimplicialComplex(monomialIdeal(1_S),R)
+scarfChainComplex(monomialIdeal(0_S))
+scarfChainComplex(monomialIdeal(1_S))
+
 ///
 
 
@@ -393,8 +420,6 @@ C = chainComplex(D,Labels=>L)
 assert(C.dd^2 == 0)
 betti C
 prune(HH C)
-E = superficialComplex(L,R)
-betti chainComplex(E,Labels=>L)
 ///
 
 

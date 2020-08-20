@@ -1675,15 +1675,7 @@ doc ///
 ///
  
 
-document { 
-     Key => boundary,
-     Headline => "boundary operator",
-     SeeAlso => {SimplicialComplexes}
-     }
- 
- 
- 
-doc /// 
+/// 
     Key 
         (boundary, SimplicialComplex)
     Headline 
