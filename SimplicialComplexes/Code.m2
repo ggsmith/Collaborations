@@ -926,3 +926,135 @@ substitute(D,R)
 F=(faces(1,D,useFaceClass=>true))#0
 isFaceOf(F,D)
 *-
+
+
+------------------------------------------------------------------------------
+-- Simplicial Maps
+------------------------------------------------------------------------------
+SimplicialMap = new Type of HashTable
+SimplicialMap.synonym = "map of abstract simplicial complexes"
+source SimplicialMap := SimplicialComplex => f -> f.source
+target SimplicialMap := SimplicialComplex => f -> f.target
+map SimplicialMap := RingMap => opts -> f -> f.map
+matrix SimplicialMap := Matrix => opts -> f -> matrix map f
+
+expression SimplicialMap := f -> (expression map) (expression (target f, source f, first entries matrix f))
+toString SimplicialMap := f -> toString expression f
+net SimplicialMap := f ->  net first entries matrix f
+texMath SimplicialMap := f -> texMath expression f
+
+SimplicialMap#{Standard,AfterPrint} = SimplicialMap#{Standard,AfterNoPrint} = f -> (
+    << endl;	-- double space
+    << concatenate(interpreterDepth:"o") << lineNumber << " : SimplicialMap ";
+    << net target f << " <--- " << net source f << endl;
+    )
+
+map(SimplicialComplex, SimplicialComplex, Matrix) := SimplicialMap => opts -> (E, D, A) -> (
+    if ring A =!= ring E then 
+        error "-- expected a matrix over the ring of the target";
+    if rank target A =!= 1 then 
+        error "-- expected the matrix to have 1 row"; 
+    n := numgens ring D; 
+    if rank source A =!= n then 
+        error("-- expected the matrix to have " | n | " columns");	
+    new SimplicialMap from {
+    	symbol source => D,
+    	symbol target => E,
+    	symbol map => map(ring E, ring D, A),
+    	symbol cache => new CacheTable}
+    )
+
+map(SimplicialComplex, SimplicialComplex, List) := SimplicialMap => opts -> (E, D, A) -> (
+    map(E, D, matrix {A})
+    )
+
+SimplicialComplex#id = D -> map(D, D, vars ring D)
+
+isWellDefined SimplicialMap := Boolean => f -> (
+    -- CHECK DATA STRUCTURE
+    -- check keys
+    K := keys f;
+    expectedKeys := set{symbol source, symbol target, symbol map, symbol cache};
+    if set K =!= expectedKeys then (
+	if debugLevel > 0 then (
+	    added := toList(K - expectedKeys);
+	    missing := toList(expectedKeys - K);
+	    if #added > 0 then 
+	        << "-- unexpected key(s): " << toString added << endl;
+	    if #missing > 0 then 
+	        << "-- missing keys(s): " << toString missing << endl);
+    	return false
+	);
+    --Check types
+    if not instance(f.source, SimplicialComplex) then (
+	if debugLevel > 0 then (
+	    << "-- expected the source to be a SimplicialComplex" << endl);
+	return false	);
+    if not instance(f.target, SimplicialComplex) then (
+	if debugLevel > 0 then (
+	    << "-- expected the target to be a SimplicialComplex" << endl);
+	return false
+	);
+    if not instance(f.map, RingMap) then (
+	if debugLevel > 0 then (
+	    << "-- expected the map to be a RingMap" << endl);
+	return false
+	);
+    if not instance(f.cache, CacheTable) then (
+    	if debugLevel > 0 then (
+	    << "-- expected cache to be a CacheTable" << endl);
+    	return false
+	);    
+    --Check mathematical structure
+    D := source f;
+    E := target f;
+    g := map f;
+    -- check ring map
+    if source g =!= ring D then (
+    	if debugLevel > 0 then (
+	    << "-- expected source of the underlying ring map to be the ring of the source");
+	return false	
+	);
+    if target g =!= ring E then (
+    	if debugLevel > 0 then (
+	    << "-- expected target of the underlying ring map to be the ring of the target");
+	return false	
+	);
+    -- check that vertices map to vertices
+    if not all(vertices D, m -> member (g m, vertices E)) then (
+    	if debugLevel > 0 then (
+	    << "-- expected image of a vertex to be a vertex");
+	return false	
+	);
+    -- check that the image of a face is a face
+    if not all(first entries facets D, 
+	m -> any(first entries facets E, 
+	    e -> e % (product support g m) == 0)) 
+    then (
+    	if debugLevel > 0 then (
+	    << "-- expected image of a face to be a face");
+	return false
+	);
+    true    
+    )
+
+-*
+S = QQ[w,x,y,z];
+D = simplexComplex(3, S)
+R = QQ[s,t];
+E = simplexComplex(1,R)
+f = map(E, D, matrix {{s,t,t,s}})
+assert isWellDefined f
+h = map(E, D, {s,t,t,s})
+assert (h === f)
+
+S = QQ[a..e];
+D = simplicialComplex {e, c*d, b*d, a*b*c}
+E = simplicialComplex {e, c*d, a*b*c}
+f = map(E, D, vars ring E)
+debugLevel = 1
+assert not isWellDefined f
+g = map(D, E, vars ring E)
+assert isWellDefined g
+
+*-

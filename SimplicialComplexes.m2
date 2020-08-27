@@ -19,7 +19,7 @@ newPackage(
     "SimplicialComplexes",
     AuxiliaryFiles => true,
     Version => "2.0", 
-    Date => "9 July 2020",
+    Date => "27 August 2020",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
@@ -32,8 +32,9 @@ newPackage(
 
 export {
     -- types
+    "Face",    
     "SimplicialComplex",
-    "Face",
+    "SimplicialMap",
     -- methods
     "algebraicShifting",    
     "bartnetteSphereComplex",
