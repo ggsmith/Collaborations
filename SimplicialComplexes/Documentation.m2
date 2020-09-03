@@ -2803,3 +2803,152 @@ doc ///
     (homology,ZZ,SimplicialComplex)
     (homology,ZZ,SimplicialComplex,Ring)
 ///
+
+------------------------------------------------------------------------------
+-- simplicial maps
+------------------------------------------------------------------------------
+
+-- Sasha: I just copied the documentation from ToricMaps, and edited it slightly.
+-- This is just to have a vague structure formed.
+
+doc ///
+    Key 
+        "working with simplicial maps"
+    Headline
+        information about simplicial maps and the induced operations
+    Description
+	Text
+	    Let $C$ and $D$ be simplicial complexes. A simplicial map is a
+	    map $f : C \to D$ such that for any face $F \subset C$, we have
+	    that $f(F)$ is contained in a face of $D$.
+        Text
+            Although the primary method for creating a simplicial map is
+	    @TO (map, SimplicialComplex, SimplicialComplex, Matrix)@, there
+	    are a few other constructors.
+    	Text
+    	    @SUBSECTION "Making simplicial maps"@
+	Text
+    	    @UL {
+                TO (map, SimplicialComplex, SimplicialComplex, Matrix),
+        	TO (id, SimplicialComplex),			
+        	TO SimplicialMap,
+        	TO (isWellDefined, SimplicialMap),
+    	    }@
+	Text
+	    Having made a @TO2(SimplicialMap, "toric map")@, one can access its
+	    basic invariants or test for some elementary properties by using
+	    the following methods.
+    	Text
+    	    @SUBSECTION "Determining attributes and properties of toric maps"@
+	Text
+    	    @UL {
+        	TO (source, SimplicialMap),		
+        	TO (target, SimplicialMap),				
+        	TO (matrix, SimplicialMap),
+    	    }@
+    SeeAlso
+        SimplicialComplex
+///
+
+
+doc ///
+    Key
+        SimplicialMap
+    Headline
+        the class of all maps between simplicial complexes
+    Description
+        Text
+	    Let $C$ and $D$ be simplicial complexes. A simplicial map is a
+	    map $f : C \to D$ such that for any face $F \subset C$, we have
+	    that $f(F)$ is contained in a face of $D$.
+        Text
+	    To specify a map of simplicial complexes, the target and source
+	    complexes need to be specificied as well as a matrix which
+	    determines a map between the complexes' corresponding rings.
+	Text
+	    The primary constructor of a toric map is
+	    @TO (map, SimplicialComplex, SimplicialComplex, Matrix)@.
+    SeeAlso
+    	"working with simplicial maps"
+        SimplicialComplex
+	(id, SimplicialComplex)
+	(isWellDefined, SimplicialMap)
+///
+
+
+doc ///
+    Key
+        (source, SimplicialMap)
+    Headline
+        get the source of the map
+    Usage
+    	X = source f
+    Inputs
+    	f : SimplicialMap
+    Outputs
+    	X : SimplicialComplex
+    	    that is the source of the map f
+    Description
+        Text
+	    Given a simplicial map $f : C \to D$, this method returns the 
+	    simplicial complex $C$.
+       	Text
+	    todo need example
+    SeeAlso
+        "working with simplicial maps"
+        (target, SimplicialMap)    
+        (matrix, SimplicialMap)    		
+	(isWellDefined, SimplicialMap)
+        (map, SimplicialComplex, SimplicialComplex, Matrix)	
+///
+
+
+doc ///
+    Key
+	(target, SimplicialMap)
+    Headline 
+    	get the target of the map
+    Usage
+    	Y = target f
+    Inputs
+    	f : SimplicialMap
+    Outputs
+    	Y : SimplicialComplex
+    	    that is the target of the map f	
+    Description	    
+        Text
+	    Given a toric map $f : C \to D$, this method returns the
+	    simplicial complex $C$.
+       	Text
+	    todo need example	    
+    SeeAlso
+        "working with simplicial maps"    
+        (source, SimplicialMap)    
+        (matrix, SimplicialMap)    		
+	(isWellDefined, SimplicialMap)
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+///	  
+
+doc ///
+    Key
+	(matrix, SimplicialMap)
+    Headline 
+    	get the underlying map of rings
+    Usage
+    	g = matrix f
+    Inputs
+    	f : SimplicialMap
+	Degree =>
+	    unused
+    Outputs
+    	g : Matrix
+    Description	    
+        Text
+	    todo
+    SeeAlso
+        "working with toric maps"    
+        (source, SimplicialMap)    
+        (target, SimplicialMap)    		
+	(isWellDefined, SimplicialMap)
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+///	         
