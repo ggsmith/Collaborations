@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>net(SimplicialComplex) -- Printing a simplicial complex.</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_ring_lp__Face_rp.html">next</a> | <a href="_net_lp__Face_rp.html">previous</a> | <a href="_ring_lp__Face_rp.html">forward</a> | <a href="_net_lp__Face_rp.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_net_lp__Simplicial__Complex_rp.html" title="Printing a simplicial complex.">net(SimplicialComplex)</a>    </div>
+    <hr/>
+    <div>
+      <h1>net(SimplicialComplex) -- Printing a simplicial complex.</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>net(C)</tt></dd>
+            </dl>
+          </li>
+          <li>
+<span>Function: <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_net.html" title="format for printing, as a net">net</a></span>          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>C</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Net.html">net</a></span></span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+        <div>
+          <p>Prints a simplicial complex.</p>
+          <p></p>
+        </div>
+        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : K=QQ;</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : R=K[x_1..x_5];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : C=simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)
+
+o3 = | x_2x_4x_5 x_1x_4x_5 x_2x_3x_5 x_1x_3x_5 x_2x_3x_4 x_1x_3x_4 |
+
+o3 : SimplicialComplex</pre>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+
+</html>

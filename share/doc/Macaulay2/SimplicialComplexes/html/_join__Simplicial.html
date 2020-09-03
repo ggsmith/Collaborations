@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>joinSimplicial -- the join of two simplicial complexes</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_label.html">next</a> | <a href="_is__Subface.html">previous</a> | <a href="_label.html">forward</a> | <a href="_is__Subface.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_join__Simplicial.html" title="the join of two simplicial complexes">joinSimplicial</a>    </div>
+    <hr/>
+    <div>
+      <h1>joinSimplicial -- the join of two simplicial complexes</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>joinSimplicial(D,E)</tt></dd>
+            </dl>
+          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>D</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+              <li>
+<span><tt>E</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span>, the join of <tt>D</tt> and <tt>E</tt></span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+The join of two simplicial complexes <i>D</i> and <i>E</i> is the simplicial complex whose faces are the union of faces of <i>D</i> and <i>E</i>. If <i>D</i> is the simplicial complex consisting of a single vertex then the join is the cone over <i>E</i>. If <i>D</i> consists of two isolated vertices then the join is the suspension of <i>E</i>.        <p/>
+ The cone over a bow-tie complex.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : R = QQ[x_1..x_5];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : bowtie = simplicialComplex {x_1*x_2*x_3, x_3*x_4*x_5};</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : S = QQ[v];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i4 : singleton = simplicialComplex {v};</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i5 : singleton * bowtie
+
+o5 = | vx_3x_4x_5 vx_1x_2x_3 |
+
+o5 : SimplicialComplex</pre>
+            </td>
+          </tr>
+        </table>
+        <p/>
+ The octahedron is the suspension of a square.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i6 : R = QQ[a..d];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i7 : square = simplicialComplex {a*b, b*c, c*d, a*d};</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i8 : S = QQ[p,q];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i9 : poles = simplicialComplex {p, q};</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i10 : octahedron = joinSimplicial(poles,square)
+
+o10 = | qcd pcd qad pad qbc pbc qab pab |
+
+o10 : SimplicialComplex</pre>
+            </td>
+          </tr>
+        </table>
+        <p/>
+ The join of an exagon and a pentagon.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i11 : R = ZZ[x_1..x_6];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i12 : exagon = simplicialComplex {x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_6,x_1*x_6};</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i13 : S = ZZ[y_1..y_5];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i14 : pentagon = simplicialComplex {y_1*y_2,y_2*y_3,y_3*y_4,y_4*y_5,y_1*y_5};</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i15 : sphere = joinSimplicial(exagon,pentagon)
+
+o15 = | x_5x_6y_4y_5 x_1x_6y_4y_5 x_4x_5y_4y_5 x_3x_4y_4y_5 x_2x_3y_4y_5 x_1x_2y_4y_5 x_5x_6y_1y_5 x_1x_6y_1y_5 x_4x_5y_1y_5 x_3x_4y_1y_5 x_2x_3y_1y_5 x_1x_2y_1y_5 x_5x_6y_3y_4 x_1x_6y_3y_4 x_4x_5y_3y_4 x_3x_4y_3y_4 x_2x_3y_3y_4 x_1x_2y_3y_4 x_5x_6y_2y_3 x_1x_6y_2y_3 x_4x_5y_2y_3 x_3x_4y_2y_3 x_2x_3y_2y_3 x_1x_2y_2y_3 x_5x_6y_1y_2 x_1x_6y_1y_2 x_4x_5y_1y_2 x_3x_4y_1y_2 x_2x_3y_1y_2 x_1x_2y_1y_2 |
+
+o15 : SimplicialComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i16 : fVector(sphere)
+
+o16 = HashTable{-1 => 1}
+                0 => 11
+                1 => 41
+                2 => 60
+                3 => 30
+
+o16 : HashTable</pre>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>Caveat</h2>
+The two simplicial complexes have to be defined over different polynomial rings.      </div>
+      <div>
+        <h2>See also</h2>
+        <ul>
+          <li>
+<span><a href="index.html" title="simplicial complexes">SimplicialComplexes</a> -- simplicial complexes</span>          </li>
+          <li>
+<span><a href="___Simplicial__Complex_sp_st_sp__Simplicial__Complex.html" title="the join of two simplicial complexes">SimplicialComplex * SimplicialComplex</a> -- the join of two simplicial complexes</span>          </li>
+        </ul>
+      </div>
+      <div class="waystouse">
+        <h2>Ways to use <tt>joinSimplicial</tt> :</h2>
+        <ul>
+          <li>
+joinSimplicial(SimplicialComplex,SimplicialComplex)          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>

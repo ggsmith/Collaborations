@@ -1,0 +1,87 @@
+-- -*- M2-comint -*- hash: 10852972
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = ZZ[a..f];
+
+i2 : I = monomialIdeal(a*f, b*d, c*e);
+
+o2 : MonomialIdeal of R
+
+i3 : Octahedron = simplicialComplex I
+
+o3 = | def bef cdf bcf ade abe acd abc |
+
+o3 : SimplicialComplex
+
+i4 : L = {d*e*f, b*e*f, c*d*f, b*c*f, 
+                    a*d*e, a*b*e, a*c*d, a*b*c}
+
+o4 = {d*e*f, b*e*f, c*d*f, b*c*f, a*d*e, a*b*e, a*c*d, a*b*c}
+
+o4 : List
+
+i5 : Octahedron' = simplicialComplex L
+
+o5 = | def bef cdf bcf ade abe acd abc |
+
+o5 : SimplicialComplex
+
+i6 : Octahedron == Octahedron'
+
+o6 = true
+
+i7 : fVector Octahedron
+
+o7 = HashTable{-1 => 1}
+               0 => 6
+               1 => 12
+               2 => 8
+
+o7 : HashTable
+
+i8 : void = simplicialComplex monomialIdeal 1_R
+
+o8 = 0
+
+o8 : SimplicialComplex
+
+i9 : fVector void
+
+o9 = HashTable{-1 => 0}
+
+o9 : HashTable
+
+i10 : dim void
+
+o10 = -infinity
+
+o10 : InfiniteNumber
+
+i11 : irrelevant = simplicialComplex monomialIdeal gens R
+
+o11 = | 1 |
+
+o11 : SimplicialComplex
+
+i12 : fVector irrelevant
+
+o12 = HashTable{-1 => 1}
+
+o12 : HashTable
+
+i13 : dim irrelevant
+
+o13 = -1
+
+i14 : irrelevant' = simplicialComplex {1_R}
+
+o14 = | 1 |
+
+o14 : SimplicialComplex
+
+i15 : irrelevant' == irrelevant
+
+o15 = true
+
+i16 : 

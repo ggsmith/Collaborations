@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>SimplicialComplex</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_simplicial__Complex.html">next</a> | <a href="_ring_lp__Simplicial__Complex_rp.html">previous</a> | <a href="_simplicial__Complex.html">forward</a> | <a href="_ring_lp__Simplicial__Complex_rp.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="___Simplicial__Complex.html" title="">SimplicialComplex</a>    </div>
+    <hr/>
+    <div>
+      <h1>SimplicialComplex</h1>
+      <div>
+        <h2>Description</h2>
+<tt>SimplicialComplex</tt> -- the class of simplical complexes        <p/>
+Some support routines        <ul>
+          <li>
+<a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_support.html" title="list of variables occurring in a polynomial or matrix">support</a>(m) -- the support of the monomial m, as a list of integers          </li>
+        </ul>
+      </div>
+      <div class="waystouse">
+        <h2>Functions and methods returning a simplicial complex :</h2>
+        <ul>
+          <li>
+<span><a href="_simplicial__Complex.html" title="create a simplicial complex">simplicialComplex</a> -- create a simplicial complex</span>          </li>
+          <li>
+<span>simplicialComplex(List), see <span><a href="_simplicial__Complex.html" title="create a simplicial complex">simplicialComplex</a> -- create a simplicial complex</span></span>          </li>
+        </ul>
+        <h2>Methods that use a simplicial complex :</h2>
+        <ul>
+          <li>
+<span>algebraicShifting(SimplicialComplex), see <span><a href="_algebraic__Shifting.html" title="the algebraic shifting of a simplicial complex">algebraicShifting</a> -- the algebraic shifting of a simplicial complex</span></span>          </li>
+          <li>
+<span><a href="_boundary_lp__Simplicial__Complex_rp.html" title="the boundary simplicial complex of D">boundary(SimplicialComplex)</a> -- the boundary simplicial complex of D</span>          </li>
+          <li>
+<span><a href="_boundary_lp__Z__Z_cm__Simplicial__Complex_rp.html" title="the boundary map from i-faces to (i-1)-faces">boundary(ZZ,SimplicialComplex)</a> -- the boundary map from i-faces to (i-1)-faces</span>          </li>
+          <li>
+<span><a href="_chain__Complex_lp__Simplicial__Complex_rp.html" title="The chain complex of boundary maps.">chainComplex(SimplicialComplex)</a> -- The chain complex of boundary maps.</span>          </li>
+          <li>
+<span>simplicialChainComplex(List,SimplicialComplex), see <span><a href="_chain__Complex_lp__Simplicial__Complex_rp.html" title="The chain complex of boundary maps.">chainComplex(SimplicialComplex)</a> -- The chain complex of boundary maps.</span></span>          </li>
+          <li>
+<span><a href="_coefficient__Ring_lp__Simplicial__Complex_rp.html" title="">coefficientRing(SimplicialComplex)</a></span>          </li>
+          <li>
+<span><a href="_dim_lp__Simplicial__Complex_rp.html" title="dimension of a simplicial complex">dim(SimplicialComplex)</a> -- dimension of a simplicial complex</span>          </li>
+          <li>
+<span><a href="_dual_lp__Simplicial__Complex_rp.html" title="the Alexander dual of a simplicial complex">dual(SimplicialComplex)</a> -- the Alexander dual of a simplicial complex</span>          </li>
+          <li>
+<span>faces(ZZ,SimplicialComplex), see <span><a href="_faces.html" title="the i-faces of a simplicial complex ">faces</a> -- the i-faces of a simplicial complex </span></span>          </li>
+          <li>
+<span><a href="_faces_lp__Simplicial__Complex_rp.html" title="Compute all faces of a simplicial complex.">faces(SimplicialComplex)</a> -- Compute all faces of a simplicial complex.</span>          </li>
+          <li>
+<span>facets(SimplicialComplex), see <span><a href="_facets.html" title="the facets of a simplicial complex">facets</a> -- the facets of a simplicial complex</span></span>          </li>
+          <li>
+<span>fVector(SimplicialComplex), see <span><a href="_f__Vector.html" title="the f-vector of a simplicial complex">fVector</a> -- the f-vector of a simplicial complex</span></span>          </li>
+          <li>
+<span><a href="___H__H_sp__Simplicial__Complex.html" title="Compute the homology of a simplicial complex.">HH SimplicialComplex</a> -- Compute the homology of a simplicial complex.</span>          </li>
+          <li>
+<span>homology(Nothing,SimplicialComplex), see <span><a href="___H__H_sp__Simplicial__Complex.html" title="Compute the homology of a simplicial complex.">HH SimplicialComplex</a> -- Compute the homology of a simplicial complex.</span></span>          </li>
+          <li>
+<span><a href="___H__H_us__Z__Z_sp__Simplicial__Complex.html" title="Compute the homology of a simplicial complex.">HH_ZZ SimplicialComplex</a> -- Compute the homology of a simplicial complex.</span>          </li>
+          <li>
+<span><a href="___H__H_us__Z__Z_lp__Simplicial__Complex_cm__Ring_rp.html" title="Compute the homology of a simplicial complex.">HH_ZZ(SimplicialComplex,Ring)</a> -- Compute the homology of a simplicial complex.</span>          </li>
+          <li>
+<span>homology(Nothing,SimplicialComplex,Ring), see <span><a href="_homology_lp__Simplicial__Complex_cm__Ring_rp.html" title="Compute the homology of a simplicial complex.">homology(SimplicialComplex,Ring)</a> -- Compute the homology of a simplicial complex.</span></span>          </li>
+          <li>
+<span><a href="_homology_lp__Simplicial__Complex_cm__Ring_rp.html" title="Compute the homology of a simplicial complex.">homology(SimplicialComplex,Ring)</a> -- Compute the homology of a simplicial complex.</span>          </li>
+          <li>
+<span><a href="_ideal_lp__Simplicial__Complex_rp.html" title="the ideal of minimal nonfaces (the Stanley-Reisner ideal)">ideal(SimplicialComplex)</a> -- the ideal of minimal nonfaces (the Stanley-Reisner ideal)</span>          </li>
+          <li>
+<span>isFaceOf(Face,SimplicialComplex), see <span><a href="_is__Face__Of.html" title="Substitute a face to a different ring.">isFaceOf</a> -- Substitute a face to a different ring.</span></span>          </li>
+          <li>
+<span>isPure(SimplicialComplex), see <span><a href="_is__Pure.html" title="whether the facets are equidimensional">isPure</a> -- whether the facets are equidimensional</span></span>          </li>
+          <li>
+<span>joinSimplicial(SimplicialComplex,SimplicialComplex), see <span><a href="_join__Simplicial.html" title="the join of two simplicial complexes">joinSimplicial</a> -- the join of two simplicial complexes</span></span>          </li>
+          <li>
+<span>label(SimplicialComplex,List), see <span><a href="_label.html" title="labels with monomials the faces of simplicial complex">label</a> -- labels with monomials the faces of simplicial complex</span></span>          </li>
+          <li>
+<span>link(SimplicialComplex,RingElement), see <span><a href="_link.html" title="link of a face in a simplicial complex">link</a> -- link of a face in a simplicial complex</span></span>          </li>
+          <li>
+<span><a href="_monomial__Ideal_lp__Simplicial__Complex_rp.html" title="the monomial ideal of minimal nonfaces (the Stanley-Reisner ideal)">monomialIdeal(SimplicialComplex)</a> -- the monomial ideal of minimal nonfaces (the Stanley-Reisner ideal)</span>          </li>
+          <li>
+<span><a href="_net_lp__Simplicial__Complex_rp.html" title="Printing a simplicial complex.">net(SimplicialComplex)</a> -- Printing a simplicial complex.</span>          </li>
+          <li>
+<span><a href="_ring_lp__Simplicial__Complex_rp.html" title="">ring(SimplicialComplex)</a></span>          </li>
+          <li>
+<span><a href="___Simplicial__Complex_sp_st_sp__Simplicial__Complex.html" title="the join of two simplicial complexes">SimplicialComplex * SimplicialComplex</a> -- the join of two simplicial complexes</span>          </li>
+          <li>
+<span><a href="___Simplicial__Complex_sp_eq_eq_sp__Simplicial__Complex.html" title="Compare two simplicial complexes.">SimplicialComplex == SimplicialComplex</a> -- Compare two simplicial complexes.</span>          </li>
+          <li>
+<span>skeleton(ZZ,SimplicialComplex), see <span><a href="_skeleton.html" title="the n-skeleton of the simplicial complex D">skeleton</a> -- the n-skeleton of the simplicial complex D</span></span>          </li>
+          <li>
+<span>star(SimplicialComplex,RingElement), see <span><a href="_star.html" title="star of a face in a simplicial complex">star</a> -- star of a face in a simplicial complex</span></span>          </li>
+          <li>
+<span><a href="_substitute_lp__Simplicial__Complex_cm__Polynomial__Ring_rp.html" title="Substitute a simplicial complex to a different ring.">substitute(SimplicialComplex,PolynomialRing)</a> -- Substitute a simplicial complex to a different ring.</span>          </li>
+        </ul>
+      </div>
+      <div class="waystouse">
+        <h2>For the programmer</h2>
+        <p>The object <a href="___Simplicial__Complex.html" title="">SimplicialComplex</a> is <span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Type.html">type</a></span>, with ancestor classes <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Hash__Table.html" title="the class of all hash tables">HashTable</a> &lt; <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Thing.html" title="the class of all things">Thing</a>.</p>
+      </div>
+    </div>
+  </body>
+
+</html>

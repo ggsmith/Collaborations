@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>face -- Generate a face.</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="___Face_sp_eq_eq_sp__Face.html">next</a> | <a href="___Face.html">previous</a> | <a href="___Face_sp_eq_eq_sp__Face.html">forward</a> | <a href="___Face.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_face.html" title="Generate a face.">face</a>    </div>
+    <hr/>
+    <div>
+      <h1>face -- Generate a face.</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>face(L)</tt></dd>
+              <dd><tt>face(L,R)</tt></dd>
+              <dd><tt>face(m)</tt></dd>
+            </dl>
+          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>L</tt>, <span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___List.html">list</a></span></span>              </li>
+              <li>
+<span><tt>R</tt>, <span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Polynomial__Ring.html">polynomial ring</a></span></span>              </li>
+              <li>
+<span><tt>m</tt>, <span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Ring__Element.html">ring element</a></span>, a monomial</span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><span>an instance of the type <a href="___Face.html" title="The class of faces of simplicial complexes.">Face</a></span></span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+        <div>
+          <p>Generates a face out of a list L or a squarefree monomial. If L is not empty or a monomial the argument R is not required.</p>
+          <p></p>
+        </div>
+        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : K=QQ;</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : R=K[x_0..x_4];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : F=face {x_0,x_1}
+
+o3 = x  x  
+      0  1
+
+o3 : face with 2 vertices in R</pre>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>See also</h2>
+        <ul>
+          <li>
+<span><a href="___Simplicial__Complex.html" title="">SimplicialComplex</a></span>          </li>
+          <li>
+<span><a href="_faces.html" title="the i-faces of a simplicial complex ">faces</a> -- the i-faces of a simplicial complex </span>          </li>
+          <li>
+<span><a href="_facets.html" title="the facets of a simplicial complex">facets</a> -- the facets of a simplicial complex</span>          </li>
+        </ul>
+      </div>
+      <div class="waystouse">
+        <h2>Ways to use <tt>face</tt> :</h2>
+        <ul>
+          <li>
+face(List)          </li>
+          <li>
+face(List,PolynomialRing)          </li>
+          <li>
+face(RingElement)          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>

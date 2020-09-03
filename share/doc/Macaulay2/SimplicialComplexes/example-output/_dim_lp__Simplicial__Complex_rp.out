@@ -1,0 +1,31 @@
+-- -*- M2-comint -*- hash: 365186166
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = ZZ[a..h];
+
+i2 : D = simplicialComplex{a*b*c*d, a*b*e, c*d*f, f*g, g*a, h}
+
+o2 = | h fg ag cdf abe abcd |
+
+o2 : SimplicialComplex
+
+i3 : dim D
+
+o3 = 3
+
+i4 : void = simplicialComplex monomialIdeal 1_R;
+
+i5 : dim void
+
+o5 = -infinity
+
+o5 : InfiniteNumber
+
+i6 : irrelevant = simplicialComplex {1_R};
+
+i7 : dim irrelevant
+
+o7 = -1
+
+i8 : 

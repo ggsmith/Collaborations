@@ -1,0 +1,31 @@
+-- -*- M2-comint -*- hash: 1088560160
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = ZZ[a..e];
+
+i2 : sphere = simplicialComplex {b*c*d*e,a*c*d*e,a*b*d*e,a*b*c*e,a*b*c*d}
+
+o2 = | bcde acde abde abce abcd |
+
+o2 : SimplicialComplex
+
+i3 : ideal sphere
+
+o3 = ideal(a*b*c*d*e)
+
+o3 : Ideal of R
+
+i4 : D = simplicialComplex {e, c*d, b*d, a*b*c}
+
+o4 = | e cd bd abc |
+
+o4 : SimplicialComplex
+
+i5 : ideal D
+
+o5 = ideal (a*d, b*c*d, a*e, b*e, c*e, d*e)
+
+o5 : Ideal of R
+
+i6 : 

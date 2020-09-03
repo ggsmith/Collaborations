@@ -96,5 +96,3 @@ check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
 
-
-

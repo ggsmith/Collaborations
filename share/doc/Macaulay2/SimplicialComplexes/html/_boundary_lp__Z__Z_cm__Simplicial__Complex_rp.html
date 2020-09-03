@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>boundary(ZZ,SimplicialComplex) -- the boundary map from i-faces to (i-1)-faces</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_buchberger__Complex.html">next</a> | <a href="_boundary_lp__Simplicial__Complex_rp.html">previous</a> | <a href="_buchberger__Complex.html">forward</a> | <a href="_boundary_lp__Simplicial__Complex_rp.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_boundary_lp__Z__Z_cm__Simplicial__Complex_rp.html" title="the boundary map from i-faces to (i-1)-faces">boundary(ZZ,SimplicialComplex)</a>    </div>
+    <hr/>
+    <div>
+      <h1>boundary(ZZ,SimplicialComplex) -- the boundary map from i-faces to (i-1)-faces</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>M = boundary(i,D)</tt></dd>
+            </dl>
+          </li>
+          <li>
+<span>Function: <a href="_boundary.html" title="boundary operator">boundary</a></span>          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>i</tt>, <span>an <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Z__Z.html">integer</a></span></span>              </li>
+              <li>
+<span><tt>D</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><tt>M</tt>, <span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Matrix.html">matrix</a></span>, the boundary map from <tt>i</tt>-faces to <tt>(i-1)</tt>-faces of <tt>D</tt></span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+The columns of the matrix <tt>M</tt> are indexed by the <tt>i</tt>-faces of <tt>D</tt>, and the rows are indexed by the <tt>(i-1)</tt>-faces, in the order given by <a href="_faces.html" title="the i-faces of a simplicial complex ">faces</a>.  <tt>M</tt> is defined over the <a href="_coefficient__Ring_lp__Simplicial__Complex_rp.html">coefficient ring</a> of <tt>D</tt>.The boundary maps for the standard 3-simplex, defined over <tt>ZZ</tt>.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : R = ZZ[a..d];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : D = simplicialComplex {a*b*c*d}
+
+o2 = | abcd |
+
+o2 : SimplicialComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : boundary(0,D)
+
+o3 = | 1 1 1 1 |
+
+              1        4
+o3 : Matrix ZZ  &lt;--- ZZ</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i4 : faces(0,D)
+
+o4 = | a b c d |
+
+             1       4
+o4 : Matrix R  &lt;--- R</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i5 : boundary(1,D)
+
+o5 = | -1 -1 -1 0  0  0  |
+     | 1  0  0  -1 -1 0  |
+     | 0  1  0  1  0  -1 |
+     | 0  0  1  0  1  1  |
+
+              4        6
+o5 : Matrix ZZ  &lt;--- ZZ</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i6 : faces(1,D)
+
+o6 = | ab ac ad bc bd cd |
+
+             1       6
+o6 : Matrix R  &lt;--- R</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i7 : boundary(2,D)
+
+o7 = | 1  1  0  0  |
+     | -1 0  1  0  |
+     | 0  -1 -1 0  |
+     | 1  0  0  1  |
+     | 0  1  0  -1 |
+     | 0  0  1  1  |
+
+              6        4
+o7 : Matrix ZZ  &lt;--- ZZ</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i8 : faces(2,D)
+
+o8 = | abc abd acd bcd |
+
+             1       4
+o8 : Matrix R  &lt;--- R</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i9 : boundary(3,D)
+
+o9 = | -1 |
+     | 1  |
+     | -1 |
+     | 1  |
+
+              4        1
+o9 : Matrix ZZ  &lt;--- ZZ</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i10 : faces(3,D)
+
+o10 = | abcd |
+
+              1       1
+o10 : Matrix R  &lt;--- R</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i11 : boundary(4,D)
+
+o11 = 0
+
+               1
+o11 : Matrix ZZ  &lt;--- 0</pre>
+            </td>
+          </tr>
+        </table>
+The boundary maps depend on the <a href="_coefficient__Ring_lp__Simplicial__Complex_rp.html">coefficient ring</a> as the following examples illustrate.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i12 : R = QQ[a..f];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i13 : D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i14 : boundary(1,D)
+
+o14 = | -1 -1 -1 -1 -1 0  0  0  0  0  0  0  0  0  0  |
+      | 1  0  0  0  0  -1 -1 -1 -1 0  0  0  0  0  0  |
+      | 0  1  0  0  0  1  0  0  0  -1 -1 -1 0  0  0  |
+      | 0  0  1  0  0  0  1  0  0  1  0  0  -1 -1 0  |
+      | 0  0  0  1  0  0  0  1  0  0  1  0  1  0  -1 |
+      | 0  0  0  0  1  0  0  0  1  0  0  1  0  1  1  |
+
+               6        15
+o14 : Matrix QQ  &lt;--- QQ</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i15 : R' = ZZ/2[a..f];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i16 : D' = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i17 : boundary(1,D')
+
+o17 = | 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 |
+      | 1 0 0 0 0 1 1 1 1 0 0 0 0 0 0 |
+      | 0 1 0 0 0 1 0 0 0 1 1 1 0 0 0 |
+      | 0 0 1 0 0 0 1 0 0 1 0 0 1 1 0 |
+      | 0 0 0 1 0 0 0 1 0 0 1 0 1 0 1 |
+      | 0 0 0 0 1 0 0 0 1 0 0 1 0 1 1 |
+
+              ZZ 6       ZZ 15
+o17 : Matrix (--)  &lt;--- (--)
+               2          2</pre>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>See also</h2>
+        <ul>
+          <li>
+<span><a href="index.html" title="simplicial complexes">SimplicialComplexes</a> -- simplicial complexes</span>          </li>
+          <li>
+<span><a href="_chain__Complex_lp__Simplicial__Complex_rp.html" title="The chain complex of boundary maps.">chainComplex(SimplicialComplex)</a> -- The chain complex of boundary maps.</span>          </li>
+          <li>
+<span><a href="_faces.html" title="the i-faces of a simplicial complex ">faces</a> -- the i-faces of a simplicial complex </span>          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>

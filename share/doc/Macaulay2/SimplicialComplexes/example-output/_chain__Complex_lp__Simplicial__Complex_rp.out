@@ -1,0 +1,57 @@
+-- -*- M2-comint -*- hash: -270167430
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = QQ[a..f];
+
+i2 : D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);
+
+i3 : R' = ZZ/2[a..f];
+
+i4 : D' = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);
+
+i5 : c = chainComplex D
+
+       1       6       15       10
+o5 = QQ  <-- QQ  <-- QQ   <-- QQ
+                               
+     -1      0       1        2
+
+o5 : ChainComplex
+
+i6 : c' = chainComplex D'
+
+      ZZ 1      ZZ 6      ZZ 15      ZZ 10
+o6 = (--)  <-- (--)  <-- (--)   <-- (--)
+       2         2         2          2
+                                     
+     -1        0         1          2
+
+o6 : ChainComplex
+
+i7 : c.dd_1
+
+o7 = | 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  |
+     | -1 0  0  0  0  1  1  1  1  0  0  0  0  0  0  |
+     | 0  -1 0  0  0  -1 0  0  0  1  1  1  0  0  0  |
+     | 0  0  -1 0  0  0  -1 0  0  -1 0  0  1  1  0  |
+     | 0  0  0  -1 0  0  0  -1 0  0  -1 0  -1 0  1  |
+     | 0  0  0  0  -1 0  0  0  -1 0  0  -1 0  -1 -1 |
+
+              6        15
+o7 : Matrix QQ  <--- QQ
+
+i8 : c'.dd_1
+
+o8 = | 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 |
+     | 1 0 0 0 0 1 1 1 1 0 0 0 0 0 0 |
+     | 0 1 0 0 0 1 0 0 0 1 1 1 0 0 0 |
+     | 0 0 1 0 0 0 1 0 0 1 0 0 1 1 0 |
+     | 0 0 0 1 0 0 0 1 0 0 1 0 1 0 1 |
+     | 0 0 0 0 1 0 0 0 1 0 0 1 0 1 1 |
+
+             ZZ 6       ZZ 15
+o8 : Matrix (--)  <--- (--)
+              2          2
+
+i9 : 

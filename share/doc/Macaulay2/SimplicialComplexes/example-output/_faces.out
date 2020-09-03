@@ -1,0 +1,55 @@
+-- -*- M2-comint -*- hash: -120474063
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = ZZ[a..f]
+
+o1 = R
+
+o1 : PolynomialRing
+
+i2 : D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
+                                                   b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
+
+o2 = | def aef bdf bcf acf cde bce abe acd abd |
+
+o2 : SimplicialComplex
+
+i3 : faces(-1,D)
+
+o3 = | 1 |
+
+             1       1
+o3 : Matrix R  <--- R
+
+i4 : faces(0,D)
+
+o4 = | a b c d e f |
+
+             1       6
+o4 : Matrix R  <--- R
+
+i5 : faces(1,D)
+
+o5 = | ab ac ad ae af bc bd be bf cd ce cf de df ef |
+
+             1       15
+o5 : Matrix R  <--- R
+
+i6 : faces(2,D)
+
+o6 = | abd abe acd acf aef bce bcf bdf cde def |
+
+             1       10
+o6 : Matrix R  <--- R
+
+i7 : fVector D
+
+o7 = HashTable{-1 => 1}
+               0 => 6
+               1 => 15
+               2 => 10
+
+o7 : HashTable
+
+i8 : 

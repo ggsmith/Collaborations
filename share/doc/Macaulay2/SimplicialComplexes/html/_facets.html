@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>facets -- the facets of a simplicial complex</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_f__Vector.html">next</a> | <a href="_faces_lp__Simplicial__Complex_rp.html">previous</a> | <a href="_f__Vector.html">forward</a> | <a href="_faces_lp__Simplicial__Complex_rp.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_facets.html" title="the facets of a simplicial complex">facets</a>    </div>
+    <hr/>
+    <div>
+      <h1>facets -- the facets of a simplicial complex</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>facets D</tt></dd>
+            </dl>
+          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>D</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+<a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_using_spfunctions_spwith_spoptional_spinputs.html">Optional inputs</a>:            <ul>
+              <li>
+<span><a href="_use__Face__Class.html">useFaceClass => ...</a>, </span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Matrix.html">matrix</a></span>, with one row, whose entries are squarefree monomials representing the facets (maximal faces) of <tt>D</tt></span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+In Macaulay2, every <a href="___Simplicial__Complex.html">simplicial complex</a> is equipped with a polynomial ring, and the resulting matrix of facets is defined over this ring.        <p>The 3-dimensional sphere has a unique minimal nonface which corresponds to the interior.</p>
+        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : R = ZZ[a..e];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : sphere = simplicialComplex monomialIdeal(a*b*c*d*e)
+
+o2 = | bcde acde abde abce abcd |
+
+o2 : SimplicialComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : facets sphere
+
+o3 = | bcde acde abde abce abcd |
+
+             1       5
+o3 : Matrix R  &lt;--- R</pre>
+            </td>
+          </tr>
+        </table>
+The following <a href="_faces.html" title="the i-faces of a simplicial complex ">faces</a> generate a simplicial complex consisting of a triangle (on vertices <tt>a,b,c</tt>), two edges connecting <tt>c</tt> to <tt>d</tt> and <tt>b</tt> to <tt>d</tt>, and an isolated vertex <tt>e</tt>.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i4 : D = simplicialComplex {e, c*d, b*d, a*b*c, a*b, c}
+
+o4 = | e cd bd abc |
+
+o4 : SimplicialComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i5 : facets D
+
+o5 = | e cd bd abc |
+
+             1       4
+o5 : Matrix R  &lt;--- R</pre>
+            </td>
+          </tr>
+        </table>
+There are four facets of <tt>D</tt>.        <p/>
+Note that no computatation is performed by this routine; all the computation was done while constructing the simplicial complex.        <p/>
+A simplicial complex is displayed by listing its facets, and so this function is frequently unnecessary.      </div>
+      <div>
+        <h2>See also</h2>
+        <ul>
+          <li>
+<span><a href="index.html" title="simplicial complexes">SimplicialComplexes</a> -- simplicial complexes</span>          </li>
+          <li>
+<span><a href="_simplicial__Complex.html" title="create a simplicial complex">simplicialComplex</a> -- create a simplicial complex</span>          </li>
+          <li>
+<span><a href="_faces.html" title="the i-faces of a simplicial complex ">faces</a> -- the i-faces of a simplicial complex </span>          </li>
+        </ul>
+      </div>
+      <div class="waystouse">
+        <h2>Ways to use <tt>facets</tt> :</h2>
+        <ul>
+          <li>
+facets(SimplicialComplex)          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>

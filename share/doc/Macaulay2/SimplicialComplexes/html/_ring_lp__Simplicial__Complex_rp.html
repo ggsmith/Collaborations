@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>ring(SimplicialComplex)</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="___Simplicial__Complex.html">next</a> | <a href="_ring_lp__Face_rp.html">previous</a> | <a href="___Simplicial__Complex.html">forward</a> | <a href="_ring_lp__Face_rp.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_ring_lp__Simplicial__Complex_rp.html" title="">ring(SimplicialComplex)</a>    </div>
+    <hr/>
+    <div>
+      <h1>ring(SimplicialComplex)</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>R = ring D</tt></dd>
+            </dl>
+          </li>
+          <li>
+<span>Function: <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_ring.html" title="get the associated ring of an object">ring</a></span>          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>D</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><tt>R</tt>, <span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Ring.html">ring</a></span>, the polynomial ring used to define <tt>D</tt></span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+The vertices of every simplicial complex are variables in the polynomial ring <tt>R</tt>, and subsets of vertices, such as faces, are represented as squarefree monomials in <tt>R</tt>.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : R = QQ[a..d];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : D = simplicialComplex monomialIdeal(a*b*c*d);</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : ring D
+
+o3 = R
+
+o3 : PolynomialRing</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i4 : coefficientRing D
+
+o4 = QQ
+
+o4 : Ring</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i5 : S = ZZ[w..z];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i6 : E = simplicialComplex monomialIdeal(w*x*y*z);</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i7 : ring E
+
+o7 = S
+
+o7 : PolynomialRing</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i8 : coefficientRing E
+
+o8 = ZZ
+
+o8 : Ring</pre>
+            </td>
+          </tr>
+        </table>
+        <p/>
+There is a bijection between simplicial complexes and squarefree monomial ideals.  This package exploits this correspondence by using commutative algebra routines to perform most of the necessary computations.      </div>
+      <div>
+        <h2>Caveat</h2>
+Some operations depend on the choice of ring, or its coefficient ring      </div>
+      <div>
+        <h2>See also</h2>
+        <ul>
+          <li>
+<span><a href="index.html" title="simplicial complexes">SimplicialComplexes</a> -- simplicial complexes</span>          </li>
+          <li>
+<span><a href="_coefficient__Ring_lp__Simplicial__Complex_rp.html" title="">coefficientRing(SimplicialComplex)</a></span>          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>
