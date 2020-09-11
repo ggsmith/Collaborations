@@ -59,6 +59,7 @@ export {
     "simplexComplex",
     "simplicialComplex",
     "smallManifold",
+    "taylorResolution",
     "zieglerBallComplex",
     -- symbol
     "Multigrading",
