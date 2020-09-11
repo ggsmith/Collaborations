@@ -48,7 +48,7 @@ export {
     "isFaceOf",    
     "isSubface", 
     "link",
-    "lyubeznikComplex", 
+    "lyubeznikSimplicialComplex", 
     "lyubeznikResolution",
     "scarfSimplicialComplex",
     "scarfChainComplex",
@@ -59,6 +59,7 @@ export {
     "simplexComplex",
     "simplicialComplex",
     "smallManifold",
+    "taylorResolution",
     "zieglerBallComplex",
     -- symbol
     "Multigrading",

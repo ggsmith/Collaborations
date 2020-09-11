@@ -732,6 +732,22 @@ buchbergerComplex(MonomialIdeal) := (I) -> (
 --     superficialComplex(flatten entries gens I, ring I))
 
 
+taylorResolution = method();
+taylorResolution List := ChainComplex => M -> (
+    if not all(M, m -> size m == 1) then 
+    error "-- expected a list of monomials";
+    if not all(M, m -> member(m,flatten entries mingens ideal M)) then 
+    error "-- expected minimal generators of a monomial ideal";
+    r := #M;
+    R := ZZ(monoid[vars(0..#M-1)]);
+    Simplex := simplexComplex(r-1,R);
+    chainComplex(Simplex,Labels=>M)
+    )
+
+taylorResolution MonomialIdeal := ChainComplex => M -> (
+    taylorResolution(first entries mingens M)
+    )
+
 lyubeznikSimplicialComplex = method(Options => {MonomialOrder => {}})
 lyubeznikSimplicialComplex (List,Ring) := opts -> (M,A) -> (
     if M == {}
@@ -778,8 +794,7 @@ lyubeznikSimplicialComplex(MonomialIdeal,Ring) := opts -> (I,R) -> (
 lyubeznikResolution = method(Options => {MonomialOrder => {}})
 lyubeznikResolution List := opts -> L -> (
     MO := opts.MonomialOrder;
-    x := getSymbol"SimplicialComplexVertex";
-    R := QQ[x_0..x_(#L-1)];
+    R := QQ(monoid[vars(0..#L-1)]);
     if opts.MonomialOrder == {}
     then return chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L)
     else return chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L_MO)
@@ -790,7 +805,7 @@ lyubeznikResolution MonomialIdeal := opts -> I -> (
     then return ((ring I)^1)[0];
     MinGens := flatten entries mingens I; 
     MO := opts.MonomialOrder;
-    R := QQ[vars(0..(numgens I)-1)];
+    R := QQ(monoid[vars(0..#(mingens I)-1)]);
     if opts.MonomialOrder == {}
     then return(
 	chainComplex(lyubeznikSimplicialComplex(I,R,MonomialOrder=>MO),Labels=>MinGens)
@@ -829,16 +844,14 @@ scarfSimplicialComplex (MonomialIdeal,Ring) := (I,A) -> (
 
 scarfChainComplex = method()
 scarfChainComplex List := L ->(
-    x := getSymbol"SimplicialComplexVertex";
-    A := QQ[x_0..x_(#L-1)];
+    A := QQ(monoid[vars(0..#L-1)]);
     chainComplex(scarfSimplicialComplex(L,A), Labels=>L)
     )
 
 scarfChainComplex MonomialIdeal := I -> (
     if numgens I == 0 
     then return ((ring I)^1)[0];
-    x := getSymbol"SimplicialComplexVertex";
-    A := QQ[x_0..x_((numgens I)-1)];
+    A := QQ(monoid[vars(0..#(mingens I)-1)]);
     chainComplex(scarfSimplicialComplex(I,A), Labels=>(first entries mingens I))
     )
 
