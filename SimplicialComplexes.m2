@@ -48,7 +48,7 @@ export {
     "isFaceOf",    
     "isSubface", 
     "link",
-    "lyubeznikComplex", 
+    "lyubeznikSimplicialComplex", 
     "lyubeznikResolution",
     "scarfSimplicialComplex",
     "scarfChainComplex",
