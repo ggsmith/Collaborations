@@ -1041,21 +1041,26 @@ isWellDefined SimplicialMap := Boolean => f -> (
     true    
     )
 
--*
+
 chainComplex SimplicialMap := ChainComplexMap => f -> (
-    D := chainComplex source f;
-    E := chainComplex target f;
-    g := i -> (
-	if i === -1
-	then return map(E_(-1),D_(-1),1)
-	else if i === 0
-	then 
-	
-	
-	);
-    map(chainComplex E, chainComplex D, g );
+    D := source f;
+    E := target f;
+    CD := chainComplex D;
+    CE := chainComplex E;
+    kk := coefficientRing D;
+    g := memoize(i -> (
+	    if i === -1
+	    then map(CE_(-1), CD_(-1), 1)
+	    else if i === 0 
+	    then map(CE_0, CD_0, matrix table(vertices E, vertices D, (u,v) -> if f.map(v) == u then 1_kk else 0_kk))
+	    else map(CE_i, CD_i, g(i-1) * CD.dd_i // CE.dd_i)
+	    )
+    	);
+    map(CE, CD, g)
     )
-*-
+
+-- Todo: test the void complex and see how it interacts with maps
+-- find some nice examples of simplicial maps
 
 -*
 S = QQ[w,x,y,z];
@@ -1066,6 +1071,12 @@ f = map(E, D, matrix {{s,t,t,s}})
 assert isWellDefined f
 h = map(E, D, {s,t,t,s})
 assert (h === f)
+
+g = chainComplex(f)
+
+CD = source g;
+CE = target g;
+for i to 3 list (g_(i-1)*CD.dd_i == CE.dd_i*g_i)
 
 describe f
 
