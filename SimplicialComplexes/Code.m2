@@ -732,8 +732,8 @@ buchbergerComplex(MonomialIdeal) := (I) -> (
 --     superficialComplex(flatten entries gens I, ring I))
 
 
-lyubeznikComplex = method(Options => {MonomialOrder => {}})
-lyubeznikComplex (List,Ring) := opts -> (M,A) -> (
+lyubeznikSimplicialComplex = method(Options => {MonomialOrder => {}})
+lyubeznikSimplicialComplex (List,Ring) := opts -> (M,A) -> (
     if M == {}
     then return simplicialComplex({1_A});
     if not all(M, m -> size m == 1) then 
@@ -770,9 +770,9 @@ lyubeznikComplex (List,Ring) := opts -> (M,A) -> (
     D
     )
 
-lyubeznikComplex(MonomialIdeal,Ring) := opts -> (I,R) -> (
+lyubeznikSimplicialComplex(MonomialIdeal,Ring) := opts -> (I,R) -> (
     MinGens := first entries mingens I;
-    lyubeznikComplex(MinGens, R, MonomialOrder => opts.MonomialOrder)
+    lyubeznikSimplicialComplex(MinGens, R, MonomialOrder => opts.MonomialOrder)
     )
 
 lyubeznikResolution = method(Options => {MonomialOrder => {}})
@@ -781,8 +781,8 @@ lyubeznikResolution List := opts -> L -> (
     x := getSymbol"SimplicialComplexVertex";
     R := QQ[x_0..x_(#L-1)];
     if opts.MonomialOrder == {}
-    then return chainComplex(lyubeznikComplex(L,R),Labels=>L)
-    else return chainComplex(lyubeznikComplex(L,R),Labels=>L_MO)
+    then return chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L)
+    else return chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L_MO)
     )
 
 lyubeznikResolution MonomialIdeal := opts -> I -> (
@@ -793,10 +793,10 @@ lyubeznikResolution MonomialIdeal := opts -> I -> (
     R := QQ[vars(0..(numgens I)-1)];
     if opts.MonomialOrder == {}
     then return(
-	chainComplex(lyubeznikComplex(I,R,MonomialOrder=>MO),Labels=>MinGens)
+	chainComplex(lyubeznikSimplicialComplex(I,R,MonomialOrder=>MO),Labels=>MinGens)
 	)
     else return(
-	 chainComplex(lyubeznikComplex(I,R,MonomialOrder=>MO),Labels=>MinGens_MO)
+	 chainComplex(lyubeznikSimplicialComplex(I,R,MonomialOrder=>MO),Labels=>MinGens_MO)
 	 )
      )
      
