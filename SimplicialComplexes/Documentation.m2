@@ -82,6 +82,7 @@ doc ///
     SeeAlso
         "making an abstract simplicial complex"
 	"finding attributes and properties"
+	"working with simplicial maps"
 ///
  
  
@@ -2948,10 +2949,6 @@ doc ///
 ------------------------------------------------------------------------------
 -- simplicial maps
 ------------------------------------------------------------------------------
-
--- Sasha: I just copied the documentation from ToricMaps, and edited it slightly.
--- This is just to have a vague structure formed.
-
 doc ///
     Key 
         "working with simplicial maps"
@@ -2976,11 +2973,15 @@ doc ///
         	TO (isWellDefined, SimplicialMap),
     	    }@
 	Text
-	    Having made a @TO2(SimplicialMap, "toric map")@, one can access its
+	    Having made a @TO2(SimplicialMap, "simplicial map")@, one can access its
 	    basic invariants or test for some elementary properties by using
 	    the following methods.
+	    Having made a 
+	    @TO2(SimplicialMap, "map of abstract simplicial complexes")@, one
+	    can access its basic invariants or test for some elementary
+	    properties by using the following methods.
     	Text
-    	    @SUBSECTION "Determining attributes and properties of toric maps"@
+    	    @SUBSECTION "Determining attributes and properties of simplicial maps"@
 	Text
     	    @UL {
         	TO (source, SimplicialMap),		
@@ -3032,7 +3033,7 @@ doc ///
     Description
         Text
 	    Given a simplicial map $f : C \to D$, this method returns the 
-	    simplicial complex $C$.
+	    abstract simplicial complex $C$.
        	Text
 	    todo need example
     SeeAlso
@@ -3059,7 +3060,7 @@ doc ///
     Description	    
         Text
 	    Given a toric map $f : C \to D$, this method returns the
-	    simplicial complex $C$.
+	    abstract simplicial complex $C$.
        	Text
 	    todo need example	    
     SeeAlso
@@ -3087,9 +3088,36 @@ doc ///
         Text
 	    todo
     SeeAlso
-        "working with toric maps"    
+        "working with simplicial maps"    
         (source, SimplicialMap)    
         (target, SimplicialMap)    		
 	(isWellDefined, SimplicialMap)
         (map, SimplicialComplex, SimplicialComplex, Matrix)
 ///	         
+
+doc ///
+    Key
+        (id, SimplicialComplex)
+    Headline
+    	make the identity map from a SimplicialVariety to itself
+    Usage 
+        id_D
+    Inputs 
+        D : SimplicialComplex
+    Outputs 
+        : SimplicialMap
+    Description
+        Text	    
+    	    The identity map on the underlying vertex set of an abstract
+    	    simplicial complex induces the identity map on the entire complex.
+	Example
+	    S = ZZ[a..e];
+	    D = simplexComplex(4,S)
+	    f = id_D
+	    assert (isWellDefined f and source f === D and
+		target f === D and matrix f === vars S)
+    SeeAlso
+        "working with simplical maps" 
+	(map, SimplicialComplex, SimplicialComplex, Matrix)	   
+	id 
+///    
