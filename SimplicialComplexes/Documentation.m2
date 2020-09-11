@@ -2835,11 +2835,11 @@ doc ///
         	TO (isWellDefined, SimplicialMap),
     	    }@
 	Text
-	    Having made a @TO2(SimplicialMap, "toric map")@, one can access its
+	    Having made a @TO2(SimplicialMap, "simplicial map")@, one can access its
 	    basic invariants or test for some elementary properties by using
 	    the following methods.
     	Text
-    	    @SUBSECTION "Determining attributes and properties of toric maps"@
+    	    @SUBSECTION "Determining attributes and properties of simplicial maps"@
 	Text
     	    @UL {
         	TO (source, SimplicialMap),		
