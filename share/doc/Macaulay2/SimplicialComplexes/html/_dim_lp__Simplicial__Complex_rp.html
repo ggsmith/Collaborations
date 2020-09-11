@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>dim(SimplicialComplex) -- dimension of a simplicial complex</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_dual_lp__Simplicial__Complex_rp.html">next</a> | <a href="_dim_lp__Face_rp.html">previous</a> | <a href="_dual_lp__Simplicial__Complex_rp.html">forward</a> | <a href="_dim_lp__Face_rp.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_dim_lp__Simplicial__Complex_rp.html" title="dimension of a simplicial complex">dim(SimplicialComplex)</a>    </div>
+    <hr/>
+    <div>
+      <h1>dim(SimplicialComplex) -- dimension of a simplicial complex</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>dim D</tt></dd>
+            </dl>
+          </li>
+          <li>
+<span>Function: <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_dim.html" title="compute the Krull dimension">dim</a></span>          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>D</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><span>an <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Z__Z.html">integer</a></span>, the maximum number of vertices in a face minus one</span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+The following simplicial complex consists of a tetrahedron, with two triangles attached, two more edges and an isolated vertex.  Since the largest facet has 4 vertices, this complex has dimension 3.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : R = ZZ[a..h];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : D = simplicialComplex{a*b*c*d, a*b*e, c*d*f, f*g, g*a, h}
+
+o2 = | h fg ag cdf abe abcd |
+
+o2 : SimplicialComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : dim D
+
+o3 = 3</pre>
+            </td>
+          </tr>
+        </table>
+The void complex has dimension minus infinity, while the irrelevant complex has dimension -1.        <table class="examples">
+          <tr>
+            <td>
+              <pre>i4 : void = simplicialComplex monomialIdeal 1_R;</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i5 : dim void
+
+o5 = -infinity
+
+o5 : InfiniteNumber</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i6 : irrelevant = simplicialComplex {1_R};</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i7 : dim irrelevant
+
+o7 = -1</pre>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>See also</h2>
+        <ul>
+          <li>
+<span><a href="index.html" title="simplicial complexes">SimplicialComplexes</a> -- simplicial complexes</span>          </li>
+          <li>
+<span><a href="_is__Pure.html" title="whether the facets are equidimensional">isPure</a> -- whether the facets are equidimensional</span>          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>

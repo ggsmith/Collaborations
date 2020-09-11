@@ -1,0 +1,27 @@
+-- -*- M2-comint -*- hash: -2033474136
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = ZZ[a..f];
+
+i2 : D = simplicialComplex {a*b*c, a*b*d, d*e*f} 
+
+o2 = | def abd abc |
+
+o2 : SimplicialComplex
+
+i3 : isPure D
+
+o3 = true
+
+i4 : E = simplicialComplex {a*b*c, b*d, d*e*f} 
+
+o4 = | def bd abc |
+
+o4 : SimplicialComplex
+
+i5 : isPure E
+
+o5 = false
+
+i6 : 

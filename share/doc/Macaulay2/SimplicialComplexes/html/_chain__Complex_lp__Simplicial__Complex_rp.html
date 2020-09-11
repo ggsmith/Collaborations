@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>chainComplex(SimplicialComplex) -- The chain complex of boundary maps.</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_coefficient__Ring_lp__Simplicial__Complex_rp.html">next</a> | <a href="_buchberger__Complex.html">previous</a> | <a href="_coefficient__Ring_lp__Simplicial__Complex_rp.html">forward</a> | <a href="_buchberger__Complex.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_chain__Complex_lp__Simplicial__Complex_rp.html" title="The chain complex of boundary maps.">chainComplex(SimplicialComplex)</a>    </div>
+    <hr/>
+    <div>
+      <h1>chainComplex(SimplicialComplex) -- The chain complex of boundary maps.</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>chainComplex C</tt></dd>
+            </dl>
+          </li>
+          <li>
+<span>Function: <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_chain__Complex.html" title="make a chain complex">chainComplex</a></span>          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>C</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Chain__Complex.html">chain complex</a></span></span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+        <div>
+          <p>The <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Chain__Complex.html" title="the class of all chain complexes">ChainComplex</a> of <a href="_boundary.html" title="boundary operator">boundary</a> maps from i-faces to (i-1)-faces.</p>
+          <p></p>
+        </div>
+        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : R = QQ[a..f];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : R' = ZZ/2[a..f];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i4 : D' = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i5 : c = chainComplex D
+
+       1       6       15       10
+o5 = QQ  &lt;-- QQ  &lt;-- QQ   &lt;-- QQ
+                               
+     -1      0       1        2
+
+o5 : ChainComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i6 : c' = chainComplex D'
+
+      ZZ 1      ZZ 6      ZZ 15      ZZ 10
+o6 = (--)  &lt;-- (--)  &lt;-- (--)   &lt;-- (--)
+       2         2         2          2
+                                     
+     -1        0         1          2
+
+o6 : ChainComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i7 : c.dd_1
+
+o7 = | 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  |
+     | -1 0  0  0  0  1  1  1  1  0  0  0  0  0  0  |
+     | 0  -1 0  0  0  -1 0  0  0  1  1  1  0  0  0  |
+     | 0  0  -1 0  0  0  -1 0  0  -1 0  0  1  1  0  |
+     | 0  0  0  -1 0  0  0  -1 0  0  -1 0  -1 0  1  |
+     | 0  0  0  0  -1 0  0  0  -1 0  0  -1 0  -1 -1 |
+
+              6        15
+o7 : Matrix QQ  &lt;--- QQ</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i8 : c'.dd_1
+
+o8 = | 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 |
+     | 1 0 0 0 0 1 1 1 1 0 0 0 0 0 0 |
+     | 0 1 0 0 0 1 0 0 0 1 1 1 0 0 0 |
+     | 0 0 1 0 0 0 1 0 0 1 0 0 1 1 0 |
+     | 0 0 0 1 0 0 0 1 0 0 1 0 1 0 1 |
+     | 0 0 0 0 1 0 0 0 1 0 0 1 0 1 1 |
+
+             ZZ 6       ZZ 15
+o8 : Matrix (--)  &lt;--- (--)
+              2          2</pre>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>See also</h2>
+        <ul>
+          <li>
+<span><a href="_boundary.html" title="boundary operator">boundary</a> -- boundary operator</span>          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>

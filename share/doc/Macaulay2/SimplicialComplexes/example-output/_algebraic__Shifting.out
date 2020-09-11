@@ -1,0 +1,80 @@
+-- -*- M2-comint -*- hash: 1931271999
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R=QQ[x_1..x_6];
+
+i2 : I=monomialIdeal(x_2*x_3*x_4*x_5,x_1*x_6);
+
+o2 : MonomialIdeal of R
+
+i3 : stacked = simplicialComplex(I)
+
+o3 = | x_3x_4x_5x_6 x_2x_4x_5x_6 x_2x_3x_5x_6 x_2x_3x_4x_6 x_1x_3x_4x_5 x_1x_2x_4x_5 x_1x_2x_3x_5 x_1x_2x_3x_4 |
+
+o3 : SimplicialComplex
+
+i4 : shifted = algebraicShifting(stacked)
+
+o4 = | x_3x_4x_5x_6 x_2x_4x_5x_6 x_1x_4x_5x_6 x_2x_3x_5x_6 x_1x_3x_5x_6 x_2x_3x_4x_6 x_1x_3x_4x_6 x_2x_3x_4x_5 |
+
+o4 : SimplicialComplex
+
+i5 : fVector stacked
+
+o5 = HashTable{-1 => 1}
+               0 => 6
+               1 => 14
+               2 => 16
+               3 => 8
+
+o5 : HashTable
+
+i6 : fVector shifted
+
+o6 = HashTable{-1 => 1}
+               0 => 6
+               1 => 14
+               2 => 16
+               3 => 8
+
+o6 : HashTable
+
+i7 : R=QQ[a,b,c];
+
+i8 : triangle = simplicialComplex{a*b,b*c,a*c};
+
+i9 : algebraicShifting(triangle) == triangle 
+
+o9 = true
+
+i10 : grading = {{1,0,0},{1,0,0},{1,0,0},{0,1,0},{0,0,1}};
+
+i11 : R=QQ[x_{1,1},x_{1,2},x_{1,3},x_{2,1},x_{3,1}, Degrees=>grading];
+
+i12 : delta = simplicialComplex({x_{1,3}*x_{2,1}*x_{3,1},x_{1,1}*x_{2,1},x_{1,2}*x_{3,1}})
+
+o12 = | x_{1, 3}x_{2, 1}x_{3, 1} x_{1, 2}x_{3, 1} x_{1, 1}x_{2, 1} |
+
+o12 : SimplicialComplex
+
+i13 : shifted = algebraicShifting(delta, Multigrading => true)
+
+o13 = | x_{1, 3}x_{2, 1}x_{3, 1} x_{1, 2}x_{3, 1} x_{1, 2}x_{2, 1} x_{1, 1} |
+
+o13 : SimplicialComplex
+
+i14 : prune (homology(delta))_1
+
+o14 = 0
+
+o14 : QQ-module
+
+i15 : prune (homology(shifted))_1
+
+        1
+o15 = QQ
+
+o15 : QQ-module, free
+
+i16 : 

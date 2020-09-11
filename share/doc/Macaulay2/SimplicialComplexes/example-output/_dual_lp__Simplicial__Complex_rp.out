@@ -1,0 +1,115 @@
+-- -*- M2-comint -*- hash: -1476783688
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = ZZ[a..d];
+
+i2 : D = simplicialComplex {a*b,b*c,c*d,d*a}
+
+o2 = | cd ad bc ab |
+
+o2 : SimplicialComplex
+
+i3 : dual D
+
+o3 = | bd ac |
+
+o3 : SimplicialComplex
+
+i4 : R = ZZ[a..e]
+
+o4 = R
+
+o4 : PolynomialRing
+
+i5 : E = simplicialComplex {a*b,b*c,c*d,d*a}
+
+o5 = | cd ad bc ab |
+
+o5 : SimplicialComplex
+
+i6 : dual E
+
+o6 = | bde ace abcd |
+
+o6 : SimplicialComplex
+
+i7 : R = QQ[a..f];
+
+i8 : D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
+
+o8 = | def aef bdf bcf acf cde bce abe acd abd |
+
+o8 : SimplicialComplex
+
+i9 : A = dual D
+
+o9 = | def aef bdf bcf acf cde bce abe acd abd |
+
+o9 : SimplicialComplex
+
+i10 : pdim (R^1/(ideal D))
+
+o10 = 3
+
+i11 : regularity ideal A
+
+o11 = 3
+
+i12 : R = QQ[x0,x1,x2,x3,x4,x5,x6];
+
+i13 : D = simplicialComplex {x0*x1*x3, x1*x3*x4, x1*x2*x4, x2*x4*x5,
+                     x2*x3*x5, x3*x5*x6, x3*x4*x6, x0*x4*x6,
+                     x0*x4*x5, x0*x1*x5, x1*x5*x6, x1*x2*x6,
+                     x0*x2*x6, x0*x2*x3}
+
+o13 = | x3x5x6 x1x5x6 x3x4x6 x0x4x6 x1x2x6 x0x2x6 x2x4x5 x0x4x5 x2x3x5 x0x1x5 x1x3x4 x1x2x4 x0x2x3 x0x1x3 |
+
+o13 : SimplicialComplex
+
+i14 : I = ideal D
+
+o14 = ideal (x0*x1*x2, x1*x2*x3, x0*x1*x4, x0*x2*x4, x0*x3*x4, x2*x3*x4,
+      -----------------------------------------------------------------------
+      x0*x2*x5, x1*x2*x5, x0*x3*x5, x1*x3*x5, x1*x4*x5, x3*x4*x5, x0*x1*x6,
+      -----------------------------------------------------------------------
+      x0*x3*x6, x1*x3*x6, x2*x3*x6, x1*x4*x6, x2*x4*x6, x0*x5*x6, x2*x5*x6,
+      -----------------------------------------------------------------------
+      x4*x5*x6)
+
+o14 : Ideal of R
+
+i15 : J = ideal dual D
+
+o15 = ideal (x0*x1*x2*x4, x0*x2*x3*x4, x0*x1*x2*x5, x1*x2*x3*x5, x0*x3*x4*x5,
+      -----------------------------------------------------------------------
+      x1*x3*x4*x5, x0*x1*x3*x6, x1*x2*x3*x6, x0*x1*x4*x6, x2*x3*x4*x6,
+      -----------------------------------------------------------------------
+      x0*x2*x5*x6, x0*x3*x5*x6, x1*x4*x5*x6, x2*x4*x5*x6)
+
+o15 : Ideal of R
+
+i16 : betti res I
+
+             0  1  2  3  4 5
+o16 = total: 1 21 49 42 15 2
+          0: 1  .  .  .  . .
+          1: .  .  .  .  . .
+          2: . 21 49 42 14 2
+          3: .  .  .  .  1 .
+
+o16 : BettiTally
+
+i17 : betti res J
+
+             0  1  2 3 4
+o17 = total: 1 14 21 9 1
+          0: 1  .  . . .
+          1: .  .  . . .
+          2: .  .  . . .
+          3: . 14 21 7 1
+          4: .  .  . 2 .
+
+o17 : BettiTally
+
+i18 : 

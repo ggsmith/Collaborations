@@ -48,7 +48,7 @@ export {
     "isFaceOf",    
     "isSubface", 
     "link",
-    "lyubeznikComplex", 
+    "lyubeznikSimplicialComplex", 
     "lyubeznikResolution",
     "scarfSimplicialComplex",
     "scarfChainComplex",
@@ -95,6 +95,4 @@ installPackage "SimplicialComplexes"
 check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
-
-
 

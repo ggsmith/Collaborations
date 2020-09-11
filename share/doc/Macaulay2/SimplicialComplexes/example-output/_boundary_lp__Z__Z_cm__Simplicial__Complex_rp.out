@@ -1,0 +1,120 @@
+-- -*- M2-comint -*- hash: -564442004
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = ZZ[a..d];
+
+i2 : D = simplicialComplex {a*b*c*d}
+
+o2 = | abcd |
+
+o2 : SimplicialComplex
+
+i3 : boundary(0,D)
+
+o3 = | 1 1 1 1 |
+
+              1        4
+o3 : Matrix ZZ  <--- ZZ
+
+i4 : faces(0,D)
+
+o4 = | a b c d |
+
+             1       4
+o4 : Matrix R  <--- R
+
+i5 : boundary(1,D)
+
+o5 = | -1 -1 -1 0  0  0  |
+     | 1  0  0  -1 -1 0  |
+     | 0  1  0  1  0  -1 |
+     | 0  0  1  0  1  1  |
+
+              4        6
+o5 : Matrix ZZ  <--- ZZ
+
+i6 : faces(1,D)
+
+o6 = | ab ac ad bc bd cd |
+
+             1       6
+o6 : Matrix R  <--- R
+
+i7 : boundary(2,D)
+
+o7 = | 1  1  0  0  |
+     | -1 0  1  0  |
+     | 0  -1 -1 0  |
+     | 1  0  0  1  |
+     | 0  1  0  -1 |
+     | 0  0  1  1  |
+
+              6        4
+o7 : Matrix ZZ  <--- ZZ
+
+i8 : faces(2,D)
+
+o8 = | abc abd acd bcd |
+
+             1       4
+o8 : Matrix R  <--- R
+
+i9 : boundary(3,D)
+
+o9 = | -1 |
+     | 1  |
+     | -1 |
+     | 1  |
+
+              4        1
+o9 : Matrix ZZ  <--- ZZ
+
+i10 : faces(3,D)
+
+o10 = | abcd |
+
+              1       1
+o10 : Matrix R  <--- R
+
+i11 : boundary(4,D)
+
+o11 = 0
+
+               1
+o11 : Matrix ZZ  <--- 0
+
+i12 : R = QQ[a..f];
+
+i13 : D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);
+
+i14 : boundary(1,D)
+
+o14 = | -1 -1 -1 -1 -1 0  0  0  0  0  0  0  0  0  0  |
+      | 1  0  0  0  0  -1 -1 -1 -1 0  0  0  0  0  0  |
+      | 0  1  0  0  0  1  0  0  0  -1 -1 -1 0  0  0  |
+      | 0  0  1  0  0  0  1  0  0  1  0  0  -1 -1 0  |
+      | 0  0  0  1  0  0  0  1  0  0  1  0  1  0  -1 |
+      | 0  0  0  0  1  0  0  0  1  0  0  1  0  1  1  |
+
+               6        15
+o14 : Matrix QQ  <--- QQ
+
+i15 : R' = ZZ/2[a..f];
+
+i16 : D' = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);
+
+i17 : boundary(1,D')
+
+o17 = | 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 |
+      | 1 0 0 0 0 1 1 1 1 0 0 0 0 0 0 |
+      | 0 1 0 0 0 1 0 0 0 1 1 1 0 0 0 |
+      | 0 0 1 0 0 0 1 0 0 1 0 0 1 1 0 |
+      | 0 0 0 1 0 0 0 1 0 0 1 0 1 0 1 |
+      | 0 0 0 0 1 0 0 0 1 0 0 1 0 1 1 |
+
+              ZZ 6       ZZ 15
+o17 : Matrix (--)  <--- (--)
+               2          2
+
+i18 : 

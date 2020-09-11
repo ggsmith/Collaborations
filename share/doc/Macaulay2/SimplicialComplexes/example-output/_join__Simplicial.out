@@ -1,0 +1,57 @@
+-- -*- M2-comint -*- hash: 288012512
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : R = QQ[x_1..x_5];
+
+i2 : bowtie = simplicialComplex {x_1*x_2*x_3, x_3*x_4*x_5};
+
+i3 : S = QQ[v];
+
+i4 : singleton = simplicialComplex {v};
+
+i5 : singleton * bowtie
+
+o5 = | vx_3x_4x_5 vx_1x_2x_3 |
+
+o5 : SimplicialComplex
+
+i6 : R = QQ[a..d];
+
+i7 : square = simplicialComplex {a*b, b*c, c*d, a*d};
+
+i8 : S = QQ[p,q];
+
+i9 : poles = simplicialComplex {p, q};
+
+i10 : octahedron = joinSimplicial(poles,square)
+
+o10 = | qcd pcd qad pad qbc pbc qab pab |
+
+o10 : SimplicialComplex
+
+i11 : R = ZZ[x_1..x_6];
+
+i12 : exagon = simplicialComplex {x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_6,x_1*x_6};
+
+i13 : S = ZZ[y_1..y_5];
+
+i14 : pentagon = simplicialComplex {y_1*y_2,y_2*y_3,y_3*y_4,y_4*y_5,y_1*y_5};
+
+i15 : sphere = joinSimplicial(exagon,pentagon)
+
+o15 = | x_5x_6y_4y_5 x_1x_6y_4y_5 x_4x_5y_4y_5 x_3x_4y_4y_5 x_2x_3y_4y_5 x_1x_2y_4y_5 x_5x_6y_1y_5 x_1x_6y_1y_5 x_4x_5y_1y_5 x_3x_4y_1y_5 x_2x_3y_1y_5 x_1x_2y_1y_5 x_5x_6y_3y_4 x_1x_6y_3y_4 x_4x_5y_3y_4 x_3x_4y_3y_4 x_2x_3y_3y_4 x_1x_2y_3y_4 x_5x_6y_2y_3 x_1x_6y_2y_3 x_4x_5y_2y_3 x_3x_4y_2y_3 x_2x_3y_2y_3 x_1x_2y_2y_3 x_5x_6y_1y_2 x_1x_6y_1y_2 x_4x_5y_1y_2 x_3x_4y_1y_2 x_2x_3y_1y_2 x_1x_2y_1y_2 |
+
+o15 : SimplicialComplex
+
+i16 : fVector(sphere)
+
+o16 = HashTable{-1 => 1}
+                0 => 11
+                1 => 41
+                2 => 60
+                3 => 30
+
+o16 : HashTable
+
+i17 : 

@@ -1,0 +1,29 @@
+-- -*- M2-comint -*- hash: 1572484972
+--loading configuration for package "FourTiTwo" from file /home/benjamin/.Macaulay2/init-FourTiTwo.m2
+--loading configuration for package "Topcom" from file /home/benjamin/.Macaulay2/init-Topcom.m2
+
+i1 : K=QQ;
+
+i2 : R=K[x_1..x_5];
+
+i3 : C=simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)
+
+o3 = | x_2x_4x_5 x_1x_4x_5 x_2x_3x_5 x_1x_3x_5 x_2x_3x_4 x_1x_3x_4 |
+
+o3 : SimplicialComplex
+
+i4 : C.faceIdeal
+
+o4 = monomialIdeal (x x , x x x )
+                     1 2   3 4 5
+
+o4 : MonomialIdeal of R
+
+i5 : ideal C
+
+o5 = ideal (x x , x x x )
+             1 2   3 4 5
+
+o5 : Ideal of R
+
+i6 : 

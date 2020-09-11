@@ -82,6 +82,7 @@ doc ///
     SeeAlso
         "making an abstract simplicial complex"
 	"finding attributes and properties"
+	"working with simplicial maps"
 ///
  
  
@@ -1936,6 +1937,7 @@ doc ///
 	    which gives the dimension of faces in the source of the map
 	D : SimplicialComplex
 	Labels => List
+	          of monomials in a polynomial ring {\tt S}.
     Outputs 
 	: Matrix
 	    that represents the boundary map from {\tt i}-faces to {\tt
@@ -1944,7 +1946,11 @@ doc ///
     	Text
     	    The boundary maps, up to sign, form the differential in the
     	    augmented oriented chain complex associated to an abstract
-    	    simplicial complex.
+    	    simplicial complex. If the {\tt Labels} option is used, then
+	    the output is the ({\tt i}+1)^{st} differential map of the
+	    complex of free {\tt S}-modules obtained from homogenizing {\tt D},
+	    with respect to the given labelling (see @TO([(chainComplex,
+	    SimplicialComplex),Labels])@ for more details.
         Text
             The columns of the output matrix are indexed by the $i$-faces of
      	    the abstract simplicial complex $D$ and the rows are indexed by
@@ -1958,7 +1964,7 @@ doc ///
 	    The boundary maps for the standard 3-simplex, defined over 
 	    @TO ZZ@, are:
     	Example
-	    S = ZZ[a..d];
+	    R = ZZ[a..d];
 	    D = simplicialComplex {a*b*c*d}
 	    boundaryMap (0, D)
 	    boundaryMap (1, D)
@@ -1970,6 +1976,18 @@ doc ///
 	    	C.dd_1 == - boundaryMap (1, D) and
 	    	C.dd_2 == - boundaryMap (2, D) and	   
 		C.dd_3 == - boundaryMap (3, D)) 
+	Text
+	    If we have a monomial ideal {\tt M} with 4 generators in a polynomial
+	    ring {\tt S}, then the homogenization of {\tt D} by {\tt M} will give 
+	    the Taylor resolution of {\tt R/M}. The differential maps for this 
+	    resolution can be constructed using the {\tt Labels} option.
+	Example
+	    S = ZZ/101[x_0,x_1];
+	    M = monomialIdeal(x_0^3,x_0^2*x_1,x_0*x_1^2,x_1^3);
+    	    T = chainComplex(D, Labels => first entries mingens M);
+	    T.dd
+	    all(1..length T, i -> T.dd_i == boundaryMap(i-1,D,Labels => first entries mingens M))
+	    boundaryMap(2,D,Labels=>first entries mingens M)
     	Text
             The boundary maps may depend on the coefficient ring as the
             following examples illustrate.
@@ -2006,25 +2024,56 @@ document {
 
 doc ///
      Key
-         lyubeznikComplex 
-	 [lyubeznikComplex,MonomialOrder]
-         (lyubeznikComplex,List,Ring)
-	 (lyubeznikComplex,MonomialIdeal,Ring)
+         lyubeznikSimplicialComplex 
+	 [lyubeznikSimplicialComplex,MonomialOrder]
+         (lyubeznikSimplicialComplex,List,Ring)
+	 (lyubeznikSimplicialComplex,MonomialIdeal,Ring)
      Headline
-         create a simplicial complex supporting a Lyubeznik resolution of a  monomial ideal
+         create a simplicial complex supporting a Lyubeznik resolution of a monomial ideal
      Usage
-         lyubeznikComplex(L,R)
-	 lyubeznikComplex(M,R)
+         lyubeznikSimplicialComplex(L,R)
+	 lyubeznikSimplicialComplex(M,R)
      Inputs
          L : List
+	     of monomials in a polynomial ring, that minimally generate a monomial
+	     ideal in a polynomial ring.
 	 M : MonomialIdeal
 	 R : PolynomialRing
+	     the ambient ring used in constructing the lyubeznik simplicial complex.
 	 MonomialOrder => List
-
-     -- Outputs
+     Outputs
+         D : SimplicialComplex
      Description
-
-     SeeAlso 
+        Text
+	    The Lyubeznik simplicial complex is the simplicial complex that
+	    supports the @TO2(lyubeznikResolution, "Lyubeznik resolution")@ of 
+	    an ordered set of monomials. This function is sensitive to the 
+	    order in which the monomials in {\tt L} appear. If you are using a 
+	    monomial ideal {\tt M} as your input, then the order of the
+	    monomials is given by {\tt first entries mingens M}.
+	Example
+	    S = QQ[x,y];
+	    R = QQ[a,b,c];
+	    M = monomialIdeal{x*y,x^2,y^3};
+	    D = lyubeznikSimplicialComplex(M,R)
+	Text
+	    The lyubeznic resolution of {\tt M} is the homogenization of
+	    {\tt D} by {\tt M} (See @TO([(chainComplex, SimplicialComplex),Labels])@).
+        Example
+	    L = lyubeznikResolution(M);
+	    L.dd
+            L' =chainComplex(D,Labels=>(first entries mingens M));
+	    L'.dd
+	Text
+	    Changing the order of the generators may change the output.
+	    We can do this by manually entering the permuted list of generators,
+	    or by using the optional {\tt MonomialOrder} argument.
+	Example
+	    first entries mingens M
+	    D' = lyubeznikSimplicialComplex(M,R,MonomialOrder=>{1,2,0})
+	    D' = lyubeznikSimplicialComplex({x^2,y^3,x*y},R)
+	    (lyubeznikResolution(M,MonomialOrder=>{1,2,0})).dd
+    SeeAlso 
          SimplicialComplexes
 	 lyubeznikResolution
 ///
@@ -2042,13 +2091,44 @@ doc ///
 	lyubeznikResolution M
     Inputs
         L : List
+	    of monomials in a polynomial ring, that minimally generate a monomial
+	    ideal in a polynomial ring.
 	M : MonomialIdeal
 	MonomialOrder => List
     Outputs
-        F : Resolution
+        : ChainComplex
+	  the Lyubeznik resolution of {\tt S/M}.
     Description
-    SeeAlso
-        lyubeznikComplex
+        Text
+            For a monomial ideal {\tt M} in a polynomial ring {\tt S}, minimally
+	    generated by {\tt L}, the Lyubeznik resolution is a resolution of
+	    {\tt S/M} determined by a total ordering of the minimal generators
+	    of {\tt M}. If {\tt L} is used as input, the ordering is the
+	    order in which the monomials appear in {\tt L}. If {\tt M} is used as
+	    the input, the ordering is obtained from {\tt first mingens entries M}.
+	    For more details on Lyubeznik resolutions and their construction, see
+	    Jeff Mermin 
+	    @HREF("https://www.degruyter.com/view/book/9783110250404/10.1515/9783110250404.127.xml", 
+		"Three Simplicial Resoltuions")@, (English summary) Progress in
+	     commutative algebra 1, 127–141, de Gruyter, Berlin, 2012.
+        Example
+	    S = QQ[x,y];
+	    M = monomialIdeal{x*y,x^2,y^3};
+	    F = lyubeznikResolution M;
+	    F.dd
+        Text
+	    Changing the order of the generators may change the output.
+	    We can do this by manually entering the permuted list of generators,
+	    or by using the optional {\tt MonomialOrder} argument.
+        Example
+	    first entries mingens M
+	    F' = lyubeznikResolution({x^2,y^3,x*y});
+	    F'.dd
+	    F' = lyubeznikResolution(M,MonomialOrder=>{1,2,0});
+	    F'.dd
+    SeeAlso 
+        SimplicialComplexes
+	lyubeznikSimplicialComplex
 ///
 
 doc///
@@ -2807,10 +2887,6 @@ doc ///
 ------------------------------------------------------------------------------
 -- simplicial maps
 ------------------------------------------------------------------------------
-
--- Sasha: I just copied the documentation from ToricMaps, and edited it slightly.
--- This is just to have a vague structure formed.
-
 doc ///
     Key 
         "working with simplicial maps"
@@ -2838,6 +2914,10 @@ doc ///
 	    Having made a @TO2(SimplicialMap, "simplicial map")@, one can access its
 	    basic invariants or test for some elementary properties by using
 	    the following methods.
+	    Having made a 
+	    @TO2(SimplicialMap, "map of abstract simplicial complexes")@, one
+	    can access its basic invariants or test for some elementary
+	    properties by using the following methods.
     	Text
     	    @SUBSECTION "Determining attributes and properties of simplicial maps"@
 	Text
@@ -2891,7 +2971,7 @@ doc ///
     Description
         Text
 	    Given a simplicial map $f : C \to D$, this method returns the 
-	    simplicial complex $C$.
+	    abstract simplicial complex $C$.
        	Text
 	    todo need example
     SeeAlso
@@ -2918,7 +2998,7 @@ doc ///
     Description	    
         Text
 	    Given a toric map $f : C \to D$, this method returns the
-	    simplicial complex $C$.
+	    abstract simplicial complex $C$.
        	Text
 	    todo need example	    
     SeeAlso
@@ -2946,9 +3026,36 @@ doc ///
         Text
 	    todo
     SeeAlso
-        "working with toric maps"    
+        "working with simplicial maps"    
         (source, SimplicialMap)    
         (target, SimplicialMap)    		
 	(isWellDefined, SimplicialMap)
         (map, SimplicialComplex, SimplicialComplex, Matrix)
 ///	         
+
+doc ///
+    Key
+        (id, SimplicialComplex)
+    Headline
+    	make the identity map from a SimplicialVariety to itself
+    Usage 
+        id_D
+    Inputs 
+        D : SimplicialComplex
+    Outputs 
+        : SimplicialMap
+    Description
+        Text	    
+    	    The identity map on the underlying vertex set of an abstract
+    	    simplicial complex induces the identity map on the entire complex.
+	Example
+	    S = ZZ[a..e];
+	    D = simplexComplex(4,S)
+	    f = id_D
+	    assert (isWellDefined f and source f === D and
+		target f === D and matrix f === vars S)
+    SeeAlso
+        "working with simplical maps" 
+	(map, SimplicialComplex, SimplicialComplex, Matrix)	   
+	id 
+///    

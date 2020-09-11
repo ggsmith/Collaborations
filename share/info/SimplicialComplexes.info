@@ -1,0 +1,3690 @@
+ -*- coding: utf-8 -*- This is SimplicialComplexes.info, produced by Macaulay2, version 1.16
+
+INFO-DIR-SECTION Macaulay2 and its packages
+START-INFO-DIR-ENTRY
+* SimplicialComplexes: (SimplicialComplexes).  simplicial complexes
+END-INFO-DIR-ENTRY
+
+
+File: SimplicialComplexes.info, Node: Top, Next: algebraicShifting, Up: Top
+
+SimplicialComplexes -- simplicial complexes
+*******************************************
+
+Description
+===========
+
+SimplicialComplexes is a package for manipulating simplicial complexes.
+
+
+A simplicial complex on a set of vertices is a collection of subsets D of these
+vertices, such that if F is in D, then every subset of F is also in D.  In
+Macaulay2, the vertices are variables in a polynomial ring, and each subset is
+represented as a product of the corresponding variables.
+
+
+There is a bijection between simplicial complexes and squarefree monomial
+ideals.  This package exploits this correspondence by using commutative algebra
+routines to perform most of the necessary computations.
+
+
+This package includes the following functions:
+  * *note SimplicialComplex * SimplicialComplex: SimplicialComplex _st
+    SimplicialComplex, -- the join of two simplicial complexes
+  * *note algebraicShifting: algebraicShifting, -- the algebraic shifting of a
+    simplicial complex
+  * *note boundary: boundary, -- boundary operator
+  * *note buchbergerComplex: buchbergerComplex, -- Buchberger complex of a
+    monomial ideal
+  * *note chainComplex(SimplicialComplex): chainComplex_lpSimplicialComplex_rp,
+    -- The chain complex of boundary maps.
+  * *note coefficientRing(SimplicialComplex):
+    coefficientRing_lpSimplicialComplex_rp,
+  * *note dim(SimplicialComplex): dim_lpSimplicialComplex_rp, -- dimension of a
+    simplicial complex
+  * *note dual(SimplicialComplex): dual_lpSimplicialComplex_rp, -- the
+    Alexander dual of a simplicial complex
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+  * *note facets: facets, -- the facets of a simplicial complex
+  * *note fVector: fVector, -- the f-vector of a simplicial complex
+  * *note HH SimplicialComplex: HH SimplicialComplex, -- Compute the homology
+    of a simplicial complex.
+  * *note ideal(SimplicialComplex): ideal_lpSimplicialComplex_rp, -- the ideal
+    of minimal nonfaces (the Stanley-Reisner ideal)
+  * *note isPure: isPure, -- whether the facets are equidimensional
+  * *note joinSimplicial: joinSimplicial, -- the join of two simplicial
+    complexes
+  * *note label: label, -- labels with monomials the faces of simplicial
+    complex
+  * *note lyubeznikComplex: lyubeznikComplex, -- Simplicial complex supporting
+    the Lyubeznik resolution of a  monomial ideal
+  * *note monomialIdeal(SimplicialComplex):
+    monomialIdeal_lpSimplicialComplex_rp, -- the monomial ideal of minimal
+    nonfaces (the Stanley-Reisner ideal)
+  * *note ring(SimplicialComplex): ring_lpSimplicialComplex_rp,
+  * *note simplicialComplex: simplicialComplex, -- create a simplicial complex
+  * *note simplicialChainComplex: chainComplex_lpSimplicialComplex_rp, -- The
+    chain complex of boundary maps.
+  * *note skeleton: skeleton, -- the n-skeleton of the simplicial complex D
+  * *note superficialComplex: superficialComplex, -- Simplicial complex
+    supporting a superficial resolution of a monomial ideal
+
+Authors
+=======
+
+  * Sorin Popescu (see http://www.math.sunysb.edu/~sorin/ )
+    <sorin@math.sunysb.edu>
+  * Gregory G. Smith (see http://www.mast.queensu.ca/~ggsmith )
+    <ggsmith@mast.queensu.ca>
+  * Mike Stillman (see http://www.math.cornell.edu/~mike )
+    <mike@math.cornell.edu>
+
+Version
+=======
+
+This documentation describes version 1.2 of SimplicialComplexes.
+
+Source code
+===========
+
+The source code from which this documentation is derived is in the file
+SimplicialComplexes.m2 (see share/Macaulay2/SimplicialComplexes.m2 ).
+
+Exports
+=======
+
+  * Types
+      * *note Face: Face, -- The class of faces of simplicial complexes.
+      * *note SimplicialComplex: SimplicialComplex,
+  * Functions and commands
+      * *note algebraicShifting: algebraicShifting, -- the algebraic shifting
+        of a simplicial complex
+      * *note boundary: boundary, -- boundary operator
+      * *note buchbergerComplex: buchbergerComplex, -- Buchberger complex of a
+        monomial ideal
+      * simplicialChainComplex, see *note chainComplex(SimplicialComplex):
+        chainComplex_lpSimplicialComplex_rp, -- The chain complex of boundary
+        maps.
+      * *note face: face, -- Generate a face.
+      * *note faces: faces, -- the i-faces of a simplicial complex 
+      * *note facets: facets, -- the facets of a simplicial complex
+      * *note fVector: fVector, -- the f-vector of a simplicial complex
+      * *note isFaceOf: isFaceOf, -- Substitute a face to a different ring.
+      * *note isPure: isPure, -- whether the facets are equidimensional
+      * *note isSubface: isSubface, -- Test whether a face is a subface of
+        another face.
+      * *note joinSimplicial: joinSimplicial, -- the join of two simplicial
+        complexes
+      * *note label: label, -- labels with monomials the faces of simplicial
+        complex
+      * *note link: link, -- link of a face in a simplicial complex
+      * *note lyubeznikComplex: lyubeznikComplex, -- Simplicial complex
+        supporting the Lyubeznik resolution of a  monomial ideal
+      * *note simplicialComplex: simplicialComplex, -- create a simplicial
+        complex
+      * *note skeleton: skeleton, -- the n-skeleton of the simplicial complex D
+      * *note star: star, -- star of a face in a simplicial complex
+      * *note superficialComplex: superficialComplex, -- Simplicial complex
+        supporting a superficial resolution of a monomial ideal
+      * *note vertices: vertices, -- The vertices of a face of a simplicial
+        complex.
+  * Methods
+      * algebraicShifting(SimplicialComplex), see *note algebraicShifting:
+        algebraicShifting, -- the algebraic shifting of a simplicial complex
+      * *note boundary(SimplicialComplex): boundary_lpSimplicialComplex_rp, --
+        the boundary simplicial complex of D
+      * *note boundary(ZZ,SimplicialComplex):
+        boundary_lpZZ_cmSimplicialComplex_rp, -- the boundary map from i-faces
+        to (i-1)-faces
+      * *note chainComplex(SimplicialComplex):
+        chainComplex_lpSimplicialComplex_rp, -- The chain complex of boundary
+        maps.
+      * simplicialChainComplex(List,SimplicialComplex), see *note
+        chainComplex(SimplicialComplex): chainComplex_lpSimplicialComplex_rp,
+        -- The chain complex of boundary maps.
+      * *note coefficientRing(SimplicialComplex):
+        coefficientRing_lpSimplicialComplex_rp,
+      * *note dim(Face): dim_lpFace_rp, -- The dimension of a face.
+      * *note dim(SimplicialComplex): dim_lpSimplicialComplex_rp, -- dimension
+        of a simplicial complex
+      * *note dual(SimplicialComplex): dual_lpSimplicialComplex_rp, -- the
+        Alexander dual of a simplicial complex
+      * *note Face == Face: Face == Face, -- Compare two faces.
+      * faces(ZZ,SimplicialComplex), see *note faces: faces, -- the i-faces of
+        a simplicial complex
+      * *note faces(SimplicialComplex): faces_lpSimplicialComplex_rp, --
+        Compute all faces of a simplicial complex.
+      * facets(SimplicialComplex), see *note facets: facets, -- the facets of a
+        simplicial complex
+      * fVector(SimplicialComplex), see *note fVector: fVector, -- the f-vector
+        of a simplicial complex
+      * *note HH SimplicialComplex: HH SimplicialComplex, -- Compute the
+        homology of a simplicial complex.
+      * homology(Nothing,SimplicialComplex), see *note HH SimplicialComplex: HH
+        SimplicialComplex, -- Compute the homology of a simplicial complex.
+      * *note HH_ZZ SimplicialComplex: HH_usZZ SimplicialComplex, -- Compute
+        the homology of a simplicial complex.
+      * *note HH_ZZ(SimplicialComplex,Ring):
+        HH_usZZ_lpSimplicialComplex_cmRing_rp, -- Compute the homology of a
+        simplicial complex.
+      * homology(Nothing,SimplicialComplex,Ring), see *note
+        homology(SimplicialComplex,Ring):
+        homology_lpSimplicialComplex_cmRing_rp, -- Compute the homology of a
+        simplicial complex.
+      * *note homology(SimplicialComplex,Ring):
+        homology_lpSimplicialComplex_cmRing_rp, -- Compute the homology of a
+        simplicial complex.
+      * *note ideal(SimplicialComplex): ideal_lpSimplicialComplex_rp, -- the
+        ideal of minimal nonfaces (the Stanley-Reisner ideal)
+      * isFaceOf(Face,SimplicialComplex), see *note isFaceOf: isFaceOf, --
+        Substitute a face to a different ring.
+      * isPure(SimplicialComplex), see *note isPure: isPure, -- whether the
+        facets are equidimensional
+      * isSubface(Face,Face), see *note isSubface: isSubface, -- Test whether a
+        face is a subface of another face.
+      * joinSimplicial(SimplicialComplex,SimplicialComplex), see *note
+        joinSimplicial: joinSimplicial, -- the join of two simplicial complexes
+      * label(SimplicialComplex,List), see *note label: label, -- labels with
+        monomials the faces of simplicial complex
+      * link(SimplicialComplex,RingElement), see *note link: link, -- link of a
+        face in a simplicial complex
+      * *note monomialIdeal(SimplicialComplex):
+        monomialIdeal_lpSimplicialComplex_rp, -- the monomial ideal of minimal
+        nonfaces (the Stanley-Reisner ideal)
+      * *note net(Face): net_lpFace_rp, -- Printing a face.
+      * *note net(SimplicialComplex): net_lpSimplicialComplex_rp, -- Printing a
+        simplicial complex.
+      * *note ring(Face): ring_lpFace_rp, -- Ring of a face.
+      * *note ring(SimplicialComplex): ring_lpSimplicialComplex_rp,
+      * *note SimplicialComplex * SimplicialComplex: SimplicialComplex _st
+        SimplicialComplex, -- the join of two simplicial complexes
+      * *note SimplicialComplex == SimplicialComplex: SimplicialComplex ==
+        SimplicialComplex, -- Compare two simplicial complexes.
+      * skeleton(ZZ,SimplicialComplex), see *note skeleton: skeleton, -- the
+        n-skeleton of the simplicial complex D
+      * star(SimplicialComplex,RingElement), see *note star: star, -- star of a
+        face in a simplicial complex
+      * *note substitute(Face,PolynomialRing):
+        substitute_lpFace_cmPolynomialRing_rp, -- Substitute a face to a
+        different ring.
+      * *note substitute(SimplicialComplex,PolynomialRing):
+        substitute_lpSimplicialComplex_cmPolynomialRing_rp, -- Substitute a
+        simplicial complex to a different ring.
+      * vertices(Face), see *note vertices: vertices, -- The vertices of a face
+        of a simplicial complex.
+  * Symbols
+      * *note faceIdeal: faceIdeal, -- Key to simplicial complex.
+      * *note useFaceClass: useFaceClass, -- Option to return faces in the
+        class Face
+
+File: SimplicialComplexes.info, Node: algebraicShifting, Next: boundary, Prev: Top, Up: Top
+
+algebraicShifting -- the algebraic shifting of a simplicial complex
+*******************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        A = algebraicShifting D
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * *note Optional inputs: (Macaulay2Doc)using functions with optional inputs,:
+      * Multigrading => a *note Boolean value: (Macaulay2Doc)Boolean,, default
+        value false, If true it returns the colored algebraic shifting w.r.t.
+        the multigrading of the underlying ring.
+  * Outputs:
+      * A, The algebraic shifting of the simplicial complex D. If Multigrading
+        => true then it returns the so called colored shifted complex.
+
+Description
+===========
+
+The boundary of the stacked 4-polytope on 6 vertices. Algebraic shifting
+preserves the f-vector.
++-----------------------------------------------------------------------------+
+|i1 : R=QQ[x_1..x_6];                                                         |
++-----------------------------------------------------------------------------+
+|i2 : I=monomialIdeal(x_2*x_3*x_4*x_5,x_1*x_6);                               |
+|                                                                             |
+|o2 : MonomialIdeal of R                                                      |
++-----------------------------------------------------------------------------+
+|i3 : stacked = simplicialComplex(I)                                          |
+|                                                                             |
+|o3 = | x_3x_4x_5x_6 x_2x_4x_5x_6 x_2x_3x_5x_6 x_2x_3x_4x_6 x_1x_3x_4x_5      |
+|                                                                             |
+|o3 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|x_1x_2x_4x_5 x_1x_2x_3x_5 x_1x_2x_3x_4 |                                     |
++-----------------------------------------------------------------------------+
+|i4 : shifted = algebraicShifting(stacked)                                    |
+|                                                                             |
+|o4 = | x_3x_4x_5x_6 x_2x_4x_5x_6 x_1x_4x_5x_6 x_2x_3x_5x_6 x_1x_3x_5x_6      |
+|                                                                             |
+|o4 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|x_2x_3x_4x_6 x_1x_3x_4x_6 x_2x_3x_4x_5 |                                     |
++-----------------------------------------------------------------------------+
+|i5 : fVector stacked                                                         |
+|                                                                             |
+|o5 = HashTable{-1 => 1}                                                      |
+|               0 => 6                                                        |
+|               1 => 14                                                       |
+|               2 => 16                                                       |
+|               3 => 8                                                        |
+|                                                                             |
+|o5 : HashTable                                                               |
++-----------------------------------------------------------------------------+
+|i6 : fVector shifted                                                         |
+|                                                                             |
+|o6 = HashTable{-1 => 1}                                                      |
+|               0 => 6                                                        |
+|               1 => 14                                                       |
+|               2 => 16                                                       |
+|               3 => 8                                                        |
+|                                                                             |
+|o6 : HashTable                                                               |
++-----------------------------------------------------------------------------+
+An empty triangle is a shifted complex.
++-----------------------------------------------+
+|i7 : R=QQ[a,b,c];                              |
++-----------------------------------------------+
+|i8 : triangle = simplicialComplex{a*b,b*c,a*c};|
++-----------------------------------------------+
+|i9 : algebraicShifting(triangle) == triangle   |
+|                                               |
+|o9 = true                                      |
++-----------------------------------------------+
+The multigraded algebraic shifting does not preserve the Betti numbers.
++-----------------------------------------------------------------------------+
+|i10 : grading = {{1,0,0},{1,0,0},{1,0,0},{0,1,0},{0,0,1}};                   |
++-----------------------------------------------------------------------------+
+|i11 : R=QQ[x_{1,1},x_{1,2},x_{1,3},x_{2,1},x_{3,1}, Degrees=>grading];       |
++-----------------------------------------------------------------------------+
+|i12 : delta = simplicialComplex({x_{1,3}*x_{2,1}*x_{3,1},x_{1,1}*x_{2,1},x_{1|
+|                                                                             |
+|o12 = | x_{1, 3}x_{2, 1}x_{3, 1} x_{1, 2}x_{3, 1} x_{1, 1}x_{2, 1} |         |
+|                                                                             |
+|o12 : SimplicialComplex                                                      |
+|-----------------------------------------------------------------------------|
+|,2}*x_{3,1}})                                                                |
++-----------------------------------------------------------------------------+
+|i13 : shifted = algebraicShifting(delta, Multigrading => true)               |
+|                                                                             |
+|o13 = | x_{1, 3}x_{2, 1}x_{3, 1} x_{1, 2}x_{3, 1} x_{1, 2}x_{2, 1} x_{1, 1} ||
+|                                                                             |
+|o13 : SimplicialComplex                                                      |
++-----------------------------------------------------------------------------+
+|i14 : prune (homology(delta))_1                                              |
+|                                                                             |
+|o14 = 0                                                                      |
+|                                                                             |
+|o14 : QQ-module                                                              |
++-----------------------------------------------------------------------------+
+|i15 : prune (homology(shifted))_1                                            |
+|                                                                             |
+|        1                                                                    |
+|o15 = QQ                                                                     |
+|                                                                             |
+|o15 : QQ-module, free                                                        |
++-----------------------------------------------------------------------------+
+References:
+
+
+G. Kalai, Algebraic Shifting, Computational Commutative Algebra and
+Combinatorics, 2001;
+
+
+S. Murai, Betti numbers of strongly color-stable ideals and squarefree strongly
+color-stable ideals, Journal of Algebraic Combinatorics.
+
+Ways to use algebraicShifting :
+===============================
+
+  * algebraicShifting(SimplicialComplex)
+
+File: SimplicialComplexes.info, Node: boundary, Next: boundary_lpSimplicialComplex_rp, Prev: algebraicShifting, Up: Top
+
+boundary -- boundary operator
+*****************************
+
+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+
+Ways to use boundary :
+======================
+
+  * *note boundary(SimplicialComplex): boundary_lpSimplicialComplex_rp, -- the
+    boundary simplicial complex of D
+  * *note boundary(ZZ,SimplicialComplex): boundary_lpZZ_cmSimplicialComplex_rp,
+    -- the boundary map from i-faces to (i-1)-faces
+
+File: SimplicialComplexes.info, Node: boundary_lpSimplicialComplex_rp, Next: boundary_lpZZ_cmSimplicialComplex_rp, Prev: boundary, Up: Top
+
+boundary(SimplicialComplex) -- the boundary simplicial complex of D
+*******************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        boundary D
+  * Function: *note boundary: boundary,
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note simplicial complex: SimplicialComplex,, the boundary simplicial
+        complex, i.e. the subcomplex of D consisting of all nonmaximal faces of
+        D
+
+Description
+===========
+
+The boundary of the standard 3-simplex is the 2-sphere.
++-----------------------------------------+
+|i1 : R = ZZ[a..d];                       |
++-----------------------------------------+
+|i2 : simplex = simplicialComplex{a*b*c*d}|
+|                                         |
+|o2 = | abcd |                            |
+|                                         |
+|o2 : SimplicialComplex                   |
++-----------------------------------------+
+|i3 : sphere = boundary simplex           |
+|                                         |
+|o3 = | bcd acd abd abc |                 |
+|                                         |
+|o3 : SimplicialComplex                   |
++-----------------------------------------+
+|i4 : fVector sphere                      |
+|                                         |
+|o4 = HashTable{-1 => 1}                  |
+|               0 => 4                    |
+|               1 => 6                    |
+|               2 => 4                    |
+|                                         |
+|o4 : HashTable                           |
++-----------------------------------------+
+|i5 : fVector simplex                     |
+|                                         |
+|o5 = HashTable{-1 => 1}                  |
+|               0 => 4                    |
+|               1 => 6                    |
+|               2 => 4                    |
+|               3 => 1                    |
+|                                         |
+|o5 : HashTable                           |
++-----------------------------------------+
+Facets may be of different dimensions.
++---------------------------------------------------+
+|i6 : R = ZZ[a..g];                                 |
++---------------------------------------------------+
+|i7 : D = simplicialComplex{a*b*c,a*d,d*f,g*c,e,f*g}|
+|                                                   |
+|o7 = | fg cg df e ad abc |                         |
+|                                                   |
+|o7 : SimplicialComplex                             |
++---------------------------------------------------+
+|i8 : E = boundary D                                |
+|                                                   |
+|o8 = | g f d bc ac ab |                            |
+|                                                   |
+|o8 : SimplicialComplex                             |
++---------------------------------------------------+
+|i9 : fVector D                                     |
+|                                                   |
+|o9 = HashTable{-1 => 1}                            |
+|               0 => 7                              |
+|               1 => 7                              |
+|               2 => 1                              |
+|                                                   |
+|o9 : HashTable                                     |
++---------------------------------------------------+
+|i10 : fVector E                                    |
+|                                                   |
+|o10 = HashTable{-1 => 1}                           |
+|                0 => 6                             |
+|                1 => 3                             |
+|                                                   |
+|o10 : HashTable                                    |
++---------------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note fVector: fVector, -- the f-vector of a simplicial complex
+  * *note isPure: isPure, -- whether the facets are equidimensional
+  * *note facets: facets, -- the facets of a simplicial complex
+
+File: SimplicialComplexes.info, Node: boundary_lpZZ_cmSimplicialComplex_rp, Next: buchbergerComplex, Prev: boundary_lpSimplicialComplex_rp, Up: Top
+
+boundary(ZZ,SimplicialComplex) -- the boundary map from i-faces to (i-1)-faces
+******************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        M = boundary(i,D)
+  * Function: *note boundary: boundary,
+  * Inputs:
+      * i, an *note integer: (Macaulay2Doc)ZZ,
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * M, a *note matrix: (Macaulay2Doc)Matrix,, the boundary map from i-faces
+        to (i-1)-faces of D
+
+Description
+===========
+
+The columns of the matrix M are indexed by the i-faces of D, and the rows are
+indexed by the (i-1)-faces, in the order given by *note faces: faces,.  M is
+defined over the *note coefficient ring:
+coefficientRing_lpSimplicialComplex_rp, of D.The boundary maps for the standard
+3-simplex, defined over ZZ.
++------------------------------------+
+|i1 : R = ZZ[a..d];                  |
++------------------------------------+
+|i2 : D = simplicialComplex {a*b*c*d}|
+|                                    |
+|o2 = | abcd |                       |
+|                                    |
+|o2 : SimplicialComplex              |
++------------------------------------+
+|i3 : boundary(0,D)                  |
+|                                    |
+|o3 = | 1 1 1 1 |                    |
+|                                    |
+|              1        4            |
+|o3 : Matrix ZZ  <--- ZZ             |
++------------------------------------+
+|i4 : faces(0,D)                     |
+|                                    |
+|o4 = | a b c d |                    |
+|                                    |
+|             1       4              |
+|o4 : Matrix R  <--- R               |
++------------------------------------+
+|i5 : boundary(1,D)                  |
+|                                    |
+|o5 = | -1 -1 -1 0  0  0  |          |
+|     | 1  0  0  -1 -1 0  |          |
+|     | 0  1  0  1  0  -1 |          |
+|     | 0  0  1  0  1  1  |          |
+|                                    |
+|              4        6            |
+|o5 : Matrix ZZ  <--- ZZ             |
++------------------------------------+
+|i6 : faces(1,D)                     |
+|                                    |
+|o6 = | ab ac ad bc bd cd |          |
+|                                    |
+|             1       6              |
+|o6 : Matrix R  <--- R               |
++------------------------------------+
+|i7 : boundary(2,D)                  |
+|                                    |
+|o7 = | 1  1  0  0  |                |
+|     | -1 0  1  0  |                |
+|     | 0  -1 -1 0  |                |
+|     | 1  0  0  1  |                |
+|     | 0  1  0  -1 |                |
+|     | 0  0  1  1  |                |
+|                                    |
+|              6        4            |
+|o7 : Matrix ZZ  <--- ZZ             |
++------------------------------------+
+|i8 : faces(2,D)                     |
+|                                    |
+|o8 = | abc abd acd bcd |            |
+|                                    |
+|             1       4              |
+|o8 : Matrix R  <--- R               |
++------------------------------------+
+|i9 : boundary(3,D)                  |
+|                                    |
+|o9 = | -1 |                         |
+|     | 1  |                         |
+|     | -1 |                         |
+|     | 1  |                         |
+|                                    |
+|              4        1            |
+|o9 : Matrix ZZ  <--- ZZ             |
++------------------------------------+
+|i10 : faces(3,D)                    |
+|                                    |
+|o10 = | abcd |                      |
+|                                    |
+|              1       1             |
+|o10 : Matrix R  <--- R              |
++------------------------------------+
+|i11 : boundary(4,D)                 |
+|                                    |
+|o11 = 0                             |
+|                                    |
+|               1                    |
+|o11 : Matrix ZZ  <--- 0             |
++------------------------------------+
+The boundary maps depend on the *note coefficient ring:
+coefficientRing_lpSimplicialComplex_rp, as the following examples illustrate.
++-----------------------------------------------------------------------------+
+|i12 : R = QQ[a..f];                                                          |
++-----------------------------------------------------------------------------+
+|i13 : D = simplicialComplex                                                  |
+|-----------------------------------------------------------------------------|
+|monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);  |
++-----------------------------------------------------------------------------+
+|i14 : boundary(1,D)                                                          |
+|                                                                             |
+|o14 = | -1 -1 -1 -1 -1 0  0  0  0  0  0  0  0  0  0  |                       |
+|      | 1  0  0  0  0  -1 -1 -1 -1 0  0  0  0  0  0  |                       |
+|      | 0  1  0  0  0  1  0  0  0  -1 -1 -1 0  0  0  |                       |
+|      | 0  0  1  0  0  0  1  0  0  1  0  0  -1 -1 0  |                       |
+|      | 0  0  0  1  0  0  0  1  0  0  1  0  1  0  -1 |                       |
+|      | 0  0  0  0  1  0  0  0  1  0  0  1  0  1  1  |                       |
+|                                                                             |
+|               6        15                                                   |
+|o14 : Matrix QQ  <--- QQ                                                     |
++-----------------------------------------------------------------------------+
+|i15 : R' = ZZ/2[a..f];                                                       |
++-----------------------------------------------------------------------------+
+|i16 : D' = simplicialComplex                                                 |
+|-----------------------------------------------------------------------------|
+|monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);  |
++-----------------------------------------------------------------------------+
+|i17 : boundary(1,D')                                                         |
+|                                                                             |
+|o17 = | 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 |                                      |
+|      | 1 0 0 0 0 1 1 1 1 0 0 0 0 0 0 |                                      |
+|      | 0 1 0 0 0 1 0 0 0 1 1 1 0 0 0 |                                      |
+|      | 0 0 1 0 0 0 1 0 0 1 0 0 1 1 0 |                                      |
+|      | 0 0 0 1 0 0 0 1 0 0 1 0 1 0 1 |                                      |
+|      | 0 0 0 0 1 0 0 0 1 0 0 1 0 1 1 |                                      |
+|                                                                             |
+|              ZZ 6       ZZ 15                                               |
+|o17 : Matrix (--)  <--- (--)                                                 |
+|               2          2                                                  |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note chainComplex(SimplicialComplex): chainComplex_lpSimplicialComplex_rp,
+    -- The chain complex of boundary maps.
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+
+File: SimplicialComplexes.info, Node: buchbergerComplex, Next: chainComplex_lpSimplicialComplex_rp, Prev: boundary_lpZZ_cmSimplicialComplex_rp, Up: Top
+
+buchbergerComplex -- Buchberger complex of a monomial ideal
+***********************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        buchbergerComplex(L,R)
+        buchbergerComplex I
+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+
+Ways to use buchbergerComplex :
+===============================
+
+  * buchbergerComplex(List,Ring)
+  * buchbergerComplex(MonomialIdeal)
+
+File: SimplicialComplexes.info, Node: chainComplex_lpSimplicialComplex_rp, Next: coefficientRing_lpSimplicialComplex_rp, Prev: buchbergerComplex, Up: Top
+
+chainComplex(SimplicialComplex) -- The chain complex of boundary maps.
+**********************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        chainComplex C
+  * Function: *note chainComplex: (Macaulay2Doc)chainComplex,
+  * Inputs:
+      * C, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note chain complex: (Macaulay2Doc)ChainComplex,
+
+Description
+===========
+
+The *note ChainComplex: (Macaulay2Doc)ChainComplex, of *note boundary:
+boundary, maps from i-faces to (i-1)-faces.
+
+
+
++-----------------------------------------------------------------------------+
+|i1 : R = QQ[a..f];                                                           |
++-----------------------------------------------------------------------------+
+|i2 : D = simplicialComplex                                                   |
+|-----------------------------------------------------------------------------|
+|monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);  |
++-----------------------------------------------------------------------------+
+|i3 : R' = ZZ/2[a..f];                                                        |
++-----------------------------------------------------------------------------+
+|i4 : D' = simplicialComplex                                                  |
+|-----------------------------------------------------------------------------|
+|monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f);  |
++-----------------------------------------------------------------------------+
+|i5 : c = chainComplex D                                                      |
+|                                                                             |
+|       1       6       15       10                                           |
+|o5 = QQ  <-- QQ  <-- QQ   <-- QQ                                             |
+|                                                                             |
+|     -1      0       1        2                                              |
+|                                                                             |
+|o5 : ChainComplex                                                            |
++-----------------------------------------------------------------------------+
+|i6 : c' = chainComplex D'                                                    |
+|                                                                             |
+|      ZZ 1      ZZ 6      ZZ 15      ZZ 10                                   |
+|o6 = (--)  <-- (--)  <-- (--)   <-- (--)                                     |
+|       2         2         2          2                                      |
+|                                                                             |
+|     -1        0         1          2                                        |
+|                                                                             |
+|o6 : ChainComplex                                                            |
++-----------------------------------------------------------------------------+
+|i7 : c.dd_1                                                                  |
+|                                                                             |
+|o7 = | 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  |                        |
+|     | -1 0  0  0  0  1  1  1  1  0  0  0  0  0  0  |                        |
+|     | 0  -1 0  0  0  -1 0  0  0  1  1  1  0  0  0  |                        |
+|     | 0  0  -1 0  0  0  -1 0  0  -1 0  0  1  1  0  |                        |
+|     | 0  0  0  -1 0  0  0  -1 0  0  -1 0  -1 0  1  |                        |
+|     | 0  0  0  0  -1 0  0  0  -1 0  0  -1 0  -1 -1 |                        |
+|                                                                             |
+|              6        15                                                    |
+|o7 : Matrix QQ  <--- QQ                                                      |
++-----------------------------------------------------------------------------+
+|i8 : c'.dd_1                                                                 |
+|                                                                             |
+|o8 = | 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 |                                       |
+|     | 1 0 0 0 0 1 1 1 1 0 0 0 0 0 0 |                                       |
+|     | 0 1 0 0 0 1 0 0 0 1 1 1 0 0 0 |                                       |
+|     | 0 0 1 0 0 0 1 0 0 1 0 0 1 1 0 |                                       |
+|     | 0 0 0 1 0 0 0 1 0 0 1 0 1 0 1 |                                       |
+|     | 0 0 0 0 1 0 0 0 1 0 0 1 0 1 1 |                                       |
+|                                                                             |
+|             ZZ 6       ZZ 15                                                |
+|o8 : Matrix (--)  <--- (--)                                                  |
+|              2          2                                                   |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note boundary: boundary, -- boundary operator
+
+File: SimplicialComplexes.info, Node: coefficientRing_lpSimplicialComplex_rp, Next: dim_lpFace_rp, Prev: chainComplex_lpSimplicialComplex_rp, Up: Top
+
+coefficientRing(SimplicialComplex)
+**********************************
+
+Synopsis
+========
+
+  * Usage: 
+        coefficientRing D
+  * Function: *note coefficientRing: (Macaulay2Doc)coefficientRing,
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note ring: (Macaulay2Doc)Ring,, the coefficients of the defining
+        *note polynomial ring: ring_lpSimplicialComplex_rp, of D
+
+Description
+===========
+
++--------------------------------------------------+
+|i1 : R = QQ[a..d];                                |
++--------------------------------------------------+
+|i2 : D = simplicialComplex monomialIdeal(a*b*c*d);|
++--------------------------------------------------+
+|i3 : ring D                                       |
+|                                                  |
+|o3 = R                                            |
+|                                                  |
+|o3 : PolynomialRing                               |
++--------------------------------------------------+
+|i4 : coefficientRing D                            |
+|                                                  |
+|o4 = QQ                                           |
+|                                                  |
+|o4 : Ring                                         |
++--------------------------------------------------+
+|i5 : S = ZZ[w..z];                                |
++--------------------------------------------------+
+|i6 : E = simplicialComplex monomialIdeal(w*x*y*z);|
++--------------------------------------------------+
+|i7 : ring E                                       |
+|                                                  |
+|o7 = S                                            |
+|                                                  |
+|o7 : PolynomialRing                               |
++--------------------------------------------------+
+|i8 : coefficientRing E                            |
+|                                                  |
+|o8 = ZZ                                           |
+|                                                  |
+|o8 : Ring                                         |
++--------------------------------------------------+
+Some computations depend on the choice of coefficient ring, for example, the
+boundary maps and the chain complex of D.
++---------------------------------+
+|i9 : chainComplex D              |
+|                                 |
+|       1       4       6       4 |
+|o9 = QQ  <-- QQ  <-- QQ  <-- QQ  |
+|                                 |
+|     -1      0       1       2   |
+|                                 |
+|o9 : ChainComplex                |
++---------------------------------+
+|i10 : chainComplex E             |
+|                                 |
+|        1       4       6       4|
+|o10 = ZZ  <-- ZZ  <-- ZZ  <-- ZZ |
+|                                 |
+|      -1      0       1       2  |
+|                                 |
+|o10 : ChainComplex               |
++---------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note ring(SimplicialComplex): ring_lpSimplicialComplex_rp,
+  * *note chainComplex(SimplicialComplex): chainComplex_lpSimplicialComplex_rp,
+    -- The chain complex of boundary maps.
+  * *note boundary: boundary, -- boundary operator
+
+File: SimplicialComplexes.info, Node: dim_lpFace_rp, Next: dim_lpSimplicialComplex_rp, Prev: coefficientRing_lpSimplicialComplex_rp, Up: Top
+
+dim(Face) -- The dimension of a face.
+*************************************
+
+Synopsis
+========
+
+  * Usage: 
+        dimension(F)
+  * Function: *note dim: (Macaulay2Doc)dim,
+  * Inputs:
+      * F, an instance of the type *note Face: Face,
+  * Outputs:
+      * an *note integer: (Macaulay2Doc)ZZ,, bigger or equal to -1
+
+Description
+===========
+
+Returns the dimension of a *note Face: Face,, i.e., the number of *note
+vertices: vertices, F minus 1.
+
+
+
++--------------------------------------------------------------+
+|i1 : K=QQ;                                                    |
++--------------------------------------------------------------+
+|i2 : R=K[x_0..x_4];                                           |
++--------------------------------------------------------------+
+|i3 : I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);|
+|                                                              |
+|o3 : MonomialIdeal of R                                       |
++--------------------------------------------------------------+
+|i4 : D=simplicialComplex I                                    |
+|                                                              |
+|o4 = | x_2x_4 x_1x_4 x_1x_3 x_0x_3 x_0x_2 |                   |
+|                                                              |
+|o4 : SimplicialComplex                                        |
++--------------------------------------------------------------+
+|i5 : fc=faces(D,useFaceClass=>true)                           |
+|                                                              |
+|o5 = MutableHashTable{...3...}                                |
+|                                                              |
+|o5 : MutableHashTable                                         |
++--------------------------------------------------------------+
+|i6 : apply(-1..1, j->apply(fc#j,dim))                         |
+|                                                              |
+|o6 = ({-1}, {0, 0, 0, 0, 0}, {1, 1, 1, 1, 1})                 |
+|                                                              |
+|o6 : Sequence                                                 |
++--------------------------------------------------------------+
+
+See also
+========
+
+  * *note face: face, -- Generate a face.
+  * *note facets: facets, -- the facets of a simplicial complex
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+
+File: SimplicialComplexes.info, Node: dim_lpSimplicialComplex_rp, Next: dual_lpSimplicialComplex_rp, Prev: dim_lpFace_rp, Up: Top
+
+dim(SimplicialComplex) -- dimension of a simplicial complex
+***********************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        dim D
+  * Function: *note dim: (Macaulay2Doc)dim,
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * an *note integer: (Macaulay2Doc)ZZ,, the maximum number of vertices in
+        a face minus one
+
+Description
+===========
+
+The following simplicial complex consists of a tetrahedron, with two triangles
+attached, two more edges and an isolated vertex.  Since the largest facet has 4
+vertices, this complex has dimension 3.
++--------------------------------------------------------------+
+|i1 : R = ZZ[a..h];                                            |
++--------------------------------------------------------------+
+|i2 : D = simplicialComplex{a*b*c*d, a*b*e, c*d*f, f*g, g*a, h}|
+|                                                              |
+|o2 = | h fg ag cdf abe abcd |                                 |
+|                                                              |
+|o2 : SimplicialComplex                                        |
++--------------------------------------------------------------+
+|i3 : dim D                                                    |
+|                                                              |
+|o3 = 3                                                        |
++--------------------------------------------------------------+
+The void complex has dimension minus infinity, while the irrelevant complex has
+dimension -1.
++------------------------------------------------+
+|i4 : void = simplicialComplex monomialIdeal 1_R;|
++------------------------------------------------+
+|i5 : dim void                                   |
+|                                                |
+|o5 = -infinity                                  |
+|                                                |
+|o5 : InfiniteNumber                             |
++------------------------------------------------+
+|i6 : irrelevant = simplicialComplex {1_R};      |
++------------------------------------------------+
+|i7 : dim irrelevant                             |
+|                                                |
+|o7 = -1                                         |
++------------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note isPure: isPure, -- whether the facets are equidimensional
+
+File: SimplicialComplexes.info, Node: dual_lpSimplicialComplex_rp, Next: Face, Prev: dim_lpSimplicialComplex_rp, Up: Top
+
+dual(SimplicialComplex) -- the Alexander dual of a simplicial complex
+*********************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        dual D
+  * Function: *note dual: (Macaulay2Doc)dual,
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note simplicial complex: SimplicialComplex,, the Alexander dual of D
+
+Description
+===========
+
+The Alexander dual of D is the simplicial complex whose faces are the
+complements of the nonfaces of D.  The Alexander dual of a square is the
+disjoint union of two edges.
++--------------------------------------------+
+|i1 : R = ZZ[a..d];                          |
++--------------------------------------------+
+|i2 : D = simplicialComplex {a*b,b*c,c*d,d*a}|
+|                                            |
+|o2 = | cd ad bc ab |                        |
+|                                            |
+|o2 : SimplicialComplex                      |
++--------------------------------------------+
+|i3 : dual D                                 |
+|                                            |
+|o3 = | bd ac |                              |
+|                                            |
+|o3 : SimplicialComplex                      |
++--------------------------------------------+
+
+
+The Alexander dual is homotopy equivalent to the complement of D in the sphere
+generated by all of the variables in the *note ring:
+ring_lpSimplicialComplex_rp, of D.  In particular, it depends on the number of
+variables.
++--------------------------------------------+
+|i4 : R = ZZ[a..e]                           |
+|                                            |
+|o4 = R                                      |
+|                                            |
+|o4 : PolynomialRing                         |
++--------------------------------------------+
+|i5 : E = simplicialComplex {a*b,b*c,c*d,d*a}|
+|                                            |
+|o5 = | cd ad bc ab |                        |
+|                                            |
+|o5 : SimplicialComplex                      |
++--------------------------------------------+
+|i6 : dual E                                 |
+|                                            |
+|o6 = | bde ace abcd |                       |
+|                                            |
+|o6 : SimplicialComplex                      |
++--------------------------------------------+
+The projective dimension of the face ring of D equals the regularity of the
+face ideal of the Alexander dual of D see e.g., Corollary 5.59 of
+Miller-Sturmfels, Combinatorial Commutative Algebra.
++-----------------------------------------------------------------------------+
+|i7 : R = QQ[a..f];                                                           |
++-----------------------------------------------------------------------------+
+|i8 : D = simplicialComplex                                                   |
+|                                                                             |
+|o8 = | def aef bdf bcf acf                                                   |
+|                                                                             |
+|o8 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)   |
+|                                                                             |
+|cde bce abe acd abd |                                                        |
++-----------------------------------------------------------------------------+
+|i9 : A = dual D                                                              |
+|                                                                             |
+|o9 = | def aef bdf bcf acf cde bce abe acd abd |                             |
+|                                                                             |
+|o9 : SimplicialComplex                                                       |
++-----------------------------------------------------------------------------+
+|i10 : pdim (R^1/(ideal D))                                                   |
+|                                                                             |
+|o10 = 3                                                                      |
++-----------------------------------------------------------------------------+
+|i11 : regularity ideal A                                                     |
+|                                                                             |
+|o11 = 3                                                                      |
++-----------------------------------------------------------------------------+
+
+
+Alexander duality interchanges extremal betti numbers of the face ideals.
+Following example 3.2 in Bayer-Charalambous-Popescu, Extremal betti numbers and
+applications to monomial ideals, we have
++-----------------------------------------------------------------------------+
+|i12 : R = QQ[x0,x1,x2,x3,x4,x5,x6];                                          |
++-----------------------------------------------------------------------------+
+|i13 : D = simplicialComplex {x0*x1*x3, x1*x3*x4, x1*x2*x4, x2*x4*x5,         |
+|                     x2*x3*x5, x3*x5*x6, x3*x4*x6, x0*x4*x6,                 |
+|                     x0*x4*x5, x0*x1*x5, x1*x5*x6, x1*x2*x6,                 |
+|                     x0*x2*x6, x0*x2*x3}                                     |
+|                                                                             |
+|o13 = | x3x5x6 x1x5x6 x3x4x6 x0x4x6 x1x2x6 x0x2x6 x2x4x5 x0x4x5 x2x3x5 x0x1x5|
+|                                                                             |
+|o13 : SimplicialComplex                                                      |
+|-----------------------------------------------------------------------------|
+|x1x3x4 x1x2x4 x0x2x3 x0x1x3 |                                                |
++-----------------------------------------------------------------------------+
+|i14 : I = ideal D                                                            |
+|                                                                             |
+|o14 = ideal (x0*x1*x2, x1*x2*x3, x0*x1*x4, x0*x2*x4, x0*x3*x4, x2*x3*x4,     |
+|      -----------------------------------------------------------------------|
+|      x0*x2*x5, x1*x2*x5, x0*x3*x5, x1*x3*x5, x1*x4*x5, x3*x4*x5, x0*x1*x6,  |
+|      -----------------------------------------------------------------------|
+|      x0*x3*x6, x1*x3*x6, x2*x3*x6, x1*x4*x6, x2*x4*x6, x0*x5*x6, x2*x5*x6,  |
+|      -----------------------------------------------------------------------|
+|      x4*x5*x6)                                                              |
+|                                                                             |
+|o14 : Ideal of R                                                             |
++-----------------------------------------------------------------------------+
+|i15 : J = ideal dual D                                                       |
+|                                                                             |
+|o15 = ideal (x0*x1*x2*x4, x0*x2*x3*x4, x0*x1*x2*x5, x1*x2*x3*x5, x0*x3*x4*x5,|
+|      -----------------------------------------------------------------------|
+|      x1*x3*x4*x5, x0*x1*x3*x6, x1*x2*x3*x6, x0*x1*x4*x6, x2*x3*x4*x6,       |
+|      -----------------------------------------------------------------------|
+|      x0*x2*x5*x6, x0*x3*x5*x6, x1*x4*x5*x6, x2*x4*x5*x6)                    |
+|                                                                             |
+|o15 : Ideal of R                                                             |
++-----------------------------------------------------------------------------+
+|i16 : betti res I                                                            |
+|                                                                             |
+|             0  1  2  3  4 5                                                 |
+|o16 = total: 1 21 49 42 15 2                                                 |
+|          0: 1  .  .  .  . .                                                 |
+|          1: .  .  .  .  . .                                                 |
+|          2: . 21 49 42 14 2                                                 |
+|          3: .  .  .  .  1 .                                                 |
+|                                                                             |
+|o16 : BettiTally                                                             |
++-----------------------------------------------------------------------------+
+|i17 : betti res J                                                            |
+|                                                                             |
+|             0  1  2 3 4                                                     |
+|o17 = total: 1 14 21 9 1                                                     |
+|          0: 1  .  . . .                                                     |
+|          1: .  .  . . .                                                     |
+|          2: .  .  . . .                                                     |
+|          3: . 14 21 7 1                                                     |
+|          4: .  .  . 2 .                                                     |
+|                                                                             |
+|o17 : BettiTally                                                             |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * dual(MonomialIdeal) (missing documentation) -- the Alexander dual of a
+    monomial ideal
+
+File: SimplicialComplexes.info, Node: Face, Next: face, Prev: dual_lpSimplicialComplex_rp, Up: Top
+
+Face -- The class of faces of simplicial complexes.
+***************************************************
+
+Description
+===========
+
+The class of faces of simplicial complexes on the variables of a polynomial
+ring. The faces are *note MutableHashTable: (Macaulay2Doc)MutableHashTable,s F
+with two *note keys: (Macaulay2Doc)keys,
+
+F.vertices is a *note List: (Macaulay2Doc)List, of vertices in the *note
+PolynomialRing: (Macaulay2Doc)PolynomialRing, F.ring
+
+
+
++--------------------------------------------------------------+
+|i1 : R=QQ[x_0..x_4];                                          |
++--------------------------------------------------------------+
+|i2 : F=face {x_0,x_2}                                         |
+|                                                              |
+|o2 = x  x                                                     |
+|      0  2                                                    |
+|                                                              |
+|o2 : face with 2 vertices in R                                |
++--------------------------------------------------------------+
+|i3 : I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);|
+|                                                              |
+|o3 : MonomialIdeal of R                                       |
++--------------------------------------------------------------+
+|i4 : D=simplicialComplex I                                    |
+|                                                              |
+|o4 = | x_2x_4 x_1x_4 x_1x_3 x_0x_3 x_0x_2 |                   |
+|                                                              |
+|o4 : SimplicialComplex                                        |
++--------------------------------------------------------------+
+|i5 : fc=faces(1,D,useFaceClass=>true)                         |
+|                                                              |
+|o5 = {x  x  , x  x  , x  x  , x  x  , x  x  }                 |
+|       0  2    0  3    1  3    1  4    2  4                   |
+|                                                              |
+|o5 : List                                                     |
++--------------------------------------------------------------+
+|i6 : select(fc,j->j==F)                                       |
+|                                                              |
+|o6 = {x  x  }                                                 |
+|       0  2                                                   |
+|                                                              |
+|o6 : List                                                     |
++--------------------------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplex: SimplicialComplex,
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+  * *note facets: facets, -- the facets of a simplicial complex
+
+Methods that use an object of class Face :
+==========================================
+
+  * *note dim(Face): dim_lpFace_rp, -- The dimension of a face.
+  * *note Face == Face: Face == Face, -- Compare two faces.
+  * isFaceOf(Face,SimplicialComplex), see *note isFaceOf: isFaceOf, --
+    Substitute a face to a different ring.
+  * isSubface(Face,Face), see *note isSubface: isSubface, -- Test whether a
+    face is a subface of another face.
+  * *note net(Face): net_lpFace_rp, -- Printing a face.
+  * *note ring(Face): ring_lpFace_rp, -- Ring of a face.
+  * *note substitute(Face,PolynomialRing):
+    substitute_lpFace_cmPolynomialRing_rp, -- Substitute a face to a different
+    ring.
+  * vertices(Face), see *note vertices: vertices, -- The vertices of a face of
+    a simplicial complex.
+
+For the programmer
+==================
+
+The object *note Face: Face, is a *note type: (Macaulay2Doc)Type,, with
+ancestor classes *note MutableHashTable: (Macaulay2Doc)MutableHashTable, <
+*note HashTable: (Macaulay2Doc)HashTable, < *note Thing: (Macaulay2Doc)Thing,.
+
+File: SimplicialComplexes.info, Node: face, Next: Face == Face, Prev: Face, Up: Top
+
+face -- Generate a face.
+************************
+
+Synopsis
+========
+
+  * Usage: 
+        face(L)
+        face(L,R)
+        face(m)
+  * Inputs:
+      * L, a *note list: (Macaulay2Doc)List,
+      * R, a *note polynomial ring: (Macaulay2Doc)PolynomialRing,
+      * m, a *note ring element: (Macaulay2Doc)RingElement,, a monomial
+  * Outputs:
+      * an instance of the type *note Face: Face,
+
+Description
+===========
+
+Generates a face out of a list L or a squarefree monomial. If L is not empty or
+a monomial the argument R is not required.
+
+
+
++------------------------------+
+|i1 : K=QQ;                    |
++------------------------------+
+|i2 : R=K[x_0..x_4];           |
++------------------------------+
+|i3 : F=face {x_0,x_1}         |
+|                              |
+|o3 = x  x                     |
+|      0  1                    |
+|                              |
+|o3 : face with 2 vertices in R|
++------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplex: SimplicialComplex,
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+  * *note facets: facets, -- the facets of a simplicial complex
+
+Ways to use face :
+==================
+
+  * face(List)
+  * face(List,PolynomialRing)
+  * face(RingElement)
+
+File: SimplicialComplexes.info, Node: Face == Face, Next: faceIdeal, Prev: face, Up: Top
+
+Face == Face -- Compare two faces.
+**********************************
+
+Synopsis
+========
+
+  * Usage: 
+        F==G
+  * Operator: *note ==: (Macaulay2Doc)==,
+  * Inputs:
+      * F, an instance of the type *note Face: Face,
+      * G, an instance of the type *note Face: Face,
+  * Outputs:
+      * a *note Boolean value: (Macaulay2Doc)Boolean,
+
+Description
+===========
+
+Checks whether F and G are equal.
+
+
+
++------------------------------+
+|i1 : K=QQ;                    |
++------------------------------+
+|i2 : R=K[x_0..x_4];           |
++------------------------------+
+|i3 : F=face {x_0,x_1}         |
+|                              |
+|o3 = x  x                     |
+|      0  1                    |
+|                              |
+|o3 : face with 2 vertices in R|
++------------------------------+
+|i4 : G1=face {x_1,x_0}        |
+|                              |
+|o4 = x  x                     |
+|      1  0                    |
+|                              |
+|o4 : face with 2 vertices in R|
++------------------------------+
+|i5 : G2=face {x_1,x_2}        |
+|                              |
+|o5 = x  x                     |
+|      1  2                    |
+|                              |
+|o5 : face with 2 vertices in R|
++------------------------------+
+|i6 : F==G1                    |
+|                              |
+|o6 = true                     |
++------------------------------+
+|i7 : F==G2                    |
+|                              |
+|o7 = false                    |
++------------------------------+
+
+See also
+========
+
+  * *note Face: Face, -- The class of faces of simplicial complexes.
+  * *note face: face, -- Generate a face.
+
+File: SimplicialComplexes.info, Node: faceIdeal, Next: faces, Prev: Face == Face, Up: Top
+
+faceIdeal -- Key to simplicial complex.
+***************************************
+
+Description
+===========
+
+This is a *note Key: (Macaulay2Doc)document_lp_pd_pd_pd_cm Key => _pd_pd_pd_rp,
+to a *note SimplicialComplex: SimplicialComplex, C storing its Stanley-Reisner
+ideal, which will be returned by C.faceIdeal.
+
+The Stanley-Reisner ideal of C can also be obtained by *note ideal:
+(Macaulay2Doc)ideal, C.
+
+
+
++--------------------------------------------------------------------+
+|i1 : K=QQ;                                                          |
++--------------------------------------------------------------------+
+|i2 : R=K[x_1..x_5];                                                 |
++--------------------------------------------------------------------+
+|i3 : C=simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)        |
+|                                                                    |
+|o3 = | x_2x_4x_5 x_1x_4x_5 x_2x_3x_5 x_1x_3x_5 x_2x_3x_4 x_1x_3x_4 ||
+|                                                                    |
+|o3 : SimplicialComplex                                              |
++--------------------------------------------------------------------+
+|i4 : C.faceIdeal                                                    |
+|                                                                    |
+|o4 = monomialIdeal (x x , x x x )                                   |
+|                     1 2   3 4 5                                    |
+|                                                                    |
+|o4 : MonomialIdeal of R                                             |
++--------------------------------------------------------------------+
+|i5 : ideal C                                                        |
+|                                                                    |
+|o5 = ideal (x x , x x x )                                           |
+|             1 2   3 4 5                                            |
+|                                                                    |
+|o5 : Ideal of R                                                     |
++--------------------------------------------------------------------+
+
+See also
+========
+
+  * *note ideal(SimplicialComplex): ideal_lpSimplicialComplex_rp, -- the ideal
+    of minimal nonfaces (the Stanley-Reisner ideal)
+
+For the programmer
+==================
+
+The object *note faceIdeal: faceIdeal, is a *note symbol:
+(Macaulay2Doc)Symbol,.
+
+File: SimplicialComplexes.info, Node: faces, Next: faces_lpSimplicialComplex_rp, Prev: faceIdeal, Up: Top
+
+faces -- the i-faces of a simplicial complex 
+*********************************************
+
+Synopsis
+========
+
+  * Usage: 
+        faces(i,D)
+  * Inputs:
+      * i, an *note integer: (Macaulay2Doc)ZZ,, the dimension of the faces
+      * D, a *note simplicial complex: SimplicialComplex,
+  * *note Optional inputs: (Macaulay2Doc)using functions with optional inputs,:
+      * *note useFaceClass => ...: useFaceClass,, 
+  * Outputs:
+      * a *note matrix: (Macaulay2Doc)Matrix,, with one row, whose entries are
+        squarefree monomials representing the faces of dimension i of D
+
+Description
+===========
+
+In Macaulay2, every *note simplicial complex: SimplicialComplex, is equipped
+with a polynomial ring, and the matrix of i-faces is defined over this ring.
+
+This triangulation of the real projective plane has 6 vertices, 15 edges and 10
+triangles.
+
++-----------------------------------------------------------------------------+
+|i1 : R = ZZ[a..f]                                                            |
+|                                                                             |
+|o1 = R                                                                       |
+|                                                                             |
+|o1 : PolynomialRing                                                          |
++-----------------------------------------------------------------------------+
+|i2 : D = simplicialComplex                                                   |
+|                                                                             |
+|                                                                             |
+|o2 = | def aef bdf bcf acf                                                   |
+|                                                                             |
+|o2 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,                                 |
+|                        b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)                       |
+|                                                                             |
+|cde bce abe acd abd |                                                        |
++-----------------------------------------------------------------------------+
+|i3 : faces(-1,D)                                                             |
+|                                                                             |
+|o3 = | 1 |                                                                   |
+|                                                                             |
+|             1       1                                                       |
+|o3 : Matrix R  <--- R                                                        |
++-----------------------------------------------------------------------------+
+|i4 : faces(0,D)                                                              |
+|                                                                             |
+|o4 = | a b c d e f |                                                         |
+|                                                                             |
+|             1       6                                                       |
+|o4 : Matrix R  <--- R                                                        |
++-----------------------------------------------------------------------------+
+|i5 : faces(1,D)                                                              |
+|                                                                             |
+|o5 = | ab ac ad ae af bc bd be bf cd ce cf de df ef |                        |
+|                                                                             |
+|             1       15                                                      |
+|o5 : Matrix R  <--- R                                                        |
++-----------------------------------------------------------------------------+
+|i6 : faces(2,D)                                                              |
+|                                                                             |
+|o6 = | abd abe acd acf aef bce bcf bdf cde def |                             |
+|                                                                             |
+|             1       10                                                      |
+|o6 : Matrix R  <--- R                                                        |
++-----------------------------------------------------------------------------+
+|i7 : fVector D                                                               |
+|                                                                             |
+|o7 = HashTable{-1 => 1}                                                      |
+|               0 => 6                                                        |
+|               1 => 15                                                       |
+|               2 => 10                                                       |
+|                                                                             |
+|o7 : HashTable                                                               |
++-----------------------------------------------------------------------------+
+
+
+To avoid repeated computation, the matrix of i-faces is cached at
+D.cache.faces#i.  This function will use this value if it has already been
+computed.
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note facets: facets, -- the facets of a simplicial complex
+  * *note boundary: boundary, -- boundary operator
+  * *note fVector: fVector, -- the f-vector of a simplicial complex
+
+Ways to use faces :
+===================
+
+  * faces(ZZ,SimplicialComplex)
+  * *note faces(SimplicialComplex): faces_lpSimplicialComplex_rp, -- Compute
+    all faces of a simplicial complex.
+
+File: SimplicialComplexes.info, Node: faces_lpSimplicialComplex_rp, Next: facets, Prev: faces, Up: Top
+
+faces(SimplicialComplex) -- Compute all faces of a simplicial complex.
+**********************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        faces(C)
+  * Function: *note faces: faces,
+  * Inputs:
+      * C, a *note simplicial complex: SimplicialComplex,
+  * *note Optional inputs: (Macaulay2Doc)using functions with optional inputs,:
+      * *note useFaceClass => ...: useFaceClass,, 
+  * Outputs:
+      * a *note mutable hash table: (Macaulay2Doc)MutableHashTable,
+
+Description
+===========
+
+Return a list of lists of the faces of a simplicial complex.
+
+
+
++-----------------------------------------------------------------------+
+|i1 : K=QQ;                                                             |
++-----------------------------------------------------------------------+
+|i2 : R=K[x_1..x_5];                                                    |
++-----------------------------------------------------------------------+
+|i3 : C=simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)           |
+|                                                                       |
+|o3 = | x_2x_4x_5 x_1x_4x_5 x_2x_3x_5 x_1x_3x_5 x_2x_3x_4 x_1x_3x_4 |   |
+|                                                                       |
+|o3 : SimplicialComplex                                                 |
++-----------------------------------------------------------------------+
+|i4 : fc=faces(C,useFaceClass=>true)                                    |
+|                                                                       |
+|o4 = MutableHashTable{...4...}                                         |
+|                                                                       |
+|o4 : MutableHashTable                                                  |
++-----------------------------------------------------------------------+
+|i5 : fc#2                                                              |
+|                                                                       |
+|o5 = {x  x  x  , x  x  x  , x  x  x  , x  x  x  , x  x  x  , x  x  x  }|
+|       1  3  4    1  3  5    1  4  5    2  3  4    2  3  5    2  4  5  |
+|                                                                       |
+|o5 : List                                                              |
++-----------------------------------------------------------------------+
+
+File: SimplicialComplexes.info, Node: facets, Next: fVector, Prev: faces_lpSimplicialComplex_rp, Up: Top
+
+facets -- the facets of a simplicial complex
+********************************************
+
+Synopsis
+========
+
+  * Usage: 
+        facets D
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * *note Optional inputs: (Macaulay2Doc)using functions with optional inputs,:
+      * *note useFaceClass => ...: useFaceClass,, 
+  * Outputs:
+      * a *note matrix: (Macaulay2Doc)Matrix,, with one row, whose entries are
+        squarefree monomials representing the facets (maximal faces) of D
+
+Description
+===========
+
+In Macaulay2, every *note simplicial complex: SimplicialComplex, is equipped
+with a polynomial ring, and the resulting matrix of facets is defined over this
+ring.
+
+The 3-dimensional sphere has a unique minimal nonface which corresponds to the
+interior.
+
++--------------------------------------------------------+
+|i1 : R = ZZ[a..e];                                      |
++--------------------------------------------------------+
+|i2 : sphere = simplicialComplex monomialIdeal(a*b*c*d*e)|
+|                                                        |
+|o2 = | bcde acde abde abce abcd |                       |
+|                                                        |
+|o2 : SimplicialComplex                                  |
++--------------------------------------------------------+
+|i3 : facets sphere                                      |
+|                                                        |
+|o3 = | bcde acde abde abce abcd |                       |
+|                                                        |
+|             1       5                                  |
+|o3 : Matrix R  <--- R                                   |
++--------------------------------------------------------+
+The following *note faces: faces, generate a simplicial complex consisting of a
+triangle (on vertices a,b,c), two edges connecting c to d and b to d, and an
+isolated vertex e.
++-------------------------------------------------------+
+|i4 : D = simplicialComplex {e, c*d, b*d, a*b*c, a*b, c}|
+|                                                       |
+|o4 = | e cd bd abc |                                   |
+|                                                       |
+|o4 : SimplicialComplex                                 |
++-------------------------------------------------------+
+|i5 : facets D                                          |
+|                                                       |
+|o5 = | e cd bd abc |                                   |
+|                                                       |
+|             1       4                                 |
+|o5 : Matrix R  <--- R                                  |
++-------------------------------------------------------+
+There are four facets of D.
+
+
+Note that no computatation is performed by this routine; all the computation
+was done while constructing the simplicial complex.
+
+
+A simplicial complex is displayed by listing its facets, and so this function
+is frequently unnecessary.
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note simplicialComplex: simplicialComplex, -- create a simplicial complex
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+
+Ways to use facets :
+====================
+
+  * facets(SimplicialComplex)
+
+File: SimplicialComplexes.info, Node: fVector, Next: HH SimplicialComplex, Prev: facets, Up: Top
+
+fVector -- the f-vector of a simplicial complex
+***********************************************
+
+Synopsis
+========
+
+  * Usage: 
+        f = fVector D
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * *note Optional inputs: (Macaulay2Doc)using functions with optional inputs,:
+      * Flag => a *note Boolean value: (Macaulay2Doc)Boolean,, default value
+        false, the flag f-vector if the simplicial complex is properly defined
+        over a multigraded ring.
+  * Outputs:
+      * f, a *note list: (Macaulay2Doc)List,, such that f#i is the number of
+        faces in D of dimension i for -1 <= i <= dim D or of squarefree degree
+        i.
+
+Description
+===========
+
+The pentagonal bipyramid has 7 vertices, 15 edges and 10 triangles.
++-------------------------------------------------+
+|i1 : R = ZZ[a..g];                               |
++-------------------------------------------------+
+|i2 : bipyramid = simplicialComplex monomialIdeal(|
+|           a*g, b*d, b*e, c*e, c*f, d*f)         |
+|                                                 |
+|o2 = | efg bfg deg cdg bcg aef abf ade acd abc | |
+|                                                 |
+|o2 : SimplicialComplex                           |
++-------------------------------------------------+
+|i3 : f = fVector bipyramid                       |
+|                                                 |
+|o3 = HashTable{-1 => 1}                          |
+|               0 => 7                            |
+|               1 => 15                           |
+|               2 => 10                           |
+|                                                 |
+|o3 : HashTable                                   |
++-------------------------------------------------+
+|i4 : f#0                                         |
+|                                                 |
+|o4 = 7                                           |
++-------------------------------------------------+
+|i5 : f#1                                         |
+|                                                 |
+|o5 = 15                                          |
++-------------------------------------------------+
+|i6 : f#2                                         |
+|                                                 |
+|o6 = 10                                          |
++-------------------------------------------------+
+Every simplicial complex other than the void complex has a unique face of
+dimension -1.
++-----------------------------------------------+
+|i7 : void = simplicialComplex monomialIdeal 1_R|
+|                                               |
+|o7 = 0                                         |
+|                                               |
+|o7 : SimplicialComplex                         |
++-----------------------------------------------+
+|i8 : fVector void                              |
+|                                               |
+|o8 = HashTable{-1 => 0}                        |
+|                                               |
+|o8 : HashTable                                 |
++-----------------------------------------------+
+For a larger examp;le we consider the polarization of an artinian monomial
+ideal from section 3.2 in Miller-Sturmfels, Combinatorial Commutative Algebra.
++------------------------------------------+
+|i9 : S = ZZ[x_1..x_4, y_1..y_4, z_1..z_4];|
++------------------------------------------+
+|i10 : I = monomialIdeal(x_1*x_2*x_3*x_4,  |
+|                 y_1*y_2*y_3*y_4,         |
+|                 z_1*z_2*z_3*z_4,         |
+|                 x_1*x_2*x_3*y_1*y_2*z_1, |
+|                 x_1*y_1*y_2*y_3*z_1*z_2, |
+|                 x_1*x_2*y_1*z_1*z_2*z_3);|
+|                                          |
+|o10 : MonomialIdeal of S                  |
++------------------------------------------+
+|i11 : D = simplicialComplex I;            |
++------------------------------------------+
+|i12 : fVector D                           |
+|                                          |
+|o12 = HashTable{-1 => 1 }                 |
+|                0 => 12                   |
+|                1 => 66                   |
+|                2 => 220                  |
+|                3 => 492                  |
+|                4 => 768                  |
+|                5 => 837                  |
+|                6 => 609                  |
+|                7 => 264                  |
+|                8 => 51                   |
+|                                          |
+|o12 : HashTable                           |
++------------------------------------------+
+The boundary of the 3-dimensional cross-polytope is 3-colorable. If we define
+this simplicial complex over a Z^3-graded ring we can ask for its flag
+f-vector.
++------------------------------------------------------------------+
+|i13 : grading = {{1,0,0},{1,0,0},{0,1,0},{0,1,0},{0,0,1},{0,0,1}};|
++------------------------------------------------------------------+
+|i14 : S = ZZ[x_1..x_6, Degrees => grading];                       |
++------------------------------------------------------------------+
+|i15 : I = monomialIdeal(x_1*x_2,x_3*x_4,x_5*x_6);                 |
+|                                                                  |
+|o15 : MonomialIdeal of S                                          |
++------------------------------------------------------------------+
+|i16 : fVector simplicialComplex I                                 |
+|                                                                  |
+|o16 = HashTable{-1 => 1}                                          |
+|                0 => 6                                            |
+|                1 => 12                                           |
+|                2 => 8                                            |
+|                                                                  |
+|o16 : HashTable                                                   |
++------------------------------------------------------------------+
+|i17 : fVector(simplicialComplex I, Flag => true)                  |
+|                                                                  |
+|o17 = HashTable{{0, 0, 0} => 1}                                   |
+|                {0, 0, 1} => 2                                    |
+|                {0, 1, 0} => 2                                    |
+|                {0, 1, 1} => 4                                    |
+|                {1, 0, 0} => 2                                    |
+|                {1, 0, 1} => 4                                    |
+|                {1, 1, 0} => 4                                    |
+|                {1, 1, 1} => 8                                    |
+|                                                                  |
+|o17 : HashTable                                                   |
++------------------------------------------------------------------+
+
+
+The f-vector is computed using the Hilbert series of the Stanley-Reisner ideal.
+For example, see Hosten and Smith's chapter Monomial Ideals, in Computations in
+Algebraic Geometry with Macaulay2, Springer 2001.
+
+Caveat
+======
+
+The option Flag checks if the multigrading corresponds to a properly d-coloring
+of D, where d is the dimension of D plus one. If it is not the case the output
+is an empty HashTable.
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+
+Ways to use fVector :
+=====================
+
+  * fVector(SimplicialComplex)
+
+File: SimplicialComplexes.info, Node: HH SimplicialComplex, Next: HH_usZZ SimplicialComplex, Prev: fVector, Up: Top
+
+HH SimplicialComplex -- Compute the homology of a simplicial complex.
+*********************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        homology C
+  * Function: *note homology: (Macaulay2Doc)homology,
+  * Inputs:
+      * C, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note graded module: (Macaulay2Doc)GradedModule,
+
+Description
+===========
+
+The graded module of reduced homologies of C with coefficients in R.
+
+
+
++-----------------------------------------------------------------------------+
+|i1 : R=ZZ[x_0..x_5];                                                         |
++-----------------------------------------------------------------------------+
+|i2 : D=simplicialComplex apply({{x_0, x_1, x_2}, {x_1, x_2, x_3}, {x_0, x_1, |
+|                                                                             |
+|o2 = | x_2x_4x_5 x_1x_4x_5 x_1x_3x_5 x_0x_3x_5 x_0x_2x_5 x_2x_3x_4 x_0x_3x_4 |
+|                                                                             |
+|o2 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|x_4}, {x_0, x_3, x_4}, {x_2, x_3, x_4}, {x_0, x_2, x_5}, {x_0, x_3, x_5},    |
+|                                                                             |
+|x_0x_1x_4 x_1x_2x_3 x_0x_1x_2 |                                              |
+|-----------------------------------------------------------------------------|
+|{x_1, x_3, x_5}, {x_1, x_4, x_5}, {x_2, x_4, x_5}},face)                     |
++-----------------------------------------------------------------------------+
+|i3 : homology D                                                              |
+|                                                                             |
+|o3 = -1 : cokernel | -1 -1 -1 -1 -1 -1 |                                     |
+|                                                                             |
+|      0 : subquotient (| 1  0  0  0  0  |, | 1  1  1  1  1  0  0  0  0  0  0 |
+|                       | 0  0  1  0  0  |  | -1 0  0  0  0  1  1  1  1  0  0 |
+|                       | 0  1  0  0  0  |  | 0  -1 0  0  0  -1 0  0  0  1  1 |
+|                       | 0  0  0  1  0  |  | 0  0  -1 0  0  0  -1 0  0  -1 0 |
+|                       | -1 -1 0  0  1  |  | 0  0  0  -1 0  0  0  -1 0  0  -1|
+|                       | 0  0  -1 -1 -1 |  | 0  0  0  0  -1 0  0  0  -1 0  0 |
+|          0  0  0  0  |)                                                     |
+|          0  0  0  0  |                                                      |
+|          1  0  0  0  |                                                      |
+|          0  1  1  0  |                                                      |
+|          0  -1 0  1  |                                                      |
+|          -1 0  -1 -1 |                                                      |
+|                                                                             |
+|      1 : subquotient (| 0  1  0  0  0  0  0  0  0  0  |, | -1 -1 0  0  0  0 |
+|                       | 1  0  0  0  0  0  0  0  0  0  |  | 1  0  -1 0  0  0 |
+|                       | 0  -1 1  0  -1 0  1  0  1  0  |  | 0  0  0  -1 -1 0 |
+|                       | 0  0  0  0  0  1  0  0  0  0  |  | 0  1  0  1  0  0 |
+|                       | -1 0  -1 0  1  -1 -1 0  -1 0  |  | 0  0  1  0  1  0 |
+|                       | 0  0  0  0  1  0  0  0  0  0  |  | -1 0  0  0  0  -1|
+|                       | 0  0  0  1  0  0  0  0  1  1  |  | 0  0  0  0  0  1 |
+|                       | 0  1  -1 0  0  0  0  0  -1 0  |  | 0  -1 0  0  0  0 |
+|                       | 0  0  1  -1 -1 0  0  0  0  -1 |  | 0  0  0  0  0  0 |
+|                       | 0  0  0  0  0  0  0  1  0  0  |  | 0  0  0  0  0  -1|
+|                       | 0  0  0  0  0  0  0  0  0  1  |  | 0  0  0  0  0  0 |
+|                       | 1  0  0  0  1  0  0  -1 0  -1 |  | 0  0  -1 0  0  0 |
+|                       | 0  -1 1  0  -1 0  1  1  2  1  |  | 0  0  0  -1 0  0 |
+|                       | 0  0  0  1  0  0  0  0  0  0  |  | 0  0  0  0  -1 0 |
+|                       | 0  0  0  0  -1 1  1  1  1  2  |  | 0  0  0  0  0  0 |
+|          0  0  0  0  |)                                                     |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          -1 0  0  0  |                                                      |
+|          0  -1 0  0  |                                                      |
+|          1  1  0  0  |                                                      |
+|          0  0  -1 0  |                                                      |
+|          0  0  1  -1 |                                                      |
+|          0  0  0  1  |                                                      |
+|          0  0  -1 0  |                                                      |
+|          -1 0  0  0  |                                                      |
+|          0  -1 0  -1 |                                                      |
+|                                                                             |
+|      2 : image 0                                                            |
+|                                                                             |
+|o3 : GradedModule                                                            |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note homology(SimplicialComplex,Ring):
+    homology_lpSimplicialComplex_cmRing_rp, -- Compute the homology of a
+    simplicial complex.
+  * *note HH_ZZ SimplicialComplex: HH_usZZ SimplicialComplex, -- Compute the
+    homology of a simplicial complex.
+  * *note HH_ZZ(SimplicialComplex,Ring): HH_usZZ_lpSimplicialComplex_cmRing_rp,
+    -- Compute the homology of a simplicial complex.
+
+File: SimplicialComplexes.info, Node: HH_usZZ SimplicialComplex, Next: HH_usZZ_lpSimplicialComplex_cmRing_rp, Prev: HH SimplicialComplex, Up: Top
+
+HH_ZZ SimplicialComplex -- Compute the homology of a simplicial complex.
+************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        homology(j,C)
+  * Function: *note homology: (Macaulay2Doc)homology,
+  * Inputs:
+      * j, an *note integer: (Macaulay2Doc)ZZ,
+      * C, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note module: (Macaulay2Doc)Module,
+
+Description
+===========
+
+Compute the j-th reduced homology of C with coefficients in *note
+coefficientRing(SimplicialComplex): coefficientRing_lpSimplicialComplex_rp, C.
+
+
+
++-----------------------------------------------------------------------------+
+|i1 : R=ZZ[x_0..x_5];                                                         |
++-----------------------------------------------------------------------------+
+|i2 : D=simplicialComplex apply({{x_0, x_1, x_2}, {x_1, x_2, x_3}, {x_0, x_1, |
+|                                                                             |
+|o2 = | x_2x_4x_5 x_1x_4x_5 x_1x_3x_5 x_0x_3x_5 x_0x_2x_5 x_2x_3x_4 x_0x_3x_4 |
+|                                                                             |
+|o2 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|x_4}, {x_0, x_3, x_4}, {x_2, x_3, x_4}, {x_0, x_2, x_5}, {x_0, x_3, x_5},    |
+|                                                                             |
+|x_0x_1x_4 x_1x_2x_3 x_0x_1x_2 |                                              |
+|-----------------------------------------------------------------------------|
+|{x_1, x_3, x_5}, {x_1, x_4, x_5}, {x_2, x_4, x_5}},face)                     |
++-----------------------------------------------------------------------------+
+|i3 : prune homology(1,D)                                                     |
+|                                                                             |
+|o3 = cokernel | 2 |                                                          |
+|                                                                             |
+|                              1                                              |
+|o3 : ZZ-module, quotient of ZZ                                               |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note HH_ZZ(SimplicialComplex,Ring): HH_usZZ_lpSimplicialComplex_cmRing_rp,
+    -- Compute the homology of a simplicial complex.
+  * *note boundary: boundary, -- boundary operator
+  * *note chainComplex(SimplicialComplex): chainComplex_lpSimplicialComplex_rp,
+    -- The chain complex of boundary maps.
+
+File: SimplicialComplexes.info, Node: HH_usZZ_lpSimplicialComplex_cmRing_rp, Next: homology_lpSimplicialComplex_cmRing_rp, Prev: HH_usZZ SimplicialComplex, Up: Top
+
+HH_ZZ(SimplicialComplex,Ring) -- Compute the homology of a simplicial complex.
+******************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        homology(j,C,R)
+  * Function: *note homology: (Macaulay2Doc)homology,
+  * Inputs:
+      * j, an *note integer: (Macaulay2Doc)ZZ,
+      * C, a *note simplicial complex: SimplicialComplex,
+      * R, a *note ring: (Macaulay2Doc)Ring,
+  * Outputs:
+      * a *note module: (Macaulay2Doc)Module,
+
+Description
+===========
+
+Compute the j-th reduced homology of C with coefficients in R.
+
+
+
++-----------------------------------------------------------------------------+
+|i1 : R=ZZ[x_0..x_5];                                                         |
++-----------------------------------------------------------------------------+
+|i2 : D=simplicialComplex apply({{x_0, x_1, x_2}, {x_1, x_2, x_3}, {x_0, x_1, |
+|                                                                             |
+|o2 = | x_2x_4x_5 x_1x_4x_5 x_1x_3x_5 x_0x_3x_5 x_0x_2x_5 x_2x_3x_4 x_0x_3x_4 |
+|                                                                             |
+|o2 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|x_4}, {x_0, x_3, x_4}, {x_2, x_3, x_4}, {x_0, x_2, x_5}, {x_0, x_3, x_5},    |
+|                                                                             |
+|x_0x_1x_4 x_1x_2x_3 x_0x_1x_2 |                                              |
+|-----------------------------------------------------------------------------|
+|{x_1, x_3, x_5}, {x_1, x_4, x_5}, {x_2, x_4, x_5}},face)                     |
++-----------------------------------------------------------------------------+
+|i3 : prune homology(1,D,ZZ)                                                  |
+|                                                                             |
+|o3 = cokernel | 2 |                                                          |
+|                                                                             |
+|                              1                                              |
+|o3 : ZZ-module, quotient of ZZ                                               |
++-----------------------------------------------------------------------------+
+|i4 : prune homology(1,D,QQ)                                                  |
+|                                                                             |
+|o4 = 0                                                                       |
+|                                                                             |
+|o4 : QQ-module                                                               |
++-----------------------------------------------------------------------------+
+|i5 : prune homology(1,D,ZZ/2)                                                |
+|                                                                             |
+|      ZZ 1                                                                   |
+|o5 = (--)                                                                    |
+|       2                                                                     |
+|                                                                             |
+|     ZZ                                                                      |
+|o5 : ---module, free                                                         |
+|      2                                                                      |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note HH_ZZ SimplicialComplex: HH_usZZ SimplicialComplex, -- Compute the
+    homology of a simplicial complex.
+  * *note boundary: boundary, -- boundary operator
+  * *note chainComplex(SimplicialComplex): chainComplex_lpSimplicialComplex_rp,
+    -- The chain complex of boundary maps.
+
+File: SimplicialComplexes.info, Node: homology_lpSimplicialComplex_cmRing_rp, Next: ideal_lpSimplicialComplex_rp, Prev: HH_usZZ_lpSimplicialComplex_cmRing_rp, Up: Top
+
+homology(SimplicialComplex,Ring) -- Compute the homology of a simplicial complex.
+*********************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        homology(C,R)
+  * Function: *note homology: (Macaulay2Doc)homology,
+  * Inputs:
+      * C, a *note simplicial complex: SimplicialComplex,
+      * R, a *note ring: (Macaulay2Doc)Ring,
+  * Outputs:
+      * a *note graded module: (Macaulay2Doc)GradedModule,
+
+Description
+===========
+
+The graded module of reduced homologies of C with coefficients in R.
+
+
+
++-----------------------------------------------------------------------------+
+|i1 : R=ZZ[x_0..x_5];                                                         |
++-----------------------------------------------------------------------------+
+|i2 : D=simplicialComplex apply({{x_0, x_1, x_2}, {x_1, x_2, x_3}, {x_0, x_1, |
+|                                                                             |
+|o2 = | x_2x_4x_5 x_1x_4x_5 x_1x_3x_5 x_0x_3x_5 x_0x_2x_5 x_2x_3x_4 x_0x_3x_4 |
+|                                                                             |
+|o2 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|x_4}, {x_0, x_3, x_4}, {x_2, x_3, x_4}, {x_0, x_2, x_5}, {x_0, x_3, x_5},    |
+|                                                                             |
+|x_0x_1x_4 x_1x_2x_3 x_0x_1x_2 |                                              |
+|-----------------------------------------------------------------------------|
+|{x_1, x_3, x_5}, {x_1, x_4, x_5}, {x_2, x_4, x_5}},face)                     |
++-----------------------------------------------------------------------------+
+|i3 : homology(D)                                                             |
+|                                                                             |
+|o3 = -1 : cokernel | -1 -1 -1 -1 -1 -1 |                                     |
+|                                                                             |
+|      0 : subquotient (| 1  0  0  0  0  |, | 1  1  1  1  1  0  0  0  0  0  0 |
+|                       | 0  0  1  0  0  |  | -1 0  0  0  0  1  1  1  1  0  0 |
+|                       | 0  1  0  0  0  |  | 0  -1 0  0  0  -1 0  0  0  1  1 |
+|                       | 0  0  0  1  0  |  | 0  0  -1 0  0  0  -1 0  0  -1 0 |
+|                       | -1 -1 0  0  1  |  | 0  0  0  -1 0  0  0  -1 0  0  -1|
+|                       | 0  0  -1 -1 -1 |  | 0  0  0  0  -1 0  0  0  -1 0  0 |
+|          0  0  0  0  |)                                                     |
+|          0  0  0  0  |                                                      |
+|          1  0  0  0  |                                                      |
+|          0  1  1  0  |                                                      |
+|          0  -1 0  1  |                                                      |
+|          -1 0  -1 -1 |                                                      |
+|                                                                             |
+|      1 : subquotient (| 0  1  0  0  0  0  0  0  0  0  |, | -1 -1 0  0  0  0 |
+|                       | 1  0  0  0  0  0  0  0  0  0  |  | 1  0  -1 0  0  0 |
+|                       | 0  -1 1  0  -1 0  1  0  1  0  |  | 0  0  0  -1 -1 0 |
+|                       | 0  0  0  0  0  1  0  0  0  0  |  | 0  1  0  1  0  0 |
+|                       | -1 0  -1 0  1  -1 -1 0  -1 0  |  | 0  0  1  0  1  0 |
+|                       | 0  0  0  0  1  0  0  0  0  0  |  | -1 0  0  0  0  -1|
+|                       | 0  0  0  1  0  0  0  0  1  1  |  | 0  0  0  0  0  1 |
+|                       | 0  1  -1 0  0  0  0  0  -1 0  |  | 0  -1 0  0  0  0 |
+|                       | 0  0  1  -1 -1 0  0  0  0  -1 |  | 0  0  0  0  0  0 |
+|                       | 0  0  0  0  0  0  0  1  0  0  |  | 0  0  0  0  0  -1|
+|                       | 0  0  0  0  0  0  0  0  0  1  |  | 0  0  0  0  0  0 |
+|                       | 1  0  0  0  1  0  0  -1 0  -1 |  | 0  0  -1 0  0  0 |
+|                       | 0  -1 1  0  -1 0  1  1  2  1  |  | 0  0  0  -1 0  0 |
+|                       | 0  0  0  1  0  0  0  0  0  0  |  | 0  0  0  0  -1 0 |
+|                       | 0  0  0  0  -1 1  1  1  1  2  |  | 0  0  0  0  0  0 |
+|          0  0  0  0  |)                                                     |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          -1 0  0  0  |                                                      |
+|          0  -1 0  0  |                                                      |
+|          1  1  0  0  |                                                      |
+|          0  0  -1 0  |                                                      |
+|          0  0  1  -1 |                                                      |
+|          0  0  0  1  |                                                      |
+|          0  0  -1 0  |                                                      |
+|          -1 0  0  0  |                                                      |
+|          0  -1 0  -1 |                                                      |
+|                                                                             |
+|      2 : image 0                                                            |
+|                                                                             |
+|o3 : GradedModule                                                            |
++-----------------------------------------------------------------------------+
+|i4 : homology(D,QQ)                                                          |
+|                                                                             |
+|o4 = -1 : cokernel | -1 -1 -1 -1 -1 -1 |                                     |
+|                                                                             |
+|      0 : subquotient (| -1 -1 -1 -1 -1 |, | 1  1  1  1  1  0  0  0  0  0  0 |
+|                       | 1  0  0  0  0  |  | -1 0  0  0  0  1  1  1  1  0  0 |
+|                       | 0  1  0  0  0  |  | 0  -1 0  0  0  -1 0  0  0  1  1 |
+|                       | 0  0  1  0  0  |  | 0  0  -1 0  0  0  -1 0  0  -1 0 |
+|                       | 0  0  0  1  0  |  | 0  0  0  -1 0  0  0  -1 0  0  -1|
+|                       | 0  0  0  0  1  |  | 0  0  0  0  -1 0  0  0  -1 0  0 |
+|          0  0  0  0  |)                                                     |
+|          0  0  0  0  |                                                      |
+|          1  0  0  0  |                                                      |
+|          0  1  1  0  |                                                      |
+|          0  -1 0  1  |                                                      |
+|          -1 0  -1 -1 |                                                      |
+|                                                                             |
+|      1 : subquotient (| 1  1  1  1  0  0  0  0  0  0  |, | -1 -1 0  0  0  0 |
+|                       | -1 0  0  0  1  1  1  0  0  0  |  | 1  0  -1 0  0  0 |
+|                       | 0  -1 0  0  -1 0  0  1  1  0  |  | 0  0  0  -1 -1 0 |
+|                       | 0  0  -1 0  0  -1 0  -1 0  1  |  | 0  1  0  1  0  0 |
+|                       | 0  0  0  -1 0  0  -1 0  -1 -1 |  | 0  0  1  0  1  0 |
+|                       | 1  0  0  0  0  0  0  0  0  0  |  | -1 0  0  0  0  -1|
+|                       | 0  1  0  0  0  0  0  0  0  0  |  | 0  0  0  0  0  1 |
+|                       | 0  0  1  0  0  0  0  0  0  0  |  | 0  -1 0  0  0  0 |
+|                       | 0  0  0  1  0  0  0  0  0  0  |  | 0  0  0  0  0  0 |
+|                       | 0  0  0  0  1  0  0  0  0  0  |  | 0  0  0  0  0  -1|
+|                       | 0  0  0  0  0  1  0  0  0  0  |  | 0  0  0  0  0  0 |
+|                       | 0  0  0  0  0  0  1  0  0  0  |  | 0  0  -1 0  0  0 |
+|                       | 0  0  0  0  0  0  0  1  0  0  |  | 0  0  0  -1 0  0 |
+|                       | 0  0  0  0  0  0  0  0  1  0  |  | 0  0  0  0  -1 0 |
+|                       | 0  0  0  0  0  0  0  0  0  1  |  | 0  0  0  0  0  0 |
+|          0  0  0  0  |)                                                     |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          0  0  0  0  |                                                      |
+|          -1 0  0  0  |                                                      |
+|          0  -1 0  0  |                                                      |
+|          1  1  0  0  |                                                      |
+|          0  0  -1 0  |                                                      |
+|          0  0  1  -1 |                                                      |
+|          0  0  0  1  |                                                      |
+|          0  0  -1 0  |                                                      |
+|          -1 0  0  0  |                                                      |
+|          0  -1 0  -1 |                                                      |
+|                                                                             |
+|      2 : image 0                                                            |
+|                                                                             |
+|o4 : GradedModule                                                            |
++-----------------------------------------------------------------------------+
+|i5 : homology(D,ZZ/2)                                                        |
+|                                                                             |
+|o5 = -1 : cokernel | 1 1 1 1 1 1 |                                           |
+|                                                                             |
+|      0 : subquotient (| 1 1 1 1 1 |, | 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 |)     |
+|                       | 1 0 0 0 0 |  | 1 0 0 0 0 1 1 1 1 0 0 0 0 0 0 |      |
+|                       | 0 1 0 0 0 |  | 0 1 0 0 0 1 0 0 0 1 1 1 0 0 0 |      |
+|                       | 0 0 1 0 0 |  | 0 0 1 0 0 0 1 0 0 1 0 0 1 1 0 |      |
+|                       | 0 0 0 1 0 |  | 0 0 0 1 0 0 0 1 0 0 1 0 1 0 1 |      |
+|                       | 0 0 0 0 1 |  | 0 0 0 0 1 0 0 0 1 0 0 1 0 1 1 |      |
+|                                                                             |
+|      1 : subquotient (| 1 1 1 1 0 0 0 0 0 0 |, | 1 1 0 0 0 0 0 0 0 0 |)     |
+|                       | 1 0 0 0 1 1 1 0 0 0 |  | 1 0 1 0 0 0 0 0 0 0 |      |
+|                       | 0 1 0 0 1 0 0 1 1 0 |  | 0 0 0 1 1 0 0 0 0 0 |      |
+|                       | 0 0 1 0 0 1 0 1 0 1 |  | 0 1 0 1 0 0 0 0 0 0 |      |
+|                       | 0 0 0 1 0 0 1 0 1 1 |  | 0 0 1 0 1 0 0 0 0 0 |      |
+|                       | 1 0 0 0 0 0 0 0 0 0 |  | 1 0 0 0 0 1 0 0 0 0 |      |
+|                       | 0 1 0 0 0 0 0 0 0 0 |  | 0 0 0 0 0 1 1 0 0 0 |      |
+|                       | 0 0 1 0 0 0 0 0 0 0 |  | 0 1 0 0 0 0 0 1 0 0 |      |
+|                       | 0 0 0 1 0 0 0 0 0 0 |  | 0 0 0 0 0 0 1 1 0 0 |      |
+|                       | 0 0 0 0 1 0 0 0 0 0 |  | 0 0 0 0 0 1 0 0 1 0 |      |
+|                       | 0 0 0 0 0 1 0 0 0 0 |  | 0 0 0 0 0 0 0 0 1 1 |      |
+|                       | 0 0 0 0 0 0 1 0 0 0 |  | 0 0 1 0 0 0 0 0 0 1 |      |
+|                       | 0 0 0 0 0 0 0 1 0 0 |  | 0 0 0 1 0 0 0 0 1 0 |      |
+|                       | 0 0 0 0 0 0 0 0 1 0 |  | 0 0 0 0 1 0 1 0 0 0 |      |
+|                       | 0 0 0 0 0 0 0 0 0 1 |  | 0 0 0 0 0 0 0 1 0 1 |      |
+|                                                                             |
+|      2 : image | 1 |                                                        |
+|                | 1 |                                                        |
+|                | 1 |                                                        |
+|                | 1 |                                                        |
+|                | 1 |                                                        |
+|                | 1 |                                                        |
+|                | 1 |                                                        |
+|                | 1 |                                                        |
+|                | 1 |                                                        |
+|                | 1 |                                                        |
+|                                                                             |
+|o5 : GradedModule                                                            |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note HH SimplicialComplex: HH SimplicialComplex, -- Compute the homology
+    of a simplicial complex.
+  * *note HH_ZZ SimplicialComplex: HH_usZZ SimplicialComplex, -- Compute the
+    homology of a simplicial complex.
+  * *note HH_ZZ(SimplicialComplex,Ring): HH_usZZ_lpSimplicialComplex_cmRing_rp,
+    -- Compute the homology of a simplicial complex.
+
+File: SimplicialComplexes.info, Node: ideal_lpSimplicialComplex_rp, Next: isFaceOf, Prev: homology_lpSimplicialComplex_cmRing_rp, Up: Top
+
+ideal(SimplicialComplex) -- the ideal of minimal nonfaces (the Stanley-Reisner ideal)
+*************************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        ideal D
+  * Function: *note ideal: (Macaulay2Doc)ideal,
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * an *note ideal: (Macaulay2Doc)Ideal,, which is generated by monomials
+        representing the minimal nonfaces of D
+
+Description
+===========
+
+In Macaulay2, every *note simplicial complex: SimplicialComplex, is equipped
+with a polynomial ring, and the Stanley-Reisner ideal is contained in this
+ring.
+
+The 3-dimensional sphere has a unique minimal nonface which corresponds to the
+interior.
+
++-------------------------------------------------------------------------+
+|i1 : R = ZZ[a..e];                                                       |
++-------------------------------------------------------------------------+
+|i2 : sphere = simplicialComplex {b*c*d*e,a*c*d*e,a*b*d*e,a*b*c*e,a*b*c*d}|
+|                                                                         |
+|o2 = | bcde acde abde abce abcd |                                        |
+|                                                                         |
+|o2 : SimplicialComplex                                                   |
++-------------------------------------------------------------------------+
+|i3 : ideal sphere                                                        |
+|                                                                         |
+|o3 = ideal(a*b*c*d*e)                                                    |
+|                                                                         |
+|o3 : Ideal of R                                                          |
++-------------------------------------------------------------------------+
+The simplicial complex from example 1.8 in Miller-Sturmfels, Combinatorial
+Commutative Algebra, consists of a triangle (on vertices a,b,c), two edges
+connecting c to d and b to d, and an isolated vertex e.
++-----------------------------------------------+
+|i4 : D = simplicialComplex {e, c*d, b*d, a*b*c}|
+|                                               |
+|o4 = | e cd bd abc |                           |
+|                                               |
+|o4 : SimplicialComplex                         |
++-----------------------------------------------+
+|i5 : ideal D                                   |
+|                                               |
+|o5 = ideal (a*d, b*c*d, a*e, b*e, c*e, d*e)    |
+|                                               |
+|o5 : Ideal of R                                |
++-----------------------------------------------+
+There are six minimal nonfaces of D.
+
+
+This routine is identical to *note monomialIdeal(SimplicialComplex):
+monomialIdeal_lpSimplicialComplex_rp,, except for the *note type:
+(Macaulay2Doc)Type, of the output.
+
+
+Note that no computatation is performed by this routine; all the computation
+was done while constructing the simplicial complex.
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note simplicialComplex: simplicialComplex, -- create a simplicial complex
+  * *note facets: facets, -- the facets of a simplicial complex
+  * *note monomialIdeal(SimplicialComplex):
+    monomialIdeal_lpSimplicialComplex_rp, -- the monomial ideal of minimal
+    nonfaces (the Stanley-Reisner ideal)
+
+File: SimplicialComplexes.info, Node: isFaceOf, Next: isPure, Prev: ideal_lpSimplicialComplex_rp, Up: Top
+
+isFaceOf -- Substitute a face to a different ring.
+**************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        substitute(F,R)
+  * Inputs:
+      * F, an instance of the type *note Face: Face,
+      * R, a *note polynomial ring: (Macaulay2Doc)PolynomialRing,
+  * Outputs:
+      * an instance of the type *note Face: Face,
+
+Description
+===========
+
+Substitute a face to a different ring.
+
+
+
++--------------------------------------------------------------------+
+|i1 : K=QQ;                                                          |
++--------------------------------------------------------------------+
+|i2 : R=K[x_1..x_5];                                                 |
++--------------------------------------------------------------------+
+|i3 : C=simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)        |
+|                                                                    |
+|o3 = | x_2x_4x_5 x_1x_4x_5 x_2x_3x_5 x_1x_3x_5 x_2x_3x_4 x_1x_3x_4 ||
+|                                                                    |
+|o3 : SimplicialComplex                                              |
++--------------------------------------------------------------------+
+|i4 : F1=face {x_1,x_2}                                              |
+|                                                                    |
+|o4 = x  x                                                           |
+|      1  2                                                          |
+|                                                                    |
+|o4 : face with 2 vertices in R                                      |
++--------------------------------------------------------------------+
+|i5 : F2=face {x_1,x_3}                                              |
+|                                                                    |
+|o5 = x  x                                                           |
+|      1  3                                                          |
+|                                                                    |
+|o5 : face with 2 vertices in R                                      |
++--------------------------------------------------------------------+
+|i6 : isFaceOf(F1,C)                                                 |
+|                                                                    |
+|o6 = false                                                          |
++--------------------------------------------------------------------+
+|i7 : isFaceOf(F2,C)                                                 |
+|                                                                    |
+|o7 = true                                                           |
++--------------------------------------------------------------------+
+
+Ways to use isFaceOf :
+======================
+
+  * isFaceOf(Face,SimplicialComplex)
+
+File: SimplicialComplexes.info, Node: isPure, Next: isSubface, Prev: isFaceOf, Up: Top
+
+isPure -- whether the facets are equidimensional
+************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        isPure D
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note Boolean value: (Macaulay2Doc)Boolean,, *note true:
+        (Macaulay2Doc)true, if the facets of D all have the same dimension, and
+        *note false: (Macaulay2Doc)false, otherwise
+
+Description
+===========
+
++-------------------------------------------------+
+|i1 : R = ZZ[a..f];                               |
++-------------------------------------------------+
+|i2 : D = simplicialComplex {a*b*c, a*b*d, d*e*f} |
+|                                                 |
+|o2 = | def abd abc |                             |
+|                                                 |
+|o2 : SimplicialComplex                           |
++-------------------------------------------------+
+|i3 : isPure D                                    |
+|                                                 |
+|o3 = true                                        |
++-------------------------------------------------+
++-----------------------------------------------+
+|i4 : E = simplicialComplex {a*b*c, b*d, d*e*f} |
+|                                               |
+|o4 = | def bd abc |                            |
+|                                               |
+|o4 : SimplicialComplex                         |
++-----------------------------------------------+
+|i5 : isPure E                                  |
+|                                               |
+|o5 = false                                     |
++-----------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note dim(SimplicialComplex): dim_lpSimplicialComplex_rp, -- dimension of a
+    simplicial complex
+  * *note facets: facets, -- the facets of a simplicial complex
+
+Ways to use isPure :
+====================
+
+  * isPure(SimplicialComplex)
+
+File: SimplicialComplexes.info, Node: isSubface, Next: joinSimplicial, Prev: isPure, Up: Top
+
+isSubface -- Test whether a face is a subface of another face.
+**************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        isSubface(F,G)
+  * Inputs:
+      * F, an instance of the type *note Face: Face,
+      * G, an instance of the type *note Face: Face,
+  * Outputs:
+      * a *note Boolean value: (Macaulay2Doc)Boolean,
+
+Description
+===========
+
+Test whether F is a subface of G.
+
+
+
++------------------------------+
+|i1 : K=QQ;                    |
++------------------------------+
+|i2 : R=K[x_0..x_4];           |
++------------------------------+
+|i3 : G=face {x_0,x_1,x_2}     |
+|                              |
+|o3 = x  x  x                  |
+|      0  1  2                 |
+|                              |
+|o3 : face with 3 vertices in R|
++------------------------------+
+|i4 : F1=face {x_0,x_2}        |
+|                              |
+|o4 = x  x                     |
+|      0  2                    |
+|                              |
+|o4 : face with 2 vertices in R|
++------------------------------+
+|i5 : F2=face {x_0,x_3}        |
+|                              |
+|o5 = x  x                     |
+|      0  3                    |
+|                              |
+|o5 : face with 2 vertices in R|
++------------------------------+
+|i6 : isSubface(F1,G)          |
+|                              |
+|o6 = true                     |
++------------------------------+
+|i7 : isSubface(F2,G)          |
+|                              |
+|o7 = false                    |
++------------------------------+
+
+Ways to use isSubface :
+=======================
+
+  * isSubface(Face,Face)
+
+File: SimplicialComplexes.info, Node: joinSimplicial, Next: label, Prev: isSubface, Up: Top
+
+joinSimplicial -- the join of two simplicial complexes
+******************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        joinSimplicial(D,E)
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+      * E, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note simplicial complex: SimplicialComplex,, the join of D and E
+
+Description
+===========
+
+The join of two simplicial complexes $D$ and $E$ is the simplicial complex
+whose faces are the union of faces of $D$ and $E$. If $D$ is the simplicial
+complex consisting of a single vertex then the join is the cone over $E$. If
+$D$ consists of two isolated vertices then the join is the suspension of $E$.
+
+
+ The cone over a bow-tie complex.
++-----------------------------------------------------------+
+|i1 : R = QQ[x_1..x_5];                                     |
++-----------------------------------------------------------+
+|i2 : bowtie = simplicialComplex {x_1*x_2*x_3, x_3*x_4*x_5};|
++-----------------------------------------------------------+
+|i3 : S = QQ[v];                                            |
++-----------------------------------------------------------+
+|i4 : singleton = simplicialComplex {v};                    |
++-----------------------------------------------------------+
+|i5 : singleton * bowtie                                    |
+|                                                           |
+|o5 = | vx_3x_4x_5 vx_1x_2x_3 |                             |
+|                                                           |
+|o5 : SimplicialComplex                                     |
++-----------------------------------------------------------+
+
+
+ The octahedron is the suspension of a square.
++-----------------------------------------------------+
+|i6 : R = QQ[a..d];                                   |
++-----------------------------------------------------+
+|i7 : square = simplicialComplex {a*b, b*c, c*d, a*d};|
++-----------------------------------------------------+
+|i8 : S = QQ[p,q];                                    |
++-----------------------------------------------------+
+|i9 : poles = simplicialComplex {p, q};               |
++-----------------------------------------------------+
+|i10 : octahedron = joinSimplicial(poles,square)      |
+|                                                     |
+|o10 = | qcd pcd qad pad qbc pbc qab pab |            |
+|                                                     |
+|o10 : SimplicialComplex                              |
++-----------------------------------------------------+
+
+
+ The join of an exagon and a pentagon.
++-----------------------------------------------------------------------------+
+|i11 : R = ZZ[x_1..x_6];                                                      |
++-----------------------------------------------------------------------------+
+|i12 : exagon = simplicialComplex                                             |
+|-----------------------------------------------------------------------------|
+|{x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_6,x_1*x_6};                           |
++-----------------------------------------------------------------------------+
+|i13 : S = ZZ[y_1..y_5];                                                      |
++-----------------------------------------------------------------------------+
+|i14 : pentagon = simplicialComplex {y_1*y_2,y_2*y_3,y_3*y_4,y_4*y_5,y_1*y_5};|
++-----------------------------------------------------------------------------+
+|i15 : sphere = joinSimplicial(exagon,pentagon)                               |
+|                                                                             |
+|o15 = | x_5x_6y_4y_5 x_1x_6y_4y_5 x_4x_5y_4y_5 x_3x_4y_4y_5 x_2x_3y_4y_5     |
+|                                                                             |
+|o15 : SimplicialComplex                                                      |
+|-----------------------------------------------------------------------------|
+|x_1x_2y_4y_5 x_5x_6y_1y_5 x_1x_6y_1y_5 x_4x_5y_1y_5 x_3x_4y_1y_5 x_2x_3y_1y_5|
+|-----------------------------------------------------------------------------|
+|x_1x_2y_1y_5 x_5x_6y_3y_4 x_1x_6y_3y_4 x_4x_5y_3y_4 x_3x_4y_3y_4 x_2x_3y_3y_4|
+|-----------------------------------------------------------------------------|
+|x_1x_2y_3y_4 x_5x_6y_2y_3 x_1x_6y_2y_3 x_4x_5y_2y_3 x_3x_4y_2y_3 x_2x_3y_2y_3|
+|-----------------------------------------------------------------------------|
+|x_1x_2y_2y_3 x_5x_6y_1y_2 x_1x_6y_1y_2 x_4x_5y_1y_2 x_3x_4y_1y_2 x_2x_3y_1y_2|
+|-----------------------------------------------------------------------------|
+|x_1x_2y_1y_2 |                                                               |
++-----------------------------------------------------------------------------+
+|i16 : fVector(sphere)                                                        |
+|                                                                             |
+|o16 = HashTable{-1 => 1}                                                     |
+|                0 => 11                                                      |
+|                1 => 41                                                      |
+|                2 => 60                                                      |
+|                3 => 30                                                      |
+|                                                                             |
+|o16 : HashTable                                                              |
++-----------------------------------------------------------------------------+
+
+Caveat
+======
+
+The two simplicial complexes have to be defined over different polynomial
+rings.
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note SimplicialComplex * SimplicialComplex: SimplicialComplex _st
+    SimplicialComplex, -- the join of two simplicial complexes
+
+Ways to use joinSimplicial :
+============================
+
+  * joinSimplicial(SimplicialComplex,SimplicialComplex)
+
+File: SimplicialComplexes.info, Node: label, Next: link, Prev: joinSimplicial, Up: Top
+
+label -- labels with monomials the faces of simplicial complex
+**************************************************************
+
+
+
+Ways to use label :
+===================
+
+  * label(SimplicialComplex,List)
+
+File: SimplicialComplexes.info, Node: link, Next: lyubeznikComplex, Prev: label, Up: Top
+
+link -- link of a face in a simplicial complex
+**********************************************
+
+Synopsis
+========
+
+  * Usage: 
+        link(D,f)
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+      * f, a *note ring element: (Macaulay2Doc)RingElement,, a monomial
+        representing a face of the simplicial complex D
+  * Outputs:
+      * a *note simplicial complex: SimplicialComplex,, the link of f in D
+
+Description
+===========
+
+The link of a face $f$ in $D$ is the simplicial complex whose faces are the
+subsets $g$ whose intersection with $f$ is empty, where $f \cup g$ is a face of
+$D$.
++-----------------------------------------------------------------------------+
+|i1 : R = QQ[x0,x1,x2,x3,x4,x5,x6];                                           |
++-----------------------------------------------------------------------------+
+|i2 : D = simplicialComplex {x0*x1*x3, x1*x3*x4, x1*x2*x4, x2*x4*x5,          |
+|                    x2*x3*x5, x3*x5*x6, x3*x4*x6, x0*x4*x6,                  |
+|                    x0*x4*x5, x0*x1*x5, x1*x5*x6, x1*x2*x6,                  |
+|                    x0*x2*x6, x0*x2*x3}                                      |
+|                                                                             |
+|o2 = | x3x5x6 x1x5x6 x3x4x6 x0x4x6 x1x2x6 x0x2x6 x2x4x5 x0x4x5 x2x3x5 x0x1x5 |
+|                                                                             |
+|o2 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|x1x3x4 x1x2x4 x0x2x3 x0x1x3 |                                                |
++-----------------------------------------------------------------------------+
+|i3 : link(D,x0)                                                              |
+|                                                                             |
+|o3 = | x4x6 x2x6 x4x5 x1x5 x2x3 x1x3 |                                       |
+|                                                                             |
+|o3 : SimplicialComplex                                                       |
++-----------------------------------------------------------------------------+
+|i4 : link(D,x0*x2)                                                           |
+|                                                                             |
+|o4 = | x6 x3 |                                                               |
+|                                                                             |
+|o4 : SimplicialComplex                                                       |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+
+Ways to use link :
+==================
+
+  * link(SimplicialComplex,RingElement)
+
+File: SimplicialComplexes.info, Node: lyubeznikComplex, Next: monomialIdeal_lpSimplicialComplex_rp, Prev: link, Up: Top
+
+lyubeznikComplex -- Simplicial complex supporting the Lyubeznik resolution of a  monomial ideal
+***********************************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        lyubeznikComplex(L,R)
+        lyubeznikComplex I
+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+
+Ways to use lyubeznikComplex :
+==============================
+
+  * lyubeznikComplex(List,Ring)
+  * lyubeznikComplex(MonomialIdeal)
+
+File: SimplicialComplexes.info, Node: monomialIdeal_lpSimplicialComplex_rp, Next: net_lpFace_rp, Prev: lyubeznikComplex, Up: Top
+
+monomialIdeal(SimplicialComplex) -- the monomial ideal of minimal nonfaces (the Stanley-Reisner ideal)
+******************************************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        monomialIdeal D
+  * Function: *note monomialIdeal: (Macaulay2Doc)monomialIdeal,
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note monomial ideal: (Macaulay2Doc)MonomialIdeal,, which is
+        generated by monomials representing the minimal nonfaces of D
+
+Description
+===========
+
+In Macaulay2, every *note simplicial complex: SimplicialComplex, is equipped
+with a polynomial ring, and the Stanley-Reisner ideal is contained in this
+ring.
+
+The 3-dimensional sphere has a unique minimal nonface which corresponds to the
+interior.
+
++-------------------------------------------------------------------------+
+|i1 : R = ZZ[a..e];                                                       |
++-------------------------------------------------------------------------+
+|i2 : sphere = simplicialComplex {b*c*d*e,a*c*d*e,a*b*d*e,a*b*c*e,a*b*c*d}|
+|                                                                         |
+|o2 = | bcde acde abde abce abcd |                                        |
+|                                                                         |
+|o2 : SimplicialComplex                                                   |
++-------------------------------------------------------------------------+
+|i3 : monomialIdeal sphere                                                |
+|                                                                         |
+|o3 = monomialIdeal(a*b*c*d*e)                                            |
+|                                                                         |
+|o3 : MonomialIdeal of R                                                  |
++-------------------------------------------------------------------------+
+The simplicial complex from example 1.8 in Miller-Sturmfels, Combinatorial
+Commutative Algebra, consists of a triangle (on vertices a,b,c), two edges
+connecting c to d and b to d, and an isolated vertex e.
++---------------------------------------------------+
+|i4 : D = simplicialComplex {e, c*d, b*d, a*b*c}    |
+|                                                   |
+|o4 = | e cd bd abc |                               |
+|                                                   |
+|o4 : SimplicialComplex                             |
++---------------------------------------------------+
+|i5 : monomialIdeal D                               |
+|                                                   |
+|o5 = monomialIdeal (a*d, b*c*d, a*e, b*e, c*e, d*e)|
+|                                                   |
+|o5 : MonomialIdeal of R                            |
++---------------------------------------------------+
+There are six minimal nonfaces of D.
+
+
+This routine is identical to *note ideal(SimplicialComplex):
+ideal_lpSimplicialComplex_rp,, except for the *note type: (Macaulay2Doc)Type,
+of the output.
+
+
+Note that no computatation is performed by this routine; all the computation
+was done while constructing the simplicial complex.
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note simplicialComplex: simplicialComplex, -- create a simplicial complex
+  * *note facets: facets, -- the facets of a simplicial complex
+  * *note ideal(SimplicialComplex): ideal_lpSimplicialComplex_rp, -- the ideal
+    of minimal nonfaces (the Stanley-Reisner ideal)
+
+File: SimplicialComplexes.info, Node: net_lpFace_rp, Next: net_lpSimplicialComplex_rp, Prev: monomialIdeal_lpSimplicialComplex_rp, Up: Top
+
+net(Face) -- Printing a face.
+*****************************
+
+Synopsis
+========
+
+  * Usage: 
+        net(F)
+  * Function: *note net: (Macaulay2Doc)net,
+  * Inputs:
+      * F, an instance of the type *note Face: Face,
+  * Outputs:
+      * a *note net: (Macaulay2Doc)Net,
+
+Description
+===========
+
+Prints a face. The vertices are printed without any brackets and with one space
+between them. Also prints the polynomial ring which contains the vertices.
+
+
+
++------------------------------+
+|i1 : K=QQ;                    |
++------------------------------+
+|i2 : R=K[x_0..x_4];           |
++------------------------------+
+|i3 : face {x_0,x_1}           |
+|                              |
+|o3 = x  x                     |
+|      0  1                    |
+|                              |
+|o3 : face with 2 vertices in R|
++------------------------------+
+
+File: SimplicialComplexes.info, Node: net_lpSimplicialComplex_rp, Next: ring_lpFace_rp, Prev: net_lpFace_rp, Up: Top
+
+net(SimplicialComplex) -- Printing a simplicial complex.
+********************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        net(C)
+  * Function: *note net: (Macaulay2Doc)net,
+  * Inputs:
+      * C, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note net: (Macaulay2Doc)Net,
+
+Description
+===========
+
+Prints a simplicial complex.
+
+
+
++--------------------------------------------------------------------+
+|i1 : K=QQ;                                                          |
++--------------------------------------------------------------------+
+|i2 : R=K[x_1..x_5];                                                 |
++--------------------------------------------------------------------+
+|i3 : C=simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)        |
+|                                                                    |
+|o3 = | x_2x_4x_5 x_1x_4x_5 x_2x_3x_5 x_1x_3x_5 x_2x_3x_4 x_1x_3x_4 ||
+|                                                                    |
+|o3 : SimplicialComplex                                              |
++--------------------------------------------------------------------+
+
+File: SimplicialComplexes.info, Node: ring_lpFace_rp, Next: ring_lpSimplicialComplex_rp, Prev: net_lpSimplicialComplex_rp, Up: Top
+
+ring(Face) -- Ring of a face.
+*****************************
+
+Synopsis
+========
+
+  * Usage: 
+        ring(F)
+  * Function: *note ring: (Macaulay2Doc)ring,
+  * Inputs:
+      * F, an instance of the type *note Face: Face,
+  * Outputs:
+      * a *note ring: (Macaulay2Doc)Ring,
+
+Description
+===========
+
+Ring of a face.
+
+
+
++------------------------------+
+|i1 : K=QQ;                    |
++------------------------------+
+|i2 : R=K[x_0..x_4];           |
++------------------------------+
+|i3 : F=face {x_0,x_1,x_2}     |
+|                              |
+|o3 = x  x  x                  |
+|      0  1  2                 |
+|                              |
+|o3 : face with 3 vertices in R|
++------------------------------+
+|i4 : ring F                   |
+|                              |
+|o4 = R                        |
+|                              |
+|o4 : PolynomialRing           |
++------------------------------+
+
+File: SimplicialComplexes.info, Node: ring_lpSimplicialComplex_rp, Next: SimplicialComplex, Prev: ring_lpFace_rp, Up: Top
+
+ring(SimplicialComplex)
+***********************
+
+Synopsis
+========
+
+  * Usage: 
+        R = ring D
+  * Function: *note ring: (Macaulay2Doc)ring,
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * R, a *note ring: (Macaulay2Doc)Ring,, the polynomial ring used to
+        define D
+
+Description
+===========
+
+The vertices of every simplicial complex are variables in the polynomial ring
+R, and subsets of vertices, such as faces, are represented as squarefree
+monomials in R.
++--------------------------------------------------+
+|i1 : R = QQ[a..d];                                |
++--------------------------------------------------+
+|i2 : D = simplicialComplex monomialIdeal(a*b*c*d);|
++--------------------------------------------------+
+|i3 : ring D                                       |
+|                                                  |
+|o3 = R                                            |
+|                                                  |
+|o3 : PolynomialRing                               |
++--------------------------------------------------+
+|i4 : coefficientRing D                            |
+|                                                  |
+|o4 = QQ                                           |
+|                                                  |
+|o4 : Ring                                         |
++--------------------------------------------------+
+|i5 : S = ZZ[w..z];                                |
++--------------------------------------------------+
+|i6 : E = simplicialComplex monomialIdeal(w*x*y*z);|
++--------------------------------------------------+
+|i7 : ring E                                       |
+|                                                  |
+|o7 = S                                            |
+|                                                  |
+|o7 : PolynomialRing                               |
++--------------------------------------------------+
+|i8 : coefficientRing E                            |
+|                                                  |
+|o8 = ZZ                                           |
+|                                                  |
+|o8 : Ring                                         |
++--------------------------------------------------+
+
+
+There is a bijection between simplicial complexes and squarefree monomial
+ideals.  This package exploits this correspondence by using commutative algebra
+routines to perform most of the necessary computations.
+
+Caveat
+======
+
+Some operations depend on the choice of ring, or its coefficient ring
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note coefficientRing(SimplicialComplex):
+    coefficientRing_lpSimplicialComplex_rp,
+
+File: SimplicialComplexes.info, Node: SimplicialComplex, Next: simplicialComplex, Prev: ring_lpSimplicialComplex_rp, Up: Top
+
+SimplicialComplex
+*****************
+
+Description
+===========
+
+SimplicialComplex -- the class of simplical complexes
+
+
+Some support routines
+  * *note support: (Macaulay2Doc)support,(m) -- the support of the monomial m,
+    as a list of integers
+
+Functions and methods returning a simplicial complex :
+======================================================
+
+  * *note simplicialComplex: simplicialComplex, -- create a simplicial complex
+  * simplicialComplex(List), see *note simplicialComplex: simplicialComplex, --
+    create a simplicial complex
+
+Methods that use a simplicial complex :
+=======================================
+
+  * algebraicShifting(SimplicialComplex), see *note algebraicShifting:
+    algebraicShifting, -- the algebraic shifting of a simplicial complex
+  * *note boundary(SimplicialComplex): boundary_lpSimplicialComplex_rp, -- the
+    boundary simplicial complex of D
+  * *note boundary(ZZ,SimplicialComplex): boundary_lpZZ_cmSimplicialComplex_rp,
+    -- the boundary map from i-faces to (i-1)-faces
+  * *note chainComplex(SimplicialComplex): chainComplex_lpSimplicialComplex_rp,
+    -- The chain complex of boundary maps.
+  * simplicialChainComplex(List,SimplicialComplex), see *note
+    chainComplex(SimplicialComplex): chainComplex_lpSimplicialComplex_rp, --
+    The chain complex of boundary maps.
+  * *note coefficientRing(SimplicialComplex):
+    coefficientRing_lpSimplicialComplex_rp,
+  * *note dim(SimplicialComplex): dim_lpSimplicialComplex_rp, -- dimension of a
+    simplicial complex
+  * *note dual(SimplicialComplex): dual_lpSimplicialComplex_rp, -- the
+    Alexander dual of a simplicial complex
+  * faces(ZZ,SimplicialComplex), see *note faces: faces, -- the i-faces of a
+    simplicial complex
+  * *note faces(SimplicialComplex): faces_lpSimplicialComplex_rp, -- Compute
+    all faces of a simplicial complex.
+  * facets(SimplicialComplex), see *note facets: facets, -- the facets of a
+    simplicial complex
+  * fVector(SimplicialComplex), see *note fVector: fVector, -- the f-vector of
+    a simplicial complex
+  * *note HH SimplicialComplex: HH SimplicialComplex, -- Compute the homology
+    of a simplicial complex.
+  * homology(Nothing,SimplicialComplex), see *note HH SimplicialComplex: HH
+    SimplicialComplex, -- Compute the homology of a simplicial complex.
+  * *note HH_ZZ SimplicialComplex: HH_usZZ SimplicialComplex, -- Compute the
+    homology of a simplicial complex.
+  * *note HH_ZZ(SimplicialComplex,Ring): HH_usZZ_lpSimplicialComplex_cmRing_rp,
+    -- Compute the homology of a simplicial complex.
+  * homology(Nothing,SimplicialComplex,Ring), see *note
+    homology(SimplicialComplex,Ring): homology_lpSimplicialComplex_cmRing_rp,
+    -- Compute the homology of a simplicial complex.
+  * *note homology(SimplicialComplex,Ring):
+    homology_lpSimplicialComplex_cmRing_rp, -- Compute the homology of a
+    simplicial complex.
+  * *note ideal(SimplicialComplex): ideal_lpSimplicialComplex_rp, -- the ideal
+    of minimal nonfaces (the Stanley-Reisner ideal)
+  * isFaceOf(Face,SimplicialComplex), see *note isFaceOf: isFaceOf, --
+    Substitute a face to a different ring.
+  * isPure(SimplicialComplex), see *note isPure: isPure, -- whether the facets
+    are equidimensional
+  * joinSimplicial(SimplicialComplex,SimplicialComplex), see *note
+    joinSimplicial: joinSimplicial, -- the join of two simplicial complexes
+  * label(SimplicialComplex,List), see *note label: label, -- labels with
+    monomials the faces of simplicial complex
+  * link(SimplicialComplex,RingElement), see *note link: link, -- link of a
+    face in a simplicial complex
+  * *note monomialIdeal(SimplicialComplex):
+    monomialIdeal_lpSimplicialComplex_rp, -- the monomial ideal of minimal
+    nonfaces (the Stanley-Reisner ideal)
+  * *note net(SimplicialComplex): net_lpSimplicialComplex_rp, -- Printing a
+    simplicial complex.
+  * *note ring(SimplicialComplex): ring_lpSimplicialComplex_rp,
+  * *note SimplicialComplex * SimplicialComplex: SimplicialComplex _st
+    SimplicialComplex, -- the join of two simplicial complexes
+  * *note SimplicialComplex == SimplicialComplex: SimplicialComplex ==
+    SimplicialComplex, -- Compare two simplicial complexes.
+  * skeleton(ZZ,SimplicialComplex), see *note skeleton: skeleton, -- the
+    n-skeleton of the simplicial complex D
+  * star(SimplicialComplex,RingElement), see *note star: star, -- star of a
+    face in a simplicial complex
+  * *note substitute(SimplicialComplex,PolynomialRing):
+    substitute_lpSimplicialComplex_cmPolynomialRing_rp, -- Substitute a
+    simplicial complex to a different ring.
+
+For the programmer
+==================
+
+The object *note SimplicialComplex: SimplicialComplex, is a *note type:
+(Macaulay2Doc)Type,, with ancestor classes *note HashTable:
+(Macaulay2Doc)HashTable, < *note Thing: (Macaulay2Doc)Thing,.
+
+File: SimplicialComplexes.info, Node: simplicialComplex, Next: SimplicialComplex _st SimplicialComplex, Prev: SimplicialComplex, Up: Top
+
+simplicialComplex -- create a simplicial complex
+************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        simplicialComplex I
+        simplicialComplex L
+  * Inputs:
+      * I, a *note monomial ideal: (Macaulay2Doc)MonomialIdeal,, the ideal of
+        minimal nonfaces (Stanley-Reisner ideal)
+      * L, a *note list: (Macaulay2Doc)List,, a list of monomials representing
+        the facets
+  * Outputs:
+      * a *note simplicial complex: SimplicialComplex,, the simplicial complex
+        determined by the nonfaces I or generated by the given faces L
+
+Description
+===========
+
+A simplicial complex on a set of vertices is a collection of subsets D of these
+vertices, such that if F is in D, then every subset of F is also in D.  In
+Macaulay2, the vertices are variables in a polynomial ring, and each subset is
+represented as a product of the corresponding variables.
+
+
+A simplicial complex is determined either by its nonfaces or by its faces.  The
+monomials corresponding to the nonfaces are a basis of an ideal, called the
+Stanley-Reisner ideal, and it suffices to specify the minimal nonfaces, which
+generate the ideal.  The monomials corresponding to the faces do not form the
+basis of an ideal, but it suffices to specify the maximal faces, which are
+called facets.  The function *note simplicialComplex: simplicialComplex,
+accepts either the ideal of nonfaces or the list of facets as input.
+
+
+In our first example we construct the octahedron by specfying its ideal of
+nonfaces.
++----------------------------------------+
+|i1 : R = ZZ[a..f];                      |
++----------------------------------------+
+|i2 : I = monomialIdeal(a*f, b*d, c*e);  |
+|                                        |
+|o2 : MonomialIdeal of R                 |
++----------------------------------------+
+|i3 : Octahedron = simplicialComplex I   |
+|                                        |
+|o3 = | def bef cdf bcf ade abe acd abc ||
+|                                        |
+|o3 : SimplicialComplex                  |
++----------------------------------------+
+Note that a *note simplicial complex: SimplicialComplex, is displayed by
+showing its facets.  We see that there are eight facets to the octahedron.
+Alternatively, we could have defined the octahedron by this list of facets.
++-------------------------------------------------------------+
+|i4 : L = {d*e*f, b*e*f, c*d*f, b*c*f,                        |
+|                    a*d*e, a*b*e, a*c*d, a*b*c}              |
+|                                                             |
+|o4 = {d*e*f, b*e*f, c*d*f, b*c*f, a*d*e, a*b*e, a*c*d, a*b*c}|
+|                                                             |
+|o4 : List                                                    |
++-------------------------------------------------------------+
+|i5 : Octahedron' = simplicialComplex L                       |
+|                                                             |
+|o5 = | def bef cdf bcf ade abe acd abc |                     |
+|                                                             |
+|o5 : SimplicialComplex                                       |
++-------------------------------------------------------------+
+|i6 : Octahedron == Octahedron'                               |
+|                                                             |
+|o6 = true                                                    |
++-------------------------------------------------------------+
+|i7 : fVector Octahedron                                      |
+|                                                             |
+|o7 = HashTable{-1 => 1}                                      |
+|               0 => 6                                        |
+|               1 => 12                                       |
+|               2 => 8                                        |
+|                                                             |
+|o7 : HashTable                                               |
++-------------------------------------------------------------+
+There are two "trivial" simplicial complexes: the void complex and the
+irrelevant complex.  The void complex has no faces.  This complex cannot be
+constructed from its facets, since it has none.
++-----------------------------------------------+
+|i8 : void = simplicialComplex monomialIdeal 1_R|
+|                                               |
+|o8 = 0                                         |
+|                                               |
+|o8 : SimplicialComplex                         |
++-----------------------------------------------+
+|i9 : fVector void                              |
+|                                               |
+|o9 = HashTable{-1 => 0}                        |
+|                                               |
+|o9 : HashTable                                 |
++-----------------------------------------------+
+|i10 : dim void                                 |
+|                                               |
+|o10 = -infinity                                |
+|                                               |
+|o10 : InfiniteNumber                           |
++-----------------------------------------------+
+The irrelevant complex, which should be distinguished from the void complex,
+has a unique face of dimension -1, the empty set.
++---------------------------------------------------------+
+|i11 : irrelevant = simplicialComplex monomialIdeal gens R|
+|                                                         |
+|o11 = | 1 |                                              |
+|                                                         |
+|o11 : SimplicialComplex                                  |
++---------------------------------------------------------+
+|i12 : fVector irrelevant                                 |
+|                                                         |
+|o12 = HashTable{-1 => 1}                                 |
+|                                                         |
+|o12 : HashTable                                          |
++---------------------------------------------------------+
+|i13 : dim irrelevant                                     |
+|                                                         |
+|o13 = -1                                                 |
++---------------------------------------------------------+
+|i14 : irrelevant' = simplicialComplex {1_R}              |
+|                                                         |
+|o14 = | 1 |                                              |
+|                                                         |
+|o14 : SimplicialComplex                                  |
++---------------------------------------------------------+
+|i15 : irrelevant' == irrelevant                          |
+|                                                         |
+|o15 = true                                               |
++---------------------------------------------------------+
+As in Miller-Sturmfels, Combinatorial Commutative Algebra, we would avoid
+making such a big deal about the difference between these complexes if it did
+not come up so much.  Many formulas for betti numbers, dimensions of local
+cohomology, etc., depend on this distinction.
+
+Caveat
+======
+
+  * The ring of I or L must be a polynomial ring.
+  * The *note coefficient ring: (Macaulay2Doc)coefficientRing, matters: for
+    instance, it is used when computing the corresponding chain complex.
+  * This construction routine does some computation, as it computes both the
+    facets and the ideal of non-faces.
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note fVector: fVector, -- the f-vector of a simplicial complex
+
+Ways to use simplicialComplex :
+===============================
+
+  * simplicialComplex(List)
+  * simplicialComplex(MonomialIdeal)
+
+File: SimplicialComplexes.info, Node: SimplicialComplex _st SimplicialComplex, Next: SimplicialComplex == SimplicialComplex, Prev: simplicialComplex, Up: Top
+
+SimplicialComplex * SimplicialComplex -- the join of two simplicial complexes
+*****************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        J = D * E
+  * Operator: *note *: (Macaulay2Doc)_st,
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+      * E, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * J, a *note simplicial complex: SimplicialComplex,
+
+Description
+===========
+
+
+Computes join of D and E.
+
+
+See also *note joinSimplicial: joinSimplicial,.
+
+File: SimplicialComplexes.info, Node: SimplicialComplex == SimplicialComplex, Next: skeleton, Prev: SimplicialComplex _st SimplicialComplex, Up: Top
+
+SimplicialComplex == SimplicialComplex -- Compare two simplicial complexes.
+***************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        C1==C2
+  * Operator: *note ==: (Macaulay2Doc)==,
+  * Inputs:
+      * C1, a *note simplicial complex: SimplicialComplex,
+      * C2, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note Boolean value: (Macaulay2Doc)Boolean,
+
+Description
+===========
+
+Checks whether C1 and C2 are equal.
+
+
+
++------------------------------------------------------------------------+
+|i1 : K=QQ;                                                              |
++------------------------------------------------------------------------+
+|i2 : R=K[x_1..x_3];                                                     |
++------------------------------------------------------------------------+
+|i3 : C1=simplicialComplex monomialIdeal (x_1*x_2*x_3)                   |
+|                                                                        |
+|o3 = | x_2x_3 x_1x_3 x_1x_2 |                                           |
+|                                                                        |
+|o3 : SimplicialComplex                                                  |
++------------------------------------------------------------------------+
+|i4 : C2=simplicialComplex {face {x_1,x_2},face {x_2,x_3},face {x_3,x_1}}|
+|                                                                        |
+|o4 = | x_2x_3 x_1x_3 x_1x_2 |                                           |
+|                                                                        |
+|o4 : SimplicialComplex                                                  |
++------------------------------------------------------------------------+
+|i5 : C1==C2                                                             |
+|                                                                        |
+|o5 = true                                                               |
++------------------------------------------------------------------------+
+
+File: SimplicialComplexes.info, Node: skeleton, Next: star, Prev: SimplicialComplex == SimplicialComplex, Up: Top
+
+skeleton -- the n-skeleton of the simplicial complex D
+******************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        skeleton(n,D)
+  * Inputs:
+      * i, an *note integer: (Macaulay2Doc)ZZ,
+      * D, a *note simplicial complex: SimplicialComplex,
+  * Outputs:
+      * a *note simplicial complex: SimplicialComplex,, the n-skeleton of a
+        simplicial complex, i.e. the subcomplex of all subfaces of dimension at
+        most n
+
+Description
+===========
+
+The 2-skeleton of the 5-simplex.
++-----------------------------------------------------------------------------+
+|i1 : R = ZZ[a..f];                                                           |
++-----------------------------------------------------------------------------+
+|i2 : simplex = simplicialComplex{a*b*c*d*e*f}                                |
+|                                                                             |
+|o2 = | abcdef |                                                              |
+|                                                                             |
+|o2 : SimplicialComplex                                                       |
++-----------------------------------------------------------------------------+
+|i3 : skel = skeleton(2,simplex)                                              |
+|                                                                             |
+|o3 = | def cef bef aef cdf bdf adf bcf acf abf cde bde ade bce ace abe bcd   |
+|                                                                             |
+|o3 : SimplicialComplex                                                       |
+|-----------------------------------------------------------------------------|
+|acd abd abc |                                                                |
++-----------------------------------------------------------------------------+
+|i4 : fVector simplex                                                         |
+|                                                                             |
+|o4 = HashTable{-1 => 1}                                                      |
+|               0 => 6                                                        |
+|               1 => 15                                                       |
+|               2 => 20                                                       |
+|               3 => 15                                                       |
+|               4 => 6                                                        |
+|               5 => 1                                                        |
+|                                                                             |
+|o4 : HashTable                                                               |
++-----------------------------------------------------------------------------+
+|i5 : fVector skel                                                            |
+|                                                                             |
+|o5 = HashTable{-1 => 1}                                                      |
+|               0 => 6                                                        |
+|               1 => 15                                                       |
+|               2 => 20                                                       |
+|                                                                             |
+|o5 : HashTable                                                               |
++-----------------------------------------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note fVector: fVector, -- the f-vector of a simplicial complex
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+
+Ways to use skeleton :
+======================
+
+  * skeleton(ZZ,SimplicialComplex)
+
+File: SimplicialComplexes.info, Node: star, Next: substitute_lpFace_cmPolynomialRing_rp, Prev: skeleton, Up: Top
+
+star -- star of a face in a simplicial complex
+**********************************************
+
+Synopsis
+========
+
+  * Usage: 
+        star(D,f)
+  * Inputs:
+      * D, a *note simplicial complex: SimplicialComplex,
+      * f, a *note ring element: (Macaulay2Doc)RingElement,, a monomial
+        representing a face of the simplicial complex D
+  * Outputs:
+      * a *note simplicial complex: SimplicialComplex,, the star of f in D
+
+Description
+===========
+
+The star of a face $f$ in $D$ is the simplicial complex whose faces are the
+subsets $g$ with $f \cup g$ is a face of $D$.
+
+
+ The bow-tie complex.
++---------------------------------------------------------+
+|i1 : R = QQ[x_1..x_5];                                   |
++---------------------------------------------------------+
+|i2 : bowtie = simplicialComplex {x_1*x_2*x_3,x_3*x_4*x_5}|
+|                                                         |
+|o2 = | x_3x_4x_5 x_1x_2x_3 |                             |
+|                                                         |
+|o2 : SimplicialComplex                                   |
++---------------------------------------------------------+
+|i3 : star(bowtie,x_3)                                    |
+|                                                         |
+|o3 = | x_3x_4x_5 x_1x_2x_3 |                             |
+|                                                         |
+|o3 : SimplicialComplex                                   |
++---------------------------------------------------------+
+|i4 : star(bowtie,x_1*x_2)                                |
+|                                                         |
+|o4 = | x_1x_2x_3 |                                       |
+|                                                         |
+|o4 : SimplicialComplex                                   |
++---------------------------------------------------------+
+
+
+ The 3-simplex and a copy of its boundary glued along a triangle.
++---------------------------------------------------------+
+|i5 : R = QQ[a..e];                                       |
++---------------------------------------------------------+
+|i6 : D = simplicialComplex {a*b*c*d, b*c*e, b*d*e, c*d*e}|
+|                                                         |
+|o6 = | cde bde bce abcd |                                |
+|                                                         |
+|o6 : SimplicialComplex                                   |
++---------------------------------------------------------+
+|i7 : star(D,b*c*d)                                       |
+|                                                         |
+|o7 = | abcd |                                            |
+|                                                         |
+|o7 : SimplicialComplex                                   |
++---------------------------------------------------------+
+|i8 : star(D,b)                                           |
+|                                                         |
+|o8 = | bde bce abcd |                                    |
+|                                                         |
+|o8 : SimplicialComplex                                   |
++---------------------------------------------------------+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+  * *note link: link, -- link of a face in a simplicial complex
+
+Ways to use star :
+==================
+
+  * star(SimplicialComplex,RingElement)
+
+File: SimplicialComplexes.info, Node: substitute_lpFace_cmPolynomialRing_rp, Next: substitute_lpSimplicialComplex_cmPolynomialRing_rp, Prev: star, Up: Top
+
+substitute(Face,PolynomialRing) -- Substitute a face to a different ring.
+*************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        substituteFace(F,R)
+  * Function: *note substitute: (Macaulay2Doc)substitute,
+  * Inputs:
+      * F, an instance of the type *note Face: Face,
+      * R, a *note polynomial ring: (Macaulay2Doc)PolynomialRing,
+  * Outputs:
+      * an instance of the type *note Face: Face,
+
+Description
+===========
+
+Substitute a face to a different ring.
+
+
+
++------------------------------+
+|i1 : K=QQ;                    |
++------------------------------+
+|i2 : R=K[x_0..x_4];           |
++------------------------------+
+|i3 : F=face {x_0,x_1,x_2}     |
+|                              |
+|o3 = x  x  x                  |
+|      0  1  2                 |
+|                              |
+|o3 : face with 3 vertices in R|
++------------------------------+
+|i4 : S=R**K[y]                |
+|                              |
+|o4 = S                        |
+|                              |
+|o4 : PolynomialRing           |
++------------------------------+
+|i5 : substitute(F,S)          |
+|                              |
+|o5 = x  x  x                  |
+|      0  1  2                 |
+|                              |
+|o5 : face with 3 vertices in S|
++------------------------------+
+
+File: SimplicialComplexes.info, Node: substitute_lpSimplicialComplex_cmPolynomialRing_rp, Next: superficialComplex, Prev: substitute_lpFace_cmPolynomialRing_rp, Up: Top
+
+substitute(SimplicialComplex,PolynomialRing) -- Substitute a simplicial complex to a different ring.
+****************************************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        substitute(C,R)
+  * Function: *note substitute: (Macaulay2Doc)substitute,
+  * Inputs:
+      * C, a *note simplicial complex: SimplicialComplex,
+      * R, a *note polynomial ring: (Macaulay2Doc)PolynomialRing,
+  * Outputs:
+      * a *note simplicial complex: SimplicialComplex,
+
+Description
+===========
+
+Substitute a simplicial complex to a different ring. R should contain the
+variables of the *note ring: (Macaulay2Doc)ring, of C.
+
+
+
++--------------------------------------------------------------+
+|i1 : K=QQ;                                                    |
++--------------------------------------------------------------+
+|i2 : R=K[x_0..x_4];                                           |
++--------------------------------------------------------------+
+|i3 : I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);|
+|                                                              |
+|o3 : MonomialIdeal of R                                       |
++--------------------------------------------------------------+
+|i4 : C=simplicialComplex I                                    |
+|                                                              |
+|o4 = | x_2x_4 x_1x_4 x_1x_3 x_0x_3 x_0x_2 |                   |
+|                                                              |
+|o4 : SimplicialComplex                                        |
++--------------------------------------------------------------+
+|i5 : S=R**K[y]                                                |
+|                                                              |
+|o5 = S                                                        |
+|                                                              |
+|o5 : PolynomialRing                                           |
++--------------------------------------------------------------+
+|i6 : C1=substitute(C,S)                                       |
+|                                                              |
+|o6 = | x_2x_4 x_1x_4 x_1x_3 x_0x_3 x_0x_2 |                   |
+|                                                              |
+|o6 : SimplicialComplex                                        |
++--------------------------------------------------------------+
+|i7 : ring C1                                                  |
+|                                                              |
+|o7 = S                                                        |
+|                                                              |
+|o7 : PolynomialRing                                           |
++--------------------------------------------------------------+
+
+See also
+========
+
+  * *note substitute(Face,PolynomialRing):
+    substitute_lpFace_cmPolynomialRing_rp, -- Substitute a face to a different
+    ring.
+
+File: SimplicialComplexes.info, Node: superficialComplex, Next: useFaceClass, Prev: substitute_lpSimplicialComplex_cmPolynomialRing_rp, Up: Top
+
+superficialComplex -- Simplicial complex supporting a superficial resolution of a monomial ideal
+************************************************************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        superficialComplex(L,R)
+        superficialComplex I
+
+
+See also
+========
+
+  * *note SimplicialComplexes: Top, -- simplicial complexes
+
+Ways to use superficialComplex :
+================================
+
+  * superficialComplex(List,Ring)
+  * superficialComplex(MonomialIdeal)
+
+File: SimplicialComplexes.info, Node: useFaceClass, Next: vertices, Prev: superficialComplex, Up: Top
+
+useFaceClass -- Option to return faces in the class Face
+********************************************************
+
+Description
+===========
+
+*note Boolean: (Macaulay2Doc)Boolean, *note Option: (Macaulay2Doc)Option, to
+return in the methods *note faces: faces, and *note facets: facets, a *note
+List: (Macaulay2Doc)List, of *note Face: Face,s instead of a *note Matrix:
+(Macaulay2Doc)Matrix,.
+
+Functions with optional argument named useFaceClass :
+=====================================================
+
+  * faces(..., useFaceClass => ...)
+  * facets(..., useFaceClass => ...)
+
+For the programmer
+==================
+
+The object *note useFaceClass: useFaceClass, is a *note symbol:
+(Macaulay2Doc)Symbol,.
+
+File: SimplicialComplexes.info, Node: vertices, Prev: useFaceClass, Up: Top
+
+vertices -- The vertices of a face of a simplicial complex.
+***********************************************************
+
+Synopsis
+========
+
+  * Usage: 
+        vertices(F)
+  * Inputs:
+      * F, an instance of the type *note Face: Face,
+  * Outputs:
+      * a *note list: (Macaulay2Doc)List,
+
+Description
+===========
+
+Returns a *note List: (Macaulay2Doc)List, with the vertices of a *note Face:
+Face, of a simplicial complex.
+
+
+
++--------------------------------------------------------------+
+|i1 : K=QQ;                                                    |
++--------------------------------------------------------------+
+|i2 : R=K[x_0..x_4];                                           |
++--------------------------------------------------------------+
+|i3 : I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);|
+|                                                              |
+|o3 : MonomialIdeal of R                                       |
++--------------------------------------------------------------+
+|i4 : D=simplicialComplex I                                    |
+|                                                              |
+|o4 = | x_2x_4 x_1x_4 x_1x_3 x_0x_3 x_0x_2 |                   |
+|                                                              |
+|o4 : SimplicialComplex                                        |
++--------------------------------------------------------------+
+|i5 : fc=facets(D,useFaceClass=>true)                          |
+|                                                              |
+|o5 = {x  x  , x  x  , x  x  , x  x  , x  x  }                 |
+|       2  4    1  4    1  3    0  3    0  2                   |
+|                                                              |
+|o5 : List                                                     |
++--------------------------------------------------------------+
+|i6 : vertices fc#1                                            |
+|                                                              |
+|o6 = {x , x }                                                 |
+|       1   4                                                  |
+|                                                              |
+|o6 : List                                                     |
++--------------------------------------------------------------+
+
+See also
+========
+
+  * *note face: face, -- Generate a face.
+  * *note facets: facets, -- the facets of a simplicial complex
+  * *note faces: faces, -- the i-faces of a simplicial complex 
+
+Ways to use vertices :
+======================
+
+  * vertices(Face)
+
+Tag Table:
+Node: Top247
+Node: algebraicShifting10897
+Node: boundary18745
+Node: boundary_lpSimplicialComplex_rp19306
+Node: boundary_lpZZ_cmSimplicialComplex_rp23553
+Node: buchbergerComplex31206
+Node: chainComplex_lpSimplicialComplex_rp31789
+Node: coefficientRing_lpSimplicialComplex_rp37122
+Node: dim_lpFace_rp40591
+Node: dim_lpSimplicialComplex_rp43130
+Node: dual_lpSimplicialComplex_rp45737
+Node: Face55723
+Node: face59744
+Node: Face == Face61072
+Node: faceIdeal62822
+Node: faces65369
+Node: faces_lpSimplicialComplex_rp71420
+Node: facets73899
+Node: fVector77288
+Node: HH SimplicialComplex84889
+Node: HH_usZZ SimplicialComplex91262
+Node: HH_usZZ_lpSimplicialComplex_cmRing_rp94102
+Node: homology_lpSimplicialComplex_cmRing_rp98199
+Node: ideal_lpSimplicialComplex_rp112021
+Node: isFaceOf115632
+Node: isPure118589
+Node: isSubface120681
+Node: joinSimplicial122403
+Node: label128500
+Node: link128794
+Node: lyubeznikComplex131743
+Node: monomialIdeal_lpSimplicialComplex_rp132360
+Node: net_lpFace_rp136043
+Node: net_lpSimplicialComplex_rp137034
+Node: ring_lpFace_rp138321
+Node: ring_lpSimplicialComplex_rp139368
+Node: SimplicialComplex142222
+Node: simplicialComplex147171
+Node: SimplicialComplex _st SimplicialComplex155118
+Node: SimplicialComplex == SimplicialComplex155829
+Node: skeleton158059
+Node: star162035
+Node: substitute_lpFace_cmPolynomialRing_rp165565
+Node: substitute_lpSimplicialComplex_cmPolynomialRing_rp167076
+Node: superficialComplex170223
+Node: useFaceClass170878
+Node: vertices171684
+
+End Tag Table

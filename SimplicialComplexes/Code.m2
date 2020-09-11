@@ -732,8 +732,8 @@ buchbergerComplex(MonomialIdeal) := (I) -> (
 --     superficialComplex(flatten entries gens I, ring I))
 
 
-lyubeznikComplex = method(Options => {MonomialOrder => {}})
-lyubeznikComplex (List,Ring) := opts -> (M,A) -> (
+lyubeznikSimplicialComplex = method(Options => {MonomialOrder => {}})
+lyubeznikSimplicialComplex (List,Ring) := opts -> (M,A) -> (
     if M == {}
     then return simplicialComplex({1_A});
     if not all(M, m -> size m == 1) then 
@@ -770,9 +770,9 @@ lyubeznikComplex (List,Ring) := opts -> (M,A) -> (
     D
     )
 
-lyubeznikComplex(MonomialIdeal,Ring) := opts -> (I,R) -> (
+lyubeznikSimplicialComplex(MonomialIdeal,Ring) := opts -> (I,R) -> (
     MinGens := first entries mingens I;
-    lyubeznikComplex(MinGens, R, MonomialOrder => opts.MonomialOrder)
+    lyubeznikSimplicialComplex(MinGens, R, MonomialOrder => opts.MonomialOrder)
     )
 
 lyubeznikResolution = method(Options => {MonomialOrder => {}})
@@ -781,8 +781,8 @@ lyubeznikResolution List := opts -> L -> (
     x := getSymbol"SimplicialComplexVertex";
     R := QQ[x_0..x_(#L-1)];
     if opts.MonomialOrder == {}
-    then return chainComplex(lyubeznikComplex(L,R),Labels=>L)
-    else return chainComplex(lyubeznikComplex(L,R),Labels=>L_MO)
+    then return chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L)
+    else return chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L_MO)
     )
 
 lyubeznikResolution MonomialIdeal := opts -> I -> (
@@ -793,10 +793,10 @@ lyubeznikResolution MonomialIdeal := opts -> I -> (
     R := QQ[vars(0..(numgens I)-1)];
     if opts.MonomialOrder == {}
     then return(
-	chainComplex(lyubeznikComplex(I,R,MonomialOrder=>MO),Labels=>MinGens)
+	chainComplex(lyubeznikSimplicialComplex(I,R,MonomialOrder=>MO),Labels=>MinGens)
 	)
     else return(
-	 chainComplex(lyubeznikComplex(I,R,MonomialOrder=>MO),Labels=>MinGens_MO)
+	 chainComplex(lyubeznikSimplicialComplex(I,R,MonomialOrder=>MO),Labels=>MinGens_MO)
 	 )
      )
      
@@ -957,6 +957,8 @@ map(SimplicialComplex, SimplicialComplex, Matrix) := SimplicialMap => opts -> (E
     n := numgens ring D; 
     if rank source A =!= n then 
         error("-- expected the matrix to have " | n | " columns");	
+    if coefficientRing D =!= coefficientRing E then
+        error("-- expected the source and target to have the same coefficient ring");
     new SimplicialMap from {
     	symbol source => D,
     	symbol target => E,
@@ -1020,6 +1022,7 @@ isWellDefined SimplicialMap := Boolean => f -> (
 	    << "-- expected target of the underlying ring map to be the ring of the target");
 	return false	
 	);
+    --TODO: add check for matching coefficient rings.
     -- check that vertices map to vertices
     if not all(vertices D, m -> member (g m, vertices E)) then (
     	if debugLevel > 0 then (
@@ -1039,6 +1042,22 @@ isWellDefined SimplicialMap := Boolean => f -> (
     )
 
 -*
+chainComplex SimplicialMap := ChainComplexMap => f -> (
+    D := chainComplex source f;
+    E := chainComplex target f;
+    g := i -> (
+	if i === -1
+	then return map(E_(-1),D_(-1),1)
+	else if i === 0
+	then 
+	
+	
+	);
+    map(chainComplex E, chainComplex D, g );
+    )
+*-
+
+-*
 S = QQ[w,x,y,z];
 D = simplexComplex(3, S)
 R = QQ[s,t];
@@ -1047,6 +1066,26 @@ f = map(E, D, matrix {{s,t,t,s}})
 assert isWellDefined f
 h = map(E, D, {s,t,t,s})
 assert (h === f)
+
+describe f
+
+f.map
+kk = coefficientRing(D)
+M = matrix table(vertices E, vertices D, (u,v) -> if f.map(v) == u then 1_kk else 0_kk)
+
+vertices E
+vertices D
+
+(chainComplex source f).dd
+(chainComplex target f).dd
+
+g1 = map((chainComplex E)_(-1), (chainComplex D)_(-1),1)
+g2 = map((chainComplex E)_(0), (chainComplex D)_(0),M)
+
+CE = chainComplex E
+CD = chainComplex D
+
+g1 * (CD).dd_0 == (CE).dd_0 * g2
 
 S = QQ[a..e];
 D = simplicialComplex {e, c*d, b*d, a*b*c}

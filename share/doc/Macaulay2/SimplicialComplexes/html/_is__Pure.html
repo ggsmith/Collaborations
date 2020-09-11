@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>isPure -- whether the facets are equidimensional</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_is__Subface.html">next</a> | <a href="_is__Face__Of.html">previous</a> | <a href="_is__Subface.html">forward</a> | <a href="_is__Face__Of.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_is__Pure.html" title="whether the facets are equidimensional">isPure</a>    </div>
+    <hr/>
+    <div>
+      <h1>isPure -- whether the facets are equidimensional</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>isPure D</tt></dd>
+            </dl>
+          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>D</tt>, <span>a <a href="___Simplicial__Complex.html">simplicial complex</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Boolean.html">Boolean value</a></span>, <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_true.html" title="">true</a> if the facets of <tt>D</tt> all have the same dimension, and <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/_false.html" title="">false</a> otherwise</span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : R = ZZ[a..f];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : D = simplicialComplex {a*b*c, a*b*d, d*e*f} 
+
+o2 = | def abd abc |
+
+o2 : SimplicialComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : isPure D
+
+o3 = true</pre>
+            </td>
+          </tr>
+        </table>
+        <table class="examples">
+          <tr>
+            <td>
+              <pre>i4 : E = simplicialComplex {a*b*c, b*d, d*e*f} 
+
+o4 = | def bd abc |
+
+o4 : SimplicialComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i5 : isPure E
+
+o5 = false</pre>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>See also</h2>
+        <ul>
+          <li>
+<span><a href="index.html" title="simplicial complexes">SimplicialComplexes</a> -- simplicial complexes</span>          </li>
+          <li>
+<span><a href="_dim_lp__Simplicial__Complex_rp.html" title="dimension of a simplicial complex">dim(SimplicialComplex)</a> -- dimension of a simplicial complex</span>          </li>
+          <li>
+<span><a href="_facets.html" title="the facets of a simplicial complex">facets</a> -- the facets of a simplicial complex</span>          </li>
+        </ul>
+      </div>
+      <div class="waystouse">
+        <h2>Ways to use <tt>isPure</tt> :</h2>
+        <ul>
+          <li>
+isPure(SimplicialComplex)          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>

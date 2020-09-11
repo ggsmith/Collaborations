@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN" "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>isFaceOf -- Substitute a face to a different ring.</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <link type="text/css" rel="stylesheet" href="/usr/share/Macaulay2/Style/doc.css"/>
+  </head>
+  <body>
+    <table class="buttons">
+      <tr>
+        <td>
+          <div>
+<a href="_is__Pure.html">next</a> | <a href="_ideal_lp__Simplicial__Complex_rp.html">previous</a> | <a href="_is__Pure.html">forward</a> | <a href="_ideal_lp__Simplicial__Complex_rp.html">backward</a> | up | <a href="index.html">top</a> | <a href="master.html">index</a> | <a href="toc.html">toc</a> | <a href="http://www.math.uiuc.edu/Macaulay2/">Macaulay2 web site</a>          </div>
+        </td>
+      </tr>
+    </table>
+    <div>
+<a href="index.html" title="simplicial complexes">SimplicialComplexes</a> :: <a href="_is__Face__Of.html" title="Substitute a face to a different ring.">isFaceOf</a>    </div>
+    <hr/>
+    <div>
+      <h1>isFaceOf -- Substitute a face to a different ring.</h1>
+      <div>
+        <h2>Synopsis</h2>
+        <ul>
+          <li>
+            <dl class="element">
+              <dt>Usage: </dt>
+              <dd><tt>substitute(F,R)</tt></dd>
+            </dl>
+          </li>
+          <li>
+Inputs:            <ul>
+              <li>
+<span><tt>F</tt>, <span>an instance of the type <a href="___Face.html" title="The class of faces of simplicial complexes.">Face</a></span></span>              </li>
+              <li>
+<span><tt>R</tt>, <span>a <a href="/usr/share/doc/Macaulay2/Macaulay2Doc/html/___Polynomial__Ring.html">polynomial ring</a></span></span>              </li>
+            </ul>
+          </li>
+          <li>
+Outputs:            <ul>
+              <li>
+<span><span>an instance of the type <a href="___Face.html" title="The class of faces of simplicial complexes.">Face</a></span></span>              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2>Description</h2>
+        <div>
+          <p>Substitute a face to a different ring.</p>
+          <p></p>
+        </div>
+        <table class="examples">
+          <tr>
+            <td>
+              <pre>i1 : K=QQ;</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i2 : R=K[x_1..x_5];</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i3 : C=simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)
+
+o3 = | x_2x_4x_5 x_1x_4x_5 x_2x_3x_5 x_1x_3x_5 x_2x_3x_4 x_1x_3x_4 |
+
+o3 : SimplicialComplex</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i4 : F1=face {x_1,x_2}
+
+o4 = x  x  
+      1  2
+
+o4 : face with 2 vertices in R</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i5 : F2=face {x_1,x_3}
+
+o5 = x  x  
+      1  3
+
+o5 : face with 2 vertices in R</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i6 : isFaceOf(F1,C)
+
+o6 = false</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre>i7 : isFaceOf(F2,C)
+
+o7 = true</pre>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="waystouse">
+        <h2>Ways to use <tt>isFaceOf</tt> :</h2>
+        <ul>
+          <li>
+isFaceOf(Face,SimplicialComplex)          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+
+</html>
