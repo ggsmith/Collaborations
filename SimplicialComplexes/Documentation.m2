@@ -2531,6 +2531,7 @@ doc ///
    Example
      R=QQ[x_0..x_4];
      F=face {x_0,x_2}
+     F.vertices
      I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);
      D=simplicialComplex I
      fc=faces(1,D)
@@ -2540,7 +2541,6 @@ doc ///
      faces
      facets
 ///
-
 
 doc ///
   Key

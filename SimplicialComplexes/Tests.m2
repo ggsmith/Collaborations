@@ -346,7 +346,7 @@ assert(link(D,c*d) === simplicialComplex{a})
 
 
 ------------------------------------------------------------------------------
--- Buchberger/Lyubeznik/Scarf complexes of a monomial ideal
+-- Buchberger/Lyubeznik/Scarf/Taylor complexes of a monomial ideal
 TEST ///
 S=ZZ/32003[x,y,z]
 L1={x^3,x*y,x*z,y^2,y*z,z^2}
@@ -403,6 +403,14 @@ SSC3 = scarfSimplicialComplex(L3,R)
 SCC3 = scarfChainComplex(M3)
 assert(SCC3_2 == 0 and dim SSC3 == 0)
 
+M = monomialIdeal(S_0^2,S_0*S_1^2,S_0*S_1*S_2)
+T = taylorResolution(M)
+T' = taylorResolution(first entries mingens M)
+assert(all(1..length T, i -> T.dd_i == T'.dd_i))
+M' = monomialIdeal(for i to 5 list S_0^i*S_1^(5-i))
+T'' = taylorResolution M'
+assert(all(0..length T'', i -> rank T''_i == binomial(numgens M',i)))
+
 --degenerate cases
 assert(facets lyubeznikComplex(monomialIdeal(0_S),R) ==
     facets simplexComplex(-1,R))
@@ -417,7 +425,9 @@ assert(facets scarfSimplicialComplex(monomialIdeal(1_S),R) ==
 assert((scarfChainComplex(monomialIdeal(0_S)))_0 == S^1 and
     (scarfChainComplex(monomialIdeal(0_S)))_1 == 0)
 assert all(0..1,i -> rank (scarfChainComplex(monomialIdeal(1_S)))_1 == 1)
-
+M = monomialIdeal(0_S)
+assert((taylorResolution M)_0 == (homology(taylorResolution M))_0)
+assert(1_(ring taylorResolution{0_S}) == 1_S)
 ///
 
 
@@ -457,7 +467,6 @@ S = QQ[x_0..x_4,T]
 D2 = simplicialComplex monomialIdeal(x_0*x_1*x_2*x_3*x_4,T)
 assert(substitute(D1,S) === D2)
 ///
-
 
 ------------------------------------------------------------------------------
 TEST ///
