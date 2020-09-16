@@ -2649,17 +2649,44 @@ doc ///
   Description
    Text
         Returns a @TO List@ with the vertices of a @TO Face@ of a simplicial complex.
-
    Example
      R = QQ[x_0..x_4];
      I = monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);
      D = simplicialComplex I
      fc = facets(D)
-     -- vertices fc#1
+     (faces D)#(1)
+     --vertices fc#1
   SeeAlso
      face
-     facets
-     faces
+     (facets,SimplicialComplex)
+     (faces, SimplicialComplex)
+///
+
+doc ///
+  Key
+      (vertices, SimplicialComplex)
+  Headline
+      list the vertices of a simplicial complex.
+  Usage
+      vertices(D)
+  Inputs
+      D : SimplicialComplex
+  Outputs
+      :List
+  Description
+   Text
+        Returns a @TO List@ with the vertices of a
+        @TO2("SimplicialComplex","simplicial complex")@.
+   Example
+       R = QQ[x_0..x_4];
+       vertices simplexComplex(2,R)
+       I = monomialIdeal(x_0, x_1*x_2, x_2*x_3, x_3*x_4);
+       D = simplicialComplex I
+       vertices D
+  SeeAlso
+      face
+      (facets,SimplicialComplex)
+      (faces, SimplicialComplex)
 ///
 
 doc ///
@@ -3163,3 +3190,7 @@ doc ///
 	(map, SimplicialComplex, SimplicialComplex, Matrix)	   
 	id 
 ///    
+
+
+
+
