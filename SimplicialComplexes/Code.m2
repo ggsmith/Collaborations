@@ -478,19 +478,20 @@ boundaryMap (ZZ,SimplicialComplex) := opts -> (r,D) -> (
 	)
     )
 
-chainComplex SimplicialComplex := {Labels => {}} >> opts -> (D) -> (
-    Vertices := vertices D;
-    if not opts.Labels == {} then(
-    	if not #opts.Labels == #Vertices 
-	then error "-- expected number of labels to equal the number of vertices.";
-	if not all(opts.Labels, m -> size m === 1)
-	then error "-- expected Labels to be a list of monomials"
-	);
-    d := dim D;
-    C := if d < -1 then (coefficientRing(ring D))^0[-1]
-    else if d === -1 then (coefficientRing(ring D))^1
-    else chainComplex apply(0..d, r -> boundaryMap(r,D,Labels => opts.Labels));
-    if opts.Labels == {} then C[1] else C[0]
+chainComplex SimplicialComplex := {Labels => {}} >> opts -> (cacheValue(symbol chainComplex => opts)) (D -> (
+    	Vertices := vertices D;
+    	if not opts.Labels == {} then(
+    	    if not #opts.Labels == #Vertices 
+	    then error "-- expected number of labels to equal the number of vertices.";
+	    if not all(opts.Labels, m -> size m === 1)
+	    then error "-- expected Labels to be a list of monomials"
+	    );
+    	d := dim D;
+    	C := if d < -1 then (coefficientRing(ring D))^0[-1]
+    	else if d === -1 then (coefficientRing(ring D))^1
+    	else chainComplex apply(0..d, r -> boundaryMap(r,D,Labels => opts.Labels));
+    	if opts.Labels == {} then C[1] else C[0]
+    	)
     )
 
 homology(ZZ,SimplicialComplex,Ring) := Module => opts -> (i,Delta,R) -> (
@@ -1010,9 +1011,30 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     )
 
 -- Todo: test the void complex and see how it interacts with maps
--- find some nice examples of simplicial maps
+-- Todo**: find more nice examples of simplicial maps
+-- Todo: isInjective, isSurjective, imageComplex
+-- Todo: barycentric subdivision
+-- Todo: does the join of complexes induce maps? link?
+-- Todo: relative homology: take subcomplex of complex and map to contraction of the subcomplex.
+-- also want to get the long exact sequence of relative homology
+-- is there a reasonable notion of what a random map is? could we implement this?
+
 
 -*
+-- Sasha's path stuff
+path = prepend("../",path)
+needsPackage "SimplicialComplexes"
+
+R = QQ[a,b,c,d,e,f]
+D = simplicialComplex({a*b*c, b*c*d, d*e*f})
+D' = simplicialComplex({a*b*c, c*d, d*e*f})
+phi = map(D, D', {a,b,c,d,e,f})
+assert isWellDefined phi
+Phi = chainComplex phi
+Phi * (source Phi).dd == (target Phi).dd * Phi
+(source Phi) === (chainComplex D')
+(target Phi) === (chainComplex D)
+
 S = QQ[w,x,y,z];
 D = simplexComplex(3, S)
 R = QQ[s,t];
