@@ -966,7 +966,12 @@ isWellDefined SimplicialMap := Boolean => f -> (
 	    << "-- expected target of the underlying ring map to be the ring of the target");
 	return false	
 	);
-    --TODO: add check for matching coefficient rings.
+    -- check that coefficient rings agree
+    if coefficientRing ring D =!= coefficientRing ring E then (
+	if debugLevel > 0 then (
+	    << "-- expected the coefficient rings of the Stanley-Reisner rings to be equal");
+	return false
+	);
     -- check that vertices map to vertices
     if not all(vertices D, m -> member (g m, vertices E)) then (
     	if debugLevel > 0 then (
@@ -985,7 +990,6 @@ isWellDefined SimplicialMap := Boolean => f -> (
     true    
     )
 
-
 chainComplex SimplicialMap := ChainComplexMap => f -> (
     D := source f;
     E := target f;
@@ -993,10 +997,12 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     CE := chainComplex E;
     kk := coefficientRing D;
     g := memoize(i -> (
-	    if i === -1
-	    then map(CE_(-1), CD_(-1), 1)
-	    else if i === 0 
-	    then map(CE_0, CD_0, matrix table(vertices E, vertices D, (u,v) -> if f.map(v) == u then 1_kk else 0_kk))
+	    if i === -1 then 
+		map(CE_(-1), CD_(-1), 1)
+	    else if i === 0 then (
+		phi := map f;
+		map(CE_0, CD_0, matrix table(vertices E, vertices D, (u,v) -> if phi(v) == u then 1_kk else 0_kk))
+		)
 	    else map(CE_i, CD_i, g(i-1) * CD.dd_i // CE.dd_i)
 	    )
     	);
