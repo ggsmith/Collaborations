@@ -408,14 +408,13 @@ matrixToFaces Matrix := M -> (
     apply ((entries M)#0, face)
     )
 
-
 facesM = method()
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
     if not D.cache.?faces then (
 	D.cache.faces = new MutableHashTable;
 	B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
-	D.cache.faces.ideal = substitute(ideal D,B);
+	D.cache.faces.ideal = (map(B,ring(ideal D),gens B))(ideal D);
 	);
     if r < -1 or r > dim D then matrix(R, {{}})
     else (
