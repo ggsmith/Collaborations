@@ -1079,3 +1079,56 @@ g = map(D, E, vars ring E)
 assert isWellDefined g
 
 *-
+
+map(SimplicialComplex, Matrix) := SimplicialComplex => opts -> (D,A) -> (
+    Facets := first entries facets D;
+    phi := map(ring D, A);
+    Image := simplicialComplex(for F in Facets list phi(F));
+    map(Image,D,A)
+    )
+
+map(SimplicialComplex, RingMap) := SimplicialComplex => opts -> (D,phi) -> (
+    map(D,matrix phi)
+    )
+
+elementaryCollapse = method();
+elementaryCollapse (SimplicialComplex,RingElement) := (D,e) -> (
+    CollapseVariables := for x in gens ring D list(
+	if x == (support e)#1
+	then continue
+	else x
+	);
+    CollapseRing := (coefficientRing D)(monoid[CollapseVariables]);
+    CollapseMap := map(CollapseRing, ring D, for x in gens ring D list(
+	    INDEX := if x == (support e)#1
+	    then position(CollapseVariables, v -> v == (support e)#0)
+	    else position(CollapseVariables, v -> v == x);
+	    CollapseRing_INDEX
+	    )
+	);
+    target map(D,CollapseMap)
+    )
+
+wedge = method();
+wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := (D,E,u,v) -> (
+    R := ZZ(monoid[join(gens ring D, gens ring E)]);
+    includeD := map(R,ring D, for i to numgens ring D - 1 list R_i);
+    includeE := map(R,ring E, for i to numgens ring E - 1 list R_(numgens ring D + i));
+    FacetsD := first entries facets D;
+    FacetsE := first entries facets E;
+    DisjointUnion := simplicialComplex(join(for F in FacetsD list includeD(F),
+	    for F in FacetsE list includeE(F))
+	);
+    elementaryCollapse(DisjointUnion,includeD(u)*includeE(v))
+    )
+
+prune SimplicialComplex := SimplicialComplex => opts -> D -> (
+    R := ZZ(monoid[Variables=>#(vertices D)]);
+    Projection := matrix{for x in gens ring D list(
+	    if member(x, vertices D)
+	    then R_(position(vertices D, v -> v == x))
+	    else 0
+	    )
+	};
+    target map(D,Projection)
+    )

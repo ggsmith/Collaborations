@@ -547,3 +547,55 @@ assert(all(1..length C, i -> ((homology C)_i == 0)))
 C = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
 assert(not (homology C)_1 == 0)
 ///
+
+
+-*
+
+R = ZZ[x_0..x_10]
+
+Torus = simplicialComplex{
+    R_0*R_3*R_4, R_0*R_1*R_4, R_1*R_2*R_4, R_2*R_4*R_5,
+    R_0*R_2*R_5, R_0*R_3*R_5, R_3*R_4*R_6, R_4*R_6*R_7,
+    R_4*R_7*R_9, R_4*R_5*R_9, R_7*R_8*R_9, R_5*R_8*R_9,
+    R_3*R_5*R_8, R_3*R_6*R_8, R_0*R_6*R_7, R_0*R_1*R_7,
+    R_1*R_7*R_8, R_1*R_2*R_8, R_0*R_2*R_8, R_0*R_6*R_8
+    }
+
+KleinBottle = simplicialComplex{
+    R_0*R_3*R_4, R_0*R_1*R_4, R_1*R_2*R_4, R_2*R_4*R_5,
+    R_0*R_2*R_5, R_0*R_5*R_6, R_3*R_4*R_6, R_4*R_6*R_7,
+    R_4*R_7*R_9, R_4*R_5*R_9, R_7*R_8*R_9, R_5*R_8*R_9,
+    R_5*R_6*R_8, R_3*R_6*R_8, R_0*R_6*R_7, R_0*R_1*R_7,
+    R_1*R_7*R_8, R_1*R_2*R_8, R_0*R_2*R_8, R_0*R_3*R_8
+    }
+
+RealProjectivePlane = simplicialComplex{
+    R_0*R_4*R_5,  R_0*R_1*R_5,  R_1*R_2*R_5,  R_2*R_5*R_6,
+    R_2*R_3*R_6,  R_3*R_6*R_7,  R_4*R_5*R_7,  R_5*R_7*R_8,
+    R_5*R_8*R_10, R_5*R_6*R_10, R_8*R_9*R_10, R_6*R_9*R_10,
+    R_6*R_7*R_9,  R_4*R_7*R_9,  R_3*R_7*R_8,  R_2*R_3*R_8,
+    R_2*R_8*R_9,  R_1*R_2*R_9,  R_0*R_1*R_9,  R_0*R_4*R_9
+    }
+
+MobiusStrip = simplicialComplex{
+    R_0*R_3*R_4,  R_0*R_1*R_5,
+    R_1*R_2*R_5,  R_2*R_5*R_6,
+    R_2*R_3*R_6,  R_0*R_3*R_6
+    }
+
+S = ZZ[y_0..y_5]
+Circle = simplicialComplex(for i to 5 list y_i*y_((i+1)%6))
+
+f = map(Torus,Circle,matrix{{R_0,R_4,R_3,R_3,R_4,R_6}})
+Cf = chainComplex f
+faces(1,Circle),Cf_1,transpose faces(1,Torus)
+
+g = map(Torus,Circle,matrix{{R_0,R_1,R_2,R_0,R_R,R_3}})
+Cg = chainComplex g
+faces(1,Circle),Cg_1,transpose faces(1,Torus)
+
+h = map(Torus,Circle,matrix{{R_0,R_7,R_8,R_5,R_5,R_0}})
+Ch = chainComplex h
+faces(1,Circle),Ch_1,transpose faces(1,Torus)
+
+*-
