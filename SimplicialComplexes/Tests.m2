@@ -551,6 +551,8 @@ assert(not (homology C)_1 == 0)
 
 -*
 
+needsPackage"SimplicialComplexes"
+
 R = ZZ[x_0..x_10]
 
 Torus = simplicialComplex{
@@ -586,9 +588,47 @@ MobiusStrip = simplicialComplex{
 S = ZZ[y_0..y_5]
 Circle = simplicialComplex(for i to 5 list y_i*y_((i+1)%6))
 
+
+------------------------------------------------------------
+
 f = map(Torus,Circle,matrix{{R_0,R_4,R_3,R_3,R_4,R_6}})
 Cf = chainComplex f
 faces(1,Circle),Cf_1,transpose faces(1,Torus)
+phi = map f
+
+CCircle = chainComplex Circle
+CTorus = chainComplex Torus
+
+CCircle.dd
+CTorus.dd
+
+for i to 1 list(
+    Cf_(i-1)*CCircle.dd_i == CTorus.dd_i*Cf_i
+    )
+
+ER = ZZ[x_0..x_10, SkewCommutative => true]
+ES = ZZ[y_0..y_5, SkewCommutative => true]
+coefR = map(coefficientRing Torus, ER, for e in gens ER list 1)
+coefS = map(coefficientRing Circle ,ES, for e in gens ES list 1)
+psi = map(ER,ES,sub(matrix f,ER))
+
+map(CTorus_1,CCircle_1,matrix table(first entries faces(1, Torus), first entries faces(1, Circle), 
+	(n,m) -> (
+	    if phi m == n
+    	    then coefR(psi(sub(m,ES)))
+	    else 0
+	    )
+    	)    
+    )
+
+for m in first entries facets Circle list coefR(psi(sub(m,ES)))
+
+
+
+
+
+
+
 
 g = map(Torus,Circle,matrix{{R_0,R_1,R_2,R_0,R_R,R_3}})
 Cg = chainComplex g
@@ -597,5 +637,12 @@ faces(1,Circle),Cg_1,transpose faces(1,Torus)
 h = map(Torus,Circle,matrix{{R_0,R_7,R_8,R_5,R_5,R_0}})
 Ch = chainComplex h
 faces(1,Circle),Ch_1,transpose faces(1,Torus)
+
+
+
+
+
+
+restart
 
 *-

@@ -996,22 +996,27 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     CD := chainComplex D;
     CE := chainComplex E;
     kk := coefficientRing D;
-    g := memoize(i -> (
-	    if i === -1 then 
-		map(CE_(-1), CD_(-1), 1)
-	    else (
-		phi := map f;
-		-- ExtAlg := ZZ[e_0..e_(numgens ring E), SkewCommutative = true]
-		map(CE_i, CD_i, matrix table(first entries faces(i,E), first entries faces(i,D), 
-			(u,v) -> if phi(v) == u then 1_kk else 0_kk
+    EE := kk[gens ring E, SkewCommutative => true];
+    ED := kk[gens ring D, SkewCommutative => true];
+    coefE := map(kk,EE, for i in gens EE list 1);
+    phi := map f;
+    psi := map(EE,ED,sub(matrix f,EE));
+    --memoize not needed anymore
+    g := i -> (
+	if i === -1 then map(CE_(-1), CD_(-1), 1) else (
+	    map(CE_i, CD_i, matrix table(first entries faces(i, E), first entries faces(i, D),
+		    (n,m) -> (
+			if phi m == n
+			then coefEE(psi(sub(m,ED)))
+			else 0
 			)
-		    )
+		    )     
 		)
 	    )
-    	);
+	);
     map(CE, CD, g)
     )
-
+    
 -- TODO**: Fix the code above--namely, we want to use the exterior algebra to get the sign
 -- convention working.
 
@@ -1026,6 +1031,11 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
 
 
 -*
+matrix table(first entries faces(i,E), first entries faces(i,D), 
+			(u,v) -> if phi(v) == u then 1_kk else 0_kk
+			)
+
+
 -- Sasha's path stuff
 restart
 path = prepend("../",path)
