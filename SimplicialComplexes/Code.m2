@@ -999,18 +999,24 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     g := memoize(i -> (
 	    if i === -1 then 
 		map(CE_(-1), CD_(-1), 1)
-	    else if i === 0 then (
+	    else (
 		phi := map f;
-		map(CE_0, CD_0, matrix table(vertices E, vertices D, (u,v) -> if phi(v) == u then 1_kk else 0_kk))
+		-- ExtAlg := ZZ[e_0..e_(numgens ring E), SkewCommutative = true]
+		map(CE_i, CD_i, matrix table(first entries faces(i,E), first entries faces(i,D), 
+			(u,v) -> if phi(v) == u then 1_kk else 0_kk
+			)
+		    )
 		)
-	    else map(CE_i, CD_i, g(i-1) * CD.dd_i // CE.dd_i)
 	    )
     	);
     map(CE, CD, g)
     )
 
+-- TODO**: Fix the code above--namely, we want to use the exterior algebra to get the sign
+-- convention working.
+
 -- Todo: test the void complex and see how it interacts with maps
--- Todo**: find more nice examples of simplicial maps
+-- Todo: find more nice examples of simplicial maps
 -- Todo: isInjective, isSurjective, imageComplex
 -- Todo: barycentric subdivision
 -- Todo: does the join of complexes induce maps? link?
@@ -1021,6 +1027,7 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
 
 -*
 -- Sasha's path stuff
+restart
 path = prepend("../",path)
 needsPackage "SimplicialComplexes"
 
