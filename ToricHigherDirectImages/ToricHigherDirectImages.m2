@@ -137,7 +137,7 @@ coneComplex (ToricMap,ZZ) := (phi,k) -> (
 -- equidimensional.
 manualOrbits = method();
 manualOrbits (List, ZZ) := (cones,k) -> (
-    for sets in subsets(cones,k+1) list (
+    unique for sets in subsets(cones,k+1) list (
 	if sets == {} then continue else (
 	    intersection := sets_0;
 	    n := #intersection;
@@ -150,6 +150,8 @@ manualOrbits (List, ZZ) := (cones,k) -> (
 	)
     )
 -- This computes the vertical maps between C0 and C1 manually.
+-- Note: I am recomputing conePreimages a lot. I think I should
+-- just bundle verticalMaps together with coneComplex later.
 verticalMaps = method();
 verticalMaps ToricMap := phi -> (
     X := source phi;
@@ -160,13 +162,9 @@ verticalMaps ToricMap := phi -> (
     R := QQ (monoid [gens S, Degrees => fineDeg]);
     vpreimages := conePreimages(phi,0);
     epreimages := conePreimages(phi,1);
-    clength := max((values vpreimages)/length | (values epreimages)/length);
-    c0dims := for i to clength - 1 list (
-	sum( for tau in orbits(Y,0) list( binomial(#vpreimages#tau, i+1)))
-	);
-    c1dims := for i to clength - 1 list (
-	sum( for tau in orbits(Y,1) list( binomial(#epreimages#tau, i+1)))
-	);
+    C0 := coneComplex(phi,0);
+    C1 := coneComplex(phi,1);
+    clength := max({length C0, length C1});
     -- todo: signs...
     hashTable (
         for i to clength-1 list (
@@ -200,6 +198,11 @@ verticalMaps ToricMap := phi -> (
 restart
 load "ToricHigherDirectImages.m2"
 
+X5 = smoothFanoToricVariety(4,13)
+Y5 = toricProjectiveSpace(2)
+phi5 = map(Y5, X5, matrix {{1,0,0,0},{0,1,0,0}})
+verticalMaps(phi5)
+
 X = hirzebruchSurface(1);
 Y = toricProjectiveSpace(1);
 phi = map(Y, X, matrix {{1,0}});
@@ -218,7 +221,7 @@ conePreimages(phi2, 0)
 conePreimages(phi2, 1)
 C02 = coneComplex(phi2, 0)
 C12 = coneComplex(phi2, 1)
-verticalmaps(phi2)
+verticalMaps(phi2)
 
 X3 = toricProjectiveSpace(1);
 Y3 = toricProjectiveSpace(1) ** toricProjectiveSpace(1);
@@ -228,7 +231,7 @@ conePreimages(phi3, 0)
 conePreimages(phi3, 1)
 C03 = coneComplex(phi3, 0)
 C13 = coneComplex(phi3, 1)
-verticalmaps(phi3)
+verticalMaps(phi3)
 
 X4 = normalToricVariety({{1,0},{1,1},{0,1},{-1,1},{0,-1}},
     {{0,1},{1,2},{2,3},{3,4},{4,0}});
@@ -239,17 +242,20 @@ conePreimages(phi4, 0)
 conePreimages(phi4, 1)
 C04 = coneComplex(phi4, 0)
 C14 = coneComplex(phi4, 1)
-verticalmaps(phi4)
+verticalMaps(phi4)
 
 X5 = smoothFanoToricVariety(4,13)
 Y5 = toricProjectiveSpace(2)
-phi5 = map(Y, X, matrix {{1,0,0,0},{0,1,0,0}})
+phi5 = map(Y5, X5, matrix {{1,0,0,0},{0,1,0,0}})
 isWellDefined phi5
 conePreimages(phi5,0)
 conePreimages(phi5,1)
-C05 = coneComplex(phi5,0) 
+C05 = coneComplex(phi5,0); R = ring C05; C05 
 C15 = coneComplex(phi5,1)
 verticalMaps(phi5)
+
+rays X5
+max X5
 
 *-
 ------------------------------------------------------------------------------
