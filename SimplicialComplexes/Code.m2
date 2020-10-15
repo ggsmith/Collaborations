@@ -998,7 +998,7 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     kk := coefficientRing D;
     EE := kk[gens ring E, SkewCommutative => true];
     ED := kk[gens ring D, SkewCommutative => true];
-    coefE := map(kk,EE, for i in gens EE list 1);
+    coefEE := map(kk,EE, for i in gens EE list 1);
     phi := map f;
     psi := map(EE,ED,sub(matrix f,EE));
     --memoize not needed anymore
