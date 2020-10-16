@@ -1110,6 +1110,7 @@ map(SimplicialComplex, RingMap) := SimplicialComplex => opts -> (D,phi) -> (
 
 elementaryCollapse = method();
 elementaryCollapse (SimplicialComplex,RingElement) := (D,e) -> (
+    if not size e == 1 then error "The second argument should be a monomial representing an edge";
     CollapseVariables := for x in gens ring D list(
 	if x == (support e)#1
 	then continue

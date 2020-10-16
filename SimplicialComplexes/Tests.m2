@@ -598,49 +598,40 @@ phi = map f
 
 CCircle = chainComplex Circle
 CTorus = chainComplex Torus
-
-CCircle.dd
-CTorus.dd
-
 for i to 1 list(
     Cf_(i-1)*CCircle.dd_i == CTorus.dd_i*Cf_i
     )
 
-ER = ZZ[x_0..x_10, SkewCommutative => true]
-ES = ZZ[y_0..y_5, SkewCommutative => true]
-coefR = map(coefficientRing Torus, ER, for e in gens ER list 1)
-coefS = map(coefficientRing Circle ,ES, for e in gens ES list 1)
-psi = map(ER,ES,sub(matrix f,ER))
-
-map(CTorus_1,CCircle_1,matrix table(first entries faces(1, Torus), first entries faces(1, Circle), 
-	(n,m) -> (
-	    if phi m == n
-    	    then coefR(psi(sub(m,ES)))
-	    else 0
-	    )
-    	)    
-    )
-
-for m in first entries facets Circle list coefR(psi(sub(m,ES)))
-
-
-
-
-
-
-
-
-g = map(Torus,Circle,matrix{{R_0,R_1,R_2,R_0,R_R,R_3}})
+g = map(Torus,Circle,matrix{{R_0,R_1,R_2,R_0,R_4,R_3}})
 Cg = chainComplex g
 faces(1,Circle),Cg_1,transpose faces(1,Torus)
+for i to 1 list(
+    Cg_(i-1)*CCircle.dd_i == CTorus.dd_i*Cg_i
+    )
 
 h = map(Torus,Circle,matrix{{R_0,R_7,R_8,R_5,R_5,R_0}})
 Ch = chainComplex h
 faces(1,Circle),Ch_1,transpose faces(1,Torus)
+for i to 1 list(
+    Ch_(i-1)*CCircle.dd_i == CTorus.dd_i*Ch_i
+    )
+
+for A in subsets(5,3) do(
+    R1 := ZZ(monoid[x_0..x_4]);
+    R2 := ZZ(monoid[x_0..x_2]);
+    phi := 
+    
 
 
+wedge(Torus,Circle,x_0,y_0)
+wedge
+
+for A in subsets(numgnes R, numgens S) do(
+   
+# subsets(numgens R, numgens S)
 
 
+elementaryCollapse(Circle,y_0*y_1)
 
 
 restart

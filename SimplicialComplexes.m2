@@ -43,6 +43,7 @@ export {
     "boundaryMap",    
     "buchbergerComplex",
     "dunceHatComplex",
+    "elementaryCollapse",
     "face",  
     "grunbaumBallComplex",
     "isFaceOf",    
@@ -60,6 +61,7 @@ export {
     "simplicialComplex",
     "smallManifold",
     "taylorResolution",
+    "wedge",
     "zieglerBallComplex",
     -- symbol
     "Multigrading",
