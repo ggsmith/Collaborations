@@ -38,6 +38,7 @@ export {
     -- methods
     "algebraicShifting",    
     "bartnetteSphereComplex",
+    "barycentricSubdivision",
     "bjornerComplex",
 --    "boundary",
     "boundaryMap",    

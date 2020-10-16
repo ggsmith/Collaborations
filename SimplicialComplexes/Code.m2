@@ -1031,11 +1031,16 @@ barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -
     simplicialComplex baryFacets
     )
 
-
 -*
+needsPackage"SimplicialComplexes"
 R = ZZ[x_0..x_5]
-D = simplicialComplex{x_0*x_1*x_2}
 S = ZZ[y_0..y_15]
+D = simplicialComplex{x_0*x_1*x_2}
+E = barycentricSubdivision(D,S)
+first entries facets E
+
+D = simplicialComplex{x_0*x_1*x_2, x_1*x_2*x_3}
+faces D
 E = barycentricSubdivision(D,S)
 first entries facets E
 *-
