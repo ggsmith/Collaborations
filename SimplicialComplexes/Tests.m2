@@ -598,29 +598,32 @@ phi = map f
 
 CCircle = chainComplex Circle
 CTorus = chainComplex Torus
-for i to 1 list(
-    Cf_(i-1)*CCircle.dd_i == CTorus.dd_i*Cf_i
-    )
+all(1, i -> Cf_(i-1)*CCircle.dd_i == CTorus.dd_i*Cf_i )
+
 
 g = map(Torus,Circle,matrix{{R_0,R_1,R_2,R_0,R_4,R_3}})
 Cg = chainComplex g
 faces(1,Circle),Cg_1,transpose faces(1,Torus)
-for i to 1 list(
-    Cg_(i-1)*CCircle.dd_i == CTorus.dd_i*Cg_i
-    )
+all(1, i -> Cg_(i-1)*CCircle.dd_i == CTorus.dd_i*Cg_i)
 
 h = map(Torus,Circle,matrix{{R_0,R_7,R_8,R_5,R_5,R_0}})
 Ch = chainComplex h
 faces(1,Circle),Ch_1,transpose faces(1,Torus)
-for i to 1 list(
-    Ch_(i-1)*CCircle.dd_i == CTorus.dd_i*Ch_i
-    )
+all(1, i -> Ch_(i-1)*CCircle.dd_i == CTorus.dd_i*Ch_i)
 
-for A in subsets(5,3) do(
+for A in subsets(5,3) list(
     R1 := ZZ(monoid[x_0..x_4]);
     R2 := ZZ(monoid[x_0..x_2]);
-    phi := 
+    D := simplicialComplex{product for x in gens R1 list x};
+    E := simplicialComplex{product for x in gens R2 list x};
+    CD := chainComplex D;
+    CE := chainComplex E;
+    phi := map(D,E, for i in A list R1_i);
+    Cphi := chainComplex phi;
+    all(3, i -> Cphi_(i-1)*CE.dd_i == CD.dd_i*Cphi_i)
+    )
     
+
 
 
 wedge(Torus,Circle,x_0,y_0)

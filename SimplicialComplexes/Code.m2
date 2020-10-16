@@ -1001,7 +1001,6 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     coefEE := map(kk,EE, for i in gens EE list 1);
     phi := map f;
     psi := map(EE,ED,sub(matrix f,EE));
-    --memoize not needed anymore
     g := i -> (
 	if i === -1 then map(CE_(-1), CD_(-1), 1) else (
 	    map(CE_i, CD_i, matrix table(first entries faces(i, E), first entries faces(i, D),
@@ -1016,9 +1015,31 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
 	);
     map(CE, CD, g)
     )
-    
--- TODO**: Fix the code above--namely, we want to use the exterior algebra to get the sign
--- convention working.
+
+barycentricSubdivision = method();
+barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -> (
+    numFaces := sum(dim D, i-> numColumns faces(i,D));
+    if numgens S < numFaces
+    then error(" -- expected the ring to have at least " | numFaces | " generators");
+    FaceList := first entries matrix{apply(dim D + 1, i-> faces(i, D))};
+    baryFacets := flatten for F in first entries facets D list(
+	for vertexList in permutations(support F) list(
+	    L := apply(#vertexList, i -> product vertexList_{0..i});
+    	    product apply(L, l -> S_(position(FaceList, j -> j == l)))
+	    )
+	);
+    simplicialComplex baryFacets
+    )
+
+
+-*
+R = ZZ[x_0..x_5]
+D = simplicialComplex{x_0*x_1*x_2}
+S = ZZ[y_0..y_15]
+E = barycentricSubdivision(D,S)
+first entries facets E
+*-
+
 
 -- Todo: test the void complex and see how it interacts with maps
 -- Todo: find more nice examples of simplicial maps
@@ -1034,6 +1055,10 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
 matrix table(first entries faces(i,E), first entries faces(i,D), 
 			(u,v) -> if phi(v) == u then 1_kk else 0_kk
 			)
+
+
+
+faces E
 
 
 -- Sasha's path stuff
