@@ -33,7 +33,8 @@ export {
     -- methods
     "conePreimages",
     "coneComplex",
-    "verticalMaps"
+    "verticalMaps",
+    "mixedMaps"
     -- symbol
     }
 
@@ -191,6 +192,35 @@ verticalMaps ToricMap := phi -> (
 	    )
 	)
     )
+-- WIP: computes some kind of mix of vertical and horizontal maps.
+mixedMaps = method();
+mixedMaps ToricMap := phi -> (
+    X := source phi;
+    Y := target phi;
+    n := numgens ring X;
+    m := numgens ring Y;
+    S := ring X;
+    S' := S ** ring Y;
+    R := QQ (monoid [gens S, Degrees => entries id_(ZZ^n)]);
+    R' := QQ (monoid [gens S', Degrees => entries id_(ZZ^(n+m))]);
+    RfromS := map (R, S, gens R);
+    R'fromS' := map(R', S', gens R');
+    RfromR' := map(R, S', gens R | (for i to m-1 list 1_R));
+    preimages := conePreimages(phi,0);
+    Yrays := for j to m-1 list j;
+    Xrays := for j to n-1 list j;
+    I := ideal ( flatten ( for tau in max Y list (
+	    	subfanrays := unique flatten preimages#tau;
+       	    	for sigma in preimages#tau list (
+		    product(toList (set Yrays - tau), j -> S'_(n+j)) * 
+		    product(toList (set Xrays - sigma), j -> S'_j)
+		    )	 
+	    	)
+	    )
+	);
+    B := R'fromS' I;
+    C := Hom(res (R'^1/B), R'^1)
+    )
 -*
 -- klein-schmidt varieties (have picard rank 2) (projective bundles over P^1 probably)
 -- small fano varieties are implemented in macaulay2 and have natural maps
@@ -198,64 +228,96 @@ verticalMaps ToricMap := phi -> (
 restart
 load "ToricHigherDirectImages.m2"
 
-X5 = smoothFanoToricVariety(4,13)
-Y5 = toricProjectiveSpace(2)
-phi5 = map(Y5, X5, matrix {{1,0,0,0},{0,1,0,0}})
-verticalMaps(phi5)
-
-X = hirzebruchSurface(1);
-Y = toricProjectiveSpace(1);
-phi = map(Y, X, matrix {{1,0}});
-assert isWellDefined(phi);
+-- F1 to P1
+X = hirzebruchSurface(1); Y = toricProjectiveSpace(1, Variable => y); phi = map(Y, X, matrix {{1,0}});
 conePreimages(phi, 0)
 conePreimages(phi, 1)
-C0 = coneComplex(phi,0)
-C1 = coneComplex(phi,1)
+C0 = coneComplex(phi,0); C0.dd
+C1 = coneComplex(phi,1); C1.dd
 verticalMaps(phi)
+C = mixedMaps(phi); R = ring C; C.dd
 
-X2 = hirzebruchSurface(1);
-Y2 = toricProjectiveSpace(2);
-phi2 = map(Y2, X2, matrix {{0,-1},{1,0}});
-assert isWellDefined(phi2);
+-- F1 to P2
+X2 = hirzebruchSurface(1); Y2 = toricProjectiveSpace(2, Variable => y); phi2 = map(Y2, X2, matrix {{0,-1},{1,0}});
 conePreimages(phi2, 0)
 conePreimages(phi2, 1)
 C02 = coneComplex(phi2, 0)
 C12 = coneComplex(phi2, 1)
 verticalMaps(phi2)
+C2 = mixedMaps(phi2); R2 = ring C2; C2.dd
 
-X3 = toricProjectiveSpace(1);
-Y3 = toricProjectiveSpace(1) ** toricProjectiveSpace(1);
-phi3 = map(Y3, X3, matrix {{1},{0}});
+-- P1 to P1 x P1
+X3 = toricProjectiveSpace(1); Y3 = toricProjectiveSpace(1, Variable => y) ** toricProjectiveSpace(1, Variable => y); phi3 = map(Y3, X3, matrix {{1},{0}});
 assert isWellDefined(phi3);
 conePreimages(phi3, 0)
 conePreimages(phi3, 1)
 C03 = coneComplex(phi3, 0)
 C13 = coneComplex(phi3, 1)
 verticalMaps(phi3)
+C3 = mixedMaps(phi3); R3 = ring C3; C3.dd
 
+-- Blowup of F1 to P2
 X4 = normalToricVariety({{1,0},{1,1},{0,1},{-1,1},{0,-1}},
     {{0,1},{1,2},{2,3},{3,4},{4,0}});
-Y4 = toricProjectiveSpace(2);
+Y4 = toricProjectiveSpace(2, Variable => y);
 phi4 = map(Y4, X4, matrix {{0,-1},{1,0}});
-assert isWellDefined(phi4);
 conePreimages(phi4, 0)
 conePreimages(phi4, 1)
 C04 = coneComplex(phi4, 0)
 C14 = coneComplex(phi4, 1)
 verticalMaps(phi4)
+C4 = mixedMaps(phi4); R4 = ring C4; C4.dd
 
+-- Fano(4,13) to P2
 X5 = smoothFanoToricVariety(4,13)
-Y5 = toricProjectiveSpace(2)
+Y5 = toricProjectiveSpace(2, Variable => y)
 phi5 = map(Y5, X5, matrix {{1,0,0,0},{0,1,0,0}})
 isWellDefined phi5
 conePreimages(phi5,0)
 conePreimages(phi5,1)
-C05 = coneComplex(phi5,0); R = ring C05; C05 
-C15 = coneComplex(phi5,1)
+C05 = coneComplex(phi5,0); R05 = ring C05; C05.dd
+C15 = coneComplex(phi5,1); R15 = ring C15; C15.dd
 verticalMaps(phi5)
+C5 = mixedMaps(phi5); R5 = ring C5; C5.dd
 
-rays X5
-max X5
+
+-- WIP
+
+coneComplex2 = method();
+coneComplex2 ToricMap := phi -> (
+    X := source phi;
+    Y := target phi;
+    n := numgens ring X;
+    m := numgens ring Y;
+    S := ring X;
+    S' := S ** ring Y;
+    R := QQ (monoid [gens S, Degrees => entries id_(ZZ^n)]);
+    R' := QQ (monoid [gens S', Degrees => entries id_(ZZ^(n+m))]);
+    RfromS := map (R, S, gens R);
+    R'fromS' := map(R', S', gens R');
+    RfromR' := map(R, S', gens R | (for i to m-1 list 1_R));
+    preimages := conePreimages(phi,0);
+    Yrays := for j to m-1 list j;
+    Xrays := for j to n-1 list j;
+    I := ideal ( flatten ( for tau in max Y list (
+	    	subfanrays := unique flatten preimages#tau;
+       	    	for sigma in preimages#tau list (
+		    print {toList (set Yrays - tau), n};
+		    product(toList (set Yrays - tau), j -> S'_(n+j)) * 
+		    product(toList (set Xrays - sigma), j -> S'_j)
+		    )	 
+	    	)
+	    )
+	);
+    B := R'fromS' I;
+    C := Hom(res (R'^1/B), R'^1);
+    {d0,d1,f} := (0,0,0);
+    currdim := #(max X);
+    for i to length C do (
+	
+	)
+    )
+
 
 *-
 ------------------------------------------------------------------------------
