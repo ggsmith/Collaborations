@@ -600,7 +600,6 @@ CCircle = chainComplex Circle
 CTorus = chainComplex Torus
 all(1, i -> Cf_(i-1)*CCircle.dd_i == CTorus.dd_i*Cf_i )
 
-
 g = map(Torus,Circle,matrix{{R_0,R_1,R_2,R_0,R_4,R_3}})
 Cg = chainComplex g
 faces(1,Circle),Cg_1,transpose faces(1,Torus)
@@ -622,21 +621,5 @@ for A in subsets(5,3) list(
     Cphi := chainComplex phi;
     all(3, i -> Cphi_(i-1)*CE.dd_i == CD.dd_i*Cphi_i)
     )
-    
-
-
-
-wedge(Torus,Circle,x_0,y_0)
-wedge
-
-for A in subsets(numgnes R, numgens S) do(
-   
-# subsets(numgens R, numgens S)
-
-
-elementaryCollapse(Circle,y_0*y_1)
-
-
-restart
 
 *-

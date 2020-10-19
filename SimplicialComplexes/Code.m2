@@ -996,8 +996,8 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     CD := chainComplex D;
     CE := chainComplex E;
     kk := coefficientRing D;
-    EE := kk[gens ring E, SkewCommutative => true];
-    ED := kk[gens ring D, SkewCommutative => true];
+    EE := kk(monoid[gens ring E, SkewCommutative => true]);
+    ED := kk(monoid[gens ring D, SkewCommutative => true]);
     coefEE := map(kk,EE, for i in gens EE list 1);
     phi := map f;
     psi := map(EE,ED,sub(matrix f,EE));
@@ -1031,6 +1031,23 @@ barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -
     simplicialComplex baryFacets
     )
 
+isInjective SimplicialMap := Boolean => f -> (
+    if #vertices(source f) == #unique for x in vertices source f list (map f)(x)
+    then true
+    else false
+    )
+
+imageComplex = method();
+imageComplex SimplicialMap := f -> (
+    simplicialComplex(for F in first entries facets(source f) list (map f)(F))
+    )
+
+isSurjective SimplicialMap := Boolean => f -> (
+    facets imageComplex f == facets target f    
+    )
+
+
+
 -*
 needsPackage"SimplicialComplexes"
 R = ZZ[x_0..x_5]
@@ -1048,7 +1065,6 @@ first entries facets E
 
 -- Todo: test the void complex and see how it interacts with maps
 -- Todo: find more nice examples of simplicial maps
--- Todo: isInjective, isSurjective, imageComplex
 -- Todo: barycentric subdivision
 -- Todo: does the join of complexes induce maps? link?
 -- Todo: relative homology: take subcomplex of complex and map to contraction of the subcomplex.
