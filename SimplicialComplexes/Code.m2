@@ -1018,48 +1018,82 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
 
 barycentricSubdivision = method();
 barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -> (
-    numFaces := sum(dim D, i-> numColumns faces(i,D));
+    numFaces := sum(dim D + 1, i-> numColumns faces(i,D));
     if numgens S < numFaces
     then error(" -- expected the ring to have at least " | numFaces | " generators");
-    FaceList := first entries matrix{apply(dim D + 1, i-> faces(i, D))};
+    faceList := first entries matrix{apply(dim D + 1, i-> faces(i, D))};
     baryFacets := flatten for F in first entries facets D list(
 	for vertexList in permutations(support F) list(
 	    L := apply(#vertexList, i -> product vertexList_{0..i});
-    	    product apply(L, l -> S_(position(FaceList, j -> j == l)))
+    	    product apply(L, l -> S_(position(faceList, j -> j == l)))
 	    )
 	);
     simplicialComplex baryFacets
     )
 
-isInjective SimplicialMap := Boolean => f -> (
-    if #vertices(source f) == #unique for x in vertices source f list (map f)(x)
-    then true
-    else false
+barycentricSubdivision (SimplicialMap, Ring, Ring) := SimplicialMap => (f,R,S) -> (
+    D := source f;
+    E := target f;
+    faceListSource := first entries matrix{apply(dim D + 1, i -> faces(i,D))};
+    faceListTarget := first entries matrix{apply(dim E + 1, i -> faces(i,E))};
+    variableList := for F in faceListSource list(
+       	S_(position(faceListTarget, G -> G == product support (map f)(F)))
+	);
+    map(barycentricSubdivision(target f, S), barycentricSubdivision(source f, R), 
+	variableList | toList(numgens R - #variableList : 1_S)
+	)
     )
 
-imageComplex = method();
-imageComplex SimplicialMap := f -> (
+isInjective SimplicialMap := Boolean => f -> (
+    #vertices(source f) == #unique for x in vertices source f list (map f)(x)
+    )
+
+image SimplicialMap := SimplicialComplex => f -> (
     simplicialComplex(for F in first entries facets(source f) list (map f)(F))
     )
 
 isSurjective SimplicialMap := Boolean => f -> (
-    facets imageComplex f == facets target f    
+    facets image f == facets target f    
     )
 
-
-
 -*
+restart
 needsPackage"SimplicialComplexes"
-R = ZZ[x_0..x_5]
-S = ZZ[y_0..y_15]
-D = simplicialComplex{x_0*x_1*x_2}
-E = barycentricSubdivision(D,S)
+R = ZZ/101[x_0..x_10]
+T = ZZ/101[y_0..y_15]
+S = ZZ/101[z_0..z_24]
+D = simplicialComplex{x_3*x_4*x_5}
+E = barycentricSubdivision(D,T)
 first entries facets E
+facets E
+BE = barycentricSubdivision(E,S)
+f = map(E,D,{y_2,y_5,y_6,1,1,1,1,1,1,1,1})
+isWellDefined f
+map(barycentricSubdivision(id_D, T, T))
+faces D
+faces(target barycentricSubdivision(id_D, T, T))
+
+
 
 D = simplicialComplex{x_0*x_1*x_2, x_1*x_2*x_3}
 faces D
 E = barycentricSubdivision(D,S)
 first entries facets E
+
+
+D = simplicialComplex{R_1*R_2,R_2*R_3}
+E = simplicialComplex{R_0*R_1}
+f = map(E,D,{1_R, R_0, R_1, R_1, 1_R, 1_R, 1_R, 1_R, 1_R, 1_R, 1_R})
+isWellDefined f
+
+g = barycentricSubdivision(f, S, T)
+isWellDefined g
+faces target f
+faces source f
+faces target g
+faces source g
+map g
+
 *-
 
 
