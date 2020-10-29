@@ -1018,14 +1018,15 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
 
 barycentricSubdivision = method();
 barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -> (
-    numFaces := sum(dim D + 1, i-> numColumns faces(i,D));
-    if numgens S < numFaces
-    then error(" -- expected the ring to have at least " | numFaces | " generators");
+    if dim D == -infinity then return simplicialComplex(monomialIdeal(1_S));
+    if numgens S < numFaces D - 1
+    then error(" -- expected the ring to have at least " | numFaces D - 1 | " generators");
     faceList := first entries matrix{apply(dim D + 1, i-> faces(i, D))};
     baryFacets := flatten for F in first entries facets D list(
 	for vertexList in permutations(support F) list(
 	    L := apply(#vertexList, i -> product vertexList_{0..i});
-    	    product apply(L, l -> S_(position(faceList, j -> j == l)))
+    	    if L === {} then 1_S
+	    else product apply(L, l -> S_(position(faceList, j -> j == l)))
 	    )
 	);
     simplicialComplex baryFacets
@@ -1056,6 +1057,12 @@ isSurjective SimplicialMap := Boolean => f -> (
     facets image f == facets target f    
     )
 
+numFaces = method()
+numFaces SimplicialComplex := ZZ => D -> (
+    sum(-1 .. dim D, i -> numColumns faces(i,D))
+    )
+
+
 -*
 restart
 needsPackage"SimplicialComplexes"
@@ -1064,16 +1071,20 @@ T = ZZ/101[y_0..y_15]
 S = ZZ/101[z_0..z_24]
 D = simplicialComplex{x_3*x_4*x_5}
 E = barycentricSubdivision(D,T)
-first entries facets E
-facets E
 BE = barycentricSubdivision(E,S)
-f = map(E,D,{y_2,y_5,y_6,1,1,1,1,1,1,1,1})
+facets E
+f = map(E,D,{1,1,1,y_2,y_5,y_6,1,1,1,1,1})
 isWellDefined f
-map(barycentricSubdivision(id_D, T, T))
-faces D
-faces(target barycentricSubdivision(id_D, T, T))
+g = map(barycentricSubdivision(id_D, T, T))
+isWellDefined g
 
 
+bf = barycentricSubdivision(f,T,S)
+isWellDefined bf
+
+
+
+------
 
 D = simplicialComplex{x_0*x_1*x_2, x_1*x_2*x_3}
 faces D
@@ -1094,25 +1105,43 @@ faces target g
 faces source g
 map g
 
-*-
+irrelevant = simplicialComplex{1_R}
+numFaces irrelevant
+bIrrelevant = barycentricSubdivision(irrelevant, R)
+irrelevant === bIrrelevant
 
+
+
+void = simplicialComplex(monomialIdeal 1_R)
+numFaces void
+barycentricSubdivision(void, ring void)
+
+voidToIrrelevant = map (irrelevant, void, gens R)
+isWellDefined voidToIrrelevant
+
+DToIrrelevant = map(irrelevant, D, gens R)
+isWellDefined DToIrrelevant
+
+
+
+-----------------
+bD = barycentricSubdivision(D, ZZ/101[x_0..x_(numFaces D - 1)])
+ring oo
+
+*-
 
 -- Todo: test the void complex and see how it interacts with maps
 -- Todo: find more nice examples of simplicial maps
--- Todo: barycentric subdivision
 -- Todo: does the join of complexes induce maps? link?
 -- Todo: relative homology: take subcomplex of complex and map to contraction of the subcomplex.
 -- also want to get the long exact sequence of relative homology
 -- is there a reasonable notion of what a random map is? could we implement this?
-
+-- TODO: Documentation
 
 -*
 matrix table(first entries faces(i,E), first entries faces(i,D), 
 			(u,v) -> if phi(v) == u then 1_kk else 0_kk
 			)
-
-
-
 faces E
 
 
@@ -1209,7 +1238,7 @@ elementaryCollapse (SimplicialComplex,RingElement) := (D,e) -> (
 
 wedge = method();
 wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := (D,E,u,v) -> (
-    R := ZZ(monoid[join(gens ring D, gens ring E)]);
+    R := (coefficientRing D)(monoid[join(gens ring D, gens ring E)]);
     includeD := map(R,ring D, for i to numgens ring D - 1 list R_i);
     includeE := map(R,ring E, for i to numgens ring E - 1 list R_(numgens ring D + i));
     FacetsD := first entries facets D;
@@ -1221,7 +1250,7 @@ wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := (D,E,u,
     )
 
 prune SimplicialComplex := SimplicialComplex => opts -> D -> (
-    R := ZZ(monoid[Variables=>#(vertices D)]);
+    R := (coefficientRing D)(monoid[Variables=>#(vertices D)]);
     Projection := matrix{for x in gens ring D list(
 	    if member(x, vertices D)
 	    then R_(position(vertices D, v -> v == x))
