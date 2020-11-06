@@ -1062,6 +1062,41 @@ numFaces SimplicialComplex := ZZ => D -> (
     sum(-1 .. dim D, i -> numColumns faces(i,D))
     )
 
+homology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E) -> (
+    inclusion := map(D,E, gens ring D);
+    C := coker chainComplex inclusion;
+    homology(i,C)
+    )
+
+homology(SimplicialComplex,SimplicialComplex) := ChainComplex => opts -> (D,E) -> (
+    inclusion := map(D,E, gens ring D);
+    C := coker chainComplex inclusion;
+    homology C
+    )
+
+-*
+S = ZZ[y_0..y_5]
+Circle = simplicialComplex(for i to 5 list y_i*y_((i+1)%6))
+Irrelevant = simplicialComplex{1_S}
+OnePoint = simplicialComplex{S_0}
+TwoPoints = simplicialComplex{S_0, S_2}
+
+for i from -1 to 1 list(
+    prune homology(i, Circle,Irrelevant)
+    )
+prune homology(Circle, Irrelevant)
+
+for i from -1 to 1 list(
+    prune homology(i, Circle, OnePoint)
+    )
+prune homology(Circle, OnePoint)
+
+for i from -1 to 1 list(
+    prune homology(i, Circle, TwoPoints)
+    )
+prune homology(Circle, TwoPoints)
+
+*-
 
 -*
 restart
@@ -1077,7 +1112,6 @@ f = map(E,D,{1,1,1,y_2,y_5,y_6,1,1,1,1,1})
 isWellDefined f
 g = map(barycentricSubdivision(id_D, T, T))
 isWellDefined g
-
 
 bf = barycentricSubdivision(f,T,S)
 isWellDefined bf
