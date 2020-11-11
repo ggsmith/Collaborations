@@ -587,7 +587,7 @@ MobiusStrip = simplicialComplex{
 
 S = ZZ[y_0..y_5]
 Circle = simplicialComplex(for i to 5 list y_i*y_((i+1)%6))
-
+Irrelevant = simplicialComplex{1_S}
 
 ------------------------------------------------------------
 
