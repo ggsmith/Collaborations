@@ -1637,7 +1637,49 @@ doc ///
         "making an abstract simplicial complex"
         SimplicialComplex
 ///
- 
+
+doc ///
+    Key 
+        (prune, SimplicialComplex)
+    Headline 
+        
+    Usage 
+        prune D
+    Inputs
+        D : SimplicialComplex  
+    Outputs 
+        : SimplicialComplex
+	    A simplicial over a new polynomial ring whose varialbles correspond to
+	    the vertices of {\tt D}.
+    Description
+        Text
+	    If the vertex set of {\tt D} is a strict subset of {\tt gens ring D}, then
+	    prune creates an isomorphic simplicial complex in a new ambient ring whose
+	    set of generators is {\tt vertices D}.
+        Example
+       	    R = ZZ/1999[a..f];
+       	    D = simplicialComplex{b*c, c*d}
+       	    E = prune D
+	    ring E    
+        Text
+	    If the simplicial complex has no vertices, prune creates a simplicial complex
+	    in a polynomial ring with no variables.
+	Example
+	    void = simplicialComplex(monomialIdeal(1_R))
+	    facets void
+	    prune void
+	    ring prune void
+	    facets prune void
+	    irrelevant = simplicialComplex{1_R}
+	    facets irrelevant
+	    prune irrelevant
+	    ring prune irrelevant
+	    facets prune irrelevant
+    SeeAlso
+        "making an abstract simplicial complex"
+        SimplicialComplex
+///
+
 ------------------------------------------------------------------------------
 -- basic properties and invariants
 ------------------------------------------------------------------------------

@@ -851,7 +851,6 @@ isFaceOf (Face,SimplicialComplex) := (F,C) -> (
     #(select(1,fc, G -> isSubface(F,G)))>0
     )
 
-
 -- substitute a face to another ring
 substitute(Face,PolynomialRing):=(F,R)->(
 v:=vertices(F);
@@ -1296,7 +1295,11 @@ wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := Simplic
     )
 
 prune SimplicialComplex := SimplicialComplex => opts -> (D -> (
-    	R := (coefficientRing D)(monoid[vertices D]);
+	R := (coefficientRing D)(monoid[]);
+	if facets D == 0 then return simplicialComplex(monomialIdeal(1_R));
+	if facets D == matrix{{1_(ring D)}} then return simplicialComplex{1_R}; 
+	if gens ring D === vertices D then return D;
+    	R = (coefficientRing D)(monoid[vertices D]);
     	Projection := matrix{for x in gens ring D list(
 	    	if member(x, vertices D)
 	    	then R_(position(vertices D, v -> v == x))
@@ -1306,3 +1309,28 @@ prune SimplicialComplex := SimplicialComplex => opts -> (D -> (
     	target map(D,Projection)
     	)
     )
+
+-*
+TODO: prune will set the ambient ring for the irrelevant and void complex to be the 
+      polynomial ring with no variables, which seems like the approprate choice to me.
+      However, this prodcues and error when we call faces. The functionality of one
+      or these methods needs to change. The error can be backtraced to the facesM method.
+
+R = QQ[x_0..x_4];
+D = simplexComplex(4,R)
+gens ring D === vertices D
+prune D
+
+void = simplicialComplex(monomialIdeal(1_R))
+ring void
+prune void
+ring prune void
+
+irrelevant = simplicialComplex{1_R}
+ring irrelevant
+faces prune irrelevant
+ring prune irrelevant
+
+
+
+*-
