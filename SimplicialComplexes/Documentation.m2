@@ -2143,23 +2143,71 @@ doc ///
 ///
 
 
-document { 
-     Key => {buchbergerComplex, (buchbergerComplex,List,Ring), (buchbergerComplex,MonomialIdeal)},
-     Headline => "Buchberger complex of a monomial ideal",
-     Usage => "buchbergerComplex(L,R)\nbuchbergerComplex I",
-     -- Inputs => {
-     --      },
-     -- Outputs => {
-     --      },
-     -- Consequences => {
-     --      },     
-     -- "description",
-     -- EXAMPLE {
-     --      },
-     -- Caveat => {},
- 
-     SeeAlso => {SimplicialComplexes}
-     }
+-- TODO: The code for this doesn't seem to be doing the right
+-- thing, and it has some prints still in the code, suggesting
+-- that the author was trying to debug it.
+doc ///
+    Key
+        (buchbergerComplex,MonomialIdeal)
+    Headline
+        make a Buchberger complex of a monomial ideal 
+    Usage
+        buchbergerComplex I
+    Inputs
+        I : MonomialIdeal
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    The Buchberger complex is a generalization of the
+	    Buchberger graph, first introduced in Miller-Sturmfels 
+	    @HREF("https://link.springer.com/chapter/10.1007/3-540-46796-3_3",
+	    "Monomial Ideals and Planar Graphs")@ as an important
+	    object of study for Groebner bases. Oltaneau and Welker
+	    introduce the complex in their paper @HREF("https://arxiv.org/pdf/1409.2041.pdf",
+	    "The Buchberger Resolution")@. The Buchberger complex forms 
+	    the support of a free resolution of a monomial ideal.
+    	Example
+	    R = ZZ/101[x_1..x_4];
+	    I = monomialIdeal {x_1^2, x_2^2, x_3^2, x_1*x_3, x_2*x_4};
+	    C = buchbergerComplex I
+    SeeAlso
+        "making an abstract simplicial complex"  
+	(buchbergerComplex,List,Ring)	         	
+///
+
+doc ///
+    Key
+    	buchbergerComplex
+        (buchbergerComplex,List,Ring)
+    Headline
+        make a Buchberger complex of a monomial ideal 
+    Usage
+	buchbergerComplex(L,R)
+    Inputs
+        L : List
+	    of monomials in R
+	R : Ring
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    The Buchberger complex is a generalization of the
+	    Buchberger graph, first introduced in Miller-Sturmfels 
+	    @HREF("https://link.springer.com/chapter/10.1007/3-540-46796-3_3",
+	    "Monomial Ideals and Planar Graphs")@ as an important
+	    object of study for Groebner bases. Oltaneau and Welker
+	    introduce the complex in their paper @HREF("https://arxiv.org/pdf/1409.2041.pdf",
+	    "The Buchberger Resolution")@. The Buchberger complex forms 
+	    the support of a free resolution of a monomial ideal.
+    	Example
+	    R = ZZ/101[x_1..x_4];
+	    L = {x_1^2, x_2^2, x_3^2, x_1*x_3, x_2*x_4};
+	    C = buchbergerComplex(L,R)
+    SeeAlso
+        "making an abstract simplicial complex"  
+	(buchbergerComplex,MonomialIdeal)	         	
+///
 
 doc ///
      Key
@@ -2577,14 +2625,6 @@ doc ///
             I = monomialIdeal(x_1*x_2*x_3*x_4, y_1*y_2*y_3*y_4, z_1*z_2*z_3*z_4, x_1*x_2*x_3*y_1*y_2*z_1, x_1*y_1*y_2*y_3*z_1*z_2, x_1*x_2*y_1*z_1*z_2*z_3);
 	    D = simplicialComplex I;
 	    fVector D
-    SeeAlso
-        SimplicialComplexes
-        faces
-///
-
--*
-
-
     Caveat
         The f-vector is computed using the Hilbert series
         of the Stanley-Reisner ideal. For example, see
@@ -2592,6 +2632,12 @@ doc ///
 	@HREF("https://www.springer.com/gp/book/9783540422303", 
 	"Computations in Algebraic Geometry with Macaulay2")@,
 	Springer 2001.
+    SeeAlso
+        SimplicialComplexes
+        faces
+///
+
+-*
     Sasha: As far as I'm aware, the flag functionality isn't currently implemented. 
     When/if it is, this example should be added to the documentation above.
 	Text
