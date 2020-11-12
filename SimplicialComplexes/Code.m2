@@ -1270,10 +1270,17 @@ elementaryCollapse (SimplicialComplex,RingElement) := SimplicialComplex => (D,F)
     simplicialComplex newFacetList
     )
 
-wedge = method();
-wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := SimplicialComplex => (D,E,u,v) -> (
+wedge = method(Options => {AmbientRing => null});
+wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := SimplicialComplex => opts -> (D,E,u,v) -> (
+    if not coefficientRing D === coefficientRing E then error "expected the rings of the simplicial complexes to have the same coefficient ring";
     if not member(u, vertices D) or not member(v,vertices E) then error "expected vertices";
-    R := (coefficientRing D)(monoid[join(gens ring D, delete(v,gens ring E))]);
+    R := null;
+    if opts.AmbientRing =!= null
+    then (
+	R = opts.AmbientRing;
+	if coefficientRing R =!= coefficientRing D then error "expected AmbientRing to have the same coefficient ring"
+    	)
+    else R = (coefficientRing D)(monoid[join(gens ring D, delete(v,gens ring E))]);
     uIndex := position(gens ring D, x -> x == u);
     vIndex := position(gens ring E, y -> y == v);
     includeD := map(R,ring D, for i to numgens ring D - 1 list R_i);
@@ -1287,7 +1294,6 @@ wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := Simplic
     FacetsE := first entries facets E;
     simplicialComplex(join(for F in FacetsD list includeD(F), for F in FacetsE list includeE(F)))
     )
-
 
 prune SimplicialComplex := SimplicialComplex => opts -> (D -> (
     	R := (coefficientRing D)(monoid[vertices D]);

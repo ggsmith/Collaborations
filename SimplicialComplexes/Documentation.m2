@@ -19,11 +19,13 @@
 ------------------------------------------------------------------------------
 undocumented {
     (expression, SimplicialComplex),
-    Labels
+    Labels,
+    AmbientRing
     }
 
--- Labels are a documented symbol in chainComplex(SimplicialComplex) and
--- boundaryMap
+-- Labels is a documented symbol in chainComplex(SimplicialComplex) and
+-- boundaryMap.
+-- AmbientRing is a documented symbol in wedge
 
 doc ///  
     Key
@@ -1545,6 +1547,7 @@ doc ///
 doc /// 
     Key 
         (wedge,SimplicialComplex,SimplicialComplex,RingElement,RingElement)
+	[wedge, AmbientRing]
 	wedge
     Headline 
         create the wedge product of two simplicial complexes
@@ -1556,7 +1559,8 @@ doc ///
         u : RingElement 
 	    a vertex of {\tt D}
         v : RingElement
-	    a vertex of {\tt E}	    
+	    a vertex of {\tt E}
+	AmbientRing => PolynomialRing
     Outputs 
         : SimplicialComplex
 	    The wedge product of {\tt D} and {\tt E} obtained by identifying {\tt u}
@@ -1574,7 +1578,22 @@ doc ///
 	    S = QQ[y_0,y_1,y_2];
 	    D = simplicialComplex{R_0*R_1*R_2}
 	    E = simplicialComplex{S_0*S_1*S_2}
-	    wedge(D,E,R_0,S_0)
+	    W = wedge(D,E,R_0,S_0)
+	    ring W
+	Text
+	    If the optional argument AmbientRing is used, and given a polynomial ring
+	    {\tt R} as its value, then the wedge is constructed as a simplcial complex
+	    over the ring {\tt R}. The variables of {\tt ring D} are sent to the first
+	    {\tt numgens ring D} elements of {\tt R} and the variables of {\tt ring E}
+	    are sent to the next {\tt numgens ring E - 1} variables of {\tt R}, with 
+	    {\tt v} being send to the same variable as {\tt u}. This is useful if the
+	    complexes you are using are defined over the same ring, or on different
+	    rings whose variable names clash with one another.
+	Example
+	    W = wedge(D,D,R_0,R_2)
+	    ring W
+	    W = wedge(D,D,R_0,R_2, AmbientRing => QQ[x_0..x_4])
+	    ring W
     SeeAlso
         "making an abstract simplicial complex"
         SimplicialComplex
