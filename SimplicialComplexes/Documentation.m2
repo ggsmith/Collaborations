@@ -2538,51 +2538,56 @@ doc ///
 	  },
 ///
 
-document { 
-     Key => {(faces,ZZ,SimplicialComplex)},
-     Headline => "the i-faces of a simplicial complex ",
-     Usage => "faces(i,D)",
-     Inputs => {
-	  "i" => ZZ => "the dimension of the faces",
-	  "D" => SimplicialComplex
-          },
-     Outputs => {
-	  Matrix => {"with one row, whose entries are squarefree
-	       monomials representing the faces of dimension ", 
-	       TT "i", " of ", TT "D"}
-          },
-     "In Macaulay2, every ", TO2(SimplicialComplex, "simplicial complex"),
-     " is equipped with a polynomial ring, and the matrix of i-faces
-     is defined over this ring.",
-     PARA {
-     	  "This triangulation of the real projective plane has 6
-     	  vertices, 15 edges and 10 triangles."
-	  },
-     EXAMPLE {
-	  "R = ZZ[a..f]",
-	  "D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
-	                                      b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)",
-          "faces(-1,D)",
-	  "faces(0,D)",
-	  "faces(1,D)",
-	  "faces(2,D)",
-	  "fVector D"
-          },
-     PARA{},
-     "To avoid repeated computation, 
-     the matrix of ", TT "i", "-faces is cached at ", 
-     TT "D.cache.faces#i", ".
-     This function will use this value if it has already been 
-     computed.",
-     SeeAlso => {SimplicialComplexes,
-	  facets,
-	  boundaryMap,
-	  fVector
-	  }
-     }
-
-
-
+doc /// 
+    Key
+    	(faces, ZZ, SimplicialComplex)
+    Headline
+    	the i-faces of a simplicial complex
+    Usage
+    	faces(i,D)
+    Inputs
+        i : ZZ
+	    the dimension of the faces
+	D : SimplicialComplex
+    Outputs
+        : Matrix
+	    with one row, whose entries are squarefree
+	    monomials representing the faces of {\tt D} of
+	    dimension {\tt i}.
+    Description
+        Text
+	    In Macaulay2, every @TO2(SimplicialComplex, "simplicial complex")@
+	    is equipped with a polynomial ring, and the matrix of {\tt i}-faces
+	    is defined over this ring.
+	Text
+	    This triangulation of the real projective plane has 6 vertices,
+	    15 edges, and 10 triangles.
+	Example
+	    R = ZZ[a..f];
+	    D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
+	                                      b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
+	    faces(-1,D)
+	    faces(0,D)
+	    faces(1,D)
+	    faces(2,D)
+	    fVector D
+	Text
+	    Note that every simplicial complex contains an empty face, except
+	    for the void complex.
+	Example
+	    R' = ZZ[a..d];
+	    void = simplicialComplex monomialIdeal 1_R'
+	    faces(-1,void)
+	Text
+	    To avoid repeated computation, the matrix of {\tt i}-faces
+	    is cached at {\tt D.cache.faces#i}. This function will use this
+	    value if it has already been computed.
+    SeeAlso
+        SimplicialComplexes
+	facets
+	boundaryMap
+	fVector
+///
 
 -------------------------------------------------------------
 -------------------------------------------------------------
