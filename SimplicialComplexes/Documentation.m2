@@ -18,8 +18,14 @@
 -- Simplicial Complexes Documentation
 ------------------------------------------------------------------------------
 undocumented {
-    (expression, SimplicialComplex)
+    (expression, SimplicialComplex),
+    Labels,
+    AmbientRing
     }
+
+-- Labels is a documented symbol in chainComplex(SimplicialComplex) and
+-- boundaryMap.
+-- AmbientRing is a documented symbol in wedge
 
 doc ///  
     Key
@@ -1538,8 +1544,142 @@ doc ///
         SimplicialComplex
 ///
 
- 
- 
+doc /// 
+    Key 
+        (wedge,SimplicialComplex,SimplicialComplex,RingElement,RingElement)
+	[wedge, AmbientRing]
+	wedge
+    Headline 
+        create the wedge product of two simplicial complexes
+    Usage 
+        wedge (D,E,u,v)
+    Inputs
+        D : SimplicialComplex  
+	E : SimplicialComplex
+        u : RingElement 
+	    a vertex of {\tt D}
+        v : RingElement
+	    a vertex of {\tt E}
+	AmbientRing => PolynomialRing
+    Outputs 
+        : SimplicialComplex
+	    The wedge product of {\tt D} and {\tt E} obtained by identifying {\tt u}
+	    and {\tt v}
+    Description
+        Text
+	    If {\tt D} and {\tt E} are abstract simplicial complexes with distinguished
+       	    vertices {\tt u} and {\tt v} respectively, the wedge product of {\tt D}
+	    and {\tt E} is the simplicial complex obtained by takingthe disjoint union
+	    of {\tt D} and {\tt E} and identifying {\tt u} with {\tt v}.
+	Text
+	    We construct the bowtie complex by taking the wedge of two 2-simplicies
+    	Example
+            R = QQ[x_0,x_1,x_2];
+	    S = QQ[y_0,y_1,y_2];
+	    D = simplicialComplex{R_0*R_1*R_2}
+	    E = simplicialComplex{S_0*S_1*S_2}
+	    W = wedge(D,E,R_0,S_0)
+	    ring W
+	Text
+	    If the optional argument AmbientRing is used, and given a polynomial ring
+	    {\tt R} as its value, then the wedge is constructed as a simplcial complex
+	    over the ring {\tt R}. The variables of {\tt ring D} are sent to the first
+	    {\tt numgens ring D} elements of {\tt R} and the variables of {\tt ring E}
+	    are sent to the next {\tt numgens ring E - 1} variables of {\tt R}, with 
+	    {\tt v} being send to the same variable as {\tt u}. This is useful if the
+	    complexes you are using are defined over the same ring, or on different
+	    rings whose variable names clash with one another.
+	Example
+	    W = wedge(D,D,R_0,R_2)
+	    ring W
+	    W = wedge(D,D,R_0,R_2, AmbientRing => QQ[x_0..x_4])
+	    ring W
+    SeeAlso
+        "making an abstract simplicial complex"
+        SimplicialComplex
+	elementaryCollapse
+///
+
+doc ///
+    Key 
+        (elementaryCollapse, SimplicialComplex, RingElement)
+	elementaryCollapse
+    Headline 
+        construct the elementary collapse of a free frace in a simplicial complex
+    Usage 
+        elementaryCollapse(D,F)
+    Inputs
+        D : SimplicialComplex  
+	F : RingElement
+	    Corresponding to a free face of {\tt D}
+    Outputs 
+        : SimplicialComplex
+	    the simplicial complex where the face {\tt F} and the unique facet
+	    containing F are removed
+    Description
+        Text
+	    A free face of a simplicial complex is a face that is a proper maximal
+	    subface of exactly one facet. The elementary collapse is the simplicial
+	    collapse obtained by removing the free face, and the facet containing it,
+	    from the simplicial complex. A simplicial Complex that and be collapsed
+	    to a single vertex is called collapsible. Every collapsible simplicial
+	    complex is contractible, but the converse is not true.
+        Example
+       	    R = ZZ/103[x_0..x_3];
+       	    D = simplicialComplex{R_0*R_1*R_2,R_0*R_2*R_3,R_0*R_1*R_3}
+       	    C1 = elementaryCollapse(D,R_1*R_2)
+	    C2 = elementaryCollapse(C1,R_2*R_3)
+	    C3 = elementaryCollapse(C2,R_1*R_3)
+	    C4 = elementaryCollapse(C3,R_1)	   
+	    C5 = elementaryCollapse(C4,R_2)
+	    C6 = elementaryCollapse(C5,R_3)   
+    SeeAlso
+        "making an abstract simplicial complex"
+        SimplicialComplex
+///
+
+doc ///
+    Key 
+        (prune, SimplicialComplex)
+    Headline 
+        
+    Usage 
+        prune D
+    Inputs
+        D : SimplicialComplex  
+    Outputs 
+        : SimplicialComplex
+	    A simplicial over a new polynomial ring whose varialbles correspond to
+	    the vertices of {\tt D}.
+    Description
+        Text
+	    If the vertex set of {\tt D} is a strict subset of {\tt gens ring D}, then
+	    prune creates an isomorphic simplicial complex in a new ambient ring whose
+	    set of generators is {\tt vertices D}.
+        Example
+       	    R = ZZ/1999[a..f];
+       	    D = simplicialComplex{b*c, c*d}
+       	    E = prune D
+	    ring E    
+        Text
+	    If the simplicial complex has no vertices, prune creates a simplicial complex
+	    in a polynomial ring with no variables.
+	Example
+	    void = simplicialComplex(monomialIdeal(1_R))
+	    facets void
+	    prune void
+	    ring prune void
+	    facets prune void
+	    irrelevant = simplicialComplex{1_R}
+	    facets irrelevant
+	    prune irrelevant
+	    ring prune irrelevant
+	    facets prune irrelevant
+    SeeAlso
+        "making an abstract simplicial complex"
+        SimplicialComplex
+///
+
 ------------------------------------------------------------------------------
 -- basic properties and invariants
 ------------------------------------------------------------------------------
@@ -2103,7 +2243,7 @@ doc ///
         Example
 	    L = lyubeznikResolution(M);
 	    L.dd
-            L' =chainComplex(D,Labels=>(first entries mingens M));
+            L' = chainComplex(D,Labels=>(first entries mingens M));
 	    L'.dd
 	Text
 	    Changing the order of the generators may change the output.

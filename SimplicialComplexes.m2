@@ -68,7 +68,8 @@ export {
     "zieglerBallComplex",
     -- symbol
     "Multigrading",
-    "Labels"    
+    "Labels",
+    "AmbientRing"    
     }
 
 
