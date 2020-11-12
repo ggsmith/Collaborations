@@ -2661,47 +2661,58 @@ doc ///
             fVector(simplicialComplex I, Flag => true)
 *-
 
-document {
-     Key => {algebraicShifting,(algebraicShifting,SimplicialComplex),[algebraicShifting,Multigrading]},
-     Headline => "the algebraic shifting of a simplicial complex",
-     Usage => "A = algebraicShifting D",
-     Inputs => {
-     "D" => SimplicialComplex,
-     Multigrading => Boolean => "If true it returns the colored algebraic shifting w.r.t. the multigrading of the underlying ring."
-          },
-     Outputs => {
-     "A" => {"The algebraic shifting of the simplicial complex ", TT "D", ". If ", TT "Multigrading => true", " then it returns the so called colored shifted complex."}
-          },
-     "The boundary of the stacked 4-polytope on 6 vertices. Algebraic shifting preserves the f-vector.",
-     EXAMPLE {
-      "R=QQ[x_1..x_6];",
-      "I=monomialIdeal(x_2*x_3*x_4*x_5,x_1*x_6);",
-      "stacked = simplicialComplex(I)",
-      "shifted = algebraicShifting(stacked)",
-      "fVector stacked",
-      "fVector shifted"
-          },
-     "An empty triangle is a shifted complex.",
-     EXAMPLE {
-     "R=QQ[a,b,c];",
-     "triangle = simplicialComplex{a*b,b*c,a*c};",
-     "algebraicShifting(triangle) === triangle "
-     },
-     "The multigraded algebraic shifting does not preserve the Betti numbers.",
-     EXAMPLE {
-      "grading = {{1,0,0},{1,0,0},{1,0,0},{0,1,0},{0,0,1}};",
-      "R=QQ[x_{1,1},x_{1,2},x_{1,3},x_{2,1},x_{3,1}, Degrees=>grading];",
-      "delta = simplicialComplex({x_{1,3}*x_{2,1}*x_{3,1},x_{1,1}*x_{2,1},x_{1,2}*x_{3,1}})",
-      "shifted = algebraicShifting(delta, Multigrading => true)",
-      "prune (homology(delta))_1",
-      "prune (homology(shifted))_1"
-     },
-     "References:",
-     PARA {},
-     "G. Kalai, Algebraic Shifting, Computational Commutative Algebra and Combinatorics, 2001;",
-      PARA {},
-     "S. Murai, Betti numbers of strongly color-stable ideals and squarefree strongly color-stable ideals, Journal of Algebraic Combinatorics."
-     }
+doc ///
+    Key
+        algebraicShifting
+	(algebraicShifting,SimplicialComplex)
+	[algebraicShifting, Multigrading]
+    Headline
+        the algebraic shifting of a simplicial complex
+    Usage
+        A = algebraicShifting D
+    Inputs
+        D : SimplicialComplex
+	Multigrading : Boolean
+	    which, if true, returns the colored algebraic shifting
+	    w.r.t. the multigrading of the underlying ring.
+    Outputs
+        A : SimplicialComplex
+	    which is the algebraic shifting of {\tt D}. If Multigrading
+	    is true, then it returns the so-called colored shifted
+	    complex.
+    Description
+        Text
+	    The boundary of the stacked 4-polytope on 6 vertices.
+	    Algebraic shifting preserves the f-vector.
+	Example
+            R = QQ[x_1..x_6];
+            I = monomialIdeal(x_2*x_3*x_4*x_5, x_1*x_6);
+      	    stacked = simplicialComplex I
+      	    shifted = algebraicShifting stacked
+      	    fVector stacked
+      	    fVector shifted
+	Text
+	    An empty triangle is a shifted complex.
+	Example
+	    R' = QQ[a,b,c];
+	    triangle = simplicialComplex {a*b, b*c, a*c}
+	    algebraicShifting triangle === triangle
+	Text
+	    The multigraded algebraic shifting does not preserve the Betti numbers.
+	Example
+            grading = {{1,0,0}, {1,0,0}, {1,0,0}, {0,1,0}, {0,0,1}};
+      	    R = QQ[x_{1,1}, x_{1,2}, x_{1,3}, x_{2,1}, x_{3,1}, Degrees => grading];
+      	    delta = simplicialComplex({x_{1,3}*x_{2,1}*x_{3,1}, x_{1,1}*x_{2,1}, x_{1,2}*x_{3,1}})
+      	    shifted = algebraicShifting(delta, Multigrading => true)
+      	    prune (homology(delta))_1
+      	    prune (homology(shifted))_1
+	Text
+	    References:
+	Text
+	    G. Kalai, Algebraic Shifting, Computational Commutative Algebra and Combinatorics, 2001;
+	Text
+	    S. Murai, Betti numbers of strongly color-stable ideals and squarefree strongly color-stable ideals, Journal of Algebraic Combinatorics.
+///
 
 --These are documented in the above node.
 undocumented { "Multigrading" }
