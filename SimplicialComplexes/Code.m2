@@ -1117,7 +1117,6 @@ bf = barycentricSubdivision(f,T,S)
 isWellDefined bf
 
 
-
 ------
 
 D = simplicialComplex{x_0*x_1*x_2, x_1*x_2*x_3}
@@ -1252,44 +1251,52 @@ map(SimplicialComplex, RingMap) := SimplicialComplex => opts -> (D,phi) -> (
     )
 
 elementaryCollapse = method();
-elementaryCollapse (SimplicialComplex,RingElement) := (D,e) -> (
-    if not size e == 1 then error "The second argument should be a monomial representing an edge";
-    CollapseVariables := for x in gens ring D list(
-	if x == (support e)#1
-	then continue
-	else x
+elementaryCollapse (SimplicialComplex,RingElement) := SimplicialComplex => (D,F) -> (
+    if not size F == 1 then error "The second argument should be a monomial representing a face";
+    facetsContainingF := {};
+    for G in first entries facets D do(
+	if G % F == 0 then facetsContainingF = append(facetsContainingF,G)
 	);
-    CollapseRing := (coefficientRing D)(monoid[CollapseVariables]);
-    CollapseMap := map(CollapseRing, ring D, for x in gens ring D list(
-	    INDEX := if x == (support e)#1
-	    then position(CollapseVariables, v -> v == (support e)#0)
-	    else position(CollapseVariables, v -> v == x);
-	    CollapseRing_INDEX
-	    )
+    if #facetsContainingF === 0 then error "this face does not belong to the simplicial complex";
+    if #facetsContainingF > 1 then error "cannont collapse by this face";
+    G := first facetsContainingF;
+    if first degree F =!= first degree G - 1 then error "this face is not a maximal proper subface of a facet";
+    newFacetList := delete(G,first entries facets D);
+    for m in subsets(support G, first degree G - 1) do (
+	if product m =!= F 
+	then newFacetList = append(newFacetList, product m)
+	else continue
 	);
-    target map(D,CollapseMap)
+    simplicialComplex newFacetList
     )
 
 wedge = method();
-wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := (D,E,u,v) -> (
-    R := (coefficientRing D)(monoid[join(gens ring D, gens ring E)]);
+wedge (SimplicialComplex,SimplicialComplex, RingElement, RingElement) := SimplicialComplex => (D,E,u,v) -> (
+    if not member(u, vertices D) or not member(v,vertices E) then error "expected vertices";
+    R := (coefficientRing D)(monoid[join(gens ring D, delete(v,gens ring E))]);
+    uIndex := position(gens ring D, x -> x == u);
+    vIndex := position(gens ring E, y -> y == v);
     includeD := map(R,ring D, for i to numgens ring D - 1 list R_i);
-    includeE := map(R,ring E, for i to numgens ring E - 1 list R_(numgens ring D + i));
+    includeE := map(R,ring E, for i to numgens ring E - 1 list (
+	    if i < vIndex then R_(numgens ring D + i)
+	    else if i == vIndex then R_uIndex
+	    else R_(numgens ring D + i - 1)
+	    )
+	);
     FacetsD := first entries facets D;
     FacetsE := first entries facets E;
-    DisjointUnion := simplicialComplex(join(for F in FacetsD list includeD(F),
-	    for F in FacetsE list includeE(F))
-	);
-    elementaryCollapse(DisjointUnion,includeD(u)*includeE(v))
+    simplicialComplex(join(for F in FacetsD list includeD(F), for F in FacetsE list includeE(F)))
     )
 
-prune SimplicialComplex := SimplicialComplex => opts -> D -> (
-    R := (coefficientRing D)(monoid[Variables=>#(vertices D)]);
-    Projection := matrix{for x in gens ring D list(
-	    if member(x, vertices D)
-	    then R_(position(vertices D, v -> v == x))
-	    else 0
-	    )
-	};
-    target map(D,Projection)
+
+prune SimplicialComplex := SimplicialComplex => opts -> (D -> (
+    	R := (coefficientRing D)(monoid[vertices D]);
+    	Projection := matrix{for x in gens ring D list(
+	    	if member(x, vertices D)
+	    	then R_(position(vertices D, v -> v == x))
+	    	else 0
+	    	)
+	    };
+    	target map(D,Projection)
+    	)
     )
