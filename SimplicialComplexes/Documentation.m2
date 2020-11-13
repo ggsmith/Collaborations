@@ -1642,7 +1642,7 @@ doc ///
     Key 
         (prune, SimplicialComplex)
     Headline 
-        
+        reconstruct a simplicial complex in a smaller ambient ring
     Usage 
         prune D
     Inputs
@@ -1676,6 +1676,38 @@ doc ///
 	    ring prune irrelevant
 	    facets prune irrelevant
     SeeAlso
+        "making an abstract simplicial complex"
+        SimplicialComplex
+///
+
+doc ///
+    Key 
+        (barycentricSubdivision, SimplicialComplex, Ring)
+	barycentricSubdivision
+    Headline 
+        create the barycentric subdivision of a simplicial complex
+    Usage 
+        barycentricSubdivision(D,R)
+    Inputs
+        D : SimplicialComplex
+	R : Ring
+	    the ambient ring for the barycentric subdivision of {\tt D}
+    Outputs 
+        : SimplicialComplex
+	    the barycentric subdivision of D
+    Description
+        Text
+    	    If {\tt D} is an abstract simplicial complex, the barycentric subdivision
+	    of {\tt D} is the abstact simplicial complex whose ground set is the
+	    set of faces of {\tt D} and whose faces correspond to sequences
+	    {\tt (F_0, F_1, ..., F_k)} where {\tt F_i} is an {\tt i}-dimensional
+	    face containing {\tt F_{i-1}}.
+        Example
+	    R = QQ[x_0..x_4]
+	    D = simplexComplex(2,R)
+	    S = QQ/7[x_0..x_6]
+	    B = barycentricSubdivision(D,S)
+     SeeAlso
         "making an abstract simplicial complex"
         SimplicialComplex
 ///
