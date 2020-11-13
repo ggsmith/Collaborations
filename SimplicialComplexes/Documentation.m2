@@ -1705,9 +1705,9 @@ doc ///
         Example
 	    R = QQ[x_0..x_4]
 	    D = simplexComplex(2,R)
-	    S = QQ/7[x_0..x_6]
+	    S = QQ[x_0..x_6]
 	    B = barycentricSubdivision(D,S)
-     SeeAlso
+    SeeAlso
         "making an abstract simplicial complex"
         SimplicialComplex
 ///

@@ -1311,11 +1311,13 @@ prune SimplicialComplex := SimplicialComplex => opts -> (D -> (
     )
 
 -*
+
+
 TODO: prune will set the ambient ring for the irrelevant and void complex to be the 
       polynomial ring with no variables, which seems like the approprate choice to me.
       However, this prodcues and error when we call faces. The functionality of one
       or these methods needs to change. The error can be backtraced to the facesM method.
-
+needsPackage"SimplicialComplexes"
 R = QQ[x_0..x_4];
 D = simplexComplex(4,R)
 gens ring D === vertices D
@@ -1324,13 +1326,12 @@ prune D
 void = simplicialComplex(monomialIdeal(1_R))
 ring void
 prune void
+faces prune void
 ring prune void
 
 irrelevant = simplicialComplex{1_R}
 ring irrelevant
 faces prune irrelevant
 ring prune irrelevant
-
-
 
 *-
