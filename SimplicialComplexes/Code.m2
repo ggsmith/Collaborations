@@ -411,6 +411,11 @@ matrixToFaces Matrix := M -> (
 facesM = method()
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
+    if dim D < -1 then return matrix(R,{{}});
+    if dim D == -1 then(
+	if r == -1 then return matrix(R,{{1}})
+	else return matrix(R,{{}})
+	);
     if not D.cache.?faces then (
 	D.cache.faces = new MutableHashTable;
 	B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
@@ -425,6 +430,42 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
      	)
     )
 
+-- facesM has bugs is the ambient ring is a polynomial ring with no variables.
+-- The error is produced by the basis method, as the ring R has no grading.
+-- Made a minor change, that appears to fix the problem and not break anything else.
+-*
+R = QQ[]
+describe R
+gens R === 0
+
+irrelevant = simplicialComplex{1_R}
+faces irrelevant
+
+void = simplicialComplex(monomialIdeal(1_R))
+faces void
+keys void.cache 
+-- Faces does not appear in the cache table for void, because the faces
+-- only calls faces(i,void) for i < -1 > dim void.
+dim void
+
+Original code:
+
+facesM (ZZ, SimplicialComplex) := (r,D) -> (
+    R := ring D;
+    if not D.cache.?faces then (
+	D.cache.faces = new MutableHashTable;
+	B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
+	D.cache.faces.ideal = (map(B,ring(ideal D),gens B))(ideal D);
+	);
+    if r < -1 or r > dim D then matrix(R, {{}})
+    else (
+	if not D.cache.faces#?r then (
+	    J := D.cache.faces.ideal;
+	    D.cache.faces#r = substitute(matrix basis(r+1,coker gens J), vars R));
+	D.cache.faces#r
+     	)
+    )
+*-
 
 --- kludge to access parts of the 'Core'
 raw = value Core#"private dictionary"#"raw";
@@ -1331,13 +1372,27 @@ prune D
 
 void = simplicialComplex(monomialIdeal(1_R))
 ring void
-prune void
-faces prune void
-ring prune void
+pVoid = prune void
+keys pVoid.cache
+faces pVoid
+keys pVoid.cache
+ring pVoid
+keys pVoid.cache
+faces(-1,pVoid)
+keys pVoid.cache
+
+ideal pVoid
 
 irrelevant = simplicialComplex{1_R}
 ring irrelevant
-faces prune irrelevant
-ring prune irrelevant
+pIrrelevant = prune irrelevant
+keys pIrrelevant.cache
+faces pIrrelevant
+keys pIrrelevant.cache
+gring pIrrelevant
+keys pIrrelevant
+faces(-1,pIrrelevant)
+
+ideal pIrrelevant
 
 *-
