@@ -2257,36 +2257,6 @@ doc ///
 -- that the author was trying to debug it.
 doc ///
     Key
-        (buchbergerComplex,MonomialIdeal)
-    Headline
-        make a Buchberger complex of a monomial ideal 
-    Usage
-        buchbergerComplex I
-    Inputs
-        I : MonomialIdeal
-    Outputs
-        : SimplicialComplex
-    Description
-    	Text
-	    The Buchberger complex is a generalization of the
-	    Buchberger graph, first introduced in Miller-Sturmfels 
-	    @HREF("https://link.springer.com/chapter/10.1007/3-540-46796-3_3",
-	    "Monomial Ideals and Planar Graphs")@ as an important
-	    object of study for Groebner bases. Oltaneau and Welker
-	    introduce the complex in their paper @HREF("https://arxiv.org/pdf/1409.2041.pdf",
-	    "The Buchberger Resolution")@. The Buchberger complex forms 
-	    the support of a free resolution of a monomial ideal.
-    	Example
-	    R = ZZ/101[x_1..x_4];
-	    I = monomialIdeal {x_1^2, x_2^2, x_3^2, x_1*x_3, x_2*x_4};
-	    C = buchbergerComplex I
-    SeeAlso
-        "making an abstract simplicial complex"  
-	(buchbergerComplex,List,Ring)	         	
-///
-
-doc ///
-    Key
     	buchbergerComplex
         (buchbergerComplex,List,Ring)
     Headline
@@ -2314,8 +2284,31 @@ doc ///
 	    L = {x_1^2, x_2^2, x_3^2, x_1*x_3, x_2*x_4};
 	    C = buchbergerComplex(L,R)
     SeeAlso
+        "making an abstract simplicial complex"      	
+///
+
+doc ///
+    Key
+        (buchbergerComplex,MonomialIdeal)
+    Headline
+        make a Buchberger complex of a monomial ideal 
+    Usage
+        buchbergerComplex I
+    Inputs
+        I : MonomialIdeal
+    Outputs
+        : SimplicialComplex
+    Description
+    	Text
+	    Creates the Buchberger complex by taking the generators
+	    of the ideal and the ring of the ideal.
+    	Example
+	    R = ZZ/101[x_1..x_4];
+	    I = monomialIdeal {x_1^2, x_2^2, x_3^2, x_1*x_3, x_2*x_4};
+	    C = buchbergerComplex I
+    SeeAlso
         "making an abstract simplicial complex"  
-	(buchbergerComplex,MonomialIdeal)	         	
+	(buchbergerComplex,List,Ring)	         	
 ///
 
 doc ///
@@ -3502,6 +3495,77 @@ doc ///
 	id 
 ///    
 
+doc ///
+    Key
+        (isInjective, SimplicialMap)
+    Headline
+        checks if a simplicial map is injective
+    Usage
+        isInjective f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Boolean
+    Description
+        Text
+	    Checks if vertices map to unique vertices.
+	Text
+	    The inclusion of a face is injective.
+	Example
+	    R = ZZ[a..f];
+	    fish = simplicialComplex {a*b*c, b*c*d, d*e*f}
+	    R' = ZZ[x_0,x_1,x_2];
+	    fishface = simplicialComplex {x_0*x_1*x_2}
+	    f = map(fish,fishface,{a,b,c})
+	    isInjective f
+	Text
+	    The identity should always be injective.
+	Example
+	    isInjective id_fish
+        Text
+	    Collapsing a triangle to an edge should not be injective.
+	Example
+	    f' = map(fish,fishface,{b,c,c})
+	    isInjective f'
+    SeeAlso
+        isSurjective
+	id
+///
 
-
+doc ///
+    Key
+        (isSurjective, SimplicialMap)
+    Headline
+        checks if a simplicial map is surjective
+    Usage
+        isSurjective f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Boolean
+    Description
+        Text
+	    Checks if every vertex in the target has a preimage.
+	Text
+	    Collapsing a triangle to an edge is surjective.
+	Example
+	    R = ZZ[a,b,c];
+	    triangle = simplicialComplex {a*b*c}
+	    R' = ZZ[x_0,x_1];
+	    edge = simplicialComplex {x_0*x_1}
+	    f = map(edge,triangle,{x_0,x_0,x_1})
+	    isSurjective f
+	Text
+	    The identity should always be surjective.
+	Example
+	    isSurjective id_triangle
+        Text
+	    The inclusion of an edge in a triangle is not surjective.
+	Example
+	    f' = map(triangle,edge,{a,b});
+	    isSurjective f'
+    SeeAlso
+        isSurjective
+	id
+///
 
