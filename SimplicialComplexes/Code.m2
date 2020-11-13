@@ -408,6 +408,7 @@ matrixToFaces Matrix := M -> (
     apply ((entries M)#0, face)
     )
 
+-*
 facesM = method()
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
@@ -429,10 +430,29 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
 	D.cache.faces#r
      	)
     )
+*-
 
--- facesM has bugs is the ambient ring is a polynomial ring with no variables.
--- The error is produced by the basis method, as the ring R has no grading.
--- Made a minor change, that appears to fix the problem and not break anything else.
+facesM (ZZ, SimplicialComplex) := (r,D) -> (
+    R := ring D;
+    if dim D < -1 then return matrix(R,{{}});
+    if dim D == -1 then(
+	if r == -1 then return matrix(R,{{1}})
+	else return matrix(R,{{}})
+	);
+    if not D.cache.?faces then (
+	D.cache.faces = new MutableHashTable;
+	D.cache.faces.ideal = ideal D + ideal(for x in gens R list x^2);
+	);
+    if r < -1 or r > dim D then matrix(R, {{}})
+    else (
+	if not D.cache.faces#?r then (
+	    J := D.cache.faces.ideal;
+	    D.cache.faces#r = substitute(matrix basis(r+1, R/J), vars R));
+	D.cache.faces#r
+     	)
+    )
+    
+--TODO: make tests that involve QQ[]
 -*
 R = QQ[]
 describe R
@@ -440,33 +460,55 @@ gens R === 0
 
 irrelevant = simplicialComplex{1_R}
 faces irrelevant
-
 void = simplicialComplex(monomialIdeal(1_R))
 faces void
 keys void.cache 
--- Faces does not appear in the cache table for void, because the faces
--- only calls faces(i,void) for i < -1 > dim void.
 dim void
 
-Original code:
 
-facesM (ZZ, SimplicialComplex) := (r,D) -> (
+------------------Testing facesM----------------------
+
+viewHelp barycentricSubdivision
+
+facesMTEST1 = (r,D) -> (
     R := ring D;
-    if not D.cache.?faces then (
-	D.cache.faces = new MutableHashTable;
-	B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
-	D.cache.faces.ideal = (map(B,ring(ideal D),gens B))(ideal D);
+    if dim D < -1 then return matrix(R,{{}});
+    if dim D == -1 then(
+	if r == -1 then return matrix(R,{{1}})
+	else return matrix(R,{{}})
 	);
+    B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
+    J := (map(B,ring(ideal D),gens B))(ideal D);
     if r < -1 or r > dim D then matrix(R, {{}})
-    else (
-	if not D.cache.faces#?r then (
-	    J := D.cache.faces.ideal;
-	    D.cache.faces#r = substitute(matrix basis(r+1,coker gens J), vars R));
-	D.cache.faces#r
-     	)
+    else substitute(matrix basis(r+1,coker gens J), vars R)
     )
-*-
 
+
+facesMTEST2 = (r,D) -> (
+    R := ring D;
+    if dim D < -1 then return matrix(R,{{}});
+    if dim D == -1 then(
+	if r == -1 then return matrix(R,{{1}})
+	else return matrix(R,{{}})
+	);
+    J := ideal D + ideal(for x in gens R list x^2);
+    if r < -1 or r > dim D then matrix(R, {{}})
+    else substitute(matrix basis(r+1, R/J), vars R)
+    )
+
+n = 21
+R = QQ[x_0..x_n]
+D = simplexComplex(n,R)
+E = simplexComplex(n,R)
+
+--elapsedTime facesMTEST1(17,D);
+--elapsedTime facesMTEST(19,E);
+
+benchmark "facesMTEST1(17,D)"
+benchmark "facesMTEST2(17,D)"
+viewHelp barycentricSubdivision
+
+*-
 --- kludge to access parts of the 'Core'
 raw = value Core#"private dictionary"#"raw";
 rawIndices = value Core#"private dictionary"#"rawIndices";
