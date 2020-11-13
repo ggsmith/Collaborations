@@ -3502,6 +3502,77 @@ doc ///
 	id 
 ///    
 
+doc ///
+    Key
+        (isInjective, SimplicialMap)
+    Headline
+        checks if a simplicial map is injective
+    Usage
+        isInjective f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Boolean
+    Description
+        Text
+	    Checks if vertices map to unique vertices.
+	Text
+	    The inclusion of a face is injective.
+	Example
+	    R = ZZ[a..f];
+	    fish = simplicialComplex {a*b*c, b*c*d, d*e*f}
+	    R' = ZZ[x_0,x_1,x_2];
+	    fishface = simplicialComplex {x_0*x_1*x_2}
+	    f = map(fish,fishface,{b,c,d})
+	    isInjective f
+	Text
+	    The identity should always be injective.
+	Example
+	    isInjective id_fish
+        Text
+	    Collapsing a triangle to an edge should not be injective.
+	Example
+	    f' = map(fish,fishface,{b,c,c})
+	    isInjective f'
+    SeeAlso
+        isSurjective
+	id
+///
 
-
+doc ///
+    Key
+        (isSurjective, SimplicialMap)
+    Headline
+        checks if a simplicial map is surjective
+    Usage
+        isSurjective f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Boolean
+    Description
+        Text
+	    Checks if every vertex in the target has a preimage.
+	Text
+	    Collapsing a triangle to an edge is surjective.
+	Example
+	    R = ZZ[a,b,c];
+	    triangle = simplicialComplex {a*b*c}
+	    R' = ZZ[x_0,x_1];
+	    edge = simplicialComplex {x_0*x_1}
+	    f = map(edge,triangle,{x_0,x_0,x_1})
+	    isSurjective f
+	Text
+	    The identity should always be surjective.
+	Example
+	    isSurjective id_triangle
+        Text
+	    The inclusion of an edge in a triangle is not surjective.
+	Example
+	    f' = map(triangle,edge,{a,b});
+	    isSurjective f'
+    SeeAlso
+        isSurjective
+	id
+///
 
