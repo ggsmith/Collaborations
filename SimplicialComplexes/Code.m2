@@ -1096,7 +1096,10 @@ isInjective SimplicialMap := Boolean => f -> (
     )
 
 image SimplicialMap := SimplicialComplex => f -> (
-    simplicialComplex(for F in first entries facets(source f) list (map f)(F))
+    simplicialComplex(for F in first entries facets(source f) list (
+	    product support (map f)(F)
+	    )
+	)
     )
 
 isSurjective SimplicialMap := Boolean => f -> (
