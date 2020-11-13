@@ -1701,13 +1701,90 @@ doc ///
 	    of {\tt D} is the abstact simplicial complex whose ground set is the
 	    set of faces of {\tt D} and whose faces correspond to sequences
 	    {\tt (F_0, F_1, ..., F_k)} where {\tt F_i} is an {\tt i}-dimensional
-	    face containing {\tt F_{i-1}}.
+	    face containing {\tt F_{i-1}}. In order to understand how the data of the
+	    barycentric subdivision is organized, we work through a simple example.
         Example
-	    R = QQ[x_0..x_4]
+	    R = QQ[x_0..x_2];
+	    S = QQ[y_0..y_6];
 	    D = simplexComplex(2,R)
-	    S = QQ[x_0..x_6]
 	    B = barycentricSubdivision(D,S)
+	    BFacets = first entries facets B
+	Text
+	    To make sense of the facets of the barycentric subdivision, we order
+	    the faces of {\tt D} as follows.
+        Example
+	    DFaces = flatten for i to dim D + 1 list first entries faces(i, D)
+        Text
+	    The indices of the variables appearing in each monomial (Facet) {\tt F}
+	    in {\tt facets B} determines a sequence of monomials (faces) in
+	    {\tt DFaces}. More concretely, the correspondence is:
+	Example
+	    netList for F in BFacets list(F => DFaces_(indices F))
     SeeAlso
+        (barycentricSubdivision, SimplicialMap, Ring, Ring)
+        "making an abstract simplicial complex"
+        SimplicialComplex
+///
+
+doc ///
+    Key 
+        (barycentricSubdivision, SimplicialMap, Ring, Ring)
+    Headline 
+        create the barycentric subdivision of a simplicial complex
+    Usage 
+        barycentricSubdivision(f,R,S)
+    Inputs
+        f : SimplicialMap
+	    from the simplicial complex {\tt D} to the simplicial complex {\tt E}
+	R : Ring
+	    the ambient ring for the barycentric subdivision of {\tt D}
+	S : Ring
+	    the ambient ring for the barycentric subdivision of {\tt E}
+    Outputs 
+        : SimplicialMap
+	    from the barycentric subdivision of {\tt D} to the barycentric
+	    subdivision of {\tt E}.
+    Description
+        Text
+            The verticies of the {\tt barycentricSubdivision(D,R)} correspond to
+	    faces of {\tt D}. For every face {\tt F} in {\tt D},
+	    {\tt barycentricSubdivision(f,R,S)} maps the vertex correspoding to
+	    {\tt F} in {\tt barycentricSubdivision(D,R)} to the vertex
+	    corresponding to the image of {\tt F} under {\tt f} in
+	    {\tt barycentricSubdivision(E,S)}. We work out these correspondences, 
+	    and the resulting simplicial map between barycentric subdivisions in
+	    the example below.
+        Example
+	    T = ZZ/2[x_0,x_1,x_2];
+	    D = simplicialComplex{T_1*T_2}
+	    E = simplicialComplex{T_0*T_1}
+	    f = map(E, D, reverse gens T)
+        Text
+	    The barycentric subdivisions of {\tt D}, {\tt E}, and {\tt f} are:	    
+	Example
+	    R = ZZ/2[y_0..y_2];
+	    S = ZZ/2[z_0..z_2];
+	    BD = barycentricSubdivision(D,R)	    
+    	    BE = barycentricSubdivision(E,S)
+	    Bf = barycentricSubdivision(f,R,S)
+        Text
+	    In order to understand the data of {\tt Bf}, we first look at 
+	    the corresponce between the faces of {\tt D}, {\tt E} and
+	    the vertices of {\tt BD}, {\tt BE}, respectively.
+        Example
+	    DFaces = flatten for i to dim D + 1 list first entries faces(i,D)
+	    EFaces = flatten for i to dim E + 1 list first entries faces(i,E)
+	    (netList for y in vertices BD list(y => DFaces_(index y)),
+	     netList for z in vertices BE list(z => EFaces_(index z)))
+        Text
+	    These correspondences, together the images of each face of {\tt D}
+	    under {\tt f}, will completely determine the map {\tt Bf}.
+	Example
+    	    (netList for F in DFaces list(F => (map f)(F)),
+	     netList for v in vertices BD list(v => (map Bf)(v)))
+	    Bf 
+    SeeAlso
+        (barycentricSubdivision, SimplicialComplex, Ring)
         "making an abstract simplicial complex"
         SimplicialComplex
 ///

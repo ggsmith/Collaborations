@@ -1015,6 +1015,8 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     map(CE, CD, g)
     )
 
+--TODO: If we have constructed the barycentric subdivision, but want to change rings,
+-- can we access some cached data here to make the computation faster?
 barycentricSubdivision = method();
 barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -> (
     if dim D == -infinity then return simplicialComplex(monomialIdeal(1_S));
@@ -1031,6 +1033,10 @@ barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -
     simplicialComplex baryFacets
     )
 
+--TODO: I think that the roles of R and S should swap in this code, so that
+-- the syntax better matches the syntaxs for maps.
+--TODO: Are we using cached data to construct the barycentric subdivisions
+-- for the source and target?
 barycentricSubdivision (SimplicialMap, Ring, Ring) := SimplicialMap => (f,R,S) -> (
     D := source f;
     E := target f;
