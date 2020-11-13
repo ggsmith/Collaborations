@@ -3516,7 +3516,7 @@ doc ///
 	    fish = simplicialComplex {a*b*c, b*c*d, d*e*f}
 	    R' = ZZ[x_0,x_1,x_2];
 	    fishface = simplicialComplex {x_0*x_1*x_2}
-	    f = map(fish,fishface,{b,c,d})
+	    f = map(fish,fishface,{a,b,c})
 	    isInjective f
 	Text
 	    The identity should always be injective.
