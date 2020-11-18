@@ -408,7 +408,7 @@ matrixToFaces Matrix := M -> (
     apply ((entries M)#0, face)
     )
 
--*
+
 facesM = method()
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
@@ -430,8 +430,14 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
 	D.cache.faces#r
      	)
     )
-*-
 
+
+-*
+A proposed change to improve speed. now realize that the usage of
+the exterior algebra in original code also needed for constructing
+the differential.
+
+facesM = method()
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
     if dim D < -1 then return matrix(R,{{}});
@@ -451,6 +457,7 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
 	D.cache.faces#r
      	)
     )
+*-
     
 --TODO: make tests that involve QQ[]
 -*
@@ -467,8 +474,6 @@ dim void
 
 
 ------------------Testing facesM----------------------
-
-viewHelp barycentricSubdivision
 
 facesMTEST1 = (r,D) -> (
     R := ring D;
@@ -503,10 +508,8 @@ E = simplexComplex(n,R)
 
 --elapsedTime facesMTEST1(17,D);
 --elapsedTime facesMTEST(19,E);
-
-benchmark "facesMTEST1(17,D)"
-benchmark "facesMTEST2(17,D)"
-viewHelp barycentricSubdivision
+--benchmark "facesMTEST1(17,D)"
+--benchmark "facesMTEST2(17,D)"
 
 *-
 --- kludge to access parts of the 'Core'

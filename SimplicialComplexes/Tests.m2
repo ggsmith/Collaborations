@@ -363,7 +363,7 @@ assert(HH_0(C) == S^1/(ideal L1))
 assert isHomogeneous C
 C.dd
 ----
-E = lyubeznikComplex(L1,R)
+E = lyubeznikSimplicialComplex(L1,R)
 B = chainComplex(E,Labels=>L1)
 assert(B.dd^2 == 0)
 betti B
@@ -374,14 +374,14 @@ assert isHomogeneous B
 
 L2 = {S_0^2,S_1^3,S_0*S_1}
 M2 = monomialIdeal L2
-LC2A = lyubeznikComplex(L2,R)
+LC2A = lyubeznikSimplicialComplex(L2,R)
 LR2A = lyubeznikResolution(M2, MonomialOrder => {1,2,0})
 assert((prune HH LR2A)_0 == coker gens M2)
 assert all(1..length LR2A, i -> (prune HH LR2A)_i == 0)
 assert((for i from -1 to dim LC2A list(fVector LC2A)#i) == {1,3,3,1})
 assert((for i to length LR2A list rank LR2A_i) ==  {1,3,3,1})
 
-LC2B = lyubeznikComplex(M2,R)
+LC2B = lyubeznikSimplicialComplex(M2,R)
 LR2B = lyubeznikResolution(L2_{2,0,1})
 assert((prune HH LR2B)_0 == coker gens M2)
 assert all(1..length LR2B, i -> (prune HH LR2B)_i == 0)
@@ -395,7 +395,7 @@ assert((for i to length SCC2 list rank SCC2_i) == {1,3,2})
 
 L3 = {S_0*S_1,S_1*S_2,S_0*S_2}
 M3 = monomialIdeal L3
-lyubeznikComplex(L3,R,MonomialOrder=>{2,1,0})
+lyubeznikSimplicialComplex(L3,R,MonomialOrder=>{2,1,0})
 LR3 = lyubeznikResolution(M3)
 assert((prune HH LR3)_0 == coker gens M3)
 assert all(1..length LR3, i -> (prune HH LR3)_i == 0)
@@ -412,16 +412,16 @@ T'' = taylorResolution M'
 assert(all(0..length T'', i -> rank T''_i == binomial(numgens M',i)))
 
 --degenerate cases
-assert(facets lyubeznikComplex(monomialIdeal(0_S),R) ==
+assert(facets lyubeznikSimplicialComplex(monomialIdeal(0_S),R) ==
     facets simplexComplex(-1,R))
-assert(dim lyubeznikComplex(monomialIdeal(1_S),R) ==
+assert(dim lyubeznikSimplicialComplex(monomialIdeal(1_S),R) ==
     dim simplexComplex(0,R))
 assert((lyubeznikResolution(monomialIdeal(0_S)))_0 == S^1 and
     (lyubeznikResolution(monomialIdeal(0_S)))_1 == 0)
 assert(all({0,1}, i -> (prune HH lyubeznikResolution(monomialIdeal(1_S)))_i == 0))
 assert((scarfSimplicialComplex(monomialIdeal(0_S),R))_0 == (coefficientRing R)^1)
 assert(facets scarfSimplicialComplex(monomialIdeal(1_S),R) ==
-    facets lyubeznikComplex(monomialIdeal(1_S),R))
+    facets lyubeznikSimplicialComplex(monomialIdeal(1_S),R))
 assert((scarfChainComplex(monomialIdeal(0_S)))_0 == S^1 and
     (scarfChainComplex(monomialIdeal(0_S)))_1 == 0)
 assert all(0..1,i -> rank (scarfChainComplex(monomialIdeal(1_S)))_1 == 1)
