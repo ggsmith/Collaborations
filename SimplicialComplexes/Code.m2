@@ -167,6 +167,14 @@ isWellDefined SimplicialComplex := Boolean => D -> (
 ------------------------------------------------------------------------------
 -- constructors for classic examples
 ------------------------------------------------------------------------------
+inducedSubcomplex = method()
+inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D,V) -> (
+    if not all(V, v -> member(v,vertices D)) then error "expected verticies of the simplicial complex";
+    R := ring D;
+    phi := map(R,R, for x in gens R list( if member(x,V) then x else 1_R));
+    image map(D,phi)
+    )
+
 simplexComplex = method()
 simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n === -1 then 
@@ -1142,7 +1150,7 @@ isInjective SimplicialMap := Boolean => f -> (
 
 image SimplicialMap := SimplicialComplex => f -> (
     simplicialComplex(for F in first entries facets(source f) list (
-	    product support (map f)(F)
+	    sub(product support (map f)(F), ring target f)
 	    )
 	)
     )
@@ -1444,3 +1452,4 @@ faces(-1,pIrrelevant)
 ideal pIrrelevant
 
 *-
+

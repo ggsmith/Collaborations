@@ -102,8 +102,4 @@ installPackage "SimplicialComplexes"
 check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
-
-
-
-
-
+options SimplicialComplexes
