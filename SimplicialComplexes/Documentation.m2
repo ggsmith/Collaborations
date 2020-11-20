@@ -1582,7 +1582,7 @@ doc ///
 	    ring W
 	Text
 	    If the optional argument AmbientRing is used, and given a polynomial ring
-	    {\tt R} as its value, then the wedge is constructed as a simplcial complex
+	    {\tt R} as its value, then the wedge is constructed as a simplicial complex
 	    over the ring {\tt R}. The variables of {\tt ring D} are sent to the first
 	    {\tt numgens ring D} elements of {\tt R} and the variables of {\tt ring E}
 	    are sent to the next {\tt numgens ring E - 1} variables of {\tt R}, with 

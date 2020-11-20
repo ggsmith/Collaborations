@@ -133,6 +133,7 @@ assert( (fVector(conev))#2 == 8 )
 
 
 ------------------------------------------------------------------------------
+-- Testing void and irrelevant complexes.
 TEST ///
 R = ZZ[x]
 void = simplicialComplex monomialIdeal(1_R)
@@ -141,13 +142,11 @@ assert(dim void == -infinity)
 assert(faces(0,void) == 0)
 assert(faces(-1,void) == 0)
 assert(vertices void == {})
-dual void
 C = chainComplex void
 assert( C.dd^2 == 0 )
 assert(HH_0(void) == 0)
 assert(HH_-1(void) == 0)
-fVector void
--- assert(boundary void  === void)
+
 irrelevant = simplicialComplex monomialIdeal gens R
 assert isPure irrelevant
 assert(dim irrelevant === -1)
@@ -159,25 +158,28 @@ assert( C.dd^2 == 0 )
 assert(HH_0(irrelevant) == 0)
 assert(HH_-1(irrelevant) == (coefficientRing R)^1)
 assert(fVector irrelevant === new HashTable from {-1=>1})
--- assert(boundary irrelevant  === void)
-D5 = simplicialComplex {1_R}
-D5 === irrelevant
-///
 
+assert try (simplicialComplex {};false) else true
 
-------------------------------------------------------------------------------
-TEST ///
-R = ZZ[x_1..x_4]
-D6 = simplicialComplex monomialIdeal gens R
-time A6 = dual D6
-time C = chainComplex A6;
-assert( C.dd^2 == 0 )
-time prune HH(C)
-fVector D6
+voidToIrrelevant = map (irrelevant, void, gens R)
+assert isWellDefined voidToIrrelevant
+irrelevantToVoid = map(void, irrelevant, gens R)
+-- the empty face has nowhere to go
+assert not isWellDefined irrelevantToVoid
 
-D7 = simplicialComplex monomialIdeal 1_R
-dual D7
-fVector D7
+pvoid = prune void
+assert isPure pvoid
+assert(dim pvoid == -infinity)
+assert(faces(0,pvoid) == 0)
+assert(faces(-1,pvoid) == 0)
+assert(vertices pvoid == {})
+
+pirrelevant = prune irrelevant
+assert isPure irrelevant
+assert(dim irrelevant === -1)
+assert(faces(0,irrelevant) == 0)
+assert(numgens source faces(-1,irrelevant) === 1)
+assert(irrelevant === dual irrelevant)
 ///
 
 
@@ -187,14 +189,15 @@ TEST ///
 R = ZZ[a..e]
 D = simplicialComplex monomialIdeal(a*d, a*e, b*c*d, d*e, c*e, b*e)
 assert not isPure D
-fVector D
-ideal dual D == monomialIdeal (a*b*c*d, a*b*e, a*c*e, d*e)
--- fVector boundary D
--- boundary D
+assert ( ideal dual D == monomialIdeal (a*b*c*d, a*b*e, a*c*e, d*e) )
 S = ZZ/32003[u,v,w,x,y]
 C = chainComplex(D, Labels => {u,v,w,x,y})
 assert( C.dd^2 == 0 )
-prune HH(C)
+H = prune HH(C)
+assert (H_0 != 0)
+assert (H_1 != 0)
+assert (rank H_2 == 1)
+assert (H_3 == 0)
 ///
 
 
@@ -208,14 +211,16 @@ D = simplicialComplex{a*b*i, a*e*i, i*b*j, j*c*b, j*c*a, j*a*e,
 assert isPure D
 C = chainComplex D
 assert( C.dd^2 == 0 )
-prune HH(C)
+H = prune HH(C)
+assert (H_0 == 0)
+assert (rank H_1 == 2)
+assert (rank H_2 == 1)
 D' = dual D
 C' = chainComplex D'
 assert( C'.dd^2 == 0 )
-prune HH(C')
-fVector D
--- boundary D
--- fVector boundary D
+H' = prune HH(C')
+assert (H'_(7-2) === H_2)
+assert (H'_(7-1) === H_1)
 ///
 
 ------------------------------------------------------------------------------
@@ -230,8 +235,10 @@ isPure D
 assert(vertices D == toList(a..j))
 C = chainComplex D
 assert( C.dd^2 == 0 )
-prune HH(C)
-fVector D
+H = prune HH(C)
+assert (H_0 == 0)
+assert (rank H_1 == 2)
+assert (rank H_2 == 1)
 ///
 
 
@@ -278,44 +285,17 @@ assert(all(1..l, i -> H_i == 0))
 
 
 ------------------------------------------------------------------------------
--- testing the chain complexes
+-- testing some chain complexes
 TEST ///
 R = ZZ/101[a..e]
 D = simplicialComplex monomialIdeal product gens R
-boundaryMap(0,D)
-boundaryMap(1,D)
-boundaryMap(2,D)
-boundaryMap(3,D)
-boundaryMap(4,D)
 C = chainComplex D
 assert( C.dd^2 == 0 )
-HH_3(C)
-HH_2(C)
-prune oo
-///
-
-
-------------------------------------------------------------------------------
-TEST ///
-kk = ZZ
-R = kk[a..h]
-I = monomialIdeal(a*b*c*d,e*f*g*h)
-D = simplicialComplex I
-fVector D
-chainComplex D
-E = simplicialComplex{a*b*c*d, e*f*g*h}
-dual D
-dual E
-faces(2,D)
-faces(3,D)
-faces(4,D)
-faces(5,D)
-faces(6,D)
-faces(7,D)
-faces(-1,D)
-faces(-2,D)
-faces(0,D)
-assert try (simplicialComplex {};false) else true
+assert( boundaryMap(5,D) == 0 )
+H = prune HH(C)
+assert (rank H_3 == 1)
+assert (H_2 == 0)
+assert (H_1 == 0)
 ///
 
 
@@ -549,12 +529,46 @@ assert(not (homology C)_1 == 0)
 ///
 
 
--*
+------------------------------------------------------------------------------
+-- Tests for simplicial maps
+TEST ///
+S = QQ[w,x,y,z];
+D = simplexComplex(3, S)
+R = QQ[s,t];
+E = simplexComplex(1,R)
+f = map(E, D, matrix {{s,t,t,s}})
+assert isWellDefined f
+h = map(E, D, {s,t,t,s})
+assert (h === f)
+assert isSurjective f
+g = map(D,E,{x,y})
+assert isWellDefined g
+assert isInjective g
+assert (fVector image g === fVector E)
+assert (ring image g === ring D)
+///
 
-needsPackage"SimplicialComplexes"
 
+------------------------------------------------------------------------------
+-- Testing chainComplex of a simplicial map
+TEST ///
+R = QQ[a,b,c,d,e,f]
+D = simplicialComplex({a*b*c, b*c*d, d*e*f})
+D' = simplicialComplex({a*b*c, c*d, d*e*f})
+phi = map(D, D', {a,b,c,d,e,f})
+assert isWellDefined phi
+Phi = chainComplex phi
+assert (Phi * (source Phi).dd == (target Phi).dd * Phi)
+assert ((source Phi) === (chainComplex D'))
+assert ((target Phi) === (chainComplex D))
+///
+
+------------------------------------------------------------------------------
+-- Testing more chainComplex maps
+-- These examples come from Munkres' Algebraic Topology
+-- Example 1 of Ch. 1, Sec. 12, page 63-64.
+TEST ///
 R = ZZ[x_0..x_10]
-
 Torus = simplicialComplex{
     R_0*R_3*R_4, R_0*R_1*R_4, R_1*R_2*R_4, R_2*R_4*R_5,
     R_0*R_2*R_5, R_0*R_3*R_5, R_3*R_4*R_6, R_4*R_6*R_7,
@@ -562,7 +576,100 @@ Torus = simplicialComplex{
     R_3*R_5*R_8, R_3*R_6*R_8, R_0*R_6*R_7, R_0*R_1*R_7,
     R_1*R_7*R_8, R_1*R_2*R_8, R_0*R_2*R_8, R_0*R_6*R_8
     }
+S = ZZ[y_0..y_5]
+Circle = simplicialComplex(for i to 5 list S_i*S_((i+1)%6))
+f = map(Torus,Circle,matrix{{R_0,R_4,R_3,R_3,R_4,R_6}})
+Cf = chainComplex f
+CCircle = source Cf
+CTorus = target Cf
+assert not isInjective f
+assert all(1, i -> Cf_(i-1)*CCircle.dd_i == CTorus.dd_i*Cf_i )
+g = map(Torus,Circle,matrix{{R_0,R_1,R_2,R_0,R_4,R_3}})
+Cg = chainComplex g
+assert all(1, i -> Cg_(i-1)*CCircle.dd_i == CTorus.dd_i*Cg_i)
+h = map(Torus,Circle,matrix{{R_0,R_7,R_8,R_5,R_5,R_0}})
+Ch = chainComplex h
+assert all(1, i -> Ch_(i-1)*CCircle.dd_i == CTorus.dd_i*Ch_i)
+///
 
+
+------------------------------------------------------------------------------
+-- Testing reduced homology of simplicial complexes.
+TEST ///
+S = ZZ[y_0..y_5]
+Circle = simplicialComplex(for i to 5 list y_i*y_((i+1)%6))
+Irrelevant = simplicialComplex{1_S}
+OnePoint = simplicialComplex{S_0}
+TwoPoints = simplicialComplex{S_0, S_2}
+
+H = prune homology(Circle, Irrelevant)
+H' = prune homology(Circle, OnePoint)
+H'' = prune homology(Circle, TwoPoints)
+
+assert (rank H_0 == 1)
+assert (rank H'_0 == 0)
+assert (rank H'_1 == 1)
+assert (rank H''_1 == 2)
+///
+
+
+------------------------------------------------------------------------------
+-- Testing barycentricSubdivision
+TEST ///
+R = ZZ/101[x_0..x_2]
+T = ZZ/101[y_0..y_6]
+S = ZZ/101[z_0..z_25]
+D = simplicialComplex{x_0*x_1*x_2}
+E = barycentricSubdivision(D,T)
+assert (#vertices E == sum (for i to 2 list #(first entries (faces D)#i)))
+f = map(E,D,{y_2,y_5,y_6})
+assert isWellDefined f
+assert isInjective f
+g = barycentricSubdivision(id_D, T, T)
+assert isWellDefined g
+h = barycentricSubdivision(f,T,S)
+assert isWellDefined h
+irrelevant = simplicialComplex {1_R}
+bIrrelevant = barycentricSubdivision(irrelevant, R)
+irrelevant === bIrrelevant
+///
+
+
+------------------------------------------------------------------------------
+-- Testing elementaryCollapse
+TEST ///
+R = ZZ[a..d]
+triangle = simplicialComplex {a*b*c}
+line = elementaryCollapse(triangle, a*b)
+assert (line === simplicialComplex {a*c, b*c})
+///
+
+
+------------------------------------------------------------------------------
+-- Testing wedge
+TEST ///
+R = ZZ[x_0..x_4]
+S = ZZ[y_0..y_4]
+D = simplicialComplex {R_0*R_1*R_2,R_0*R_2*R_3*R_4,R_0*R_4}
+E = simplicialComplex {S_0*S_1*S_2*S_3*S_4}
+W = wedge(D, E, R_4, S_4)
+assert isWellDefined W
+assert (#vertices W == #vertices D + #vertices E - 1)
+///
+
+
+------------------------------------------------------------------------------
+-- Testing prune
+TEST ///
+R = ZZ[x_0..x_20]
+D = simplicialComplex {R_0*R_1*R_2}
+D' = prune D
+assert (numgens ring D' == 3)
+///
+
+
+-*
+-- For later use?
 KleinBottle = simplicialComplex{
     R_0*R_3*R_4, R_0*R_1*R_4, R_1*R_2*R_4, R_2*R_4*R_5,
     R_0*R_2*R_5, R_0*R_5*R_6, R_3*R_4*R_6, R_4*R_6*R_7,
@@ -584,42 +691,4 @@ MobiusStrip = simplicialComplex{
     R_1*R_2*R_5,  R_2*R_5*R_6,
     R_2*R_3*R_6,  R_0*R_3*R_6
     }
-
-S = ZZ[y_0..y_5]
-Circle = simplicialComplex(for i to 5 list y_i*y_((i+1)%6))
-Irrelevant = simplicialComplex{1_S}
-
-------------------------------------------------------------
-
-f = map(Torus,Circle,matrix{{R_0,R_4,R_3,R_3,R_4,R_6}})
-Cf = chainComplex f
-faces(1,Circle),Cf_1,transpose faces(1,Torus)
-phi = map f
-
-CCircle = chainComplex Circle
-CTorus = chainComplex Torus
-all(1, i -> Cf_(i-1)*CCircle.dd_i == CTorus.dd_i*Cf_i )
-
-g = map(Torus,Circle,matrix{{R_0,R_1,R_2,R_0,R_4,R_3}})
-Cg = chainComplex g
-faces(1,Circle),Cg_1,transpose faces(1,Torus)
-all(1, i -> Cg_(i-1)*CCircle.dd_i == CTorus.dd_i*Cg_i)
-
-h = map(Torus,Circle,matrix{{R_0,R_7,R_8,R_5,R_5,R_0}})
-Ch = chainComplex h
-faces(1,Circle),Ch_1,transpose faces(1,Torus)
-all(1, i -> Ch_(i-1)*CCircle.dd_i == CTorus.dd_i*Ch_i)
-
-for A in subsets(5,3) list(
-    R1 := ZZ(monoid[x_0..x_4]);
-    R2 := ZZ(monoid[x_0..x_2]);
-    D := simplicialComplex{product for x in gens R1 list x};
-    E := simplicialComplex{product for x in gens R2 list x};
-    CD := chainComplex D;
-    CE := chainComplex E;
-    phi := map(D,E, for i in A list R1_i);
-    Cphi := chainComplex phi;
-    all(3, i -> Cphi_(i-1)*CE.dd_i == CD.dd_i*Cphi_i)
-    )
-
 *-

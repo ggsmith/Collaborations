@@ -191,9 +191,6 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
 small2ManifoldsFile := currentFileDirectory | "small2ManifoldsLibrary.txt"
 small210ManifoldsFile := currentFileDirectory | "small210ManifoldsLibrary.txt"
 small3ManifoldsFile := currentFileDirectory | "small3ManifoldsLibrary.txt"
--- Do we want separate methods for the two dimensions? (there are two more files
--- consisting of 2/3-manifolds with ten vertices. There are around 42000/120000
--- of each respectively)
 smallManifoldsTable := memoize((d,v) -> (
 	local manifoldsFile;
 	if (d === 2 and v < 10) then manifoldsFile = small2ManifoldsFile
@@ -334,15 +331,6 @@ link (SimplicialComplex, RingElement) := SimplicialComplex => (D, f) -> (
     if isUnit f then return D;
     simplicialComplex ((monomialIdeal support f) + (monomialIdeal D : f))
     )
-
---boundary = method()
---boundary SimplicialComplex := D -> (
---     F := first entries facets D;
---     L := flatten apply (F, m -> apply (support m, x -> m // x));
---     if #L === 0 then 
---         return simplicialComplex monomialIdeal (1_(ring D));
---     simplicialComplex L
---     )
 
 -- 'skeleton' method defined in the `Polyhedra' package
 skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, D) -> (
@@ -1159,6 +1147,7 @@ isSurjective SimplicialMap := Boolean => f -> (
     facets image f == facets target f    
     )
 
+-- TODO: Unexported? I forgot if that's intended
 numFaces = method()
 numFaces SimplicialComplex := ZZ => D -> (
     sum(-1 .. dim D, i -> numColumns faces(i,D))
@@ -1175,171 +1164,6 @@ homology(SimplicialComplex,SimplicialComplex) := ChainComplex => opts -> (D,E) -
     C := coker chainComplex inclusion;
     homology C
     )
-
--*
-S = ZZ[y_0..y_5]
-Circle = simplicialComplex(for i to 5 list y_i*y_((i+1)%6))
-Irrelevant = simplicialComplex{1_S}
-OnePoint = simplicialComplex{S_0}
-TwoPoints = simplicialComplex{S_0, S_2}
-
-for i from -1 to 1 list(
-    prune homology(i, Circle,Irrelevant)
-    )
-prune homology(Circle, Irrelevant)
-
-for i from -1 to 1 list(
-    prune homology(i, Circle, OnePoint)
-    )
-prune homology(Circle, OnePoint)
-
-for i from -1 to 1 list(
-    prune homology(i, Circle, TwoPoints)
-    )
-prune homology(Circle, TwoPoints)
-
-*-
-
--*
-restart
-needsPackage"SimplicialComplexes"
-R = ZZ/101[x_0..x_10]
-T = ZZ/101[y_0..y_15]
-S = ZZ/101[z_0..z_24]
-D = simplicialComplex{x_3*x_4*x_5}
-E = barycentricSubdivision(D,T)
-BE = barycentricSubdivision(E,S)
-facets E
-f = map(E,D,{1,1,1,y_2,y_5,y_6,1,1,1,1,1})
-isWellDefined f
-g = map(barycentricSubdivision(id_D, T, T))
-isWellDefined g
-
-bf = barycentricSubdivision(f,T,S)
-isWellDefined bf
-
-
-------
-
-D = simplicialComplex{x_0*x_1*x_2, x_1*x_2*x_3}
-faces D
-E = barycentricSubdivision(D,S)
-first entries facets E
-
-
-D = simplicialComplex{R_1*R_2,R_2*R_3}
-E = simplicialComplex{R_0*R_1}
-f = map(E,D,{1_R, R_0, R_1, R_1, 1_R, 1_R, 1_R, 1_R, 1_R, 1_R, 1_R})
-isWellDefined f
-
-g = barycentricSubdivision(f, S, T)
-isWellDefined g
-faces target f
-faces source f
-faces target g
-faces source g
-map g
-
-irrelevant = simplicialComplex{1_R}
-numFaces irrelevant
-bIrrelevant = barycentricSubdivision(irrelevant, R)
-irrelevant === bIrrelevant
-
-
-
-void = simplicialComplex(monomialIdeal 1_R)
-numFaces void
-barycentricSubdivision(void, ring void)
-
-voidToIrrelevant = map (irrelevant, void, gens R)
-isWellDefined voidToIrrelevant
-
-DToIrrelevant = map(irrelevant, D, gens R)
-isWellDefined DToIrrelevant
-
-
-
------------------
-bD = barycentricSubdivision(D, ZZ/101[x_0..x_(numFaces D - 1)])
-ring oo
-
-*-
-
--- Todo: test the void complex and see how it interacts with maps
--- Todo: find more nice examples of simplicial maps
--- Todo: does the join of complexes induce maps? link?
--- Todo: relative homology: take subcomplex of complex and map to contraction of the subcomplex.
--- also want to get the long exact sequence of relative homology
--- is there a reasonable notion of what a random map is? could we implement this?
--- TODO: Documentation
-
--*
-matrix table(first entries faces(i,E), first entries faces(i,D), 
-			(u,v) -> if phi(v) == u then 1_kk else 0_kk
-			)
-faces E
-
-
--- Sasha's path stuff
-restart
-path = prepend("../",path)
-needsPackage "SimplicialComplexes"
-
-R = QQ[a,b,c,d,e,f]
-D = simplicialComplex({a*b*c, b*c*d, d*e*f})
-D' = simplicialComplex({a*b*c, c*d, d*e*f})
-phi = map(D, D', {a,b,c,d,e,f})
-assert isWellDefined phi
-Phi = chainComplex phi
-Phi * (source Phi).dd == (target Phi).dd * Phi
-(source Phi) === (chainComplex D')
-(target Phi) === (chainComplex D)
-
-S = QQ[w,x,y,z];
-D = simplexComplex(3, S)
-R = QQ[s,t];
-E = simplexComplex(1,R)
-f = map(E, D, matrix {{s,t,t,s}})
-assert isWellDefined f
-h = map(E, D, {s,t,t,s})
-assert (h === f)
-
-g = chainComplex(f)
-
-CD = source g;
-CE = target g;
-for i to 3 list (g_(i-1)*CD.dd_i == CE.dd_i*g_i)
-
-describe f
-
-f.map
-kk = coefficientRing(D)
-M = matrix table(vertices E, vertices D, (u,v) -> if f.map(v) == u then 1_kk else 0_kk)
-
-vertices E
-vertices D
-
-(chainComplex source f).dd
-(chainComplex target f).dd
-
-g1 = map((chainComplex E)_(-1), (chainComplex D)_(-1),1)
-g2 = map((chainComplex E)_(0), (chainComplex D)_(0),M)
-
-CE = chainComplex E
-CD = chainComplex D
-
-g1 * (CD).dd_0 == (CE).dd_0 * g2
-
-S = QQ[a..e];
-D = simplicialComplex {e, c*d, b*d, a*b*c}
-E = simplicialComplex {e, c*d, a*b*c}
-f = map(E, D, vars ring E)
-debugLevel = 1
-assert not isWellDefined f
-g = map(D, E, vars ring E)
-assert isWellDefined g
-
-*-
 
 map(SimplicialComplex, Matrix) := SimplicialComplex => opts -> (D,A) -> (
     Facets := first entries facets D;
@@ -1413,43 +1237,7 @@ prune SimplicialComplex := SimplicialComplex => opts -> (D -> (
     	)
     )
 
--*
-
-
-TODO: prune will set the ambient ring for the irrelevant and void complex to be the 
-      polynomial ring with no variables, which seems like the approprate choice to me.
-      However, this prodcues and error when we call faces. The functionality of one
-      or these methods needs to change. The error can be backtraced to the facesM method.
-needsPackage"SimplicialComplexes"
-R = QQ[x_0..x_4];
-D = simplexComplex(4,R)
-gens ring D === vertices D
-prune D
-
-void = simplicialComplex(monomialIdeal(1_R))
-ring void
-pVoid = prune void
-keys pVoid.cache
-faces pVoid
-keys pVoid.cache
-ring pVoid
-keys pVoid.cache
-faces(-1,pVoid)
-keys pVoid.cache
-
-ideal pVoid
-
-irrelevant = simplicialComplex{1_R}
-ring irrelevant
-pIrrelevant = prune irrelevant
-keys pIrrelevant.cache
-faces pIrrelevant
-keys pIrrelevant.cache
-gring pIrrelevant
-keys pIrrelevant
-faces(-1,pIrrelevant)
-
-ideal pIrrelevant
-
-*-
-
+-- TODO: find more nice examples of simplicial maps
+-- TODO: does the join of complexes induce maps? link?
+-- TODO: is there a reasonable notion of what a random map is? could we implement this?
+-- TODO: Some documentation
