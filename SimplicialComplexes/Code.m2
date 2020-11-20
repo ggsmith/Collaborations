@@ -172,8 +172,24 @@ inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D,V) -> (
     if not all(V, v -> member(v,vertices D)) then error "expected verticies of the simplicial complex";
     R := ring D;
     phi := map(R,R, for x in gens R list( if member(x,V) then x else 1_R));
+    --while map(D,phi) is not a well defined SimplicialMap, the following operations
+    --produces the complexes we want
     image map(D,phi)
     )
+
+-*
+
+R = QQ[x_0..x_5]
+D = simplexComplex(5,R)
+
+phi = map(R,R, for y in gens R list( if member(y,{x_1,x_2,x_3}) then y else 1_R))
+image map(D,phi)
+
+inducedSubcomplex(D,{})
+D = simplexComplex(3,R)
+inducedSubcomplex(D,{R_4,R_5})
+
+*-
 
 simplexComplex = method()
 simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
@@ -364,9 +380,6 @@ SimplicialComplex * SimplicialComplex := (D, D') -> (
      fromD' := map(S, ring D');
      simplicialComplex monomialIdeal(fromD ideal D + fromD' ideal D')
      )
-
-
-
 
 
 lcmMonomials = (L) -> (
