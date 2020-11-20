@@ -172,8 +172,24 @@ inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D,V) -> (
     if not all(V, v -> member(v,vertices D)) then error "expected verticies of the simplicial complex";
     R := ring D;
     phi := map(R,R, for x in gens R list( if member(x,V) then x else 1_R));
+    --while map(D,phi) is not a well defined SimplicialMap, the following operations
+    --produces the complexes we want
     image map(D,phi)
     )
+
+-*
+
+R = QQ[x_0..x_5]
+D = simplexComplex(5,R)
+
+phi = map(R,R, for y in gens R list( if member(y,{x_1,x_2,x_3}) then y else 1_R))
+image map(D,phi)
+
+inducedSubcomplex(D,{})
+D = simplexComplex(3,R)
+inducedSubcomplex(D,{R_4,R_5})
+
+*-
 
 simplexComplex = method()
 simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
@@ -354,9 +370,6 @@ SimplicialComplex * SimplicialComplex := (D, D') -> (
      )
 
 
-
-
-
 lcmMonomials = (L) -> (
      R := ring L#0;
      x := max \ transpose apply(L, i -> first exponents i);
@@ -404,7 +417,6 @@ matrixToFaces Matrix := M -> (
     apply ((entries M)#0, face)
     )
 
-
 facesM = method()
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
@@ -428,12 +440,9 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
     )
 
 
+    
 -*
-A proposed change to improve speed. now realize that the usage of
-the exterior algebra in original code also needed for constructing
-the differential.
-
-facesM = method()
+--TODO: potential replacement for facesM. Need to check if it speeds up computing time.
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
     if dim D < -1 then return matrix(R,{{}});
@@ -443,13 +452,14 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
 	);
     if not D.cache.?faces then (
 	D.cache.faces = new MutableHashTable;
-	D.cache.faces.ideal = ideal D + ideal(for x in gens R list x^2);
-	);
+	B := (coefficientRing R) (monoid [gens R]);
+	D.cache.faces.ideal = (map(B,ring(ideal D),gens B))(ideal D + ideal(for x in gens R list x^2))
+       	);
     if r < -1 or r > dim D then matrix(R, {{}})
     else (
 	if not D.cache.faces#?r then (
 	    J := D.cache.faces.ideal;
-	    D.cache.faces#r = substitute(matrix basis(r+1, R/J), vars R));
+	    D.cache.faces#r = substitute(matrix basis(r+1,coker gens J), vars R));
 	D.cache.faces#r
      	)
     )
@@ -574,6 +584,19 @@ chainComplex SimplicialComplex := {Labels => {}} >> opts -> (cacheValue(symbol c
     	if opts.Labels == {} then C[1] else C[0]
     	)
     )
+
+-*
+
+R = QQ[x_0..x_4]
+
+D = simplicialComplex {R_0*R_1,R_1*R_2}
+
+chainComplex(D)
+
+
+
+
+*-
 
 homology(ZZ,SimplicialComplex,Ring) := Module => opts -> (i,Delta,R) -> (
      homology(i, chainComplex Delta ** R))
