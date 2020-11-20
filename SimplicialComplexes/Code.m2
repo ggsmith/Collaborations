@@ -429,7 +429,6 @@ matrixToFaces Matrix := M -> (
     apply ((entries M)#0, face)
     )
 
-
 facesM = method()
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
@@ -453,12 +452,9 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
     )
 
 
+    
 -*
-A proposed change to improve speed. now realize that the usage of
-the exterior algebra in original code also needed for constructing
-the differential.
-
-facesM = method()
+--TODO: potential replacement for facesM. Need to check if it speeds up computing time.
 facesM (ZZ, SimplicialComplex) := (r,D) -> (
     R := ring D;
     if dim D < -1 then return matrix(R,{{}});
@@ -468,13 +464,14 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
 	);
     if not D.cache.?faces then (
 	D.cache.faces = new MutableHashTable;
-	D.cache.faces.ideal = ideal D + ideal(for x in gens R list x^2);
-	);
+	B := (coefficientRing R) (monoid [gens R]);
+	D.cache.faces.ideal = (map(B,ring(ideal D),gens B))(ideal D + ideal(for x in gens R list x^2))
+       	);
     if r < -1 or r > dim D then matrix(R, {{}})
     else (
 	if not D.cache.faces#?r then (
 	    J := D.cache.faces.ideal;
-	    D.cache.faces#r = substitute(matrix basis(r+1, R/J), vars R));
+	    D.cache.faces#r = substitute(matrix basis(r+1,coker gens J), vars R));
 	D.cache.faces#r
      	)
     )
@@ -599,6 +596,19 @@ chainComplex SimplicialComplex := {Labels => {}} >> opts -> (cacheValue(symbol c
     	if opts.Labels == {} then C[1] else C[0]
     	)
     )
+
+-*
+
+R = QQ[x_0..x_4]
+
+D = simplicialComplex {R_0*R_1,R_1*R_2}
+
+chainComplex(D)
+
+
+
+
+*-
 
 homology(ZZ,SimplicialComplex,Ring) := Module => opts -> (i,Delta,R) -> (
      homology(i, chainComplex Delta ** R))
