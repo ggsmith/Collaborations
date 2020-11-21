@@ -642,6 +642,32 @@ doc ///
 	(isPure, SimplicialComplex)
 ///
 
+doc ///
+  Key
+      (vertices, SimplicialComplex)
+  Headline
+      list the vertices of a simplicial complex.
+  Usage
+      vertices(D)
+  Inputs
+      D : SimplicialComplex
+  Outputs
+      :List
+  Description
+   Text
+        Returns a @TO List@ with the vertices of a
+        @TO2("SimplicialComplex","simplicial complex")@.
+   Example
+       R = QQ[x_0..x_4];
+       vertices simplexComplex(2,R)
+       I = monomialIdeal(x_0, x_1*x_2, x_2*x_3, x_3*x_4);
+       D = simplicialComplex I
+       vertices D
+  SeeAlso
+      face
+      (facets,SimplicialComplex)
+      (faces, SimplicialComplex)
+///
 
 doc ///
     Key 
@@ -984,6 +1010,40 @@ doc ///
 ------------------------------------------------------------------------------
 -- more advanced constructors
 ------------------------------------------------------------------------------
+doc///
+    Key
+        inducedSubcomplex
+        (inducedSubcomplex,SimplicialComplex,List)
+    Headline
+        create the simplicial complex induced on a subset of the vertex set
+    Usage
+        inducedSubcomplex(D,V)
+    Inputs
+        D : SimplicialComplex
+        V : List
+	    of elements in {\tt vertices D}
+    Outputs
+        : SimplicialComplex
+	  the subcomplex of {\tt D} induced on the vertices in {\tt V}
+    Description
+        Text
+            Given a simplicial complex {\tt D} and a subset {\tt V} of
+	    {\tt vertices D}, the subcomplex of {\tt D} induced on 
+	    {\tt V} is the simplicial complexes whose faces are given
+	    by the faces {\tt F} in {\tt D} whose verticies are 
+	    contained in {\tt V}.
+	Example
+	    R = ZZ[x_0..x_3];
+	    D = simplicialComplex{x_0*x_1*x_2, x_2*x_3, x_1*x_3}
+	    E = inducedSubcomplex(D,{x_1,x_2,x_3})
+	    vertices E
+	    DFaces = flatten for i to dim D list first entries faces(i,D)
+	    EFaces = flatten for i to dim D list first entries faces(i,E)
+	    all(EFaces, F -> member(F,DFaces))
+    SeeAlso 
+        "making an abstract simplicial complex"        
+///
+
 doc ///
     Key
         (dual, SimplicialComplex)
@@ -2968,33 +3028,6 @@ doc ///
 
 doc ///
   Key
-      (vertices, SimplicialComplex)
-  Headline
-      list the vertices of a simplicial complex.
-  Usage
-      vertices(D)
-  Inputs
-      D : SimplicialComplex
-  Outputs
-      :List
-  Description
-   Text
-        Returns a @TO List@ with the vertices of a
-        @TO2("SimplicialComplex","simplicial complex")@.
-   Example
-       R = QQ[x_0..x_4];
-       vertices simplexComplex(2,R)
-       I = monomialIdeal(x_0, x_1*x_2, x_2*x_3, x_3*x_4);
-       D = simplicialComplex I
-       vertices D
-  SeeAlso
-      face
-      (facets,SimplicialComplex)
-      (faces, SimplicialComplex)
-///
-
-doc ///
-  Key
     isSubface
     (isSubface,Face,Face)
   Headline
@@ -3569,3 +3602,34 @@ doc ///
 	id
 ///
 
+doc ///
+    Key
+        (image, SimplicialMap)
+    Headline
+        construct the image of a simplicial map
+    Usage
+        image f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : SimplicialComplex
+	    the image of {\tt source f} in {\tt target f}
+    Description
+        Text
+	    The image of {\tt f} is the subcomplex of {\tt target f} whose
+	    faces are of the form {\tt f(F)} for some face {\tt F} in 
+	    {\tt source f}.
+	Example
+	    R = ZZ/229[a,b,c];
+	    D = simplicialComplex{a*b*c}
+	    E = simplicialComplex{a*b,b*c}
+	    f = map(E,D,{a,b,a})
+	    isWellDefined f
+	    image f
+    SeeAlso
+        SimplicialMap
+	(source, SimplicialMap)
+	(target, SimplicialMap)
+	(isInjective,SimplicialMap)
+	(isSurjective,SimplicialMap)
+///
