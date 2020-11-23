@@ -1,32 +1,7 @@
 -- -*- coding: utf-8 -*-
 ------------------------------------------------------------------------------
--- Copyright 2006--2020 Sorin Popescu, Gregory G. Smith, and Mike Stillman
---
--- This program is free software: you can redistribute it and/or modify it
--- under the terms of the GNU General Public License as published by the Free
--- Software Foundation, either version 3 of the License, or (at your option)
--- any later version.
---
--- This program is distributed in the hope that it will be useful, but WITHOUT
--- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
--- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
--- more details.
---
--- You should have received a copy of the GNU General Public License along
--- with this program.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------
 -- Simplicial Complexes Documentation
 ------------------------------------------------------------------------------
-undocumented {
-    (expression, SimplicialComplex),
-    Labels,
-    AmbientRing
-    }
-
--- Labels is a documented symbol in chainComplex(SimplicialComplex) and
--- boundaryMap.
--- AmbientRing is a documented symbol in wedge
-
 doc ///  
     Key
         SimplicialComplexes
@@ -38,7 +13,6 @@ doc ///
 		    "abstract simplicial complex")@  
 	    is a family of finite sets closed under the operation of
 	    taking subsets.
-	Text
 	    In this package, the finite set consists of variables in a
 	    @TO2(PolynomialRing, "polynomial ring")@ and each subset is
 	    represented as a product of the corresponding variables.  In other
@@ -83,8 +57,8 @@ doc ///
 	    @HREF("https://www.mis.mpg.de/nlalg/nlalg-people/lorenzo-venturello.html", "Lorenzo Venturello")@.
     Caveat
     	This package is not intended to handle abstract simplicial complexes
-	with a large number of vertices, because computations in a polynomial
-	ring with large number of variables are typically prohibitive.
+	with a very large number of vertices, because computations in the
+	corresponding polynomial ring are typically prohibitive.
     SeeAlso
         "making an abstract simplicial complex"
 	"finding attributes and properties"
@@ -139,7 +113,8 @@ doc ///
 		TO (nonPiecewiseLinearSphereComplex, PolynomialRing),
 		TO (rudinBallComplex, PolynomialRing),
 		TO (grunbaumBallComplex, PolynomialRing),
-		TO (zieglerBallComplex, PolynomialRing)				
+		TO (zieglerBallComplex, PolynomialRing),
+		TO smallManifold			
     	    }@
     	Text
     	    @SUBSECTION "Basic operations producing abstract simplicial complexes"@
@@ -154,6 +129,7 @@ doc ///
     	    }@		
     SeeAlso
         "finding attributes and properties"
+	"working with simplicial maps"	
 ///
 
        
@@ -183,6 +159,7 @@ doc ///
     SeeAlso
         "making an abstract simplicial complex"
 	"finding attributes and properties"	
+	"working with simplicial maps"	
 ///
 
 
@@ -257,6 +234,11 @@ doc ///
 	(faces, SimplicialComplex)
 ///
 
+undocumented {(expression, SimplicialComplex)}
+-*    Labels,
+    AmbientRing
+    } *-
+
 
 doc ///
     Key
@@ -275,7 +257,7 @@ doc ///
 	    The net of an abstract simplicial complex is a matrix with one row
 	    where the entries are the monomials representing the facets (also
 	    known as maximal faces).  This function is the primary function
-	    called upon by @TO (symbol <<, File, Thing)@ to format for printing.
+	    called upon by @TO (symbol <<, Thing)@ to format for printing.
         Example
             S = ZZ[a..f];
 	    Octahedron = simplicialComplex monomialIdeal(a*f, b*d, c*e)
@@ -309,7 +291,7 @@ doc ///
 	    nonfaces in {\tt D}
     Description
         Text
-            In this package, an abstract simplicial complex is constructed as
+            In this package, an abstract simplicial complex is represented as
             squarefree monomial ideal in a 
 	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  This method
             returns the defining ideal.
@@ -381,7 +363,7 @@ doc ///
 	    nonfaces in {\tt D}
     Description
         Text
-	    In this package, an abstract simplicial complex is constructed as
+	    In this package, an abstract simplicial complex is represented as
             squarefree monomial ideal in a @TO2((ring, SimplicialComplex),
             "polynomial ring")@.  This method returns the defining monomial
             ideal.
@@ -447,9 +429,10 @@ doc ///
         D : SimplicialComplex
     Outputs
         : PolynomialRing 
+	    containing the defining Stanley-Reisner ideal
     Description
         Text
-	    In this package, an abstract simplicial complex is constructed as
+	    In this package, an abstract simplicial complex is represented as
             squarefree monomial ideal in a @TO2((ring, SimplicialComplex),
             "polynomial ring")@.  In particular, the vertices of an abstract
             simplicial complex are a subset of variables in the polynomial
@@ -519,7 +502,7 @@ doc ///
 	    the defining Stanley-Reisner ideal	    
     Description
         Text
-	    In this package, an abstract simplicial complex is constructed as
+	    In this package, an abstract simplicial complex is represented as
             squarefree monomial ideal in a @TO2((ring, SimplicialComplex),
             "polynomial ring")@.  This method returns the
             @TO2(coefficientRing, "coefficient ring")@ of this polynomial
@@ -642,14 +625,13 @@ doc ///
 	(isPure, SimplicialComplex)
 ///
 
-
 doc ///
     Key 
         (simplicialComplex, List) 
 	(simplicialComplex, Matrix) 	   
         simplicialComplex
     Headline
-        make a simplicial complex from a list of faces 
+        make an abstract simplicial complex from a list of faces 
     Usage
         simplicialComplex L
     Inputs
@@ -843,75 +825,6 @@ doc ///
 ///
 
 doc ///
-    Key
-        (chainComplex, SimplicialComplex)
-	[(chainComplex, SimplicialComplex), Labels]
-    Headline
-        create the chain complex associated to a simplicial complex.
-    Usage
-    	chainComplex D
-    Inputs
-    	D : SimplicialComplex
-	Labels => List	  
-	    L of monomials in a polynomial ring, one for each vertex of D.
-    Outputs
-    	C : ChainComplex	 
-    Description
-    	Text
-	    When no labels are given, this function returns C, the reduced simplicial
-	    chain complex associated to D with coefficents in k, where k is the 
-	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). When 
-	    labels are given, this function returns the homogenization of C we get by 
-	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
-	    information about homogenization of chain complexes by monomial ideals can be
-	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
-	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
-	    C = chainComplex D
-	    prune homology C
-	Text
-	    We can view the attaching maps for C. Notice that the sign changes when we use 
-	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
-	    alway be the case for unlabelled simplicial comlexes, while the sign will 
-	    agree when we use a labelling.
-	Example
-	    C.dd
-    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
-        Text
-	    Using the Lables option, we can homogenize a simplicial chain complex to 
-	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
-	    S = QQ[x_0..x_3];
-	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
-	    prune homology F
-    	Text
-	    Observe that C begins in homolgical degree -1, while F Begins in homological degree 0.
-	    Similar to the first example, we can also also view the differential for F.
-	Example
-	   F.dd
-	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
-	Text
-    	    The order of the monomial labels will have an effect on what the output is.
-	    For example, after swapping the first two labels in the example above, we 
-	    will no longer get a resolution.	
-	Example
-	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
-	    G.dd
-    	    prune HH G
-    SeeAlso
-    	"making an abstract simplicial complex"
-	(coefficientRing,SimplicialComplex)
-	(ChainComplexMap)
-	(boundaryMap,ZZ,SimplicialComplex)
-	(resolution, Ideal)
-	(homology,ChainComplex)
-///
-
-doc ///
     Key 
         (isWellDefined, SimplicialComplex)    
     Headline
@@ -982,81 +895,8 @@ doc ///
 ///
 
 ------------------------------------------------------------------------------
--- more advanced constructors
+-- constructors for classic examples
 ------------------------------------------------------------------------------
-doc ///
-    Key
-        (dual, SimplicialComplex)
-    Headline
-        make the Alexander dual of an abstract simplicial complex
-    Usage
-        dual D
-    Inputs
-	D : SimplicialComplex
-    Outputs
-        : SimplicialComplex
-	    that is the Alexander dual of {\tt D}
-    Description
-        Text
-            The Alexander dual of an abstract simplicial complex $D$ is the
-            abstract simplicial complex whose faces are the complements of the
-            nonfaces in $D$.  
-	Text
-	    The Alexander dual of a square is the disjoint union of two edges.
-    	Example
-	    S = ZZ[a..d];
-	    D = simplicialComplex {a*b, b*c, c*d, a*d}
-	    dual D  
-	    assert (dual D === simplicialComplex {a*c, b*d} and dual dual D === D)
-    	Text
-            The Alexander dual is homotopy equivalent to the complement of $D$
-     	    in the sphere generated by all of the variables in the 
-	    @TO2((ring, SimplicialComplex), "polynomial ring")@ of $D$.  In
-     	    particular, it depends on the number of variables.
-     	Example
-	    S' = ZZ[a..e];
-	    D' = simplicialComplex {a*b, b*c, c*d, a*d}
-	    dual D'
-     	    assert (dual D' === simplicialComplex {b*d*e, a*c*e, a*b*c*d} and 
-		dual dual D' === D')
-	Text
-	    The projective dimension of the Stanley-Reisner ring of $D$ equals
-     	    the regularity of the Stanley-Reisner ideal of the Alexander dual
-     	    of $D$; see Theorem 5.59 in Miller-Sturmfels' 
-	    {\em Combinatorial Commutative Algebra}.
-    	Example     
-     	    S'' = QQ[a..h];
-	    D'' =  bartnetteSphereComplex S'' 
-	    dual D''
-	    pdim comodule ideal D''
-	    regularity ideal dual D''
-	    assert (pdim comodule ideal D'' === regularity ideal dual D'')
-	Text
-            Alexander duality interchanges extremal Betti numbers of the
-     	    Stanley-Reisner ideals.  Following Example 3.2 in
-     	    Bayer-Charalambous-Popescu's
-     	    @HREF("https://arxiv.org/abs/math/9804052", "Extremal betti
-     	    numbers and applications to monomial ideals")@ we have the
-     	    following.
-    	Example
-	    S = QQ[x_0 .. x_6];
-	    D = simplicialComplex {x_0*x_1*x_3, x_1*x_3*x_4, x_1*x_2*x_4,
-	        x_2*x_4*x_5, x_2*x_3*x_5, x_3*x_5*x_6, x_3*x_4*x_6,
-	        x_0*x_4*x_6, x_0*x_4*x_5, x_0*x_1*x_5, x_1*x_5*x_6,
-	        x_1*x_2*x_6, x_0*x_2*x_6, x_0*x_2*x_3}
-	    I = ideal D
-	    J = ideal dual D
-	    betti res I
-	    betti res J
-    SeeAlso 
-        "making an abstract simplicial complex"        
-        (dual, MonomialIdeal)
-	(pdim, Module)
-	(regularity, Module)
-	(betti, GradedModule)
-///
-
-
 doc ///
     Key
         (simplexComplex, ZZ, PolynomialRing)
@@ -1131,7 +971,6 @@ doc ///
     	(fVector, SimplicialComplex)
 ///
 
-
 doc ///
     Key
         (bartnetteSphereComplex, PolynomialRing)
@@ -1183,7 +1022,6 @@ doc ///
 	(poincareSphereComplex, PolynomialRing)	
 ///
 
-
 doc ///
     Key
         (poincareSphereComplex, PolynomialRing)
@@ -1227,7 +1065,6 @@ doc ///
     	(isPure, SimplicialComplex)
 	nonPiecewiseLinearSphereComplex
 ///
-
 
 doc ///
     Key
@@ -1275,7 +1112,6 @@ doc ///
 	poincareSphereComplex
     	(isPure, SimplicialComplex)	         	
 ///
-
 
 doc ///
     Key
@@ -1498,51 +1334,245 @@ doc ///
         (smallManifold, ZZ, ZZ, ZZ, PolynomialRing)
     	smallManifold
     Headline 
-        get a small manifold from Frank Lutz' database
+        get a small manifold from the Frank Lutz database
     Usage 
-        smoothFanoToricVariety (d,v,i,R)
+        smoothManifold(d, v, i, R)
     Inputs
         d : ZZ 
 	    equal to dimension of the manifold
 	v : ZZ
 	    equal to the number of vertices
         i : ZZ 
-	    indexing a small d-manifold in the database
+	    indexing a small $d$-manifold in the database
         R : PolynomialRing 
-	    that specifies the base ring of the complex	    
+	    that specifies the polynomial ring containing the Stanley-Reisner ideal
     Outputs 
         : SimplicialComplex
-	    a complex corresponding to a triangulation of a d-manifold
+	    corresponding to a triangulation of a $d$-manifold
     Description
         Text
-            This function accesses a database of all small triangulated 
-	    2 or 3-manifolds with at most ten vertices. The classifications
-	    of these triangulations are due to many authors; a survey of these
-	    results was written by Frank Lutz ( "Triangulated Manifolds with 
-	    Few Vertices: Combinatorial Manifolds", @HREF("https://arxiv.org/abs/math/0506372", 
-	    "arXiv:math/0506372v1")@. 
+            This function accesses a database of all small triangulated 2 or
+	    3-manifolds with at most ten vertices.  The enumeration of these
+	    abstract simplicial complex follows
+	    @HREF("http://page.math.tu-berlin.de/~lutz/", "Frank H. Lutz's")@
+	    classification in "Triangulated Manifolds with Few Vertices:
+	    Combinatorial Manifolds",
+	    @HREF("https://arxiv.org/abs/math/0506372",
+	    "arXiv:math/0506372v1")@.  Alternative formats, further
+	    references, and more details may be found at the 
+	    @HREF("http://page.math.tu-berlin.de/~lutz/stellar/", "manifold page")@.	
 	Text
-	    Up to isomorphism, there is one 2-manifold with four vertices, 
-	    one with five vertices, three with six, nine with seven, 43 with eight,
-	    655 with nine, and 42426 with ten. For 3-manifolds, there is one with 
-	    five vertices, two with six, five with seven, 39 with eight, and 1297 
-	    with nine.
+	    There is a $1$ surface with four vertices, $1$ with five vertices,
+	    $3$ with six vertices, $9$ with seven vertices, $43$ with eight
+	    vertices, $655$ with nine vertices, and $42,426$ with ten
+	    vertices.  There is $1$ threefold with five vertices, $2$ with six
+	    vertices, $5$ with seven vertices, $39$ with eight vertcies, and
+	    $1,297$ with nine vertices.
         Example
             R = ZZ[a..j];
-	    M = smallManifold(2,9,100,R)
-	Text
-	    @SUBSECTION "Acknowledgements"@
-    	Text
-            Thanks to @HREF("http://page.math.tu-berlin.de/~lutz/",
-            "Frank Lutz")@ for his database found at @HREF("http://www.grdb.co.uk",
-            "Small Manifolds Databases")@.
-    Caveat
-    	The database for 2-manifolds with ten vertices is rather large, and so loading
-	the file takes several seconds.
+	    D = smallManifold(2, 9, 654, R)
+	    assert(isWellDefined D and dim D === 2 and # vertices D === 9)
+	    assert (simplicialComplex faces(2, simplexComplex(3, R)) === smallManifold(2, 4, 0, R))	    
+	Example
+	    D1 = smallManifold(3, 8, 21, R)
+	    prune HH D1
+	    assert(isWellDefined D1 and dim D1 === 3 and # vertices D1 === 8)
+	    assert (simplicialComplex faces(3, simplexComplex(4, R)) === smallManifold(3, 5, 0, R))	
     SeeAlso
         "making an abstract simplicial complex"
-        SimplicialComplex
+	(dim, SimplicialComplex)
 ///
+
+
+
+
+
+
+
+
+
+
+
+doc ///
+    Key
+        (chainComplex, SimplicialComplex)
+	[(chainComplex, SimplicialComplex), Labels]
+    Headline
+        create the chain complex associated to a simplicial complex.
+    Usage
+    	chainComplex D
+    Inputs
+    	D : SimplicialComplex
+	Labels => List	  
+	    L of monomials in a polynomial ring, one for each vertex of D.
+    Outputs
+    	C : ChainComplex	 
+    Description
+    	Text
+	    When no labels are given, this function returns C, the reduced simplicial
+	    chain complex associated to D with coefficents in k, where k is the 
+	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). When 
+	    labels are given, this function returns the homogenization of C we get by 
+	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
+	    information about homogenization of chain complexes by monomial ideals can be
+	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
+	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
+	Example
+	    A = QQ[x_0..x_3];
+	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
+	    C = chainComplex D
+	    prune homology C
+	Text
+	    We can view the attaching maps for C. Notice that the sign changes when we use 
+	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
+	    alway be the case for unlabelled simplicial comlexes, while the sign will 
+	    agree when we use a labelling.
+	Example
+	    C.dd
+    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
+        Text
+	    Using the Lables option, we can homogenize a simplicial chain complex to 
+	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
+	Example
+	    A = QQ[x_0..x_3];
+	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
+	    S = QQ[x_0..x_3];
+	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
+	    prune homology F
+    	Text
+	    Observe that C begins in homolgical degree -1, while F Begins in homological degree 0.
+	    Similar to the first example, we can also also view the differential for F.
+	Example
+	   F.dd
+	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
+	Text
+    	    The order of the monomial labels will have an effect on what the output is.
+	    For example, after swapping the first two labels in the example above, we 
+	    will no longer get a resolution.	
+	Example
+	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
+	    G.dd
+    	    prune HH G
+    SeeAlso
+    	"making an abstract simplicial complex"
+	(coefficientRing,SimplicialComplex)
+	(ChainComplexMap)
+	(boundaryMap,ZZ,SimplicialComplex)
+	(resolution, Ideal)
+	(homology,ChainComplex)
+///
+
+------------------------------------------------------------------------------
+-- more advanced constructors
+------------------------------------------------------------------------------
+doc///
+    Key
+        inducedSubcomplex
+        (inducedSubcomplex,SimplicialComplex,List)
+    Headline
+        create the simplicial complex induced on a subset of the vertex set
+    Usage
+        inducedSubcomplex(D,V)
+    Inputs
+        D : SimplicialComplex
+        V : List
+	    of elements in {\tt vertices D}
+    Outputs
+        : SimplicialComplex
+	  the subcomplex of {\tt D} induced on the vertices in {\tt V}
+    Description
+        Text
+            Given a simplicial complex {\tt D} and a subset {\tt V} of
+	    {\tt vertices D}, the subcomplex of {\tt D} induced on 
+	    {\tt V} is the simplicial complexes whose faces are given
+	    by the faces {\tt F} in {\tt D} whose verticies are 
+	    contained in {\tt V}.
+	Example
+	    R = ZZ[x_0..x_3];
+	    D = simplicialComplex{x_0*x_1*x_2, x_2*x_3, x_1*x_3}
+	    E = inducedSubcomplex(D,{x_1,x_2,x_3})
+	    vertices E
+	    DFaces = flatten for i to dim D list first entries faces(i,D)
+	    EFaces = flatten for i to dim D list first entries faces(i,E)
+	    all(EFaces, F -> member(F,DFaces))
+    SeeAlso 
+        "making an abstract simplicial complex"        
+///
+
+doc ///
+    Key
+        (dual, SimplicialComplex)
+    Headline
+        make the Alexander dual of an abstract simplicial complex
+    Usage
+        dual D
+    Inputs
+	D : SimplicialComplex
+    Outputs
+        : SimplicialComplex
+	    that is the Alexander dual of {\tt D}
+    Description
+        Text
+            The Alexander dual of an abstract simplicial complex $D$ is the
+            abstract simplicial complex whose faces are the complements of the
+            nonfaces in $D$.  
+	Text
+	    The Alexander dual of a square is the disjoint union of two edges.
+    	Example
+	    S = ZZ[a..d];
+	    D = simplicialComplex {a*b, b*c, c*d, a*d}
+	    dual D  
+	    assert (dual D === simplicialComplex {a*c, b*d} and dual dual D === D)
+    	Text
+            The Alexander dual is homotopy equivalent to the complement of $D$
+     	    in the sphere generated by all of the variables in the 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@ of $D$.  In
+     	    particular, it depends on the number of variables.
+     	Example
+	    S' = ZZ[a..e];
+	    D' = simplicialComplex {a*b, b*c, c*d, a*d}
+	    dual D'
+     	    assert (dual D' === simplicialComplex {b*d*e, a*c*e, a*b*c*d} and 
+		dual dual D' === D')
+	Text
+	    The projective dimension of the Stanley-Reisner ring of $D$ equals
+     	    the regularity of the Stanley-Reisner ideal of the Alexander dual
+     	    of $D$; see Theorem 5.59 in Miller-Sturmfels' 
+	    {\em Combinatorial Commutative Algebra}.
+    	Example     
+     	    S'' = QQ[a..h];
+	    D'' =  bartnetteSphereComplex S'' 
+	    dual D''
+	    pdim comodule ideal D''
+	    regularity ideal dual D''
+	    assert (pdim comodule ideal D'' === regularity ideal dual D'')
+	Text
+            Alexander duality interchanges extremal Betti numbers of the
+     	    Stanley-Reisner ideals.  Following Example 3.2 in
+     	    Bayer-Charalambous-Popescu's
+     	    @HREF("https://arxiv.org/abs/math/9804052", "Extremal betti
+     	    numbers and applications to monomial ideals")@ we have the
+     	    following.
+    	Example
+	    S = QQ[x_0 .. x_6];
+	    D = simplicialComplex {x_0*x_1*x_3, x_1*x_3*x_4, x_1*x_2*x_4,
+	        x_2*x_4*x_5, x_2*x_3*x_5, x_3*x_5*x_6, x_3*x_4*x_6,
+	        x_0*x_4*x_6, x_0*x_4*x_5, x_0*x_1*x_5, x_1*x_5*x_6,
+	        x_1*x_2*x_6, x_0*x_2*x_6, x_0*x_2*x_3}
+	    I = ideal D
+	    J = ideal dual D
+	    betti res I
+	    betti res J
+    SeeAlso 
+        "making an abstract simplicial complex"        
+        (dual, MonomialIdeal)
+	(pdim, Module)
+	(regularity, Module)
+	(betti, GradedModule)
+///
+
+
+
 
 doc /// 
     Key 
@@ -1721,9 +1751,8 @@ doc ///
 	Example
 	    netList for F in BFacets list(F => DFaces_(indices F))
     SeeAlso
+        "making an abstract simplicial complex"    
         (barycentricSubdivision, SimplicialMap, Ring, Ring)
-        "making an abstract simplicial complex"
-        SimplicialComplex
 ///
 
 doc ///
@@ -1784,8 +1813,8 @@ doc ///
 	     netList for v in vertices BD list(v => (map Bf)(v)))
 	    Bf 
     SeeAlso
+        "making an abstract simplicial complex"    
         (barycentricSubdivision, SimplicialComplex, Ring)
-        "making an abstract simplicial complex"
         SimplicialComplex
 ///
 
@@ -1923,58 +1952,6 @@ doc ///
 	(pdim, Module)
 	(codim, Ideal)
 ///
- 
-
-/// 
-    Key 
-        (boundary, SimplicialComplex)
-    Headline 
-        make a new simplicial complex generated by the non-maximal faces
-    Usage
-     	boundary D
-    Inputs
-     	D : SimplicialComplex
-    Outputs
-     	: SimplicialComplex
-	     whose faces are the non-maximal faces in {\tt D}
-    Description
-     	Text
-     	    The boundary of an abstract simplicial complex $D$ is the
-	    subcomplex consisting of all nonmaximal faces of
-	    $D$. Equivalently, it is the subcomplex consisting of all
-	    non-facets of $D$.
-	Text
-	    The boundary of the 3-simplex is the 2-sphere.
-	Example
-	    S = ZZ[a..d];
-	    D = simplicialComplex {a*b*c*d}
-	    sphere = boundary D
-	    fVector sphere
-	    fVector D
-	    assert (ideal sphere === ideal (a*b*c*d) and dim sphere === dim D - 1)
-	Text
-	    The facets of $D$ need not be of the same dimension, which means
-	    the boundary facets will not be of the same dimension.
-	Example
-	    S' = QQ[a..g];
-	    D' = simplicialComplex {e, f*g, c*g, d*f, a*d, a*b*c}
-	    D'' = boundary D'
-	    fVector D'
-	    fVector D''
-	    assert (dim D'' === dim D' - 1) 
-	Text
-	    The boundary of the irrelevant complex is the void complex.
-	Example
-	    irrelevant = simplicialComplex {1_S}
-	    boundary irrelevant
-	    assert (dim boundary irrelevant === - infinity)
-    SeeAlso
-	"making an abstract simplicial complex"
-        (facets, SimplicialComplex)
-	(isPure, SimplicialComplex)
-        (fVector, SimplicialComplex)
-///
-
 
 doc ///
     Key 
@@ -2043,8 +2020,6 @@ doc ///
         (faces, SimplicialComplex)
 	(fVector, SimplicialComplex)    
 ///
-
-
 
 doc ///
     Key 
@@ -2174,8 +2149,8 @@ doc ///
 
 doc ///
     Key
-	boundaryMap
 	(boundaryMap, ZZ, SimplicialComplex)        
+	boundaryMap	
 	[boundaryMap, Labels]
     Headline
         make a boundary map between oriented faces
@@ -2248,6 +2223,7 @@ doc ///
 	    D' = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
 	    boundaryMap (1, D')
     SeeAlso
+        "finding attributes and properties"
         (chainComplex,SimplicialComplex)
 ///
 
@@ -2258,7 +2234,7 @@ doc ///
 doc ///
     Key
     	buchbergerComplex
-        (buchbergerComplex,List,Ring)
+        (buchbergerComplex, List, Ring)
     Headline
         make a Buchberger complex of a monomial ideal 
     Usage
@@ -2313,9 +2289,9 @@ doc ///
 
 doc ///
      Key
-         taylorResolution
-	 (taylorResolution,List)
-	 (taylorResolution,MonomialIdeal)
+         taylorResolution	      
+	 (taylorResolution, List)
+	 (taylorResolution, MonomialIdeal)
      Headline
          create the Taylor resolution of a monomial ideal
      Usage
@@ -2330,7 +2306,7 @@ doc ///
          : ChainComplex
      Description
         Text
-	    If {\tt M} is a monomial ideal, minimall generated by {\tt L}, then
+	    If {\tt M} is a monomial ideal, minimally generated by {\tt L}, then
 	    the Taylor resolution of {\tt M} is the resolution of {\tt M} obtained
 	    by homogenizing the ({\tt #L - 1})-simplex.
 	Example
@@ -2348,6 +2324,7 @@ doc ///
 	    T.dd
 	    K.dd
     SeeAlso 
+         "making an abstract simplicial complex"      
 	 lyubeznikResolution
 	 scarfChainComplex
 	 koszul
@@ -2355,10 +2332,10 @@ doc ///
 
 doc ///
      Key
-         lyubeznikSimplicialComplex 
-	 [lyubeznikSimplicialComplex,MonomialOrder]
-         (lyubeznikSimplicialComplex,List,Ring)
-	 (lyubeznikSimplicialComplex,MonomialIdeal,Ring)
+         lyubeznikSimplicialComplex      
+         (lyubeznikSimplicialComplex, List, Ring)     
+	 [lyubeznikSimplicialComplex, MonomialOrder]
+	 (lyubeznikSimplicialComplex, MonomialIdeal, Ring)
      Headline
          create a simplicial complex supporting a Lyubeznik resolution of a monomial ideal
      Usage
@@ -2405,6 +2382,7 @@ doc ///
 	    D' = lyubeznikSimplicialComplex({x^2,y^3,x*y},R)
 	    (lyubeznikResolution(M,MonomialOrder=>{1,2,0})).dd
     SeeAlso 
+         "making an abstract simplicial complex"          
          SimplicialComplexes
 	 lyubeznikResolution
 	 scarfSimplicialComplex
@@ -2412,10 +2390,10 @@ doc ///
 
 doc ///
     Key 
-        lyubeznikResolution
-	[lyubeznikResolution,MonomialOrder]
-        (lyubeznikResolution,List)
-	(lyubeznikResolution,MonomialIdeal)
+        lyubeznikResolution    
+        (lyubeznikResolution, List)    
+	(lyubeznikResolution, MonomialIdeal)
+	[lyubeznikResolution, MonomialOrder]
     Headline
         create the lyubeznik resolution of an ordered set of monomials.
     Usage
@@ -2460,6 +2438,7 @@ doc ///
 	    F' = lyubeznikResolution(M,MonomialOrder=>{1,2,0});
 	    F'.dd
     SeeAlso 
+        "making an abstract simplicial complex"          
         SimplicialComplexes
 	lyubeznikResolution
 	taylorResolution
@@ -2467,14 +2446,14 @@ doc ///
 
 doc///
     Key 
-        scarfSimplicialComplex
-	(scarfSimplicialComplex,List,Ring)
-	(scarfSimplicialComplex,MonomialIdeal,Ring)
+        scarfSimplicialComplex    
+	(scarfSimplicialComplex, List, Ring)    
+	(scarfSimplicialComplex, MonomialIdeal, Ring)
     Headline
         create the scarf simplicial complex for a list of monomials
     Usage
-        scarfSimplicialComplex(L,R)
-	scarfSimplicialComplex(M,R)
+        scarfSimplicialComplex(L, R)
+	scarfSimplicialComplex(M, R)
     Inputs
         L : List
 	    of monomials in a polynomial ring, that minimally generate
@@ -2508,6 +2487,7 @@ doc///
 	    D' = scarfSimplicialComplex(M',R)
 	    prune homology D'
     SeeAlso
+        "making an abstract simplicial complex"     
         SimplicialComplexes
         scarfChainComplex
 	lyubeznikSimplicialComplex
@@ -2515,9 +2495,9 @@ doc///
 
 doc///
     Key 
-        scarfChainComplex
-	(scarfChainComplex,List)
-	(scarfChainComplex,MonomialIdeal)
+        scarfChainComplex    
+	(scarfChainComplex, List)    
+	(scarfChainComplex, MonomialIdeal)
     Headline
         create the scarf chain complex for a list of monomials.
     Usage
@@ -2561,6 +2541,7 @@ doc///
 	    prune homology C'
 	    flatten for i to length C list degrees C'_i
     SeeAlso
+        "making an abstract simplicial complex"       
     	scarfSimplicialComplex
 	taylorResolution
 	lyubeznikSimplicialComplex
@@ -2568,7 +2549,7 @@ doc///
 
 doc /// 
     Key
-        (isPure,SimplicialComplex)
+        (isPure, SimplicialComplex)
     Headline
         returns whether the facets are equidimensional
     Usage
@@ -2598,47 +2579,7 @@ doc ///
 	facets
 ///
  
-///
--- Greg and Mike were working on this when Greg had to go home
--- 7/13/05  Good example though!
-     "Hochster gives a formula relating the homology of the Alexander dual 
-     to the betti numbers of the Stanley-Reisner ideal, see e.g., 
-     Corollary 1.40 in
-     Miller-Sturmfels, Combinatorial Commutative Algebra. ",
-     EXAMPLE {
-	  --R = QQ[a..f];
-	  R = QQ[a..f, Degrees => {
-                          {1, 1, 0, 0, 0, 0, 0}, 
-                          {1, 0, 1, 0, 0, 0, 0}, 
-                          {1, 0, 0, 1, 0, 0, 0}, 
-			  {1, 0, 0, 0, 1, 0, 0}, 
-			  {1, 0, 0, 0, 0, 1, 0}, 
-			  {1, 0, 0, 0, 0, 0, 1}}]
-	  oct = simplicialComplex monomialIdeal(a*b,c*d,e*f)
-	  cube = dual oct
-	  lk = (D,m) -> simplicialComplex monomialIdeal(ideal support m + ((ideal D):m));
-	  F = link(oct,a)
-	  rank HH_1(F)
-	  C = res ideal cube
-	  tally degrees C_3
-	  checkHochster = (D,face) -> (
-	       R := ring D;
-	       face' := (product gens R) // face;
-	       D' := dual D;
-	       h := apply(0..dim D', i -> (
-     	           rank HH_(i-1)(link(D',face'))));
-	       C := res ideal D;
-	       b := apply(0..dim D', i -> (
-			 d := tally degrees C_(i+1);
-			 if d#?(degree face) then d#(degree face) else 0));
-	       (b,h))
-          checkHochster(cube,b*d*e*f)
-	  checkHochster(oct,a*c)
-	  checkHochster(oct,a*b)
-	  checkHochster(oct,c*d*e*f)
-	  checkHochster(cube,a*b*c*d*e)
-	  },
-///
+
 
 doc /// 
     Key
@@ -2689,6 +2630,34 @@ doc ///
 	facets
 	boundaryMap
 	fVector
+///
+
+doc ///
+  Key
+      (vertices, SimplicialComplex)
+  Headline
+      list the vertices of a simplicial complex.
+  Usage
+      vertices(D)
+  Inputs
+      D : SimplicialComplex
+  Outputs
+      :List
+  Description
+   Text
+        Returns a @TO List@ with the vertices of a
+        @TO2("SimplicialComplex","simplicial complex")@.
+   Example
+       R = QQ[x_0..x_4];
+       vertices simplexComplex(2,R)
+       I = monomialIdeal(x_0, x_1*x_2, x_2*x_3, x_3*x_4);
+       D = simplicialComplex I
+       vertices D
+  SeeAlso
+      "finding attributes and properties"  
+      face
+      (facets,SimplicialComplex)
+      (faces, SimplicialComplex)
 ///
 
 -------------------------------------------------------------
@@ -2820,7 +2789,7 @@ doc ///
 undocumented { "Multigrading" }
 
 
-doc ///
+///
   Key
     Face
   Headline
@@ -2846,7 +2815,7 @@ doc ///
      facets
 ///
 
-doc ///
+///
   Key
     (symbol ==,Face,Face)
   Headline
@@ -2876,7 +2845,7 @@ doc ///
 ///
 
 
-doc ///
+///
   Key
     face
     (face,List)
@@ -2910,7 +2879,7 @@ doc ///
      facets
 ///
 
-doc ///
+///
   Key
     (dim,Face)
   Headline
@@ -2939,9 +2908,9 @@ doc ///
      faces
 ///
 
-doc ///
+///
   Key
-    (vertices,Face)
+    (vertices, Face)
   Headline
     The vertices of a face of a simplicial complex.
   Usage
@@ -2966,34 +2935,7 @@ doc ///
      (faces, SimplicialComplex)
 ///
 
-doc ///
-  Key
-      (vertices, SimplicialComplex)
-  Headline
-      list the vertices of a simplicial complex.
-  Usage
-      vertices(D)
-  Inputs
-      D : SimplicialComplex
-  Outputs
-      :List
-  Description
-   Text
-        Returns a @TO List@ with the vertices of a
-        @TO2("SimplicialComplex","simplicial complex")@.
-   Example
-       R = QQ[x_0..x_4];
-       vertices simplexComplex(2,R)
-       I = monomialIdeal(x_0, x_1*x_2, x_2*x_3, x_3*x_4);
-       D = simplicialComplex I
-       vertices D
-  SeeAlso
-      face
-      (facets,SimplicialComplex)
-      (faces, SimplicialComplex)
 ///
-
-doc ///
   Key
     isSubface
     (isSubface,Face,Face)
@@ -3020,7 +2962,7 @@ doc ///
      isSubface(F2,G)
 ///
 
-doc ///
+///
   Key
     (substitute,Face,PolynomialRing)
   Headline
@@ -3044,7 +2986,7 @@ doc ///
      substitute(F,S)
 ///
 
-doc ///
+///
   Key
     (ring,Face)
   Headline
@@ -3067,9 +3009,9 @@ doc ///
 ///
 
 
-doc ///
+///
   Key
-    (substitute,SimplicialComplex,PolynomialRing)
+    (substitute, SimplicialComplex, PolynomialRing)
   Headline
     Substitute a simplicial complex to a different ring.
   Usage
@@ -3095,7 +3037,7 @@ doc ///
      (substitute,Face,PolynomialRing)
 ///
 
-doc ///
+///
   Key
     isFaceOf
     (isFaceOf,Face,SimplicialComplex)
@@ -3121,7 +3063,7 @@ doc ///
      -- isFaceOf(F2,C)
 ///
 
-doc ///
+///
   Key
     (net,Face)
   Headline
@@ -3210,66 +3152,66 @@ doc ///
 
 
 doc ///
-  Key    
-    (homology,ZZ,SimplicialComplex)
-  Headline
-    Compute the homology of a simplicial complex.
-  Usage
-    homology(j,C)
-  Inputs
-    j:ZZ
-    C:SimplicialComplex
-  Outputs
-    :Module
-  Description
-   Text
-     Compute the j-th reduced homology of C with coefficients in @TO (coefficientRing,SimplicialComplex)@ C.
+    Key    
+        (homology, ZZ, SimplicialComplex)
+    Headline
+        compute the homology of an abstract simplicial complex
+    Usage
+        homology(j, D)
+    Inputs
+        j : ZZ
+        D : SimplicialComplex
+    Outputs
+        : Module
+    Description
+        Text
+            Compute the $j$-th reduced homology of $D$ with coefficients in 
+	    @TO (coefficientRing,SimplicialComplex)@ C.
 
-   Example
-    R=ZZ[x_0..x_5];
-    D=simplicialComplex apply({{x_0, x_1, x_2}, {x_1, x_2, x_3}, {x_0, x_1, x_4}, {x_0, x_3, x_4}, {x_2, x_3, x_4}, {x_0, x_2, x_5}, {x_0, x_3, x_5}, {x_1, x_3, x_5}, {x_1, x_4, x_5}, {x_2, x_4, x_5}},face)
-    prune homology(1,D)
-  SeeAlso
-    (homology,ZZ,SimplicialComplex,Ring)
-   boundaryMap
-   (chainComplex,SimplicialComplex)
+        Example
+            R = ZZ[x_0..x_5];
+            D = simplicialComplex {x_0*x_1*x_2, x_1*x_2*x_3, x_0*x_1*x_4, x_0*x_3*x_4, x_2*x_3*x_4, x_0*x_2*x_5, x_0*x_3*x_5, x_1*x_3*x_5, x_1*x_4*x_5, x_2*x_4*x_5}
+            prune homology(1,D)
+    SeeAlso
+        (homology,ZZ,SimplicialComplex,Ring)
+        boundaryMap
+        (chainComplex,SimplicialComplex)
 ///
 
 doc ///
-  Key    
-    (homology,ZZ,SimplicialComplex,Ring)
-  Headline
-    Compute the homology of a simplicial complex.
-  Usage
-    homology(j,C,R)
-  Inputs
-    j:ZZ
-    C:SimplicialComplex
-    R:Ring
-  Outputs
-    :Module
-  Description
-   Text
-     Compute the j-th reduced homology of C with coefficients in R.
-
-   Example
-    R=ZZ[x_0..x_5];
-    D=simplicialComplex apply({{x_0, x_1, x_2}, {x_1, x_2, x_3}, {x_0, x_1, x_4}, {x_0, x_3, x_4}, {x_2, x_3, x_4}, {x_0, x_2, x_5}, {x_0, x_3, x_5}, {x_1, x_3, x_5}, {x_1, x_4, x_5}, {x_2, x_4, x_5}},face)
-    prune homology(1,D,ZZ)
-    prune homology(1,D,QQ)
-    prune homology(1,D,ZZ/2)
-  SeeAlso
-    (homology,ZZ,SimplicialComplex)
-   boundaryMap
-   (chainComplex,SimplicialComplex)
+    Key    
+        (homology, ZZ, SimplicialComplex, Ring)
+    Headline
+        compute the homology of an abstract simplicial complex
+    Usage
+        homology(j, D, R)
+    Inputs
+        j : ZZ
+        D : SimplicialComplex
+        R : Ring
+    Outputs
+        : Module
+    Description
+        Text
+            Compute the $j$-th reduced homology of $D$ with coefficients in $R$.
+        Example
+            R = ZZ[x_0..x_5];
+	    D = simplicialComplex {x_0*x_1*x_2, x_1*x_2*x_3, x_0*x_1*x_4, x_0*x_3*x_4, x_2*x_3*x_4, x_0*x_2*x_5, x_0*x_3*x_5, x_1*x_3*x_5, x_1*x_4*x_5, x_2*x_4*x_5}
+            prune homology(1, D, ZZ)
+            prune homology(1, D, QQ)
+            prune homology(1, D, ZZ/2)
+    SeeAlso
+        (homology, ZZ, SimplicialComplex)
+        boundaryMap
+        (chainComplex, SimplicialComplex)
 ///
 
 doc ///
-  Key    
-    (homology,SimplicialComplex,Ring)
-    (homology,Nothing,SimplicialComplex,Ring)
-  Headline
-    Compute the homology of a simplicial complex.
+    Key    
+        (homology, SimplicialComplex, Ring)
+        (homology, Nothing, SimplicialComplex, Ring)
+    Headline
+        compute the homology of an abstract simplicial complex
   Usage
     homology(C,R)
   Inputs
@@ -3283,7 +3225,7 @@ doc ///
 
    Example
     R=ZZ[x_0..x_5];
-    D=simplicialComplex apply({{x_0, x_1, x_2}, {x_1, x_2, x_3}, {x_0, x_1, x_4}, {x_0, x_3, x_4}, {x_2, x_3, x_4}, {x_0, x_2, x_5}, {x_0, x_3, x_5}, {x_1, x_3, x_5}, {x_1, x_4, x_5}, {x_2, x_4, x_5}},face)
+    D = simplicialComplex {x_0*x_1*x_2, x_1*x_2*x_3, x_0*x_1*x_4, x_0*x_3*x_4, x_2*x_3*x_4, x_0*x_2*x_5, x_0*x_3*x_5, x_1*x_3*x_5, x_1*x_4*x_5, x_2*x_4*x_5}
     homology(D)
     homology(D,QQ)
     homology(D,ZZ/2)
@@ -3311,7 +3253,7 @@ doc ///
 
    Example
     R=ZZ[x_0..x_5];
-    D=simplicialComplex apply({{x_0, x_1, x_2}, {x_1, x_2, x_3}, {x_0, x_1, x_4}, {x_0, x_3, x_4}, {x_2, x_3, x_4}, {x_0, x_2, x_5}, {x_0, x_3, x_5}, {x_1, x_3, x_5}, {x_1, x_4, x_5}, {x_2, x_4, x_5}},face)
+    D = simplicialComplex {x_0*x_1*x_2, x_1*x_2*x_3, x_0*x_1*x_4, x_0*x_3*x_4, x_2*x_3*x_4, x_0*x_2*x_5, x_0*x_3*x_5, x_1*x_3*x_5, x_1*x_4*x_5, x_2*x_4*x_5}
     homology D
   SeeAlso
     (homology,SimplicialComplex,Ring)
@@ -3569,3 +3511,34 @@ doc ///
 	id
 ///
 
+doc ///
+    Key
+        (image, SimplicialMap)
+    Headline
+        construct the image of a simplicial map
+    Usage
+        image f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : SimplicialComplex
+	    the image of {\tt source f} in {\tt target f}
+    Description
+        Text
+	    The image of {\tt f} is the subcomplex of {\tt target f} whose
+	    faces are of the form {\tt f(F)} for some face {\tt F} in 
+	    {\tt source f}.
+	Example
+	    R = ZZ/229[a,b,c];
+	    D = simplicialComplex{a*b*c}
+	    E = simplicialComplex{a*b,b*c}
+	    f = map(E,D,{a,b,a})
+	    isWellDefined f
+	    image f
+    SeeAlso
+        SimplicialMap
+	(source, SimplicialMap)
+	(target, SimplicialMap)
+	(isInjective,SimplicialMap)
+	(isSurjective,SimplicialMap)
+///
