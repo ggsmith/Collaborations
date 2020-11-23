@@ -25,8 +25,6 @@ SimplicialComplex.synonym = "abstract simplicial complex"
 
 -- 'facets' method defined in Polyhedra
 facets SimplicialComplex := Matrix => D -> D.facets
--- older version of facets had an option 'useFaceClass'
--- TODO: how should we handle backwards compatiblity?
 
 expression SimplicialComplex := D -> expression facets D
 net SimplicialComplex := net @@ expression
@@ -69,6 +67,11 @@ simplicialComplex List := SimplicialComplex => L -> (
 	symbol cache          => new CacheTable
 	}
     )
+simplicialComplex Matrix := SimplicialComplex => f -> (
+    if numrows f =!= 1 then error "-- expected a matrix with 1 row";
+    simplicialComplex first entries f
+    )
+
 simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
     S := ring I;
     -- Alexander duality for monomial ideals in part of the 'Core'
@@ -92,10 +95,6 @@ simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
 	symbol facets         => F,
 	symbol cache          => new CacheTable
 	}       
-    )
-simplicialComplex Matrix := SimplicialComplex => f -> (
-    if numrows f =!= 1 then error "-- expected a matrix with 1 row";
-    simplicialComplex first entries f
     )
 
 isWellDefined SimplicialComplex := Boolean => D -> (
@@ -167,30 +166,6 @@ isWellDefined SimplicialComplex := Boolean => D -> (
 ------------------------------------------------------------------------------
 -- constructors for classic examples
 ------------------------------------------------------------------------------
-inducedSubcomplex = method()
-inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D,V) -> (
-    if not all(V, v -> member(v,vertices D)) then error "expected verticies of the simplicial complex";
-    R := ring D;
-    phi := map(R,R, for x in gens R list( if member(x,V) then x else 1_R));
-    --while map(D,phi) is not a well defined SimplicialMap, the following operations
-    --produces the complexes we want
-    image map(D,phi)
-    )
-
--*
-
-R = QQ[x_0..x_5]
-D = simplexComplex(5,R)
-
-phi = map(R,R, for y in gens R list( if member(y,{x_1,x_2,x_3}) then y else 1_R))
-image map(D,phi)
-
-inducedSubcomplex(D,{})
-D = simplexComplex(3,R)
-inducedSubcomplex(D,{R_4,R_5})
-
-*-
-
 simplexComplex = method()
 simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n === -1 then 
@@ -198,68 +173,11 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n < -1 then 
         error "-- expected integer greater than -1";
     if numgens S < n + 1 then 
-	error concatenate("-- expected a polynomial ring with at least ",toString(n+1)," generators");
+	error concatenate("-- expected a polynomial ring with at least ", 
+	    toString(n+1), " generators");
     simplicialComplex {product(n+1, i -> S_i)}
     )
 
--- Frank Lutz has enumerated all 2 and 3-manifolds with less than 10 vertices;
--- see http://page.math.tu-berlin.de/~lutz/stellar/3-manifolds.html
-small2ManifoldsFile := currentFileDirectory | "small2ManifoldsLibrary.txt"
-small210ManifoldsFile := currentFileDirectory | "small210ManifoldsLibrary.txt"
-small3ManifoldsFile := currentFileDirectory | "small3ManifoldsLibrary.txt"
-smallManifoldsTable := memoize((d,v) -> (
-	local manifoldsFile;
-	if (d === 2 and v < 10) then manifoldsFile = small2ManifoldsFile
-	else if (d === 2 and v === 10) then manifoldsFile = small210ManifoldsFile
-	else if d === 3 then manifoldsFile = small3ManifoldsFile;
-	if notify then stderr << "--loading file " << manifoldsFile << endl;
-	hashTable apply( lines get manifoldsFile, x -> (
-		x = value x;
-        	(x#0,x#1) => x#2
-		)
-	    )
-	)
-    );
-smallManifold = method()
-smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
-    if d < 2 or d > 3 then
-    	error "-- expected dimension two or three";
-    if v < 4 or i < 0 then
-        error "-- expected at least four vertices or nonnegative index";
-    if d === 2 and v === 4 and i > 0 then
-    	error "-- there is only one 2-manifold with four vertices.";
-    if d === 2 and v === 5 and i > 0 then
-    	error "-- there is only one 2-manifold with five vertices.";
-    if d === 2 and v === 6 and i > 2 then
-    	error "-- there are only three 2-manifolds with six vertices.";
-    if d === 2 and v === 7 and i > 8 then
-    	error "-- there are only nine 2-manifolds with seven vertices.";
-    if d === 2 and v === 8 and i > 42 then
-    	error "-- there are only 43 2-manifolds with eight vertices.";
-    if d === 2 and v === 9 and i > 654 then
-    	error "-- there are only 655 2-manifolds with nine vertices.";
-    if d === 2 and v === 10 and i > 42425 then
-    	error "-- there are only 42426 2-manifolds with ten vertices.";
-    if d === 3 and v === 5 and i > 0 then
-    	error "-- there is only one 3-manifold with five vertices.";
-    if d === 3 and v === 6 and i > 1 then
-    	error "-- there are only two 3-manifolds with six vertices.";
-    if d === 3 and v === 7 and i > 4 then
-    	error "-- there are only five 3-manifolds with seven vertices.";
-    if d === 3 and v === 8 and i > 38 then
-    	error "-- there are only 39 3-manifolds with eight vertices.";
-    if d === 3 and v === 9 and i > 1296 then
-    	error "-- there are only 1297 3-manifolds with nine vertices.";
-    if d === 3 and v === 10 then
-    	error "-- the database for 3-manifolds with ten vertices hasn't been included yet.";
-    if v > 10 then 
-        error "-- database doesn't include manifolds with more than ten vertices";
-    if numgens S < v then 
-        error ("-- expected a polynomial ring with at least " | toString v | " generators");
-    -- Since Frank Lutz starts counting at 1 instead of 0, there is
-    -- some appropriate index shifting.
-    simplicialComplex apply((smallManifoldsTable(d,v))#(v,i+1), f -> product(f, i -> S_(i-1)))
-    )
 
 -- Masahiro Hachimori created a library of interesting simplicial complexes; see
 --   http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html
@@ -326,6 +244,68 @@ bjornerComplex PolynomialRing := SimplicialComplex => S -> (
     simplicialComplex apply(hachimoriTable#13, f -> product(f, i -> S_i))
     )
 
+
+
+-- Frank Lutz has enumerated all 2 and 3-manifolds with less than 10 vertices;
+-- see http://page.math.tu-berlin.de/~lutz/stellar/3-manifolds.html
+small2ManifoldsFile := currentFileDirectory | "small2ManifoldsLibrary.txt"
+small210ManifoldsFile := currentFileDirectory | "small210ManifoldsLibrary.txt"
+small3ManifoldsFile := currentFileDirectory | "small3ManifoldsLibrary.txt"
+smallManifoldsTable := memoize((d,v) -> (
+	local manifoldsFile;
+	if (d === 2 and v < 10) then manifoldsFile = small2ManifoldsFile
+	else if (d === 2 and v === 10) then manifoldsFile = small210ManifoldsFile
+	else if d === 3 then manifoldsFile = small3ManifoldsFile;
+	if notify then stderr << "--loading file " << manifoldsFile << endl;
+	hashTable apply( lines get manifoldsFile, x -> (
+		x = value x;
+        	(x#0,x#1) => x#2
+		)
+	    )
+	)
+    );
+smallManifold = method()
+smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
+    if d < 2 or d > 3 then
+    	error "-- expected dimension two or three";
+    if v < 4 or i < 0 then
+        error "-- expected at least four vertices or nonnegative index";
+    if d === 2 and v === 4 and i > 0 then
+    	error "-- there is only one 2-manifold with four vertices.";
+    if d === 2 and v === 5 and i > 0 then
+    	error "-- there is only one 2-manifold with five vertices.";
+    if d === 2 and v === 6 and i > 2 then
+    	error "-- there are only three 2-manifolds with six vertices.";
+    if d === 2 and v === 7 and i > 8 then
+    	error "-- there are only nine 2-manifolds with seven vertices.";
+    if d === 2 and v === 8 and i > 42 then
+    	error "-- there are only 43 2-manifolds with eight vertices.";
+    if d === 2 and v === 9 and i > 654 then
+    	error "-- there are only 655 2-manifolds with nine vertices.";
+    if d === 2 and v === 10 and i > 42425 then
+    	error "-- there are only 42426 2-manifolds with ten vertices.";
+    if d === 3 and v === 5 and i > 0 then
+    	error "-- there is only one 3-manifold with five vertices.";
+    if d === 3 and v === 6 and i > 1 then
+    	error "-- there are only two 3-manifolds with six vertices.";
+    if d === 3 and v === 7 and i > 4 then
+    	error "-- there are only five 3-manifolds with seven vertices.";
+    if d === 3 and v === 8 and i > 38 then
+    	error "-- there are only 39 3-manifolds with eight vertices.";
+    if d === 3 and v === 9 and i > 1296 then
+    	error "-- there are only 1297 3-manifolds with nine vertices.";
+    if d === 3 and v === 10 then
+    	error "-- the database for 3-manifolds with ten vertices hasn't been included yet.";
+    if v > 10 then 
+        error "-- database doesn't include manifolds with more than ten vertices";
+    if numgens S < v then 
+        error ("-- expected a polynomial ring with at least " | toString v | " generators");
+    -- Since Frank Lutz starts counting at 1 instead of 0, there is
+    -- some appropriate index shifting.
+    simplicialComplex apply((smallManifoldsTable(d,v))#(v,i+1), f -> product(f, i -> S_(i-1)))
+    )
+
+
 ---- inspired by Sage math 
 --   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html
 -- TODO: add brucknerGrunbaumComplex
@@ -335,9 +315,20 @@ bjornerComplex PolynomialRing := SimplicialComplex => S -> (
 -- TODO: add surfaceComplex (ZZ == genus)
 
 
+
 ------------------------------------------------------------------------------
 -- more advanced constructors 
 ------------------------------------------------------------------------------
+inducedSubcomplex = method()
+inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D,V) -> (
+    if not all(V, v -> member(v,vertices D)) then error "expected verticies of the simplicial complex";
+    R := ring D;
+    phi := map(R,R, for x in gens R list( if member(x,V) then x else 1_R));
+    --while map(D,phi) is not a well defined SimplicialMap, the following operations
+    --produces the complexes we want
+    image map(D,phi)
+    )
+
 dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
     -- Alexander duality for monomial ideals in part of the 'Core'    
     simplicialComplex dual monomialIdeal D)
@@ -518,6 +509,17 @@ E = simplexComplex(n,R)
 --benchmark "facesMTEST2(17,D)"
 
 *-
+
+
+-- 'vertices' method defined in 'Polyhedra" package
+-- vertices Face := F -> F.vertices
+vertices SimplicialComplex := D -> (
+    if product first entries facets D == 1 
+    then {}
+    else support product(first entries facets D)
+    )
+
+
 --- kludge to access parts of the 'Core'
 raw = value Core#"private dictionary"#"raw";
 rawIndices = value Core#"private dictionary"#"rawIndices";
@@ -901,13 +903,7 @@ viewHelp
 -- vertices of a face
 -- vertices=method()
 
--- 'vertices' method defined in 'Polyhedra" package
-vertices Face := F -> F.vertices
-vertices SimplicialComplex := D -> (
-    if product first entries facets D == 1 
-    then {}
-    else support product(first entries facets D)
-    )
+
 
 -- pretty print
 net Face := (f)-> (
@@ -1259,8 +1255,3 @@ prune SimplicialComplex := SimplicialComplex => opts -> (D -> (
     	target map(D,Projection)
     	)
     )
-
--- TODO: find more nice examples of simplicial maps
--- TODO: does the join of complexes induce maps? link?
--- TODO: is there a reasonable notion of what a random map is? could we implement this?
--- TODO: Some documentation
