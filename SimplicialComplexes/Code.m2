@@ -735,48 +735,98 @@ isPure SimplicialComplex := Boolean => (D) -> (
 -- (see Eisenbud-Hosten-Popescu)          
 --------------------------------------------------------------------------
 
+-- lcmMRed and faceBuchberger are specific to buchbergerComplex
+
 lcmMRed = method()
 lcmMRed (List) := (L) -> (
--- lcmMRed finds the reduced lcm of a list of monomials
-    m := intersect toSequence (L/(i -> monomialIdeal(i)));
-    m_0//(product support m_0))
+-- lcmMRed finds the lcm of a list of monomial and drops the
+-- exponent on each variable by one (if that exponent in nonzero).
+    m := intersect toSequence apply(L, i-> monomialIdeal(i));
+    m_0//(product support m_0)
+    )
 
 faceBuchberger = (m, L) -> (
--- true iff the monomial m (in #L vars) is in the Buchberger complex
+-- true iff the monomial m defines a face in the Buchberger complex.
+-- if x has a variable with index greather than #L-1, then this
+-- code produces an error
      x := rawIndices raw m;
      mon := lcmMRed(L_x);
-     all(L, n -> mon//n == 0))
-
-buchbergerComplex = method()
-buchbergerComplex(List,Ring) := (L,R) -> (
-     P := ideal apply(gens R, x -> x^2);
-     nonfaces := {};
-     d := 1;
-     while (L1 := flatten entries basis(d,coker gens P); #L1 > 0) do (
-	  L1 = select(L1, m -> not faceBuchberger(m,L));
-	  << "new nonfaces in degree " << d << ": " << L1 << endl;	  
-	  nonfaces = join(nonfaces,L1);
-	  if #nonfaces > 0 then
-	      P = P + ideal nonfaces;
-	  d = d+1;
-          );
-     simplicialComplex monomialIdeal matrix(R, {nonfaces})
+     all(L, n -> mon//n == 0)
      )
 
-buchbergerComplex(MonomialIdeal) := (I) -> (
-     buchbergerComplex(flatten entries gens I, ring I))
+-- requires numgens R == #L. I dislike this.
+buchbergerComplex = method()
+buchbergerComplex(List,Ring) := (L,R) -> (
+    P := ideal apply(gens R, x -> x^2);
+    nonfaces := {};
+    d := 1;
+    while (L1 := flatten entries basis(d,coker gens P); #L1 > 0) do (
+	L1 = select(L1, m -> not faceBuchberger(m,L));
+	-- I do not like this output to the screen
+	-- << "new nonfaces in degree " << d << ": " << L1 << endl;	  
+	nonfaces = join(nonfaces,L1);
+	if #nonfaces > 0 then
+	P = P + ideal nonfaces;
+	d = d+1;
+	);
+    simplicialComplex monomialIdeal matrix(R, {nonfaces})
+    )
+
+buchbergerSimplicialComplex = method()
+buchbergerSimplicialComplex(List, Ring) := (L,R) -> (
+    if numgens R < #L 
+    then error concatenate("expect ring to have at least ",toString(#L)," generators");
+    -- trim squares and excess variables for quicker basis computations later on
+    P := ideal join(apply(#L, i -> R_i^2),apply(#L..numgens R-1, i -> R_i));
+    -- excess variables in R are always nonfaces
+    nonfaces := toList apply(#L..numgens R-1, i -> R_i);
+    d := 2;
+    -- We find the nonfaces in each degree
+    while (L1 := flatten entries basis(d,coker gens P); #L1 > 0) do (
+	L1 = select(L1, m -> not faceBuchberger(m,L));
+	nonfaces = join(nonfaces,L1);
+	if #nonfaces > 0 then
+	P = P + ideal nonfaces;
+	d = d+1;
+	);    
+    simplicialComplex monomialIdeal matrix(R, {nonfaces})
+    )
+
+buchbergerSimplicialComplex(MonomialIdeal, Ring) := (I,R) -> (
+    buchbergerSimplicialComplex(flatten entries mingens I, R)
+    )
+
+buchbergerResolution = method()
+buchbergerResolution List := ChainComplex => M -> (
+    -- handle degenerate cases first
+    if monomialIdeal M == 0
+    then return (ring(monomialIdeal M))^1[0];
+    -- Construct the buchbergerSimplicial Complex and homogenize
+    R := ZZ(monoid[vars(0..#M-1)]);
+    B := buchbergerSimplicialComplex(M,R);
+    chainComplex(B,Labels=>M)
+    )
+
+buchbergerResolution MonomialIdeal := ChainComplex => M -> (
+    if M == 0
+    then (ring M)^1[0]
+    else buchbergerResolution(first entries mingens M)
+    )
 
 taylorResolution = method();
 taylorResolution List := ChainComplex => M -> (
+    -- The Taylor resolution is the homogenization of the
+    -- (numgens M - 1)-simplex. The implementation is
+    -- straightforward once we've dealt with degenerate
+    -- cases.
     if monomialIdeal M == 0
     then return (ring(monomialIdeal M))^1[0];
     if not all(M, m -> size m == 1) then 
     error "-- expected a list of monomials";
     if not all(M, m -> member(m,flatten entries mingens ideal M)) then 
     error "-- expected minimal generators of a monomial ideal";
-    r := #M;
     R := ZZ(monoid[vars(0..#M-1)]);
-    Simplex := simplexComplex(r-1,R);
+    Simplex := simplexComplex(#M-1,R);
     chainComplex(Simplex,Labels=>M)
     )
 
@@ -786,10 +836,19 @@ taylorResolution MonomialIdeal := ChainComplex => M -> (
     else taylorResolution(first entries mingens M)
     )
 
+
+hasRoot = (F,L) -> (
+    faceLabel := lcm L_(indices F);
+    root := position(L,m -> faceLabel % m == 0);    
+    member(root,indices F)
+    )
+
 lyubeznikSimplicialComplex = method(Options => {MonomialOrder => {}})
 lyubeznikSimplicialComplex (List,Ring) := opts -> (M,A) -> (
+    -- Deal with degenerate case first
     if M == {}
     then return simplicialComplex({1_A});
+    -- Straightforward error checks
     if not all(M, m -> size m == 1) then 
     error "-- expected a list of monomials";
     if not all(M, m -> member(m,flatten entries mingens ideal M)) then 
@@ -803,42 +862,45 @@ lyubeznikSimplicialComplex (List,Ring) := opts -> (M,A) -> (
 	error concatenate("-- MonomialOrder should be a permutation of {0,...,",toString(#M-1),"}");
  	L = M_(opts.MonomialOrder)
 	);
-    Facets := for m in L list {m};
-    FacetsNew := Facets;
-    for i from 2 to #L do(
-    	for F in subsets(L,i) do(
-    	    rootF := position(L,m -> product F % m == 0);    
-    	    if not all(subsets(F,i-1), G -> member(G,Facets))
-    	    then continue
-    	    else if not member(L#(rootF),F)
-    	    then continue
-    	    else FacetsNew = append(select(FacetsNew, G -> not all(G, m -> member(m,F))),F);
-    	    );
-    	Facets = FacetsNew;
-    	);    
-    D := simplicialComplex(for F in Facets list(
-	    vertexLabel := m -> position(L,k -> k ==m);
-	    product(for m in F list A_(vertexLabel(m)))
-	    )
-    	);
-    D
+    P := ideal join(apply(#L, i -> A_i^2),apply(#L..numgens A-1, i -> A_i));
+    -- excess variables in A are always nonfaces
+    nonfaces := toList apply(#L..numgens A-1, i -> A_i);
+    d := 2;
+    -- We look for nonrooted faces. The nonfaces also define the simplicial 
+    -- complex and adding the nonfaces to P and taking the basis mod P, we
+    -- reduce the number of faces we need to check for rootedness.
+    while (dBasis := flatten entries basis(d, coker gens P); #dBasis > 0) do (
+	newNonfaces := select(dBasis, F -> not hasRoot(F,L));
+	nonfaces = join(nonfaces, newNonfaces);
+	if #nonfaces > 0 then P = P + ideal(nonfaces);
+	d = d+1;
+	);
+    simplicialComplex monomialIdeal matrix(A,{nonfaces})
     )
 
+-- Natural implementation for a monomial ideal.
 lyubeznikSimplicialComplex(MonomialIdeal,Ring) := opts -> (I,R) -> (
-    MinGens := first entries mingens I;
-    lyubeznikSimplicialComplex(MinGens, R, MonomialOrder => opts.MonomialOrder)
+    minGens := first entries mingens I;
+    lyubeznikSimplicialComplex(minGens, R, MonomialOrder => opts.MonomialOrder)
     )
 
+-- We can construct the lyubeznik Resolution by first building the
+-- lyubeznikSimplicialComplex and then homogenizing. The MonomialOrder
+-- option seems silly, as lists are implicitly ordered, but this 
+-- option is needed when we give a method for the MonomialIdeal class.
 lyubeznikResolution = method(Options => {MonomialOrder => {}})
 lyubeznikResolution List := opts -> L -> (
     MO := opts.MonomialOrder;
     R := QQ(monoid[vars(0..#L-1)]);
     if opts.MonomialOrder == {}
-    then return chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L)
-    else return chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L_MO)
+    then chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L)
+    else chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L_MO)
     )
 
 lyubeznikResolution MonomialIdeal := opts -> I -> (
+    -- if I == monomialIdeal(0), then the set of mingens in empty
+    -- and M2 doesn't know what ring to use when constructing the 
+    -- resolution. Otherwise straightforward.
     if numgens I == 0 
     then return ((ring I)^1)[0];
     MinGens := flatten entries mingens I; 
@@ -852,34 +914,42 @@ lyubeznikResolution MonomialIdeal := opts -> I -> (
 	 chainComplex(lyubeznikSimplicialComplex(I,R,MonomialOrder=>MO),Labels=>MinGens_MO)
 	 )
      )
-     
+
+-- This code can be more optimal (model like buchberger/lyubeznik constructors).
+-- It is a bit more tedious, so I haven't gotten around to it yet.
 scarfSimplicialComplex = method()
 scarfSimplicialComplex (List,Ring) := (L,A) -> (
-    LcmLattice := for F in remove(subsets L,0) list lcm F;
-    ScarfMultidegrees := for m in LcmLattice list(
-    	if #positions(LcmLattice,k -> k == m) > 1
+    -- The scarfSimplicialComplex is the subcomplex of the (#L-1)-simplex
+    -- whose faces have unique multidegrees. These unique multidegrees
+    -- are called Scarf multidegrees.
+    faceList := remove(subsets L, 0);
+    faceLabels := for F in faceList list lcm F;
+    scarfMultidegrees := for m in faceLabels list(
+    	if #positions(faceLabels, k -> k == m) > 1
     	then continue
     	else m
     	);
-    ScarfFaces := for F in remove(subsets L, 0) list(
-    	if member(lcm F, ScarfMultidegrees)
+    scarfFaces := for F in faceList list(
+    	if member(lcm F, scarfMultidegrees)
     	then F
     	else continue
     	);
-    D := simplicialComplex(for F in ScarfFaces list(
-	    vertexLabel := m -> position(L,k -> k ==m);
-	    product(for m in F list A_(vertexLabel(m)))
+    simplicialComplex(for F in scarfFaces list(
+	    vertexLabel := m -> position(L,k -> k == m);
+	    product(for m in F list A_(vertexLabel m))
 	    )
-    	);
-    D
+    	)
     )
 
+-- natrual functionality for a MonomialIdeal
 scarfSimplicialComplex (MonomialIdeal,Ring) := (I,A) -> (
     if numgens I == 0 
     then return ((coefficientRing(ring I))^1)[0];
     scarfSimplicialComplex(first entries mingens I,A)
     )
 
+-- The scarfChainComplex is the homogenization of the scarfSimplicial
+-- complex.
 scarfChainComplex = method()
 scarfChainComplex List := L ->(
     A := QQ(monoid[vars(0..#L-1)]);

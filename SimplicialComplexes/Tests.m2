@@ -331,7 +331,7 @@ TEST ///
 S=ZZ/32003[x,y,z]
 L1={x^3,x*y,x*z,y^2,y*z,z^2}
 R = ZZ/32003[a..f]
-D = buchbergerComplex(L1,R)
+D = buchbergerSimplicialComplex(L1,R)
 -- peek D.cache.labels
 boundaryMap(0,D,Labels=>L1)
 boundaryMap(1,D,Labels=>L1)
@@ -417,7 +417,7 @@ TEST ///
 S=ZZ/32003[x,y,z]
 L={y*z,x^2*z^2,x^2*y^2}
 R = ZZ/32003[a..c]
-D = buchbergerComplex(L,R)
+D = buchbergerSimplicialComplex(L,R)
 C = chainComplex(D,Labels=>L)
 assert(C.dd^2 == 0)
 betti C
