@@ -1366,7 +1366,7 @@ doc ///
 	    $3$ with six vertices, $9$ with seven vertices, $43$ with eight
 	    vertices, $655$ with nine vertices, and $42,426$ with ten
 	    vertices.  There is $1$ threefold with five vertices, $2$ with six
-	    vertices, $5$ with seven vertices, $39$ with eight vertcies, and
+	    vertices, $5$ with seven vertices, $39$ with eight vertices, and
 	    $1,297$ with nine vertices.
         Example
             R = ZZ[a..j];
@@ -2228,9 +2228,6 @@ doc ///
 ///
 
 
--- TODO: The code for this doesn't seem to be doing the right
--- thing, and it has some prints still in the code, suggesting
--- that the author was trying to debug it.
 doc ///
     Key
     	buchbergerSimplicialComplex
@@ -2258,7 +2255,7 @@ doc ///
 	    {\tt L} properly divides {\tt lcm F}. When we say a monomial {\tt m} 
 	    properly divides {\tt lcm F}, we mean {\tt m} divides {\tt lcm F} and 
 	    {\tt (lcm F)/m} has the same support as {\tt lcm F}.
-	    
+	Text
 	    The Buchberger complex is a generalization of the
 	    Buchberger graph, first introduced in Miller-Sturmfels 
 	    @HREF("https://link.springer.com/chapter/10.1007/3-540-46796-3_3",
@@ -2280,7 +2277,7 @@ doc ///
 	    all(1..dim B1+1, i -> prune HH_i(BRes) == 0)
 	    BRes == buchbergerResolution(I) 
 	Text
-	    If the monomial ideal is square free, then the buchbergercomlex is the simplex
+	    If the monomial ideal is square free, then the Buchberger complex is the simplex
 	    on {\tt #L} vertices.
 	Example
 	    L = {x_1*x_2, x_1*x_3*x_4, x_0*x_2*x_4};
