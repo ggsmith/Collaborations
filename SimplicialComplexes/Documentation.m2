@@ -2290,7 +2290,6 @@ doc ///
 	scarfChainComplex	
 ///
 
--- TODO: this doc node needs to be revised
 doc ///
     Key
     	buchbergerResolution
@@ -2308,22 +2307,23 @@ doc ///
     Outputs
         : ChainComplex
 	    the free resolution of the monomial ideal {\tt I} we get by homogenizing
-	    buchberger complex of {\tt I}
+	    buchberger complex of {\tt I}.
     Description
     	Text
-	    The Buchberger complex is a generalization of the
-	    Buchberger graph, first introduced in Miller-Sturmfels 
-	    @HREF("https://link.springer.com/chapter/10.1007/3-540-46796-3_3",
-	    "Monomial Ideals and Planar Graphs")@ as an important
-	    object of study for Groebner bases. Oltaneau and Welker
-	    introduce the complex in their paper @HREF("https://arxiv.org/pdf/1409.2041.pdf",
-	    "The Buchberger Resolution")@. The Buchberger complex forms 
-	    the support of a free resolution of a monomial ideal.
+	    The Buchberger resolution of a monomial ideal is obtained by homogenizing
+	    the Buchber complex. 
     	Example
 	    R = ZZ/101[x_0..x_4];
 	    L = {x_1^2, x_2^2, x_3^2, x_1*x_3, x_2*x_4};
-	    C = buchbergerSimplicialComplex(L,R)
-	    (buchbergerResolution(L)).dd
+	    BRes = (buchbergerResolution L);
+	    BRes.dd 
+	    BRes == chainComplex(buchbergerSimplicialComplex(L,R), Labels => L)
+	Text
+	    When the Buchberger resolution is a minimal free resolution, it agrees
+	    with the scarf complex.
+	Example
+	    Scarf = scarfChainComplex L
+            BRes == Scarf	    
     SeeAlso
         "making an abstract simplicial complex"      
 	buchbergerSimplicialComplex

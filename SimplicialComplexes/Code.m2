@@ -1204,6 +1204,13 @@ barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -
     simplicialComplex baryFacets
     )
 
+
+-- TODO: Unexported? I forgot if that's intended
+numFaces = method()
+numFaces SimplicialComplex := ZZ => D -> (
+    sum(-1 .. dim D, i -> numColumns faces(i,D))
+    )
+
 --TODO: I think that the roles of R and S should swap in this code, so that
 -- the syntax better matches the syntaxs for maps.
 --TODO: Are we using cached data to construct the barycentric subdivisions
@@ -1234,12 +1241,6 @@ image SimplicialMap := SimplicialComplex => f -> (
 
 isSurjective SimplicialMap := Boolean => f -> (
     facets image f == facets target f    
-    )
-
--- TODO: Unexported? I forgot if that's intended
-numFaces = method()
-numFaces SimplicialComplex := ZZ => D -> (
-    sum(-1 .. dim D, i -> numColumns faces(i,D))
     )
 
 homology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E) -> (
