@@ -2,20 +2,6 @@
 ------------------------------------------------------------------------------
 -- Simplicial Complexes CODE
 ------------------------------------------------------------------------------
--- Copyright 2006--2020 Sorin Popescu, Gregory G. Smith, and Mike Stillman
---
--- This program is free software: you can redistribute it and/or modify it
--- under the terms of the GNU General Public License as published by the Free
--- Software Foundation, either version 3 of the License, or (at your option)
--- any later version.
--- This program is distributed in the hope that it will be useful, but WITHOUT
--- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
--- FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
--- more details.
---
--- You should have received a copy of the GNU General Public License along
--- with this program.  If not, see <http://www.gnu.org/licenses/>.
-------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------
 -- Basic features of the simplicial complex datatype
@@ -336,7 +322,7 @@ dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
 link = method()
 link (SimplicialComplex, RingElement) := SimplicialComplex => (D, f) -> (
     if isUnit f then return D;
-    simplicialComplex ((monomialIdeal support f) + (monomialIdeal D : f))
+    simplicialComplex ((monomialIdeal support f) + (monomialIdeal D : monomialIdeal f))
     )
 
 -- 'skeleton' method defined in the `Polyhedra' package
@@ -368,7 +354,7 @@ lcmMonomials = (L) -> (
 
 lcmM = (L) -> (
 -- lcmM finds the lcm of a list of monomials; the quickest method Sorin knows
-    m := intersect toSequence (L/(i -> monomialIdeal(i)));
+    m := intersect toList (L/(i -> monomialIdeal(i)));
     m_0)
 
 
@@ -571,7 +557,8 @@ boundaryMap (ZZ,SimplicialComplex) := opts -> (r,D) -> (
 	)
     )
 
-chainComplex SimplicialComplex := {Labels => {}} >> opts -> (cacheValue(symbol chainComplex => opts)) (D -> (
+chainComplex SimplicialComplex := ChainComplex => {Labels => {}} >> opts -> (
+    cacheValue(symbol chainComplex => opts)) (D -> (
     	Vertices := vertices D;
     	if not opts.Labels == {} then(
     	    if not #opts.Labels == #Vertices 

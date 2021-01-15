@@ -36,7 +36,7 @@ newPackage(
 
 export {
     -- types
-    "Face",    
+--    "Face",    
     "SimplicialComplex",
     "SimplicialMap",
     -- methods
@@ -53,8 +53,8 @@ export {
     "face",  
     "grunbaumBallComplex",
     "inducedSubcomplex",
-    "isFaceOf",    
-    "isSubface", 
+--  "isFaceOf",    
+--  "isSubface", 
     "link",
     "lyubeznikSimplicialComplex", 
     "lyubeznikResolution",
