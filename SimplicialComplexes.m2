@@ -50,7 +50,7 @@ export {
     "buchbergerResolution",
     "dunceHatComplex",
     "elementaryCollapse",
-    "face",  
+--    "face",  
     "grunbaumBallComplex",
     "inducedSubcomplex",
 --  "isFaceOf",    
