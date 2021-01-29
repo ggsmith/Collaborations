@@ -3671,6 +3671,7 @@ doc ///
 doc ///
     Key
     	(homology, SimplicialComplex, SimplicialComplex)
+	(homology, ZZ, SimplicialComplex, SimplicialComplex)
     Headline
     	compute the relative homology of two simplicial complexes
     Usage
