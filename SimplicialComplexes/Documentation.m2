@@ -234,7 +234,7 @@ doc ///
 	(faces, SimplicialComplex)
 ///
 
-undocumented {(expression, SimplicialComplex)}
+undocumented {(expression, SimplicialComplex), (expression, SimplicialMap)}
 -*    Labels,
     AmbientRing
     } *-
@@ -3453,6 +3453,49 @@ doc ///
         (target, SimplicialMap)    		
 	(isWellDefined, SimplicialMap)
         (map, SimplicialComplex, SimplicialComplex, Matrix)
+///
+
+doc ///
+    Key
+        (net, SimplicialMap)
+    Headline
+        make a symbolic representation for a map of abstract simplicial complexes
+    Usage
+        net f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Net
+	    a symbolic representation used for printing
+    Description
+        Text
+	    The net of map $f \colon \Delta \to \Delta'$ between abstract
+	    simplicial complexes is a list of variables in the ring of
+	    $\Delta'$.  This list determines a ring map from the ring of
+	    $\Delta$ to the ring of $\Delta'$ by sending the $i$-th variable
+	    in the ring of $\Delta$ to the $i$-th monomial on the list.
+    	Text
+	    The identity map $\operatorname{id} \colon \Delta \to \Delta$
+	    corresponds to list of variables in the ring of $\Delta$.
+        Example
+            S = ZZ[x_0..x_5];
+	    Delta = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Delta 
+	    net id_Delta
+	    matrix id_Delta
+	Text
+    	    The next example does not come from the identity map.
+	Example
+	    S' = ZZ[y_0..y_3];
+	    Delta' = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Delta', Delta, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    assert isWellDefined f
+	    net f
+	    matrix f
+    SeeAlso
+        "working with simplicial maps"
+        (matrix, SimplicialMap)
+	(net, SimplicialComplex)	
 ///	         
 
 doc ///
@@ -3477,7 +3520,7 @@ doc ///
 	    assert (isWellDefined f and source f === D and
 		target f === D and matrix f === vars S)
     SeeAlso
-        "working with simplical maps" 
+        "working with simplicial maps" 
 	(map, SimplicialComplex, SimplicialComplex, Matrix)	   
 	id 
 ///    
