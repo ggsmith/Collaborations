@@ -3643,7 +3643,7 @@ doc ///
         D : SimplicialComplex
 	E : SimplicialComplex
     Outputs
-    	: GradedModule
+    	: ChainComplex
     Description
     	Text
 	    This method computes the relative homology of a simplicial complex {\tt D}
@@ -3655,7 +3655,7 @@ doc ///
 	    Hexagon = simplicialComplex {x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_0}
 	    Edge = simplicialComplex {x_0*x_1}
 	    prune homology Hexagon
-	    prune homology(Hexagon, Point) == prune homology Hexagon
+	    prune homology(Hexagon, Edge) == prune homology Hexagon
 	Text
 	    Gluing two antipodal points on a sphere introduces a non-trivial loop. 
 	Example
@@ -3665,14 +3665,15 @@ doc ///
 	    Poles = simplicialComplex {y_3, y_4}
 	    prune homology(Sphere,Poles)
 	Text
-	    This method assumes that {\tt E} is a subcomplex {\tt D}, but will still run
-	    even if the complexes are unrelated. Note also that the complexes need not be
-	    defined over the same ring.
+	    This method assumes that {\tt E} is a subcomplex {\tt D}, and may still run
+	    nonsensically. Note also that the complexes need not be defined over the same
+	    ring.
 	Example
-	    Fish = simplicialComplex {x_0*x_1, x_1*x_2, x_2*x_3, x_3*x_0, 
-		                      x_0*x_4, x_0*x_5, x_4*x_5}
-	    homology(Sphere,Fish)
-	    inclusion = map(Sphere, Fish, gens ring Sphere);
+	    R'' = ZZ[z_0..z_5]
+	    Fish = simplicialComplex {z_0*z_1, z_1*z_2, z_2*z_3, z_3*z_0, 
+		                      z_0*z_4, z_0*z_5, z_4*z_5}
+	    prune homology(Fish,Hexagon)
+	    inclusion = map(Hexagon, Fish, gens ring Hexagon);
 	    isWellDefined inclusion
     Caveat
         This method does not check if {\tt E} is contained in {\tt D}.
