@@ -3393,10 +3393,28 @@ doc ///
     	    that is the source of the map f
     Description
         Text
-	    Given a simplicial map $f : C \to D$, this method returns the 
-	    abstract simplicial complex $C$.
-       	Text
-	    todo need example
+	    Given a map $f \colon \Delta \to \Delta'$, this method returns the
+	    abstract simplicial complex $\Delta$.  The source is one of the
+	    defining attributes of a simplicial map
+	Text
+	    For the identity map, the source and target are equal.
+	Example
+            S = ZZ[x_0..x_5];
+	    Delta = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Delta 
+	    source id_Delta
+	    assert(source id_Delta === Delta)
+	    assert(source id_Delta === target id_Delta)
+	Text
+    	    The next map projects an octehedron onto a square.
+	Example
+	    S' = ZZ[y_0..y_3];
+	    Delta' = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Delta', Delta, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    assert isWellDefined f
+	    source f
+	    assert(source f === Delta)  
+	    peek f  
     SeeAlso
         "working with simplicial maps"
         (target, SimplicialMap)    
@@ -3420,10 +3438,28 @@ doc ///
     	    that is the target of the map f	
     Description	    
         Text
-	    Given a toric map $f : C \to D$, this method returns the
-	    abstract simplicial complex $C$.
-       	Text
-	    todo need example	    
+	    Given a map $f \colon \Delta \to \Delta'$, this method returns the
+	    abstract simplicial complex $\Delta'$.  The target is one of the
+	    defining attributes of a simplicial map
+	Text
+	    For the identity map, the source and target are equal.
+	Example
+            S = ZZ[x_0..x_5];
+	    Delta = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Delta 
+	    source id_Delta
+	    assert(target id_Delta === Delta)
+	    assert(target id_Delta === source id_Delta)
+	Text
+    	    The next map projects an octehedron onto a square.
+	Example
+	    S' = ZZ[y_0..y_3];
+	    Delta' = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Delta', Delta, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    assert isWellDefined f
+	    source f
+	    assert(target f === Delta')
+	    peek f
     SeeAlso
         "working with simplicial maps"    
         (source, SimplicialMap)    
