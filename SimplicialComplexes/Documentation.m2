@@ -234,11 +234,10 @@ doc ///
 	(faces, SimplicialComplex)
 ///
 
-undocumented {(expression, SimplicialComplex)}
--*    Labels,
+undocumented {(expression, SimplicialComplex),
+    Labels,
     AmbientRing
-    } *-
-
+    }
 
 doc ///
     Key
