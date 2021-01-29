@@ -3393,7 +3393,7 @@ doc ///
     	    that is the source of the map f
     Description
         Text
-	    Given a map $f \colon \Delta \to \Delta'$, this method returns the
+	    Given a map $f \colon \Delta \to \Gamma$, this method returns the
 	    abstract simplicial complex $\Delta$.  The source is one of the
 	    defining attributes of a simplicial map
 	Text
@@ -3438,27 +3438,27 @@ doc ///
     	    that is the target of the map f	
     Description	    
         Text
-	    Given a map $f \colon \Delta \to \Delta'$, this method returns the
-	    abstract simplicial complex $\Delta'$.  The target is one of the
+	    Given a map $f \colon \Delta \to \Gamma$, this method returns the
+	    abstract simplicial complex $\Gamma$.  The target is one of the
 	    defining attributes of a simplicial map
 	Text
 	    For the identity map, the source and target are equal.
 	Example
             S = ZZ[x_0..x_5];
-	    Delta = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
-    	    id_Delta 
-	    source id_Delta
-	    assert(target id_Delta === Delta)
-	    assert(target id_Delta === source id_Delta)
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Δ 
+	    source id_Δ
+	    assert(target id_Δ === Δ)
+	    assert(target id_Δ === source id_Δ)
 	Text
     	    The next map projects an octehedron onto a square.
 	Example
-	    S' = ZZ[y_0..y_3];
-	    Delta' = simplicialComplex monomialIdeal(y_1*y_2)
-	    f = map(Delta', Delta, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    R = ZZ[y_0..y_3];
+	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
 	    assert isWellDefined f
 	    source f
-	    assert(target f === Delta')
+	    assert(target f === Γ)
 	    peek f
     SeeAlso
         "working with simplicial maps"    
@@ -3481,9 +3481,38 @@ doc ///
 	    unused
     Outputs
     	g : Matrix
+            having one row
     Description	    
         Text
-	    todo
+    	    A simplicial map is a map $f \colon \Delta \to \Gamma$ such that
+    	    for any face $F \subset \Delta$, the image $f(F)$ is contained in
+    	    a face of $\Gamma$.  Since an abstract simplicial complex is, in
+    	    this package, represented by its Stanley-Reisner ideal in a
+    	    polynomial ring, the simplicial map $f$ corresponds to a ring map
+    	    from the ring of $\Delta$ to the ring of $\Gamma$.  The ring map
+    	    is described by a matrix having one row; the entry in the $i$-th
+    	    column is the image in the ring of $\Gamma$ of the $i$-th variable
+    	    in the ring $\Delta$.  This method returns this matrix.
+	Text
+	    For the identity map, the matrix of variables in the ambient
+	    polynomial ring.
+	Example
+            S = ZZ[x_0..x_5];
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Δ 
+	    matrix id_Δ
+	    assert(matrix id_Δ === vars S)
+	Text
+    	    The next map projects an octehedron onto a square.
+	Example
+	    R = ZZ[y_0..y_3];
+	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
+    	    matrix f
+	Text
+	    This matrix is simply extracted from the underlying map of rings.
+	Example
+	    code(matrix, SimplicialMap)
     SeeAlso
         "working with simplicial maps"    
         (source, SimplicialMap)    
@@ -3506,26 +3535,26 @@ doc ///
 	    a symbolic representation used for printing
     Description
         Text
-	    The net of map $f \colon \Delta \to \Delta'$ between abstract
+	    The net of map $f \colon \Delta \to \Gamma$ between abstract
 	    simplicial complexes is a list of variables in the ring of
-	    $\Delta'$.  This list determines a ring map from the ring of
-	    $\Delta$ to the ring of $\Delta'$ by sending the $i$-th variable
+	    $\Gamma$.  This list determines a ring map from the ring of
+	    $\Delta$ to the ring of $\Gamma$ by sending the $i$-th variable
 	    in the ring of $\Delta$ to the $i$-th monomial on the list.
     	Text
 	    The identity map $\operatorname{id} \colon \Delta \to \Delta$
 	    corresponds to list of variables in the ring of $\Delta$.
         Example
             S = ZZ[x_0..x_5];
-	    Delta = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
-    	    id_Delta 
-	    net id_Delta
-	    matrix id_Delta
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Δ
+	    net id_Δ
+	    matrix id_Δ
 	Text
     	    The next example does not come from the identity map.
 	Example
 	    S' = ZZ[y_0..y_3];
-	    Delta' = simplicialComplex monomialIdeal(y_1*y_2)
-	    f = map(Delta', Delta, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
 	    assert isWellDefined f
 	    net f
 	    matrix f
@@ -3550,12 +3579,22 @@ doc ///
         Text	    
     	    The identity map on the underlying vertex set of an abstract
     	    simplicial complex induces the identity map on the entire complex.
+	Text
+	    The first example is the identity map on a $4$-simplex.
 	Example
 	    S = ZZ[a..e];
-	    D = simplexComplex(4,S)
+	    D = simplexComplex(4, S)
 	    f = id_D
 	    assert (isWellDefined f and source f === D and
 		target f === D and matrix f === vars S)
+	Text
+	    The second example is the identity map on the octahedron.
+	Example
+            R = ZZ[x_0..x_5];
+	    Γ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    g = id_Γ
+	    assert (isWellDefined g and source g === Γ and
+		target g === Γ and matrix g === vars R)
     SeeAlso
         "working with simplicial maps" 
 	(map, SimplicialComplex, SimplicialComplex, Matrix)	   
