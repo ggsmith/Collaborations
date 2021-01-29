@@ -594,7 +594,7 @@ assert all(1, i -> Ch_(i-1)*CCircle.dd_i == CTorus.dd_i*Ch_i)
 
 
 ------------------------------------------------------------------------------
--- Testing reduced homology of simplicial complexes.
+-- Testing relative homology of simplicial complexes.
 TEST ///
 S = ZZ[y_0..y_5]
 Circle = simplicialComplex(for i to 5 list y_i*y_((i+1)%6))
