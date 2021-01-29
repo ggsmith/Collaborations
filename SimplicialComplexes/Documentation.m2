@@ -3218,6 +3218,7 @@ doc ///
         (homology,ZZ,SimplicialComplex,Ring)
         boundaryMap
         (chainComplex,SimplicialComplex)
+        (homology,SimplicialComplex,SimplicialComplex)
 ///
 
 doc ///
@@ -3246,6 +3247,7 @@ doc ///
         (homology, ZZ, SimplicialComplex)
         boundaryMap
         (chainComplex, SimplicialComplex)
+    	(homology,SimplicialComplex,SimplicialComplex)
 ///
 
 doc ///
@@ -3275,6 +3277,7 @@ doc ///
     (homology,SimplicialComplex)
     (homology,ZZ,SimplicialComplex)
     (homology,ZZ,SimplicialComplex,Ring)
+    (homology,SimplicialComplex,SimplicialComplex)
 ///
 
 doc ///
@@ -3301,6 +3304,7 @@ doc ///
     (homology,SimplicialComplex,Ring)
     (homology,ZZ,SimplicialComplex)
     (homology,ZZ,SimplicialComplex,Ring)
+    (homology,SimplicialComplex,SimplicialComplex)
 ///
 
 ------------------------------------------------------------------------------
@@ -3663,3 +3667,56 @@ doc ///
 	(isInjective,SimplicialMap)
 	(isSurjective,SimplicialMap)
 ///
+
+doc ///
+    Key
+    	(homology, SimplicialComplex, SimplicialComplex)
+    Headline
+    	compute the relative homology of two simplicial complexes
+    Usage
+    	homology(D,E)
+    Inputs
+        D : SimplicialComplex
+	E : SimplicialComplex
+    Outputs
+    	: GradedModule
+    Description
+    	Text
+	    This method computes the relative homology of a simplicial complex {\tt D}
+	    contracted along a subcomplex {\tt E}.
+	Text
+	    Contracting an edge of a hexagon will not change the homology.
+	Example
+	    R = ZZ[x_0..x_5]
+	    Hexagon = simplicialComplex {x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_0}
+	    Edge = simplicialComplex {x_0*x_1}
+	    prune homology Hexagon
+	    prune homology(Hexagon, Point) == prune homology Hexagon
+	Text
+	    Gluing two antipodal points on a sphere introduces a non-trivial loop. 
+	Example
+	    R' = ZZ[y_0..y_4]
+	    Sphere = simplicialComplex {y_0*y_1*y_3, y_0*y_2*y_3, y_1*y_2*y_3, 
+		                        y_0*y_1*y_4, y_0*y_2*y_4, y_1*y_2*y_4}
+	    Poles = simplicialComplex {y_3, y_4}
+	    prune homology(Sphere,Poles)
+	Text
+	    This method assumes that {\tt E} is a subcomplex {\tt D}, but will still run
+	    even if the complexes are unrelated. Note also that the complexes need not be
+	    defined over the same ring.
+	Example
+	    Fish = simplicialComplex {x_0*x_1, x_1*x_2, x_2*x_3, x_3*x_0, 
+		                      x_0*x_4, x_0*x_5, x_4*x_5}
+	    homology(Sphere,Fish)
+	    inclusion = map(Sphere, Fish, gens ring Sphere);
+	    isWellDefined inclusion
+    Caveat
+        This method does not check if {\tt E} is contained in {\tt D}.
+    SeeAlso
+        (homology,SimplicialComplex)
+	(homology,SimplicialComplex,Ring)
+    	(homology,ZZ,SimplicialComplex)
+    	(homology,ZZ,SimplicialComplex,Ring)
+///
+    
+				  
