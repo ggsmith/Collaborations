@@ -3400,20 +3400,20 @@ doc ///
 	    For the identity map, the source and target are equal.
 	Example
             S = ZZ[x_0..x_5];
-	    Delta = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
-    	    id_Delta 
-	    source id_Delta
-	    assert(source id_Delta === Delta)
-	    assert(source id_Delta === target id_Delta)
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Δ
+	    source id_Δ
+	    assert(source id_Δ === Δ)
+	    assert(source id_Δ === target id_Δ)
 	Text
     	    The next map projects an octehedron onto a square.
 	Example
-	    S' = ZZ[y_0..y_3];
-	    Delta' = simplicialComplex monomialIdeal(y_1*y_2)
-	    f = map(Delta', Delta, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    R = ZZ[y_0..y_3];
+	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
 	    assert isWellDefined f
 	    source f
-	    assert(source f === Delta)  
+	    assert(source f === Δ)  
 	    peek f  
     SeeAlso
         "working with simplicial maps"
@@ -3668,7 +3668,7 @@ doc ///
 	(isSurjective,SimplicialMap)
 ///
 
-doc ///
+///
     Key
     	(homology, SimplicialComplex, SimplicialComplex)
     Headline
@@ -3679,7 +3679,7 @@ doc ///
         D : SimplicialComplex
 	E : SimplicialComplex
     Outputs
-    	: GradedModule
+    	: ChainComplex
     Description
     	Text
 	    This method computes the relative homology of a simplicial complex {\tt D}
@@ -3691,7 +3691,7 @@ doc ///
 	    Hexagon = simplicialComplex {x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_0}
 	    Edge = simplicialComplex {x_0*x_1}
 	    prune homology Hexagon
-	    prune homology(Hexagon, Point) == prune homology Hexagon
+	    prune homology(Hexagon, Edge) == prune homology Hexagon
 	Text
 	    Gluing two antipodal points on a sphere introduces a non-trivial loop. 
 	Example
@@ -3707,7 +3707,7 @@ doc ///
 	Example
 	    Fish = simplicialComplex {x_0*x_1, x_1*x_2, x_2*x_3, x_3*x_0, 
 		                      x_0*x_4, x_0*x_5, x_4*x_5}
-	    homology(Sphere,Fish)
+	    try homology(Sphere,Fish)
 	    inclusion = map(Sphere, Fish, gens ring Sphere);
 	    isWellDefined inclusion
     Caveat
