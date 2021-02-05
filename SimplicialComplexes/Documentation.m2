@@ -120,6 +120,7 @@ doc ///
     	    @SUBSECTION "Basic operations producing abstract simplicial complexes"@
 	Text
     	    @UL {
+		TO (inducedComplex, SimplicialComplex, List),
 		TO (dual, SimplicialComplex),
 		TO (boundaryMap,ZZ, SimplicialComplex),
 		TO (link, SimplicialComplex, RingElement),
@@ -131,7 +132,6 @@ doc ///
         "finding attributes and properties"
 	"working with simplicial maps"	
 ///
-
        
 doc ///
     Key 
@@ -161,7 +161,6 @@ doc ///
 	"finding attributes and properties"	
 	"working with simplicial maps"	
 ///
-
 
 doc ///
     Key
@@ -234,7 +233,7 @@ doc ///
 	(faces, SimplicialComplex)
 ///
 
-undocumented {(expression, SimplicialComplex), (expression, SimplicialMap)}
+undocumented {(expression, SimplicialComplex)}
 
 doc ///
     Key
@@ -270,7 +269,6 @@ doc ///
         "finding attributes and properties"
         (facets, SimplicialComplex)
 ///
-
 
 doc /// 
     Key
@@ -341,7 +339,6 @@ doc ///
 	(facets, SimplicialComplex)
 	(ring, SimplicialComplex)
 ///
-
 
 doc /// 
     Key
@@ -415,7 +412,6 @@ doc ///
 	(ring, SimplicialComplex)
 ///
 
-
 doc ///
     Key
         (ring, SimplicialComplex)
@@ -485,7 +481,6 @@ doc ///
 	(monomialIdeal, SimplicialComplex)
         (coefficientRing, SimplicialComplex)	
 ///
-
 
 doc ///
     Key
@@ -559,7 +554,6 @@ doc ///
         (chainComplex, SimplicialComplex)
 ///
 
- 
 doc ///
     Key
         (dim, SimplicialComplex)
@@ -724,7 +718,6 @@ doc ///
         (simplicialComplex, MonomialIdeal)
 	(facets, SimplicialComplex)
 ///
-
 
 doc ///
     Key 
@@ -1283,7 +1276,6 @@ doc ///
     	(isPure, SimplicialComplex)	         	
 ///
 
-
 doc ///
     Key
         (bjornerComplex, PolynomialRing)
@@ -1383,120 +1375,41 @@ doc ///
 	(dim, SimplicialComplex)
 ///
 
-
-
-
-
-
-
-
-
-
-
-doc ///
-    Key
-        (chainComplex, SimplicialComplex)
-	[(chainComplex, SimplicialComplex), Labels]
-    Headline
-        create the chain complex associated to a simplicial complex.
-    Usage
-    	chainComplex D
-    Inputs
-    	D : SimplicialComplex
-	Labels => List	  
-	    L of monomials in a polynomial ring, one for each vertex of D.
-    Outputs
-    	C : ChainComplex	 
-    Description
-    	Text
-	    When no labels are given, this function returns C, the reduced simplicial
-	    chain complex associated to D with coefficents in k, where k is the 
-	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). When 
-	    labels are given, this function returns the homogenization of C we get by 
-	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
-	    information about homogenization of chain complexes by monomial ideals can be
-	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
-	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
-	    C = chainComplex D
-	    prune homology C
-	Text
-	    We can view the attaching maps for C. Notice that the sign changes when we use 
-	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
-	    alway be the case for unlabelled simplicial comlexes, while the sign will 
-	    agree when we use a labelling.
-	Example
-	    C.dd
-    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
-        Text
-	    Using the Lables option, we can homogenize a simplicial chain complex to 
-	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
-	    S = QQ[x_0..x_3];
-	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
-	    prune homology F
-    	Text
-	    Observe that C begins in homolgical degree -1, while F Begins in homological degree 0.
-	    Similar to the first example, we can also also view the differential for F.
-	Example
-	   F.dd
-	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
-	Text
-    	    The order of the monomial labels will have an effect on what the output is.
-	    For example, after swapping the first two labels in the example above, we 
-	    will no longer get a resolution.	
-	Example
-	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
-	    G.dd
-    	    prune HH G
-    SeeAlso
-    	"making an abstract simplicial complex"
-	(coefficientRing,SimplicialComplex)
-	(ChainComplexMap)
-	(boundaryMap,ZZ,SimplicialComplex)
-	(resolution, Ideal)
-	(homology,ChainComplex)
-///
-
 ------------------------------------------------------------------------------
 -- more advanced constructors
 ------------------------------------------------------------------------------
 doc///
     Key
-        inducedSubcomplex
-        (inducedSubcomplex,SimplicialComplex,List)
+        (inducedComplex, SimplicialComplex, List)
+        inducedComplex	
     Headline
-        create the simplicial complex induced on a subset of the vertex set
+        create the induced simplicial complex on a subset of the vertex set
     Usage
-        inducedSubcomplex(D,V)
+        inducedComplex(Delta, V)
     Inputs
-        D : SimplicialComplex
+        Delta : SimplicialComplex
         V : List
-	    of elements in {\tt vertices D}
+	    of variables in the ring of $\Delta$ representing vertices
     Outputs
         : SimplicialComplex
-	  the subcomplex of {\tt D} induced on the vertices in {\tt V}
+	  the induced subcomplex of $\Delta$ on the given vertices
     Description
         Text
-            Given a simplicial complex {\tt D} and a subset {\tt V} of
-	    {\tt vertices D}, the subcomplex of {\tt D} induced on 
-	    {\tt V} is the simplicial complexes whose faces are given
-	    by the faces {\tt F} in {\tt D} whose verticies are 
-	    contained in {\tt V}.
+            Given a simplicial complex $\Delta$ and a subset $V$ of its
+	    vertices, the induced subcomplex is the abstract simplicial
+	    complexes consisting of all faces in $\Delta$ whose vertices are
+	    contained in $V$.
 	Example
-	    R = ZZ[x_0..x_3];
-	    D = simplicialComplex{x_0*x_1*x_2, x_2*x_3, x_1*x_3}
-	    E = inducedSubcomplex(D,{x_1,x_2,x_3})
-	    vertices E
-	    DFaces = flatten for i to dim D list first entries faces(i,D)
-	    EFaces = flatten for i to dim D list first entries faces(i,E)
-	    all(EFaces, F -> member(F,DFaces))
+	    S = ZZ[x_0..x_3];
+	    Δ = simplicialComplex{x_0*x_1*x_2, x_2*x_3, x_1*x_3}
+	    Γ = inducedComplex(Δ, {x_1, x_2, x_3})
+	    vertices Γ
+	    assert (isWellDefined Γ and set vertices Γ === set {x_1, x_2, x_3})
+	    assert all (first entries facets Γ, 
+		F -> member(F, first entries faces(#support F - 1, Δ))) 
     SeeAlso 
-        "making an abstract simplicial complex"        
+        "making an abstract simplicial complex" 
+	(vertices, SimplicialComplex)       
 ///
 
 doc ///
@@ -1817,6 +1730,80 @@ doc ///
         (barycentricSubdivision, SimplicialComplex, Ring)
         SimplicialComplex
 ///
+
+
+
+
+doc ///
+    Key
+        (chainComplex, SimplicialComplex)
+	[(chainComplex, SimplicialComplex), Labels]
+    Headline
+        create the chain complex associated to a simplicial complex.
+    Usage
+    	chainComplex D
+    Inputs
+    	D : SimplicialComplex
+	Labels => List	  
+	    L of monomials in a polynomial ring, one for each vertex of D.
+    Outputs
+    	C : ChainComplex	 
+    Description
+    	Text
+	    When no labels are given, this function returns C, the reduced simplicial
+	    chain complex associated to D with coefficents in k, where k is the 
+	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). When 
+	    labels are given, this function returns the homogenization of C we get by 
+	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
+	    information about homogenization of chain complexes by monomial ideals can be
+	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
+	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
+	Example
+	    A = QQ[x_0..x_3];
+	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
+	    C = chainComplex D
+	    prune homology C
+	Text
+	    We can view the attaching maps for C. Notice that the sign changes when we use 
+	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
+	    alway be the case for unlabelled simplicial comlexes, while the sign will 
+	    agree when we use a labelling.
+	Example
+	    C.dd
+    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
+        Text
+	    Using the Lables option, we can homogenize a simplicial chain complex to 
+	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
+	Example
+	    A = QQ[x_0..x_3];
+	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
+	    S = QQ[x_0..x_3];
+	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
+	    prune homology F
+    	Text
+	    Observe that C begins in homolgical degree -1, while F Begins in homological degree 0.
+	    Similar to the first example, we can also also view the differential for F.
+	Example
+	   F.dd
+	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
+	Text
+    	    The order of the monomial labels will have an effect on what the output is.
+	    For example, after swapping the first two labels in the example above, we 
+	    will no longer get a resolution.	
+	Example
+	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
+	    G.dd
+    	    prune HH G
+    SeeAlso
+    	"making an abstract simplicial complex"
+	(coefficientRing,SimplicialComplex)
+	(ChainComplexMap)
+	(boundaryMap,ZZ,SimplicialComplex)
+	(resolution, Ideal)
+	(homology,ChainComplex)
+///
+
+
 
 ------------------------------------------------------------------------------
 -- basic properties and invariants
@@ -2700,7 +2687,6 @@ doc ///
        vertices D
   SeeAlso
       "finding attributes and properties"  
-      face
       (facets,SimplicialComplex)
       (faces, SimplicialComplex)
 ///
@@ -3381,6 +3367,8 @@ doc ///
 	(isWellDefined, SimplicialMap)
 ///
 
+
+undocumented {(expression, SimplicialMap)}
 
 doc ///
     Key

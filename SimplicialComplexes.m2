@@ -52,7 +52,7 @@ export {
     "elementaryCollapse",
 --    "face",  
     "grunbaumBallComplex",
-    "inducedSubcomplex",
+    "inducedComplex",
 --  "isFaceOf",    
 --  "isSubface", 
     "link",
