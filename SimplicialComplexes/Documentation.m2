@@ -3374,6 +3374,7 @@ doc ///
 	(map, SimplicialComplex, Matrix)
 	(map, SimplicialComplex, List)
 	(map, SimplicialComplex, RingMap)
+	
     Headline
         create a simplicial map between simplicial complexes
     Usage
@@ -3385,7 +3386,13 @@ doc ///
 	Gamma : SimplicialComplex
 	    the @TO2((target,SimplicialMap), "target")@ of the simplicial map.
 	M : Matrix
-	    @TO2(List,"list")@, or @TO(RingMap,"ringMap")@.
+	    @TO2(List,"list")@, or @TO2(RingMap,"ring map")@.
+	: Degree
+	    ignored
+	: DegreeLift
+            ignored
+	: DegreeMap
+	    ignored
     Outputs
     	f : SimplicialMap
     Description
@@ -3394,13 +3401,68 @@ doc ///
 	    vertices of $\Delta$ to vertices of $\Gamma$, with the added condition that
 	    if $\{ v_1, v_2,..,v_k \} \in \Delta$, then $\{ f(v_1), f(v_2), ..., 
 	    f(v_n) \} \in \Gamma$. If no target is specified, it is assumed that the
-	    target is the simplicial complex consisting of $f(F)$ for all faces $F 
-	    \in \Delta$.
+	    target is the simplicial complex whose faces are $f(F)$ for all faces $F 
+	    \in \Delta$. As a first example, let's look at the identity map on a
+	    3-simplex.
+	Example
+	    S = QQ[a,b,c,d];
+            Δ = simplexComplex(3,S);
+	    f = map(Δ,Δ, id_S)
+	    matrix f
+	    map f
+	Text
+	    Here is a slightly more interesting example.
+	Example
+	    R = QQ[s,t,u,v,w];
+	    Γ = simplicialComplex{s*t*u,u*v*w};
+	    g = map(Δ,Γ, {a,b,c,d,d})
+	    source g
+	    target g
+	    image g
     SeeAlso
         "working with simplicial maps"
 	(source, SimplicialMap)
-        (target, SimplicialMap)    
-        (matrix, SimplicialMap)    		
+        (target, SimplicialMap)
+	(image, SimplicialMap)    
+        (matrix, SimplicialMap)
+	(map, SimplicialMap)    		
+	(isWellDefined, SimplicialMap)
+///
+
+doc ///
+    Key
+        (map, SimplicialMap)
+    Headline
+        the underlying ring map associated to a simplicial map
+    Usage
+    	phi = map f
+    Inputs
+    	f : SimplicialMap
+	: Degree
+	    ignored
+	: DegreeLift
+	    ignored
+	: DegreeMap
+	    ignored
+    Outputs
+        phi : RingMap
+	    a map from {\tt ring source f} to {\tt ring target f}.
+    Description
+        Text
+            Every simplicial map sends the vertices of {\tt source f} to 
+	    the vertices {\tt target f}. Consequently, this determines a
+	    ring map between {\tt ring source f} and {\tt ring target f}.
+        Example
+            S = ZZ/101[a,b,c,d];
+	    Δ = simplexComplex(3,S)
+	    f = map(Δ,Δ,matrix{{a,b,c,d}})
+	    map f	
+    SeeAlso
+        "working with simplicial maps"
+	(map, SimplicialComplex,SimplicialComplex, RingMap)
+	(source, SimplicialMap)
+        (target, SimplicialMap)
+        (matrix, SimplicialMap)
 	(isWellDefined, SimplicialMap)
 ///
 
