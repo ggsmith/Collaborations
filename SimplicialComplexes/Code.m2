@@ -305,14 +305,15 @@ smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
 ------------------------------------------------------------------------------
 -- more advanced constructors 
 ------------------------------------------------------------------------------
-inducedSubcomplex = method()
-inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D,V) -> (
-    if not all(V, v -> member(v,vertices D)) then error "expected verticies of the simplicial complex";
-    R := ring D;
-    phi := map(R,R, for x in gens R list( if member(x,V) then x else 1_R));
-    --while map(D,phi) is not a well defined SimplicialMap, the following operations
-    --produces the complexes we want
-    image map(D,phi)
+inducedComplex = method()
+inducedComplex (SimplicialComplex,List) := SimplicialComplex => (D, V) -> (
+    if any(V, v -> not member(v, vertices D)) then 
+	error "expected verticies of the simplicial complex";
+    S := ring D;
+    phi := map(S, S, for x in gens S list if member(x, V) then x else 1_S);
+    -- although map(D, phi) is not a well-defined simplicial map, its image is
+    -- nevertheless the induced complex
+    image map(D, phi)
     )
 
 dual SimplicialComplex := SimplicialComplex => {} >> opts -> D -> (
