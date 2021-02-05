@@ -3351,7 +3351,6 @@ doc ///
         SimplicialComplex
 ///
 
-
 doc ///
     Key
         SimplicialMap
@@ -3376,6 +3375,43 @@ doc ///
 	(isWellDefined, SimplicialMap)
 ///
 
+doc ///
+    Key
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+	(map, SimplicialComplex, SimplicialComplex, List)
+        (map, SimplicialComplex, SimplicialComplex, RingMap)
+	(map, SimplicialComplex, Matrix)
+	(map, SimplicialComplex, List)
+	(map, SimplicialComplex, RingMap)
+    Headline
+        create a simplicial map between simplicial complexes
+    Usage
+    	f = map(E,D,M)
+	f = map(D,M)
+    Inputs
+    	Delta : SimplicialComplex
+	    the @TO2((source,SimplicialMap), "source")@ of the simplicial complex
+	Gamma : SimplicialComplex
+	    the @TO2((target,SimplicialMap), "target")@ of the simplicial map.
+	M : Matrix
+	    @TO2(List,"list")@, or @TO(RingMap,"ringMap")@.
+    Outputs
+    	f : SimplicialMap
+    Description
+        Text
+	    A simplicial map $f: \Delta \to \Gamma$ is a function that sends the
+	    vertices of $\Delta$ to vertices of $\Gamma$, with the added condition that
+	    if $\{ v_1, v_2,..,v_k \} \in \Delta$, then $\{ f(v_1), f(v_2), ..., 
+	    f(v_n) \} \in \Gamma$. If no target is specified, it is assumed that the
+	    target is the simplicial complex consisting of $f(F)$ for all faces $F 
+	    \in \Delta$.
+    SeeAlso
+        "working with simplicial maps"
+	(source, SimplicialMap)
+        (target, SimplicialMap)    
+        (matrix, SimplicialMap)    		
+	(isWellDefined, SimplicialMap)
+///
 
 doc ///
     Key

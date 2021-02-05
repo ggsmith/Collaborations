@@ -1071,6 +1071,25 @@ map(SimplicialComplex, SimplicialComplex, List) := SimplicialMap => opts -> (E, 
     map(E, D, matrix {A})
     )
 
+map(SimplicialComplex, SimplicialComplex, RingMap) := SimplicialMap => opts -> (E,D,phi) -> (
+    map(E, D, matrix phi)
+    )
+
+map(SimplicialComplex, Matrix) := SimplicialMap => opts -> (D,A) -> (
+    Facets := first entries facets D;
+    phi := map(ring D, A);
+    Image := simplicialComplex(for F in Facets list phi(F));
+    map(Image,D,A)
+    )
+
+map(SimplicialComplex, List) := SimplicialMap => opts -> (D,A) -> (
+    map(D, matrix A)
+    )
+
+map(SimplicialComplex, RingMap) := SimplicialMap => opts -> (D,phi) -> (
+    map(D,matrix phi)
+    )
+
 SimplicialComplex#id = D -> map(D, D, vars ring D)
 
 isWellDefined SimplicialMap := Boolean => f -> (
@@ -1240,17 +1259,6 @@ homology(SimplicialComplex,SimplicialComplex) := ChainComplex => opts -> (D,E) -
     inclusion := map(D,E, gens ring D);
     C := coker chainComplex inclusion;
     homology C
-    )
-
-map(SimplicialComplex, Matrix) := SimplicialComplex => opts -> (D,A) -> (
-    Facets := first entries facets D;
-    phi := map(ring D, A);
-    Image := simplicialComplex(for F in Facets list phi(F));
-    map(Image,D,A)
-    )
-
-map(SimplicialComplex, RingMap) := SimplicialComplex => opts -> (D,phi) -> (
-    map(D,matrix phi)
     )
 
 elementaryCollapse = method();
