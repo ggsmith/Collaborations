@@ -1705,6 +1705,71 @@ doc ///
 ///
 
 doc ///
+    Key 
+        (symbol *, SimplicialComplex, SimplicialComplex)
+        "join two abstract simplicial complexes"
+    Headline
+        make the join for two abstract simplicial complexes
+    Usage
+        Delta * Gamma
+    Inputs
+        Delta : SimplicialComplex  
+        Gamma : SimplicialComplex
+    Outputs
+        : SimplicialComplex
+            that is the join of $\Delta$ and $\Gamma$
+    Description
+        Text
+            The join of two simplicial complexes $\Delta$ and $\Gamma$ is a
+            new simplicial complex whose faces are disjoint unions of a face
+            in $\Delta$ and a face in $\Gamma$.
+        Text
+            If $\Gamma$ is the simplicial complex consisting of a single vertex,
+            then the join $\Delta \mathrel{*} \Gamma$ is the
+            @HREF("https://en.wikipedia.org/wiki/Cone_(topology)", "cone")@
+            over $\Delta$.  For example, the cone over a bow-tie complex.
+     	Example
+            S = QQ[a..e];
+            Δ = simplicialComplex {a*b*c, c*d*e}
+            R = QQ[f];
+            Γ = simplicialComplex {f};
+	    Δ' = Δ * Γ
+	    assert (dim Δ' === dim Δ + 1)
+	Text
+	    If $\Gamma$ is a $1$-sphere (consisting of two isolated vertices),
+            then the join $\Delta \mathrel{*} \Gamma$ is the
+            @HREF("https://en.wikipedia.org/wiki/Suspension_(topology)",
+            "suspension")@ of $\Delta$.  For example, the octahedron is the
+            suspension of a square.
+        Example
+	    S = QQ[a..d];
+            Δ = simplicialComplex {a*b, b*c, c*d, a*d}
+            R = QQ[e,f];
+            Γ = simplicialComplex {e, f}
+	    Δ' = Δ * Γ
+	    assert (dim Δ' === dim Δ + 1)
+	    assert (apply(2+dim Δ', i -> numColumns faces(i-1,Δ')) == {1,6,12,8})
+        Text
+            The join of a hexagon and a pentagon is a 3-sphere.
+        Example
+            S = ZZ[a..f];
+            Δ = simplicialComplex {a*b, b*c, c*d, d*e, e*f, a*f}
+            R = ZZ[g..k];
+            Γ = simplicialComplex {g*h, h*i, i*j, j*k, g*k}
+	    Δ' = Δ * Γ	    
+	    prune HH Δ'
+	    assert (dim Δ' === 3)
+    Caveat
+        If the variables in the ring of $\Delta$ and the ring of $\Gamma$ are
+        not disjoint, then names of vertices in the join may not be
+        understandable; the same name will apparently be used for two distinct
+        variables.
+    SeeAlso
+	"making an abstract simplicial complex"      
+        (faces, SimplicialComplex)
+///	
+
+///
     Key
         (chainComplex, SimplicialComplex)
 	[(chainComplex, SimplicialComplex), Labels]
@@ -2052,70 +2117,6 @@ doc ///
 
 
 
-
-doc ///
-    Key 
-        (symbol *, SimplicialComplex, SimplicialComplex)
-        "join of two abstract simplicial complexes"
-    Headline
-        make the join 
-    Usage
-        J = D * E
-    Inputs
-        D : SimplicialComplex  
-        E : SimplicialComplex
-    Outputs
-        J : SimplicialComplex
-            that is the join of {\tt D} and {\tt E}
-    Description
-        Text
-            The join of two simplicial complexes $D$ and $E$ is a new
-            simplicial complex whose faces are disjoint unions of a face in
-            $D$ and a face in $E$.
-        Text
-            If $E$ is the simplicial complex consisting of a single vertex,
-            then the join $D*E$ is the
-            @HREF("https://en.wikipedia.org/wiki/Cone_(topology)", "cone")@
-            over $D$.  For example, the cone over a bow-tie complex.
-     	Example
-            R = QQ[a..e];
-            bowtie = simplicialComplex {a*b*c, c*d*e}
-            S = QQ[f];
-            singleton = simplicialComplex {f};
-	    C = bowtie * singleton
-	    assert (dim C === dim bowtie + 1)
-	Text
-	    If $E$ is a 1-sphere (consisting of two isolated vertices), then
-            the join $D * E$ is the
-            @HREF("https://en.wikipedia.org/wiki/Suspension_(topology)",
-            "suspension")@ of $D$.  For example, the octahedron is the
-            suspension of a square.
-        Example
-	    R = QQ[a..d];
-            square = simplicialComplex {a*b, b*c, c*d, a*d}
-            S = QQ[e,f];
-            oneSphere = simplicialComplex {e, f}
-	    octahedron = square * oneSphere
-	    faces octahedron
-	    assert (dim octahedron === dim square + 1)
-        Text
-            The join of a hexagon and a pentagon is a 3-sphere.
-        Example
-            R = ZZ[a..f];
-            hexagon = simplicialComplex {a*b, b*c, c*d, d*e, e*f, a*f}
-            S = ZZ[g..k];
-            pentagon = simplicialComplex {g*h, h*i, i*j, j*k, g*k}
-            threeSphere = hexagon * pentagon
-	    prune HH threeSphere
-	    assert (dim threeSphere === 3)
-    Caveat
-        If the variables in the ring of $D$ and the ring of $E$ are not
-        disjoint, then names of vertices in the join may not be
-        understandable.
-    SeeAlso
-	"making an abstract simplicial complex"      
-        (faces, SimplicialComplex)
-///
 
 
 ///
@@ -3360,7 +3361,7 @@ doc ///
 	    that $f(F)$ is contained in a face of $D$.
         Text
 	    To specify a map of simplicial complexes, the target and source
-	    complexes need to be specificied as well as a matrix which
+	    complexes need to be specified as well as a matrix which
 	    determines a map between the complexes' corresponding rings.
 	Text
 	    The primary constructor of a toric map is
@@ -3855,11 +3856,13 @@ doc ///
     	(homology,ZZ,SimplicialComplex,Ring)
 ///
     
-///
+doc ///
     Key
     	(chainComplex, SimplicialMap)
     Headline
     	constructs the associated map between chain complexes
+    Usage
+    	chainComplex f
     Inputs
         f : SimplicialMap
     Outputs
@@ -3874,7 +3877,6 @@ doc ///
 	    Γ = simplicialComplex monomialIdeal(x_1*x_2)
 	    f = map(Γ, Δ, {x_0,x_0,x_1,x_2,x_3,x_3})
 	    F = chainComplex f
-	    isWellDefined F
 	Text
 	    The inclusion of a face induces an inclusion of chain complexes.
 	Example
@@ -3886,6 +3888,6 @@ doc ///
 	    F = chainComplex f
     	    kernel F == 0
     SeeAlso
-    	(chainComplex, simplicialComplex)
+    	(chainComplex, SimplicialComplex)
 	ChainComplexMap
 ///				  
