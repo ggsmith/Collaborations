@@ -575,19 +575,6 @@ chainComplex SimplicialComplex := ChainComplex => {Labels => {}} >> opts -> (
     	)
     )
 
--*
-
-R = QQ[x_0..x_4]
-
-D = simplicialComplex {R_0*R_1,R_1*R_2}
-
-chainComplex(D)
-
-
-
-
-*-
-
 homology(ZZ,SimplicialComplex,Ring) := Module => opts -> (i,Delta,R) -> (
      homology(i, chainComplex Delta ** R))
 homology(ZZ,SimplicialComplex) := Module => opts -> (i,Delta) -> (

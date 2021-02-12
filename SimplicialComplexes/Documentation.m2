@@ -1834,13 +1834,12 @@ doc ///
     Caveat
         If the variables in the ring of $\Delta$ and the ring of $\Gamma$ are
         not disjoint, then names of vertices in the join may not be
-        understandable.
+        understandable; the same name will apparently be used for two distinct
+        variables.
     SeeAlso
 	"making an abstract simplicial complex"      
         (faces, SimplicialComplex)
 ///
-
-
 
 doc /// 
     Key 
