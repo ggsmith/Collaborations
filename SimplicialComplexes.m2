@@ -52,7 +52,7 @@ export {
     "elementaryCollapse",
 --    "face",  
     "grunbaumBallComplex",
-    "inducedSubcomplex",
+    "inducedComplex",
 --  "isFaceOf",    
 --  "isSubface", 
     "link",
@@ -107,3 +107,4 @@ check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
 options SimplicialComplexes
+
