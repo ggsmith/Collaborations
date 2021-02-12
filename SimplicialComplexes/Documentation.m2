@@ -1411,8 +1411,11 @@ doc ///
     	Text
 	    When no labels are given, this function returns C, the reduced simplicial
 	    chain complex associated to D with coefficents in k, where k is the 
-	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). When 
-	    labels are given, this function returns the homogenization of C we get by 
+	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). The
+	    i-th term in the complex is indexed by the i-faces in the simplicial
+	    complex, and the maps describe the incidences between the faces.
+	Text
+	    When labels are given, this function returns the homogenization of C we get by 
 	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
 	    information about homogenization of chain complexes by monomial ideals can be
 	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
@@ -1425,13 +1428,13 @@ doc ///
 	Text
 	    We can view the attaching maps for C. Notice that the sign changes when we use 
 	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
-	    alway be the case for unlabelled simplicial comlexes, while the sign will 
+	    always be the case for unlabelled simplicial comlexes, while the sign will 
 	    agree when we use a labelling.
 	Example
 	    C.dd
     	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
         Text
-	    Using the Lables option, we can homogenize a simplicial chain complex to 
+	    Using the Labels option, we can homogenize a simplicial chain complex to 
 	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
 	Example
 	    A = QQ[x_0..x_3];
@@ -1440,7 +1443,7 @@ doc ///
 	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
 	    prune homology F
     	Text
-	    Observe that C begins in homolgical degree -1, while F Begins in homological degree 0.
+	    Observe that C begins in homological degree -1, while F Begins in homological degree 0.
 	    Similar to the first example, we can also also view the differential for F.
 	Example
 	   F.dd
@@ -1775,7 +1778,7 @@ doc ///
 	    subdivision of {\tt E}.
     Description
         Text
-            The verticies of the {\tt barycentricSubdivision(D,R)} correspond to
+            The vertices of the {\tt barycentricSubdivision(D,R)} correspond to
 	    faces of {\tt D}. For every face {\tt F} in {\tt D},
 	    {\tt barycentricSubdivision(f,R,S)} maps the vertex correspoding to
 	    {\tt F} in {\tt barycentricSubdivision(D,R)} to the vertex
@@ -3409,7 +3412,7 @@ doc ///
 	    assert(source id_Δ === Δ)
 	    assert(source id_Δ === target id_Δ)
 	Text
-    	    The next map projects an octehedron onto a square.
+    	    The next map projects an octohedron onto a square.
 	Example
 	    R = ZZ[y_0..y_3];
 	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
@@ -3454,7 +3457,7 @@ doc ///
 	    assert(target id_Δ === Δ)
 	    assert(target id_Δ === source id_Δ)
 	Text
-    	    The next map projects an octehedron onto a square.
+    	    The next map projects an octohedron onto a square.
 	Example
 	    R = ZZ[y_0..y_3];
 	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
@@ -3710,7 +3713,7 @@ doc ///
 	(isSurjective,SimplicialMap)
 ///
 
-///
+doc ///
     Key
     	(homology, SimplicialComplex, SimplicialComplex)
 	(homology, ZZ, SimplicialComplex, SimplicialComplex)
@@ -3763,4 +3766,37 @@ doc ///
     	(homology,ZZ,SimplicialComplex,Ring)
 ///
     
-				  
+///
+    Key
+    	(chainComplex, SimplicialMap)
+    Headline
+    	constructs the associated map between chain complexes
+    Inputs
+        f : SimplicialMap
+    Outputs
+    	 : ChainComplexMap
+    Description
+    	Text
+	    Given a simplicial map, this constructs the map between the associated
+	    chain complexes of the two simplicial complexes.
+	Example
+	    R = ZZ[x_0..x_5];
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+	    Γ = simplicialComplex monomialIdeal(x_1*x_2)
+	    f = map(Γ, Δ, {x_0,x_0,x_1,x_2,x_3,x_3})
+	    F = chainComplex f
+	    isWellDefined F
+	Text
+	    The inclusion of a face induces an inclusion of chain complexes.
+	Example
+	    R' = ZZ[y_0..y_5];
+	    fish = simplicialComplex {y_0*y_1*y_2, y_1*y_2*y_3, y_3*y_4*y_5}
+	    R' = ZZ[z_0,z_1,z_2];
+	    fishface = simplicialComplex {z_0*z_1*z_2}
+	    f = map(fish,fishface,{y_0,y_1,y_2});
+	    F = chainComplex f
+    	    kernel F == 0
+    SeeAlso
+    	(chainComplex, simplicialComplex)
+	ChainComplexMap
+///				  
