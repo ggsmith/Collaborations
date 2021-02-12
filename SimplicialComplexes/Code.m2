@@ -1034,8 +1034,10 @@ v:=vertices(F);
 face(apply(v,j->sub(j,R)),R))
 
 -- substitute a complex to another ring
-substitute(SimplicialComplex,PolynomialRing):=(C,R)->(
-simplicialComplex((entries sub(C.facets,R)))#0)
+substitute(SimplicialComplex,PolynomialRing):=(D,R)->(
+    n := numgens ring D;
+    simplicialComplex first entries sub(facets D, (vars R)_{0..n-1})
+    )
 
 
 -*

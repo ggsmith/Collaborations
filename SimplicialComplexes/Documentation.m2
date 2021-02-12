@@ -3067,34 +3067,6 @@ undocumented { "Multigrading" }
 
 ///
   Key
-    (substitute, SimplicialComplex, PolynomialRing)
-  Headline
-    Substitute a simplicial complex to a different ring.
-  Usage
-    substitute(C,R)
-  Inputs
-    C:SimplicialComplex
-    R:PolynomialRing
-  Outputs
-    :SimplicialComplex
-  Description
-   Text
-        Substitute a simplicial complex to a different ring. R should contain the variables of the @TO ring@ of C.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);
-     C=simplicialComplex I
-     S=R**K[y]
-     C1=substitute(C,S)
-     ring C1
-  SeeAlso
-     (substitute,Face,PolynomialRing)
-///
-
-///
-  Key
     isFaceOf
     (isFaceOf,Face,SimplicialComplex)
   Headline
@@ -3319,6 +3291,37 @@ doc ///
     (homology,ZZ,SimplicialComplex)
     (homology,ZZ,SimplicialComplex,Ring)
     (homology,SimplicialComplex,SimplicialComplex)
+///
+
+doc///
+    Key    
+        (substitute,SimplicialComplex,PolynomialRing)
+    Headline
+        change the ring of a simplicial complex
+    Usage
+        substitute(Delta, R)
+    Inputs
+        Delta : SimplicialComplex
+        R : PolynomialRing
+    Outputs
+        : SimplicialComplex
+    Description
+        Text
+            Given a polynomial ring $R$, with enough variables, we can create
+	    a simplicial complex identical to $\Delta$, defined over the ring
+	    $R$.
+        Example
+            S = ZZ/23[x,y,z,w];
+            Δ = simplexComplex(3,S)
+            R = ZZ/101[a,b,c,d,e];     
+            Γ = substitute(Δ, R)
+        Text
+            This method is a works by applying @TO(substitute,RingElement,Ring)@
+	    to the facets of $\Delta$.
+        Example
+            code(substitute, SimplicialComplex, PolynomialRing)
+    SeeAlso
+        "making an abstract simplicial complex"
 ///
 
 ------------------------------------------------------------------------------
