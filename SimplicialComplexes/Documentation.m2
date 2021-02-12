@@ -3357,7 +3357,7 @@ doc ///
 	    that $f(F)$ is contained in a face of $D$.
         Text
 	    To specify a map of simplicial complexes, the target and source
-	    complexes need to be specificied as well as a matrix which
+	    complexes need to be specified as well as a matrix which
 	    determines a map between the complexes' corresponding rings.
 	Text
 	    The primary constructor of a toric map is
@@ -3852,11 +3852,13 @@ doc ///
     	(homology,ZZ,SimplicialComplex,Ring)
 ///
     
-///
+doc ///
     Key
     	(chainComplex, SimplicialMap)
     Headline
     	constructs the associated map between chain complexes
+    Usage
+    	chainComplex f
     Inputs
         f : SimplicialMap
     Outputs
@@ -3871,7 +3873,6 @@ doc ///
 	    Γ = simplicialComplex monomialIdeal(x_1*x_2)
 	    f = map(Γ, Δ, {x_0,x_0,x_1,x_2,x_3,x_3})
 	    F = chainComplex f
-	    isWellDefined F
 	Text
 	    The inclusion of a face induces an inclusion of chain complexes.
 	Example
@@ -3883,6 +3884,6 @@ doc ///
 	    F = chainComplex f
     	    kernel F == 0
     SeeAlso
-    	(chainComplex, simplicialComplex)
+    	(chainComplex, SimplicialComplex)
 	ChainComplexMap
 ///				  
