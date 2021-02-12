@@ -1375,77 +1375,6 @@ doc ///
 	(dim, SimplicialComplex)
 ///
 
-doc ///
-    Key
-        (chainComplex, SimplicialComplex)
-	[(chainComplex, SimplicialComplex), Labels]
-    Headline
-        create the chain complex associated to a simplicial complex.
-    Usage
-    	chainComplex D
-    Inputs
-    	D : SimplicialComplex
-	Labels => List	  
-	    L of monomials in a polynomial ring, one for each vertex of D.
-    Outputs
-    	C : ChainComplex	 
-    Description
-    	Text
-	    When no labels are given, this function returns C, the reduced simplicial
-	    chain complex associated to D with coefficents in k, where k is the 
-	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). The
-	    i-th term in the complex is indexed by the i-faces in the simplicial
-	    complex, and the maps describe the incidences between the faces.
-	Text
-	    When labels are given, this function returns the homogenization of C we get by 
-	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
-	    information about homogenization of chain complexes by monomial ideals can be
-	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
-	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
-	    C = chainComplex D
-	    prune homology C
-	Text
-	    We can view the attaching maps for C. Notice that the sign changes when we use 
-	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
-	    always be the case for unlabelled simplicial comlexes, while the sign will 
-	    agree when we use a labelling.
-	Example
-	    C.dd
-    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
-        Text
-	    Using the Labels option, we can homogenize a simplicial chain complex to 
-	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
-	    S = QQ[x_0..x_3];
-	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
-	    prune homology F
-    	Text
-	    Observe that C begins in homological degree -1, while F Begins in homological degree 0.
-	    Similar to the first example, we can also also view the differential for F.
-	Example
-	   F.dd
-	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
-	Text
-    	    The order of the monomial labels will have an effect on what the output is.
-	    For example, after swapping the first two labels in the example above, we 
-	    will no longer get a resolution.	
-	Example
-	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
-	    G.dd
-    	    prune HH G
-    SeeAlso
-    	"making an abstract simplicial complex"
-	(coefficientRing,SimplicialComplex)
-	(ChainComplexMap)
-	(boundaryMap,ZZ,SimplicialComplex)
-	(resolution, Ideal)
-	(homology,ChainComplex)
-///
 ------------------------------------------------------------------------------
 -- more advanced constructors
 ------------------------------------------------------------------------------
@@ -1775,6 +1704,78 @@ doc ///
 	(link, SimplicialComplex, RingElement)
 ///
 
+doc ///
+    Key
+        (chainComplex, SimplicialComplex)
+	[(chainComplex, SimplicialComplex), Labels]
+    Headline
+        create the chain complex associated to a simplicial complex.
+    Usage
+    	chainComplex D
+    Inputs
+    	D : SimplicialComplex
+	Labels => List	  
+	    L of monomials in a polynomial ring, one for each vertex of D.
+    Outputs
+    	C : ChainComplex	 
+    Description
+    	Text
+	    When no labels are given, this function returns C, the reduced simplicial
+	    chain complex associated to D with coefficents in k, where k is the 
+	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). The
+	    i-th term in the complex is indexed by the i-faces in the simplicial
+	    complex, and the maps describe the incidences between the faces.
+	Text
+	    When labels are given, this function returns the homogenization of C we get by 
+	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
+	    information about homogenization of chain complexes by monomial ideals can be
+	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
+	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
+	Example
+	    A = QQ[x_0..x_3];
+	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
+	    C = chainComplex D
+	    prune homology C
+	Text
+	    We can view the attaching maps for C. Notice that the sign changes when we use 
+	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
+	    always be the case for unlabelled simplicial comlexes, while the sign will 
+	    agree when we use a labelling.
+	Example
+	    C.dd
+    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
+        Text
+	    Using the Labels option, we can homogenize a simplicial chain complex to 
+	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
+	Example
+	    A = QQ[x_0..x_3];
+	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
+	    S = QQ[x_0..x_3];
+	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
+	    prune homology F
+    	Text
+	    Observe that C begins in homological degree -1, while F Begins in homological degree 0.
+	    Similar to the first example, we can also also view the differential for F.
+	Example
+	   F.dd
+	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
+	Text
+    	    The order of the monomial labels will have an effect on what the output is.
+	    For example, after swapping the first two labels in the example above, we 
+	    will no longer get a resolution.	
+	Example
+	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
+	    G.dd
+    	    prune HH G
+    SeeAlso
+    	"making an abstract simplicial complex"
+	(coefficientRing,SimplicialComplex)
+	(ChainComplexMap)
+	(boundaryMap,ZZ,SimplicialComplex)
+	(resolution, Ideal)
+	(homology,ChainComplex)
+///
+
 doc /// 
     Key 
         (wedge,SimplicialComplex,SimplicialComplex,RingElement,RingElement)
@@ -2018,80 +2019,6 @@ doc ///
         (barycentricSubdivision, SimplicialComplex, Ring)
         SimplicialComplex
 ///
-
-
-
-
-doc ///
-    Key
-        (chainComplex, SimplicialComplex)
-	[(chainComplex, SimplicialComplex), Labels]
-    Headline
-        create the chain complex associated to a simplicial complex.
-    Usage
-    	chainComplex D
-    Inputs
-    	D : SimplicialComplex
-	Labels => List	  
-	    L of monomials in a polynomial ring, one for each vertex of D.
-    Outputs
-    	C : ChainComplex	 
-    Description
-    	Text
-	    When no labels are given, this function returns C, the reduced simplicial
-	    chain complex associated to D with coefficents in k, where k is the 
-	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). When 
-	    labels are given, this function returns the homogenization of C we get by 
-	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
-	    information about homogenization of chain complexes by monomial ideals can be
-	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
-	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
-	    C = chainComplex D
-	    prune homology C
-	Text
-	    We can view the attaching maps for C. Notice that the sign changes when we use 
-	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
-	    alway be the case for unlabelled simplicial comlexes, while the sign will 
-	    agree when we use a labelling.
-	Example
-	    C.dd
-    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
-        Text
-	    Using the Lables option, we can homogenize a simplicial chain complex to 
-	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
-	    S = QQ[x_0..x_3];
-	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
-	    prune homology F
-    	Text
-	    Observe that C begins in homolgical degree -1, while F Begins in homological degree 0.
-	    Similar to the first example, we can also also view the differential for F.
-	Example
-	   F.dd
-	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
-	Text
-    	    The order of the monomial labels will have an effect on what the output is.
-	    For example, after swapping the first two labels in the example above, we 
-	    will no longer get a resolution.	
-	Example
-	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
-	    G.dd
-    	    prune HH G
-    SeeAlso
-    	"making an abstract simplicial complex"
-	(coefficientRing,SimplicialComplex)
-	(ChainComplexMap)
-	(boundaryMap,ZZ,SimplicialComplex)
-	(resolution, Ideal)
-	(homology,ChainComplex)
-///
-
-
 
 ------------------------------------------------------------------------------
 -- basic properties and invariants
