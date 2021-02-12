@@ -126,7 +126,8 @@ doc ///
 		TO (link, SimplicialComplex, RingElement),
 		TO (skeleton, ZZ, SimplicialComplex),
 		TO (star, SimplicialComplex, RingElement),
-		TO (symbol *, SimplicialComplex, SimplicialComplex)
+		TO (symbol *, SimplicialComplex, SimplicialComplex),
+		TO (wedge, SimplicialComplex, SimplicialComplex, RingElement, RingElement)
     	    }@		
     SeeAlso
         "finding attributes and properties"
@@ -1759,15 +1760,90 @@ doc ///
 	    Δ' = Δ * Γ	    
 	    prune HH Δ'
 	    assert (dim Δ' === 3)
+	Text
+	Example
+	    Δ * sub(Δ, ZZ[g..l])
     Caveat
-        If the variables in the ring of $\Delta$ and the ring of $\Gamma$ are
-        not disjoint, then names of vertices in the join may not be
-        understandable; the same name will apparently be used for two distinct
+        When the variables in the ring of $\Delta$ and the ring of $\Gamma$
+        are not disjoint, names of vertices in the join may not be 
+        intelligible; the same name will apparently be used for two distinct
         variables.
     SeeAlso
 	"making an abstract simplicial complex"      
         (faces, SimplicialComplex)
+	(substitute, SimplicialComplex, PolynomialRing)
+	wedge
 ///	
+
+doc /// 
+    Key 
+        (wedge, SimplicialComplex, SimplicialComplex, RingElement, RingElement)
+	[(wedge, SimplicialComplex, SimplicialComplex, RingElement, RingElement), Variables]
+	wedge
+    Headline 
+        make the wedge sum of two abstract simplicial complexes
+    Usage 
+        wedge (Delta, Gamma, u, v)
+    Inputs
+        Delta : SimplicialComplex  
+	Gamma : SimplicialComplex
+        u : RingElement 
+	    a vertex of $\Delta$
+        v : RingElement
+	    a vertex of $\Gamma$
+	Variables => List
+	    that provides variables for the polynomial ring in which the wedge
+	    sum is represented by its Stanley-Reisner ideal
+    Outputs 
+        : SimplicialComplex
+	    the wedge sum of $\Delta$ and $\Gamma$ obtained by identifying 
+	    the vertices $u$ and $v$
+    Description
+        Text
+	    For any two abstract simplicial complexes $\Delta$ and $\Gamma$ with
+	    distinguished vertices $u$ and $v$, the wedge sum is the
+	    simplicial complex formed by taking the disjoint union of $\Delta$
+	    and $\Gamma$ and then identifying $u$ and $v$.
+	Text
+	    The bowtie complex is the wedge sum of two 2-simplicies
+    	Example
+            S = QQ[a,b,c];
+	    Δ = simplexComplex(2, S)
+	    R = QQ[d,e,f];
+	    Γ = simplexComplex(2, R)
+	    Δ∨Γ = wedge (Δ, Γ, a, f)
+	    vertices Δ∨Γ
+	    assert (# gens ring Δ∨Γ === # gens ring Δ + # gens ring Γ - 1)
+	Text
+	    When the optional argument {\tt Variables} is used, the wedge sum
+	    is represented by its Stanley-Reisner ideal in a new polynomial
+	    ring having this list as variables.  The variables in the ring of
+	    $\Delta$ corresponds to the first few variables in this new
+	    polynomial ring and the variables in the ring of $\Gamma$
+	    correspond to the next few variables in $R$ (omitting the variable
+	    corresponding to $v$).  This option is particularly convenient
+	    when taking the wedge sum of two abstract simplical complexes
+	    already defined in the same ring.
+	Example
+	    Δ∨Γ' = wedge (Δ, Γ, a, d, Variables => toList(x_0..x_4))
+	    vertices Δ∨Γ'
+	    Δ∨Γ'' = wedge (Δ, Δ, a, a, Variables => {a,b,c,d,e})
+	    vertices Δ∨Γ''
+	    ring Δ∨Γ''
+    Caveat
+        When the variables in the ring of $\Delta$ and the ring of $\Gamma$
+        are not disjoint, names of vertices in the wedge sum may not be
+        intelligible; the same name will apparently be used for two distinct
+        variables.
+    SeeAlso
+        "making an abstract simplicial complex"
+    	(vertices, SimplicialComplex)
+	(symbol *, SimplicialComplex, SimplicialComplex)
+	(substitute, SimplicialComplex, PolynomialRing)	
+	elementaryCollapse
+///
+
+
 
 ///
     Key
@@ -1841,61 +1917,6 @@ doc ///
 	(homology,ChainComplex)
 ///
 
-doc /// 
-    Key 
-        (wedge,SimplicialComplex,SimplicialComplex,RingElement,RingElement)
-	[wedge, AmbientRing]
-	wedge
-    Headline 
-        create the wedge product of two simplicial complexes
-    Usage 
-        wedge (D,E,u,v)
-    Inputs
-        D : SimplicialComplex  
-	E : SimplicialComplex
-        u : RingElement 
-	    a vertex of {\tt D}
-        v : RingElement
-	    a vertex of {\tt E}
-	AmbientRing => PolynomialRing
-    Outputs 
-        : SimplicialComplex
-	    The wedge product of {\tt D} and {\tt E} obtained by identifying {\tt u}
-	    and {\tt v}
-    Description
-        Text
-	    If {\tt D} and {\tt E} are abstract simplicial complexes with distinguished
-       	    vertices {\tt u} and {\tt v} respectively, the wedge product of {\tt D}
-	    and {\tt E} is the simplicial complex obtained by takingthe disjoint union
-	    of {\tt D} and {\tt E} and identifying {\tt u} with {\tt v}.
-	Text
-	    We construct the bowtie complex by taking the wedge of two 2-simplicies
-    	Example
-            R = QQ[x_0,x_1,x_2];
-	    S = QQ[y_0,y_1,y_2];
-	    D = simplicialComplex{R_0*R_1*R_2}
-	    E = simplicialComplex{S_0*S_1*S_2}
-	    W = wedge(D,E,R_0,S_0)
-	    ring W
-	Text
-	    If the optional argument AmbientRing is used, and given a polynomial ring
-	    {\tt R} as its value, then the wedge is constructed as a simplicial complex
-	    over the ring {\tt R}. The variables of {\tt ring D} are sent to the first
-	    {\tt numgens ring D} elements of {\tt R} and the variables of {\tt ring E}
-	    are sent to the next {\tt numgens ring E - 1} variables of {\tt R}, with 
-	    {\tt v} being send to the same variable as {\tt u}. This is useful if the
-	    complexes you are using are defined over the same ring, or on different
-	    rings whose variable names clash with one another.
-	Example
-	    W = wedge(D,D,R_0,R_2)
-	    ring W
-	    W = wedge(D,D,R_0,R_2, AmbientRing => QQ[x_0..x_4])
-	    ring W
-    SeeAlso
-        "making an abstract simplicial complex"
-        SimplicialComplex
-	elementaryCollapse
-///
 
 doc ///
     Key 
