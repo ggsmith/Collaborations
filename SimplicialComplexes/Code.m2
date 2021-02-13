@@ -12,8 +12,9 @@ SimplicialComplex.synonym = "abstract simplicial complex"
 -- 'facets' method defined in Polyhedra
 facets SimplicialComplex := Matrix => D -> D.facets
 
-expression SimplicialComplex := D -> expression facets D
+expression SimplicialComplex := D -> (expression simplicialComplex) expression facets D
 net SimplicialComplex := net @@ expression
+texMath SimplicialComplex := D -> texMath expression D
 
 ideal SimplicialComplex := Ideal => D -> ideal D.monomialIdeal
 monomialIdeal SimplicialComplex := MonomialIdeal => D -> D.monomialIdeal
@@ -379,6 +380,24 @@ wedge (SimplicialComplex, SimplicialComplex, RingElement, RingElement) := Simpli
     )
 
 
+------------------------------------------------------------------------------
+-- basic properties and invariants
+------------------------------------------------------------------------------
+
+-- 'vertices' method is defined in 'Polyhedra" package
+vertices SimplicialComplex := D -> (
+    if dim D < 0 then {}
+    else support product first entries facets D
+    )
+-- vertices Face := F -> F.vertices
+
+-- 'faces' method is defined in 'Polyhedra" package
+faces SimplicialComplex := HashTable => D -> (
+    hashTable apply(toList(-1..dim D), i -> i => faces(i, D))
+    )
+
+
+
 lcmMonomials = (L) -> (
      R := ring L#0;
      x := max \ transpose apply(L, i -> first exponents i);
@@ -409,11 +428,7 @@ faces (ZZ, SimplicialComplex) := Matrix => (r, D) -> (
     facesM(r,D)
     )
 
--- list of list of all faces
-faces SimplicialComplex := HashTable => D -> (
-    j := 0;
-    f := j -> faces(j, D);
-    new HashTable from toList apply(-1..dim D,j->j=>f j))
+
 
 
 -------------------------------------------------
@@ -474,18 +489,7 @@ facesM (ZZ, SimplicialComplex) := (r,D) -> (
     )
 *-
     
---TODO: make tests that involve QQ[]
--*
-R = QQ[]
-describe R
-gens R === 0
 
-irrelevant = simplicialComplex{1_R}
-faces irrelevant
-void = simplicialComplex(monomialIdeal(1_R))
-faces void
-keys void.cache 
-dim void
 
 
 ------------------Testing facesM----------------------
@@ -526,16 +530,9 @@ E = simplexComplex(n,R)
 --benchmark "facesMTEST1(17,D)"
 --benchmark "facesMTEST2(17,D)"
 
-*-
 
 
--- 'vertices' method defined in 'Polyhedra" package
--- vertices Face := F -> F.vertices
-vertices SimplicialComplex := D -> (
-    if product first entries facets D == 1 
-    then {}
-    else support product(first entries facets D)
-    )
+
 
 
 --- kludge to access parts of the 'Core'

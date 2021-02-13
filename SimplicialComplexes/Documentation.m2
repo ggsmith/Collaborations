@@ -271,6 +271,8 @@ doc ///
         (facets, SimplicialComplex)
 ///
 
+undocumented {(texMath, SimplicialComplex)}
+
 doc /// 
     Key
         (ideal, SimplicialComplex)
@@ -1844,6 +1846,205 @@ doc ///
 ///
 
 
+------------------------------------------------------------------------------
+-- basic properties and invariants
+------------------------------------------------------------------------------
+doc ///
+    Key 
+        "finding attributes and properties"
+    Headline
+        information about accessing features of an abstract simplicial complex
+    Description
+        Text
+            Having made a @TO SimplicialComplex@, one can access its basic
+            invariants or test for some elementary properties by using the
+            following methods:
+    	Text
+	    @SUBSECTION "Determining attributes and properties of simplicial complexes"@
+	Text
+            @UL {
+        	TO (ideal, SimplicialComplex),		
+        	TO (monomialIdeal, SimplicialComplex),
+        	TO (ring, SimplicialComplex),		
+        	TO (coefficientRing, SimplicialComplex),		
+        	TO (dim, SimplicialComplex),
+        	TO (facets, SimplicialComplex),		
+		TO (vertices, SimplicialComplex),
+        	TO (faces, ZZ, SimplicialComplex)
+	    }@
+    SeeAlso
+        "making an abstract simplicial complex"
+	"working with simplicial maps"
+///
+ 
+doc ///
+    Key
+        (vertices, SimplicialComplex)
+    Headline
+        lists the vertices of an abstract simplicial complex
+    Usage
+        vertices Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        : List
+            of variables in a polynomial ring corresponding to the vertices of
+            $\Delta$
+    Description
+        Text        
+	    In this package, an abstract simplicial complex is represented as
+            squarefree monomial ideal in a @TO2((ring, SimplicialComplex),
+            "polynomial ring")@.  This method returns the list of variables in
+            this polynomial ring that corresponds to the vertices in the
+            simplicial complex.
+        Example
+            S = QQ[a..e];
+            vertices simplexComplex(4, S)
+	    Δ = simplicialComplex monomialIdeal(a*b, b*c, c*d, d*e)
+	    vertices Δ
+	    faces(0, Δ)
+	    assert(vertices Δ === gens S)
+	Text
+	    The vertices may correspond to a proper subset of the variables in
+	    the ambient polynomial ring.
+        Example	    
+	    vertices simplexComplex(2, S)
+	    Γ = simplicialComplex monomialIdeal(a, a*b, b*c, c*d)
+	    vertices Γ
+	    faces(0, Γ)
+	    assert(vertices Γ === {b, c, d, e})
+	Text
+	    There are two "trivial" simplicial complexes having no vertices:
+	    the irrelevant complex has the empty set as a facet whereas the
+	    void complex has no facets.  
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    vertices irrelevant
+    	    assert(vertices irrelevant === {})	    	    
+	    void = simplicialComplex monomialIdeal 1_S
+	    vertices void
+    	    assert(vertices void === {})	    
+    SeeAlso
+        "finding attributes and properties"  
+        (facets, SimplicialComplex)
+        (faces, SimplicialComplex)
+///
+
+doc ///
+    Key
+        (faces, SimplicialComplex)
+    Headline
+        get faces of a simplicial complex
+    Usage
+        faces Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        : HashTable
+    Description
+        Text
+	    In this package, an abstract simplicial complex $\Delta$ is
+            constructed as squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
+            in the abstract simplicial complex are identified with a subset of
+            the variables in the polynomial ring and each face is identified
+            with the product of the corresponding variables.  This method
+            returns a @TO HashTable@ whose keys are the integers from $-1$ to
+            $\operatorname{dim} \Delta$ and whose values are matrices listing
+            the monomials corresponding to the faces of $\Delta$.  The matrix
+            associated to $i$ enumerates the faces having dimension $i$.
+    	Text
+    	    The faces of the @TO2(simplexComplex, "simplex")@ correspond to
+    	    all subsets of the underlying vertex set.
+        Example
+            S = QQ[x_0..x_3];
+	    Δ = simplexComplex(3, S)
+	    faces Δ
+	    dim Δ
+	    subsets vertices Δ
+	    assert(faces Δ === hashTable for i from -1 to 3 list 
+		i => sub(matrix{rsort subsets(vertices Δ, i+1)/product}, S))
+	Text
+	    The faces of the @TO2(bartnetteSphereComplex, "Bartnette sphere")@
+    	    are a proper subset of the $7$-simplex.
+    	Example	    
+	    R = ZZ[a..h];
+	    Γ = bartnetteSphereComplex R
+    	    faces Γ
+	    monomialIdeal Γ
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no facets.
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    faces irrelevant
+	    assert(faces irrelevant === hashTable{-1 => basis(0,S)})
+	    void = simplicialComplex monomialIdeal 1_S
+	    faces void
+    	    assert(faces void === hashTable{})
+    SeeAlso
+        "finding attributes and properties"  
+        (facets, SimplicialComplex)
+        (vertices, SimplicialComplex)
+	(dim, SimplicialComplex)	    
+	(faces, ZZ, SimplicialComplex)
+///
+
+doc /// 
+    Key
+    	(faces, ZZ, SimplicialComplex)
+    Headline
+    	get the $i$-faces of an abstract simplicial complex
+    Usage
+    	faces(i, Delta)
+    Inputs
+        i : ZZ
+	    the dimension of the faces
+	Delta : SimplicialComplex
+    Outputs
+        : Matrix
+	    with one row, whose entries are squarefree monomials representing
+	    the faces of $\Delta$ of dimension $i$
+    Description
+        Text
+	    In Macaulay2, every @TO2(SimplicialComplex, "simplicial complex")@
+	    is equipped with a polynomial ring, and the matrix of {\tt i}-faces
+	    is defined over this ring.
+	Text
+	    This triangulation of the real projective plane has 6 vertices,
+	    15 edges, and 10 triangles.
+	Example
+	    R = ZZ[a..f];
+	    D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
+	                                      b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
+	    faces(-1,D)
+	    faces(0,D)
+	    faces(1,D)
+	    faces(2,D)
+	    fVector D
+	Text
+	    Note that every simplicial complex contains an empty face, except
+	    for the void complex.
+	Example
+	    R' = ZZ[a..d];
+	    void = simplicialComplex monomialIdeal 1_R'
+	    faces(-1,void)
+	Text
+	    To avoid repeated computation, the matrix of {\tt i}-faces
+	    is cached at {\tt D.cache.faces#i}. This function will use this
+	    value if it has already been computed.
+    SeeAlso
+        SimplicialComplexes
+	facets
+	boundaryMap
+	fVector
+///
+
+
+
+
+------------------------------------------------------------------------------
 
 ///
     Key
@@ -2105,37 +2306,6 @@ doc ///
         (barycentricSubdivision, SimplicialComplex, Ring)
         SimplicialComplex
 ///
-
-------------------------------------------------------------------------------
--- basic properties and invariants
-------------------------------------------------------------------------------
-doc ///
-    Key 
-        "finding attributes and properties"
-    Headline
-        information about accessing features of an abstract simplicial complex
-    Description
-        Text
-            Having made a @TO SimplicialComplex@, one can access its basic
-            invariants or test for some elementary properties by using the
-            following methods:
-    	Text
-	    @SUBSECTION "Determining attributes and properties of simplicial complexes"@
-	Text
-            @UL {
-        	TO (facets, SimplicialComplex),
-        	TO (ideal, SimplicialComplex),		
-        	TO (monomialIdeal, SimplicialComplex),
-        	TO (ring, SimplicialComplex),		
-        	TO (coefficientRing, SimplicialComplex),		
-        	TO (dim, SimplicialComplex)
-	    }@
-    SeeAlso
-        "making an abstract simplicial complex"
-///
- 
- 
-
 
 
 
@@ -2638,83 +2808,7 @@ doc ///
  
 
 
-doc /// 
-    Key
-    	(faces, ZZ, SimplicialComplex)
-    Headline
-    	the i-faces of a simplicial complex
-    Usage
-    	faces(i,D)
-    Inputs
-        i : ZZ
-	    the dimension of the faces
-	D : SimplicialComplex
-    Outputs
-        : Matrix
-	    with one row, whose entries are squarefree
-	    monomials representing the faces of {\tt D} of
-	    dimension {\tt i}.
-    Description
-        Text
-	    In Macaulay2, every @TO2(SimplicialComplex, "simplicial complex")@
-	    is equipped with a polynomial ring, and the matrix of {\tt i}-faces
-	    is defined over this ring.
-	Text
-	    This triangulation of the real projective plane has 6 vertices,
-	    15 edges, and 10 triangles.
-	Example
-	    R = ZZ[a..f];
-	    D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
-	                                      b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
-	    faces(-1,D)
-	    faces(0,D)
-	    faces(1,D)
-	    faces(2,D)
-	    fVector D
-	Text
-	    Note that every simplicial complex contains an empty face, except
-	    for the void complex.
-	Example
-	    R' = ZZ[a..d];
-	    void = simplicialComplex monomialIdeal 1_R'
-	    faces(-1,void)
-	Text
-	    To avoid repeated computation, the matrix of {\tt i}-faces
-	    is cached at {\tt D.cache.faces#i}. This function will use this
-	    value if it has already been computed.
-    SeeAlso
-        SimplicialComplexes
-	facets
-	boundaryMap
-	fVector
-///
 
-doc ///
-  Key
-      (vertices, SimplicialComplex)
-  Headline
-      list the vertices of a simplicial complex.
-  Usage
-      vertices(D)
-  Inputs
-      D : SimplicialComplex
-  Outputs
-      :List
-  Description
-   Text
-        Returns a @TO List@ with the vertices of a
-        @TO2("SimplicialComplex","simplicial complex")@.
-   Example
-       R = QQ[x_0..x_4];
-       vertices simplexComplex(2,R)
-       I = monomialIdeal(x_0, x_1*x_2, x_2*x_3, x_3*x_4);
-       D = simplicialComplex I
-       vertices D
-  SeeAlso
-      "finding attributes and properties"  
-      (facets,SimplicialComplex)
-      (faces, SimplicialComplex)
-///
 
 -------------------------------------------------------------
 -------------------------------------------------------------
@@ -3124,27 +3218,7 @@ undocumented { "Multigrading" }
     @TO Boolean@ @TO Option@ to return in the methods @TO faces@ and @TO facets@ a @TO List@ of @TO Face@s instead of a @TO Matrix@.
 ///
 
-doc ///
-  Key
-    (faces,SimplicialComplex)
-  Headline
-    Compute all faces of a simplicial complex.
-  Usage
-    faces(C)
-  Inputs
-    C : SimplicialComplex
-  Outputs
-    : HashTable
-  Description
-   Text
-        Return a list of lists of the faces of a simplicial complex.
 
-   Example
-    R = QQ[x_1..x_5];
-    C = simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)
-    fc = faces(C)
-    fc#2
- ///
 
 
 -------------------------------------------------------------------
@@ -3494,7 +3568,7 @@ doc ///
 	(isWellDefined, SimplicialMap)
 ///
 
-undocumented {(expression, SimplicialMap)}
+
 
 doc ///
     Key
@@ -3637,6 +3711,8 @@ doc ///
 	(isWellDefined, SimplicialMap)
         (map, SimplicialComplex, SimplicialComplex, Matrix)
 ///
+
+undocumented {(expression, SimplicialMap), (toString, SimplicialMap), (texMath, SimplicialMap)}
 
 doc ///
     Key
