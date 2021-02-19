@@ -839,7 +839,7 @@ doc ///
 	    its @HREF("https://en.wikipedia.org/wiki/Stanley–Reisner_ring",
 	    "Stanley-Reisner ideal")@ in a polynomial ring.  More precisely,
 	    the vertices are identified with a subset of the variables in a
-	    fixed polynomial ring and each face is identify with the product
+	    fixed polynomial ring and each face is identified with the product
 	    of the corresponding variables.  A {\em nonface} is any subset of
 	    the variables that does not belong to the abstract simplicial
 	    complex—we also identify each nonface with a product of variables.
@@ -3899,6 +3899,81 @@ doc ///
 	(target, SimplicialMap)
 	(isInjective,SimplicialMap)
 	(isSurjective,SimplicialMap)
+///
+
+doc ///
+    Key 
+        (isWellDefined, SimplicialMap)    
+    Headline
+        whether underlying data is uncontradictory
+    Usage
+        isWellDefined f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Boolean
+	    that is @TO true@ if underlying data unambiguously defines a simplicial 
+	    map
+    Description
+	Text
+	    Maps between simplicial complexes are well-defined if the image
+	    of every face is contained in a face. In this package, vertices 
+	    of abstract simplicial complexes are identified with a subset 
+	    of the variables in a fixed polynomial ring and each face is 
+	    identified with monomials in those variables. Consequently, 
+	    a map between simplicial complexes is given by a map between the 
+	    respective polynomial rings. 
+	Text
+	    This method determines whether the underlying ring map correctly
+	    defines a simplicial map. In particular, it checks if variables
+	    are sent to variables, and that the image of each monomial 
+	    corresponding to a face in the source divides some monomial
+	    corresponding to a face in the target (i.e. is contained in).
+    	Example
+	    R = ZZ/229[a,b,c,d];
+	    D = simplicialComplex{a*b*c, b*c*d}
+	    E = simplicialComplex{a*b, b*c}
+	    f = map(E,D,{a,b,b,c})
+	    isWellDefined f
+	Text
+	    The constructors in this package have no guarantee to be well defined;
+	    the data defining a simplicial map is a ring map between the corresponding
+	    polynomial rings, which could have no relation to the two complexes.
+	    By making the current debugging level greater than one, one gets some 
+	    additional information about the nature of the failure.
+	Example
+	    g = map(E,D,{b*c,c,c+a,1})
+	    isWellDefined g
+	    debugLevel = 1;
+	    isWellDefined g
+	    h = map(E,D,{a,b,c,c})
+	    isWellDefined h
+	Text
+            This method also checks the following aspects of the data structure:
+	Text
+    	    @UL {
+		{"the underlying ", TO HashTable, " has the expected keys,
+	    	    namely ", TT "source", ", ", TT "target", ", ", 
+		    TT "map", ", and ", TT "cache", ","},
+       	        {"the value of the ", TT "source", " key is a ", 
+		    TO SimplicialComplex, ","},
+       	        {"the value of the ", TT "target", " key is a ", 
+		    TO SimplicialComplex, ","},
+		{"the value of the ", TT "RingMap", " key is a ", TO RingMap,
+                    "."},
+		{"the value of the ", TT "cache", " key is a ", TO CacheTable,
+                    "."},
+      	        {"the underlying ring map ", TT "source", " value equals the
+		    ring of the ", TT "source", " value,"},
+      	        {"the underlying ring map ", TT "target", " value equals the
+		    ring of the ", TT "target", " value,"},
+      	        {"the coefficient ring of the ", TT "source", " value equals the
+		    coefficient ring of the ", TT "target", " value,"}
+	    }@
+    SeeAlso
+        "working with simplicial maps"    
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+        (map, SimplicialComplex, SimplicialComplex, List)
 ///
 
 doc ///
