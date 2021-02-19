@@ -131,7 +131,7 @@ doc ///
     	    }@		
     SeeAlso
         "finding attributes and properties"
-	"working with simplicial maps"	
+	"working with simplicial maps"
 ///
        
 doc ///
