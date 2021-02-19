@@ -126,7 +126,8 @@ doc ///
 		TO (link, SimplicialComplex, RingElement),
 		TO (skeleton, ZZ, SimplicialComplex),
 		TO (star, SimplicialComplex, RingElement),
-		TO (symbol *, SimplicialComplex, SimplicialComplex)
+		TO (symbol *, SimplicialComplex, SimplicialComplex),
+		TO (wedge, SimplicialComplex, SimplicialComplex, RingElement, RingElement)
     	    }@		
     SeeAlso
         "finding attributes and properties"
@@ -269,6 +270,8 @@ doc ///
         "finding attributes and properties"
         (facets, SimplicialComplex)
 ///
+
+undocumented {(texMath, SimplicialComplex)}
 
 doc /// 
     Key
@@ -1705,9 +1708,349 @@ doc ///
 ///
 
 doc ///
+    Key 
+        (symbol *, SimplicialComplex, SimplicialComplex)
+        "join two abstract simplicial complexes"
+    Headline
+        make the join for two abstract simplicial complexes
+    Usage
+        Delta * Gamma
+    Inputs
+        Delta : SimplicialComplex  
+        Gamma : SimplicialComplex
+    Outputs
+        : SimplicialComplex
+            that is the join of $\Delta$ and $\Gamma$
+    Description
+        Text
+            The join of two simplicial complexes $\Delta$ and $\Gamma$ is a
+            new simplicial complex whose faces are disjoint unions of a face
+            in $\Delta$ and a face in $\Gamma$.
+        Text
+            If $\Gamma$ is the simplicial complex consisting of a single vertex,
+            then the join $\Delta \mathrel{*} \Gamma$ is the
+            @HREF("https://en.wikipedia.org/wiki/Cone_(topology)", "cone")@
+            over $\Delta$.  For example, the cone over a bow-tie complex.
+     	Example
+            S = QQ[a..e];
+            Δ = simplicialComplex {a*b*c, c*d*e}
+            R = QQ[f];
+            Γ = simplicialComplex {f};
+	    Δ' = Δ * Γ
+	    assert (dim Δ' === dim Δ + 1)
+	Text
+	    If $\Gamma$ is a $1$-sphere (consisting of two isolated vertices),
+            then the join $\Delta \mathrel{*} \Gamma$ is the
+            @HREF("https://en.wikipedia.org/wiki/Suspension_(topology)",
+            "suspension")@ of $\Delta$.  For example, the octahedron is the
+            suspension of a square.
+        Example
+	    S = QQ[a..d];
+            Δ = simplicialComplex {a*b, b*c, c*d, a*d}
+            R = QQ[e,f];
+            Γ = simplicialComplex {e, f}
+	    Δ' = Δ * Γ
+	    assert (dim Δ' === dim Δ + 1)
+	    assert (apply(2+dim Δ', i -> numColumns faces(i-1,Δ')) == {1,6,12,8})
+        Text
+            The join of a hexagon and a pentagon is a 3-sphere.
+        Example
+            S = ZZ[a..f];
+            Δ = simplicialComplex {a*b, b*c, c*d, d*e, e*f, a*f}
+            R = ZZ[g..k];
+            Γ = simplicialComplex {g*h, h*i, i*j, j*k, g*k}
+	    Δ' = Δ * Γ	    
+	    prune HH Δ'
+	    assert (dim Δ' === 3)
+	Text
+	Example
+	    Δ * sub(Δ, ZZ[g..l])
+    Caveat
+        When the variables in the ring of $\Delta$ and the ring of $\Gamma$
+        are not disjoint, names of vertices in the join may not be 
+        intelligible; the same name will apparently be used for two distinct
+        variables.
+    SeeAlso
+	"making an abstract simplicial complex"      
+        (faces, SimplicialComplex)
+	(substitute, SimplicialComplex, PolynomialRing)
+	wedge
+///	
+
+doc /// 
+    Key 
+        (wedge, SimplicialComplex, SimplicialComplex, RingElement, RingElement)
+	[(wedge, SimplicialComplex, SimplicialComplex, RingElement, RingElement), Variables]
+	wedge
+    Headline 
+        make the wedge sum of two abstract simplicial complexes
+    Usage 
+        wedge (Delta, Gamma, u, v)
+    Inputs
+        Delta : SimplicialComplex  
+	Gamma : SimplicialComplex
+        u : RingElement 
+	    a vertex of $\Delta$
+        v : RingElement
+	    a vertex of $\Gamma$
+	Variables => List
+	    that provides variables for the polynomial ring in which the wedge
+	    sum is represented by its Stanley-Reisner ideal
+    Outputs 
+        : SimplicialComplex
+	    the wedge sum of $\Delta$ and $\Gamma$ obtained by identifying 
+	    the vertices $u$ and $v$
+    Description
+        Text
+	    For any two abstract simplicial complexes $\Delta$ and $\Gamma$ with
+	    distinguished vertices $u$ and $v$, the wedge sum is the
+	    simplicial complex formed by taking the disjoint union of $\Delta$
+	    and $\Gamma$ and then identifying $u$ and $v$.
+	Text
+	    The bowtie complex is the wedge sum of two 2-simplicies
+    	Example
+            S = QQ[a,b,c];
+	    Δ = simplexComplex(2, S)
+	    R = QQ[d,e,f];
+	    Γ = simplexComplex(2, R)
+	    Δ∨Γ = wedge (Δ, Γ, a, f)
+	    vertices Δ∨Γ
+	    assert (# gens ring Δ∨Γ === # gens ring Δ + # gens ring Γ - 1)
+	Text
+	    When the optional argument {\tt Variables} is used, the wedge sum
+	    is represented by its Stanley-Reisner ideal in a new polynomial
+	    ring having this list as variables.  The variables in the ring of
+	    $\Delta$ corresponds to the first few variables in this new
+	    polynomial ring and the variables in the ring of $\Gamma$
+	    correspond to the next few variables in $R$ (omitting the variable
+	    corresponding to $v$).  This option is particularly convenient
+	    when taking the wedge sum of two abstract simplical complexes
+	    already defined in the same ring.
+	Example
+	    Δ∨Γ' = wedge (Δ, Γ, a, d, Variables => toList(x_0..x_4))
+	    vertices Δ∨Γ'
+	    Δ∨Γ'' = wedge (Δ, Δ, a, a, Variables => {a,b,c,d,e})
+	    vertices Δ∨Γ''
+	    ring Δ∨Γ''
+    Caveat
+        When the variables in the ring of $\Delta$ and the ring of $\Gamma$
+        are not disjoint, names of vertices in the wedge sum may not be
+        intelligible; the same name will apparently be used for two distinct
+        variables.
+    SeeAlso
+        "making an abstract simplicial complex"
+    	(vertices, SimplicialComplex)
+	(symbol *, SimplicialComplex, SimplicialComplex)
+	(substitute, SimplicialComplex, PolynomialRing)	
+	elementaryCollapse
+///
+
+
+------------------------------------------------------------------------------
+-- basic properties and invariants
+------------------------------------------------------------------------------
+doc ///
+    Key 
+        "finding attributes and properties"
+    Headline
+        information about accessing features of an abstract simplicial complex
+    Description
+        Text
+            Having made a @TO SimplicialComplex@, one can access its basic
+            invariants or test for some elementary properties by using the
+            following methods:
+    	Text
+	    @SUBSECTION "Determining attributes and properties of simplicial complexes"@
+	Text
+            @UL {
+        	TO (ideal, SimplicialComplex),		
+        	TO (monomialIdeal, SimplicialComplex),
+        	TO (ring, SimplicialComplex),		
+        	TO (coefficientRing, SimplicialComplex),		
+        	TO (dim, SimplicialComplex),
+        	TO (facets, SimplicialComplex),		
+		TO (vertices, SimplicialComplex),
+        	TO (faces, ZZ, SimplicialComplex)
+	    }@
+    SeeAlso
+        "making an abstract simplicial complex"
+	"working with simplicial maps"
+///
+ 
+doc ///
+    Key
+        (vertices, SimplicialComplex)
+    Headline
+        lists the vertices of an abstract simplicial complex
+    Usage
+        vertices Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        : List
+            of variables in a polynomial ring corresponding to the vertices of
+            $\Delta$
+    Description
+        Text        
+	    In this package, an abstract simplicial complex is represented as
+            squarefree monomial ideal in a @TO2((ring, SimplicialComplex),
+            "polynomial ring")@.  This method returns the list of variables in
+            this polynomial ring that corresponds to the vertices in the
+            simplicial complex.
+        Example
+            S = QQ[a..e];
+            vertices simplexComplex(4, S)
+	    Δ = simplicialComplex monomialIdeal(a*b, b*c, c*d, d*e)
+	    vertices Δ
+	    faces(0, Δ)
+	    assert(vertices Δ === gens S)
+	Text
+	    The vertices may correspond to a proper subset of the variables in
+	    the ambient polynomial ring.
+        Example	    
+	    vertices simplexComplex(2, S)
+	    Γ = simplicialComplex monomialIdeal(a, a*b, b*c, c*d)
+	    vertices Γ
+	    faces(0, Γ)
+	    assert(vertices Γ === {b, c, d, e})
+	Text
+	    There are two "trivial" simplicial complexes having no vertices:
+	    the irrelevant complex has the empty set as a facet whereas the
+	    void complex has no facets.  
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    vertices irrelevant
+    	    assert(vertices irrelevant === {})	    	    
+	    void = simplicialComplex monomialIdeal 1_S
+	    vertices void
+    	    assert(vertices void === {})	    
+    SeeAlso
+        "finding attributes and properties"  
+        (facets, SimplicialComplex)
+        (faces, SimplicialComplex)
+///
+
+doc ///
+    Key
+        (faces, SimplicialComplex)
+    Headline
+        get faces of a simplicial complex
+    Usage
+        faces Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        : HashTable
+    Description
+        Text
+	    In this package, an abstract simplicial complex $\Delta$ is
+            constructed as squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
+            in the abstract simplicial complex are identified with a subset of
+            the variables in the polynomial ring and each face is identified
+            with the product of the corresponding variables.  This method
+            returns a @TO HashTable@ whose keys are the integers from $-1$ to
+            $\operatorname{dim} \Delta$ and whose values are matrices listing
+            the monomials corresponding to the faces of $\Delta$.  The matrix
+            associated to $i$ enumerates the faces having dimension $i$.
+    	Text
+    	    The faces of the @TO2(simplexComplex, "simplex")@ correspond to
+    	    all subsets of the underlying vertex set.
+        Example
+            S = QQ[x_0..x_3];
+	    Δ = simplexComplex(3, S)
+	    faces Δ
+	    dim Δ
+	    subsets vertices Δ
+	    assert(faces Δ === hashTable for i from -1 to 3 list 
+		i => sub(matrix{rsort subsets(vertices Δ, i+1)/product}, S))
+	Text
+	    The faces of the @TO2(bartnetteSphereComplex, "Bartnette sphere")@
+    	    are a proper subset of the $7$-simplex.
+    	Example	    
+	    R = ZZ[a..h];
+	    Γ = bartnetteSphereComplex R
+    	    faces Γ
+	    monomialIdeal Γ
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no facets.
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    faces irrelevant
+	    assert(faces irrelevant === hashTable{-1 => basis(0,S)})
+	    void = simplicialComplex monomialIdeal 1_S
+	    faces void
+    	    assert(faces void === hashTable{})
+    SeeAlso
+        "finding attributes and properties"  
+        (facets, SimplicialComplex)
+        (vertices, SimplicialComplex)
+	(dim, SimplicialComplex)	    
+	(faces, ZZ, SimplicialComplex)
+///
+
+doc /// 
+    Key
+    	(faces, ZZ, SimplicialComplex)
+    Headline
+    	get the $i$-faces of an abstract simplicial complex
+    Usage
+    	faces(i, Delta)
+    Inputs
+        i : ZZ
+	    the dimension of the faces
+	Delta : SimplicialComplex
+    Outputs
+        : Matrix
+	    with one row, whose entries are squarefree monomials representing
+	    the faces of $\Delta$ of dimension $i$
+    Description
+        Text
+	    In Macaulay2, every @TO2(SimplicialComplex, "simplicial complex")@
+	    is equipped with a polynomial ring, and the matrix of {\tt i}-faces
+	    is defined over this ring.
+	Text
+	    This triangulation of the real projective plane has 6 vertices,
+	    15 edges, and 10 triangles.
+	Example
+	    R = ZZ[a..f];
+	    D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
+	                                      b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
+	    faces(-1,D)
+	    faces(0,D)
+	    faces(1,D)
+	    faces(2,D)
+	    fVector D
+	Text
+	    Note that every simplicial complex contains an empty face, except
+	    for the void complex.
+	Example
+	    R' = ZZ[a..d];
+	    void = simplicialComplex monomialIdeal 1_R'
+	    faces(-1,void)
+	Text
+	    To avoid repeated computation, the matrix of {\tt i}-faces
+	    is cached at {\tt D.cache.faces#i}. This function will use this
+	    value if it has already been computed.
+    SeeAlso
+        SimplicialComplexes
+	facets
+	boundaryMap
+	fVector
+///
+
+
+
+
+------------------------------------------------------------------------------
+
+doc ///
     Key
         (chainComplex, SimplicialComplex)
 	[(chainComplex, SimplicialComplex), Labels]
+    	Labels
     Headline
         create the chain complex associated to a simplicial complex.
     Usage
@@ -1722,7 +2065,7 @@ doc ///
     	Text
 	    When no labels are given, this function returns C, the reduced simplicial
 	    chain complex associated to D with coefficents in k, where k is the 
-	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). The
+	    coefficient ring of D (see @TO (coefficientRing,SimplicialComplex)@). The
 	    i-th term in the complex is indexed by the i-faces in the simplicial
 	    complex, and the maps describe the incidences between the faces.
 	Text
@@ -1776,61 +2119,6 @@ doc ///
 	(homology,ChainComplex)
 ///
 
-doc /// 
-    Key 
-        (wedge,SimplicialComplex,SimplicialComplex,RingElement,RingElement)
-	[wedge, AmbientRing]
-	wedge
-    Headline 
-        create the wedge product of two simplicial complexes
-    Usage 
-        wedge (D,E,u,v)
-    Inputs
-        D : SimplicialComplex  
-	E : SimplicialComplex
-        u : RingElement 
-	    a vertex of {\tt D}
-        v : RingElement
-	    a vertex of {\tt E}
-	AmbientRing => PolynomialRing
-    Outputs 
-        : SimplicialComplex
-	    The wedge product of {\tt D} and {\tt E} obtained by identifying {\tt u}
-	    and {\tt v}
-    Description
-        Text
-	    If {\tt D} and {\tt E} are abstract simplicial complexes with distinguished
-       	    vertices {\tt u} and {\tt v} respectively, the wedge product of {\tt D}
-	    and {\tt E} is the simplicial complex obtained by takingthe disjoint union
-	    of {\tt D} and {\tt E} and identifying {\tt u} with {\tt v}.
-	Text
-	    We construct the bowtie complex by taking the wedge of two 2-simplicies
-    	Example
-            R = QQ[x_0,x_1,x_2];
-	    S = QQ[y_0,y_1,y_2];
-	    D = simplicialComplex{R_0*R_1*R_2}
-	    E = simplicialComplex{S_0*S_1*S_2}
-	    W = wedge(D,E,R_0,S_0)
-	    ring W
-	Text
-	    If the optional argument AmbientRing is used, and given a polynomial ring
-	    {\tt R} as its value, then the wedge is constructed as a simplicial complex
-	    over the ring {\tt R}. The variables of {\tt ring D} are sent to the first
-	    {\tt numgens ring D} elements of {\tt R} and the variables of {\tt ring E}
-	    are sent to the next {\tt numgens ring E - 1} variables of {\tt R}, with 
-	    {\tt v} being send to the same variable as {\tt u}. This is useful if the
-	    complexes you are using are defined over the same ring, or on different
-	    rings whose variable names clash with one another.
-	Example
-	    W = wedge(D,D,R_0,R_2)
-	    ring W
-	    W = wedge(D,D,R_0,R_2, AmbientRing => QQ[x_0..x_4])
-	    ring W
-    SeeAlso
-        "making an abstract simplicial complex"
-        SimplicialComplex
-	elementaryCollapse
-///
 
 doc ///
     Key 
@@ -2020,102 +2308,7 @@ doc ///
         SimplicialComplex
 ///
 
-------------------------------------------------------------------------------
--- basic properties and invariants
-------------------------------------------------------------------------------
-doc ///
-    Key 
-        "finding attributes and properties"
-    Headline
-        information about accessing features of an abstract simplicial complex
-    Description
-        Text
-            Having made a @TO SimplicialComplex@, one can access its basic
-            invariants or test for some elementary properties by using the
-            following methods:
-    	Text
-	    @SUBSECTION "Determining attributes and properties of simplicial complexes"@
-	Text
-            @UL {
-        	TO (facets, SimplicialComplex),
-        	TO (ideal, SimplicialComplex),		
-        	TO (monomialIdeal, SimplicialComplex),
-        	TO (ring, SimplicialComplex),		
-        	TO (coefficientRing, SimplicialComplex),		
-        	TO (dim, SimplicialComplex)
-	    }@
-    SeeAlso
-        "making an abstract simplicial complex"
-///
- 
- 
 
-
-
-
-doc ///
-    Key 
-        (symbol *, SimplicialComplex, SimplicialComplex)
-        "join of two abstract simplicial complexes"
-    Headline
-        make the join 
-    Usage
-        J = D * E
-    Inputs
-        D : SimplicialComplex  
-        E : SimplicialComplex
-    Outputs
-        J : SimplicialComplex
-            that is the join of {\tt D} and {\tt E}
-    Description
-        Text
-            The join of two simplicial complexes $D$ and $E$ is a new
-            simplicial complex whose faces are disjoint unions of a face in
-            $D$ and a face in $E$.
-        Text
-            If $E$ is the simplicial complex consisting of a single vertex,
-            then the join $D*E$ is the
-            @HREF("https://en.wikipedia.org/wiki/Cone_(topology)", "cone")@
-            over $D$.  For example, the cone over a bow-tie complex.
-     	Example
-            R = QQ[a..e];
-            bowtie = simplicialComplex {a*b*c, c*d*e}
-            S = QQ[f];
-            singleton = simplicialComplex {f};
-	    C = bowtie * singleton
-	    assert (dim C === dim bowtie + 1)
-	Text
-	    If $E$ is a 1-sphere (consisting of two isolated vertices), then
-            the join $D * E$ is the
-            @HREF("https://en.wikipedia.org/wiki/Suspension_(topology)",
-            "suspension")@ of $D$.  For example, the octahedron is the
-            suspension of a square.
-        Example
-	    R = QQ[a..d];
-            square = simplicialComplex {a*b, b*c, c*d, a*d}
-            S = QQ[e,f];
-            oneSphere = simplicialComplex {e, f}
-	    octahedron = square * oneSphere
-	    faces octahedron
-	    assert (dim octahedron === dim square + 1)
-        Text
-            The join of a hexagon and a pentagon is a 3-sphere.
-        Example
-            R = ZZ[a..f];
-            hexagon = simplicialComplex {a*b, b*c, c*d, d*e, e*f, a*f}
-            S = ZZ[g..k];
-            pentagon = simplicialComplex {g*h, h*i, i*j, j*k, g*k}
-            threeSphere = hexagon * pentagon
-	    prune HH threeSphere
-	    assert (dim threeSphere === 3)
-    Caveat
-        If the variables in the ring of $D$ and the ring of $E$ are not
-        disjoint, then names of vertices in the join may not be
-        understandable.
-    SeeAlso
-	"making an abstract simplicial complex"      
-        (faces, SimplicialComplex)
-///
 
 
 ///
@@ -2616,83 +2809,7 @@ doc ///
  
 
 
-doc /// 
-    Key
-    	(faces, ZZ, SimplicialComplex)
-    Headline
-    	the i-faces of a simplicial complex
-    Usage
-    	faces(i,D)
-    Inputs
-        i : ZZ
-	    the dimension of the faces
-	D : SimplicialComplex
-    Outputs
-        : Matrix
-	    with one row, whose entries are squarefree
-	    monomials representing the faces of {\tt D} of
-	    dimension {\tt i}.
-    Description
-        Text
-	    In Macaulay2, every @TO2(SimplicialComplex, "simplicial complex")@
-	    is equipped with a polynomial ring, and the matrix of {\tt i}-faces
-	    is defined over this ring.
-	Text
-	    This triangulation of the real projective plane has 6 vertices,
-	    15 edges, and 10 triangles.
-	Example
-	    R = ZZ[a..f];
-	    D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
-	                                      b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
-	    faces(-1,D)
-	    faces(0,D)
-	    faces(1,D)
-	    faces(2,D)
-	    fVector D
-	Text
-	    Note that every simplicial complex contains an empty face, except
-	    for the void complex.
-	Example
-	    R' = ZZ[a..d];
-	    void = simplicialComplex monomialIdeal 1_R'
-	    faces(-1,void)
-	Text
-	    To avoid repeated computation, the matrix of {\tt i}-faces
-	    is cached at {\tt D.cache.faces#i}. This function will use this
-	    value if it has already been computed.
-    SeeAlso
-        SimplicialComplexes
-	facets
-	boundaryMap
-	fVector
-///
 
-doc ///
-  Key
-      (vertices, SimplicialComplex)
-  Headline
-      list the vertices of a simplicial complex.
-  Usage
-      vertices(D)
-  Inputs
-      D : SimplicialComplex
-  Outputs
-      :List
-  Description
-   Text
-        Returns a @TO List@ with the vertices of a
-        @TO2("SimplicialComplex","simplicial complex")@.
-   Example
-       R = QQ[x_0..x_4];
-       vertices simplexComplex(2,R)
-       I = monomialIdeal(x_0, x_1*x_2, x_2*x_3, x_3*x_4);
-       D = simplicialComplex I
-       vertices D
-  SeeAlso
-      "finding attributes and properties"  
-      (facets,SimplicialComplex)
-      (faces, SimplicialComplex)
-///
 
 -------------------------------------------------------------
 -------------------------------------------------------------
@@ -3045,34 +3162,6 @@ undocumented { "Multigrading" }
 
 ///
   Key
-    (substitute, SimplicialComplex, PolynomialRing)
-  Headline
-    Substitute a simplicial complex to a different ring.
-  Usage
-    substitute(C,R)
-  Inputs
-    C:SimplicialComplex
-    R:PolynomialRing
-  Outputs
-    :SimplicialComplex
-  Description
-   Text
-        Substitute a simplicial complex to a different ring. R should contain the variables of the @TO ring@ of C.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);
-     C=simplicialComplex I
-     S=R**K[y]
-     C1=substitute(C,S)
-     ring C1
-  SeeAlso
-     (substitute,Face,PolynomialRing)
-///
-
-///
-  Key
     isFaceOf
     (isFaceOf,Face,SimplicialComplex)
   Headline
@@ -3130,27 +3219,7 @@ undocumented { "Multigrading" }
     @TO Boolean@ @TO Option@ to return in the methods @TO faces@ and @TO facets@ a @TO List@ of @TO Face@s instead of a @TO Matrix@.
 ///
 
-doc ///
-  Key
-    (faces,SimplicialComplex)
-  Headline
-    Compute all faces of a simplicial complex.
-  Usage
-    faces(C)
-  Inputs
-    C : SimplicialComplex
-  Outputs
-    : HashTable
-  Description
-   Text
-        Return a list of lists of the faces of a simplicial complex.
 
-   Example
-    R = QQ[x_1..x_5];
-    C = simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)
-    fc = faces(C)
-    fc#2
- ///
 
 
 -------------------------------------------------------------------
@@ -3297,6 +3366,37 @@ doc ///
     (homology,ZZ,SimplicialComplex)
     (homology,ZZ,SimplicialComplex,Ring)
     (homology,SimplicialComplex,SimplicialComplex)
+///
+
+doc///
+    Key    
+        (substitute,SimplicialComplex,PolynomialRing)
+    Headline
+        change the ring of a simplicial complex
+    Usage
+        substitute(Delta, R)
+    Inputs
+        Delta : SimplicialComplex
+        R : PolynomialRing
+    Outputs
+        : SimplicialComplex
+    Description
+        Text
+            Given a polynomial ring $R$, with enough variables, we can create
+	    a simplicial complex identical to $\Delta$, defined over the ring
+	    $R$.
+        Example
+            S = ZZ/23[x,y,z,w];
+            Δ = simplexComplex(3,S)
+            R = ZZ/101[a,b,c,d,e];     
+            Γ = substitute(Δ, R)
+        Text
+            This method is a works by applying @TO(substitute,RingElement,Ring)@
+	    to the facets of $\Delta$.
+        Example
+            code(substitute, SimplicialComplex, PolynomialRing)
+    SeeAlso
+        "making an abstract simplicial complex"
 ///
 
 ------------------------------------------------------------------------------
@@ -3469,7 +3569,7 @@ doc ///
 	(isWellDefined, SimplicialMap)
 ///
 
-undocumented {(expression, SimplicialMap)}
+
 
 doc ///
     Key
@@ -3612,6 +3712,8 @@ doc ///
 	(isWellDefined, SimplicialMap)
         (map, SimplicialComplex, SimplicialComplex, Matrix)
 ///
+
+undocumented {(expression, SimplicialMap), (toString, SimplicialMap), (texMath, SimplicialMap)}
 
 doc ///
     Key

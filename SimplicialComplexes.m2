@@ -19,7 +19,7 @@ newPackage(
     "SimplicialComplexes",
     AuxiliaryFiles => true,
     Version => "2.0", 
-    Date => "21 November 2020",
+    Date => "12 February 2021",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
@@ -72,8 +72,7 @@ export {
     "zieglerBallComplex",
     -- symbol
     "Multigrading",
-    "Labels",
-    "AmbientRing"    
+    "Labels"
     }
 
 
