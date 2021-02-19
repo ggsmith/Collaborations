@@ -1,0 +1,12 @@
+simplicial complexes paper:
+
+- find examples from other places in math that we can reproduce in macaulay2
+- showcase functionality, specifically on simplicial maps which are new
+- do some relative homology, try to find some interesting topological results
+- browse through some papers in jsag journal to get ideas for structure
+- showcase database functionality
+- basic fact that we represent complexes by stanley-reisner ideals
+- showcase lybenziunk complexes and general homogenization feature
+- database could be used to give examples of relative homology
+
+next week should brainstorm more ideas for this
