@@ -2046,10 +2046,11 @@ doc ///
 
 ------------------------------------------------------------------------------
 
-///
+doc ///
     Key
         (chainComplex, SimplicialComplex)
 	[(chainComplex, SimplicialComplex), Labels]
+    	Labels
     Headline
         create the chain complex associated to a simplicial complex.
     Usage
@@ -2064,7 +2065,7 @@ doc ///
     	Text
 	    When no labels are given, this function returns C, the reduced simplicial
 	    chain complex associated to D with coefficents in k, where k is the 
-	    coefficient ring of D (see @TO(coefficientRing,SimplicialComplex)@). The
+	    coefficient ring of D (see @TO (coefficientRing,SimplicialComplex)@). The
 	    i-th term in the complex is indexed by the i-faces in the simplicial
 	    complex, and the maps describe the incidences between the faces.
 	Text
