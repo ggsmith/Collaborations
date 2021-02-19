@@ -1059,7 +1059,7 @@ matrix SimplicialMap := Matrix => opts -> f -> matrix map f
 
 expression SimplicialMap := f -> (expression map) (expression (target f, source f, first entries matrix f))
 toString SimplicialMap := f -> toString expression f
-net SimplicialMap := f ->  net first entries matrix f
+net SimplicialMap := f ->  net matrix f
 texMath SimplicialMap := f -> texMath expression f
 
 SimplicialMap#{Standard,AfterPrint} = SimplicialMap#{Standard,AfterNoPrint} = f -> (
