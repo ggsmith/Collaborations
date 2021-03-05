@@ -45,4 +45,4 @@ rough section planning
 - Maybe take a classical map (Hopf fibration), then approximate by simplicial complexes
   and illustrate the example
 - To this end, find classical examples in toplogy. e.g. in Hatcher/Munkres
-- References: Munkres, Hatcher, ...
+- References: Munkres, Hatcher, Tight polyhedral submanifolds and tight triangulations, introduction to piecewise linear topology

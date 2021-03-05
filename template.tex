@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% AMS-LaTeX Paper 
+%% AMS-LaTeX Paper
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt,leqno]{amsart}
 \pdfoutput=1
@@ -17,15 +17,15 @@
 \usepackage{microtype}
 \linespread{1.06}
 \usepackage[colorlinks = true,
-            linkcolor  = DarkBlue,
-            urlcolor   = DarkRed,
-            citecolor  = DarkGreen]{hyperref}
+  linkcolor  = DarkBlue,
+  urlcolor   = DarkRed,
+  citecolor  = DarkGreen]{hyperref}
 \hypersetup{
-  pdftitle={Smooth Hilbert Schemes},
-  pdfauthor={Roy Skjelnes and Gregory G. Smith}
-  }
+  pdftitle={The simplicial complexes package for Macaulay2},
+  pdfauthor={Ben Hersey, Gregory G. Smith, and Alexandre Zotine}
+}
 %% --LAYOUT-------------------------------------------------------------------
-\usepackage[centering, includeheadfoot, hmargin=1.0in, tmargin=1.0in, 
+\usepackage[centering, includeheadfoot, hmargin=1.0in, tmargin=1.0in,
   bmargin=1in, headheight=6pt]{geometry}
 %% --OTHER ENVIRONMENTS-------------------------------------------------------
 \newtheorem{lemma}{Lemma}[section]
@@ -38,39 +38,43 @@
 \newtheorem{remark}[lemma]{Remark}
 \newtheorem{examplex}[lemma]{Example}
 \newenvironment{example}
-  {\pushQED{\qed}\renewcommand{\qedsymbol}{$\diamond$}\examplex}
-  {\popQED\endexamplex}
+{\pushQED{\qed}\renewcommand{\qedsymbol}{$\diamond$}\examplex}
+{\popQED\endexamplex}
 \newtheorem{question}[lemma]{Question}
 \renewcommand{\theequation}{\arabic{section}.\arabic{lemma}.\arabic{equation}}
 \renewcommand{\thetable}{\arabic{section}.\arabic{lemma}.\arabic{equation}}
 \renewcommand{\themaintheorem}{\Alph{maintheorem}}
 
 %% --MATH---------------------------------------------------------------------
-\newcommand{\PP}{\ensuremath{\mathbb{P}}} 
+\newcommand{\PP}{\ensuremath{\mathbb{P}}}
 %% Operators
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\Spec}{Spec}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\title[short title]{Long title}
-\author[short first author]{First author}
-\address{First Author: ??;
-  {\normalfont \texttt{??}}}
+\title[Simplicial Complexes]{The simplicial complexes package for Macaulay2}
+\author[B.~Hersey]{Ben Hersey}
+\address{Ben Hersey: Department of Mathematics and Statistics, Queen's University, Kingston, Ontario, K7L 3N6;
+  {\normalfont \texttt{b.hersey@queensu.ca}}}
 
 \author[G.G.~Smith]{Gregory G.{} Smith}
 \address{Gregory G.{} Smith: Department of Mathematics and Statistics, Queen's
   University, Kingston, Ontario, K7L 3N6, Canada; {\normalfont
-    \texttt{ggsmith@mast.queensu.ca}}} 
+    \texttt{ggsmith@mast.queensu.ca}}}
 
-\thanks{2020 \emph{Mathematics Subject Classification}. ??}
-\date{19 August 2020}
+\author[A.~Zotine]{Alexandre Zotine}
+\address{Alexandre Zotine: Department of Mathematics and Statistics, Queen's University, Kingston, Ontario, K7L 3N6;
+  {\normalfont \texttt{18az45@queensu.ca}}}
+
+\thanks{todo grant stuff \emph{Mathematics Subject Classification}. todo}
+\date{\today}
 
 \begin{abstract}
-  ??
+  This article demonstrates some of the updated features of the \texttt{SimplicialComplexes} package in Macaulay2. todo
 \end{abstract}
 
 \maketitle
@@ -101,8 +105,8 @@ Something
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection*{Acknowledgements}
-We thank ... .
-
+We thank todo .
+               
 partially supported by
 the Natural Sciences and Engineering Research Council of Canada (NSERC).
 
@@ -110,7 +114,7 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{bibdiv}
   \begin{biblist}%[\normalsize]
-
+    
     
     \bib{BH}{book}{
       author={Bruns, Winfried},
@@ -126,8 +130,42 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
       % review={\MR{1251956}},
       % doi={10.1017/CBO9780511608681},
     }
-
-
+    
+    \bib{Stanley}{book}{
+      author={Stanley, R.P.},
+      title={Combinatorics and Commutative Algebra},
+      series={Progress in Mathematics},
+      volume={41},
+      edition={2},
+      publisher={Birkh{\"a}user Boston},
+      date={1996},
+      pages={xi+166}
+      % isbn={9780817643690},
+    }
+    
+    \bib{MS}{book}{
+      author={Miller, Ezra},
+      author={Sturmfels, Bernd},
+      title={Combinatorial Commutative Algebra},
+      series={Graduate Texts in Mathematics},
+      volume={227},
+      publisher={Springer-Verlag New York},
+      date={2005},
+      pages={xiv+420}
+      % isbn={9780387237077},
+    }
+    
+    \bib{Peeva}{book}{
+      author={Peeva, Irena},
+      title={Graded Syzygies},
+      series={Algebra and Applications},
+      volume={14},
+      publisher={Springer-Verlag London},
+      date={2011},
+      pages={xii+304}
+      % isbn={9781447126164},
+    }
+    
     \bib{M2}{misc}{
       label={M2},
       author={Grayson, Daniel~R.},
@@ -136,8 +174,8 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
         in algebraic geometry},
       publisher={available at \url{http://www.math.uiuc.edu/Macaulay2/}},
     }
-
-
+    
+    
   \end{biblist}
 \end{bibdiv}
 
@@ -145,3 +183,4 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
 
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+               
