@@ -1,0 +1,147 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% AMS-LaTeX Paper 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt,leqno]{amsart}
+\pdfoutput=1
+\usepackage{amsmath, amssymb, amsthm}
+%\usepackage{rsfso}
+\usepackage[svgnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows,cd}
+\tikzset{>=latex}
+\usepackage{mathtools}
+\usepackage[alwaysadjust]{paralist}
+\usepackage[alphabetic]{amsrefs}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{microtype}
+\linespread{1.06}
+\usepackage[colorlinks = true,
+            linkcolor  = DarkBlue,
+            urlcolor   = DarkRed,
+            citecolor  = DarkGreen]{hyperref}
+\hypersetup{
+  pdftitle={Smooth Hilbert Schemes},
+  pdfauthor={Roy Skjelnes and Gregory G. Smith}
+  }
+%% --LAYOUT-------------------------------------------------------------------
+\usepackage[centering, includeheadfoot, hmargin=1.0in, tmargin=1.0in, 
+  bmargin=1in, headheight=6pt]{geometry}
+%% --OTHER ENVIRONMENTS-------------------------------------------------------
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{maintheorem}{Theorem}
+\newtheorem{corollary}[lemma]{Corollary}
+\newtheorem{proposition}[lemma]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{remark}[lemma]{Remark}
+\newtheorem{examplex}[lemma]{Example}
+\newenvironment{example}
+  {\pushQED{\qed}\renewcommand{\qedsymbol}{$\diamond$}\examplex}
+  {\popQED\endexamplex}
+\newtheorem{question}[lemma]{Question}
+\renewcommand{\theequation}{\arabic{section}.\arabic{lemma}.\arabic{equation}}
+\renewcommand{\thetable}{\arabic{section}.\arabic{lemma}.\arabic{equation}}
+\renewcommand{\themaintheorem}{\Alph{maintheorem}}
+
+%% --MATH---------------------------------------------------------------------
+\newcommand{\PP}{\ensuremath{\mathbb{P}}} 
+%% Operators
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\Spec}{Spec}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+
+\title[short title]{Long title}
+\author[short first author]{First author}
+\address{First Author: ??;
+  {\normalfont \texttt{??}}}
+
+\author[G.G.~Smith]{Gregory G.{} Smith}
+\address{Gregory G.{} Smith: Department of Mathematics and Statistics, Queen's
+  University, Kingston, Ontario, K7L 3N6, Canada; {\normalfont
+    \texttt{ggsmith@mast.queensu.ca}}} 
+
+\thanks{2020 \emph{Mathematics Subject Classification}. ??}
+\date{19 August 2020}
+
+\begin{abstract}
+  ??
+\end{abstract}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addcontentsline{toc}{section}{Overview}
+\addtocounter{section}{1}
+\addtocounter{lemma}{-1}
+
+\noindent
+Something
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Combinatorics?}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Commutative Algebra?}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Topology?}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Acknowledgements}
+We thank ... .
+
+partially supported by
+the Natural Sciences and Engineering Research Council of Canada (NSERC).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{bibdiv}
+  \begin{biblist}%[\normalsize]
+
+    
+    \bib{BH}{book}{
+      author={Bruns, Winfried},
+      author={Herzog, J\"{u}rgen},
+      title={\href{https://doi.org/10.1017/CBO9780511608681}%
+        {Cohen-Macaulay rings}},
+      series={Cambridge Studies in Advanced Mathematics},
+      volume={39},
+      publisher={Cambridge University Press, Cambridge},
+      date={1993},
+      pages={xii+403},
+      % isbn={0-521-41068-1},
+      % review={\MR{1251956}},
+      % doi={10.1017/CBO9780511608681},
+    }
+
+
+    \bib{M2}{misc}{
+      label={M2},
+      author={Grayson, Daniel~R.},
+      author={Stillman, Michael~E.},
+      title={Macaulay2, a software system for research
+        in algebraic geometry},
+      publisher={available at \url{http://www.math.uiuc.edu/Macaulay2/}},
+    }
+
+
+  \end{biblist}
+\end{bibdiv}
+
+\raggedright
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
