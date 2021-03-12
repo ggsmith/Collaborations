@@ -1868,9 +1868,11 @@ doc ///
         	TO (ring, SimplicialComplex),		
         	TO (coefficientRing, SimplicialComplex),		
         	TO (dim, SimplicialComplex),
-        	TO (facets, SimplicialComplex),		
+        	TO (facets, SimplicialComplex),	
 		TO (vertices, SimplicialComplex),
-        	TO (faces, ZZ, SimplicialComplex)
+        	TO (faces, ZZ, SimplicialComplex),
+		TO (fVector, SimplicialComplex),
+		TO (isPure, SimplicialComplex)
 	    }@
     SeeAlso
         "making an abstract simplicial complex"
@@ -2059,6 +2061,63 @@ doc ///
 ///
 
 
+doc /// 
+    Key
+        (isPure, SimplicialComplex)
+    Headline
+        whether the facets are equidimensional
+    Usage
+        isPure Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        : Boolean
+	    which is true if the facets of $\Delta$ are of the same dimension,
+	    and false otherwise.
+    Description
+    	Text	
+	    An abstract simplicial complex is {\em pure} of dimension $d$ if
+	    every face of dimension less that $d$ lies in a facet of dimension
+	    exactly $d$.  In other words, all the facets of a pure simplicial
+	    complex have the same dimension.
+        Text
+	    Most classic examples of abstract simplicial complexes are pure.
+        Example
+            S = ZZ[x_1..x_18];
+	    isPure simplexComplex(5, S)
+	    isPure bartnetteSphereComplex S
+	    isPure bjornerComplex S
+	    isPure dunceHatComplex S
+	    isPure poincareSphereComplex S
+    	Text
+	    The abstract simplicial complex from Example 1.8 of
+            Miller-Sturmfels' {\em Combinatorial Commutative Algebra} consists
+            of a triangle (on vertices $a$, $b$, $c$), two edges (connecting
+            $c$ to $d$ and $b$ to $d$), and an isolated vertex (namely $e$).
+            It has six minimal nonfaces.  Moreover, its 1-skeleton and
+            2-skeleton are not pure.
+    	Example
+	    R = ZZ/101[a..f];
+	    Γ = simplicialComplex {e, c*d, b*d, a*b*c}
+	    isPure Γ
+	    isPure skeleton (1, Γ)
+	    isPure skeleton (2, Γ)
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no faces.  Both are pure.
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    isPure irrelevant
+	    void = simplicialComplex monomialIdeal 1_S
+	    isPure void 
+    SeeAlso
+        "finding attributes and properties"      
+	(dim, SimplicialComplex)
+	(facets, SimplicialComplex)
+	(skeleton, ZZ, SimplicialComplex)
+///
+ 
 
 
 ------------------------------------------------------------------------------
@@ -2792,38 +2851,7 @@ doc///
 	lyubeznikSimplicialComplex
 ///
 
-doc /// 
-    Key
-        (isPure, SimplicialComplex)
-    Headline
-        returns whether the facets are equidimensional
-    Usage
-        isPure D
-    Inputs
-        D : SimplicialComplex
-    Outputs
-        : Boolean
-	    which is true if the facets of {\tt D} are of the same dimension,
-	    and false otherwise.
-    Description
-        Text
-	    The simplicial complex below is a triangulated fish.
-        Example
-            R = ZZ[a..f];
-	    D = simplicialComplex {a*b*c, a*b*d, d*e*f};
-	    isPure D
-	Text
-	    By removing an edge of one of the triangles, we obtain a 
-	    simplicial complex with a lower dimensional facet.
-        Example
-	    D' = simplicialComplex {a*b*c, b*d, d*e*f}
-	    isPure D'
-    SeeAlso
-        SimplicialComplexes 
-	(dim,SimplicialComplex)
-	facets
-///
- 
+
 
 
 

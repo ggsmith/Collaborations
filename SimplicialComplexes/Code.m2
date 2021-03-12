@@ -417,6 +417,16 @@ faces SimplicialComplex := HashTable => D -> (
     hashTable apply(toList(-1..dim D), i -> i => faces(i, D))
     )
 
+-- method defined in the Polyhedra package
+isPure SimplicialComplex := Boolean => D -> (
+     F := first entries facets D;
+     L := unique apply(F, m -> # support m);
+     #L <= 1
+     )
+
+
+
+
 
 
 lcmMonomials = (L) -> (
@@ -623,12 +633,6 @@ algebraicShifting SimplicialComplex := opts -> S -> (
 
 
 
--- method defined in the Polyhedra package
-isPure SimplicialComplex := Boolean => (D) -> (
-     F := first entries facets D;
-     L := unique apply(F, m -> # support m);
-     #L <= 1
-     )
 
 
 --------------------------------------------------------------------------
