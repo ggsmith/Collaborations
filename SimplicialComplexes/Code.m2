@@ -212,8 +212,8 @@ grunbaumBallComplex PolynomialRing := SimplicialComplex => S -> (
 
 zieglerBallComplex = method()
 zieglerBallComplex PolynomialRing := SimplicialComplex => S -> (
-    if numgens S < 14 then
-        error "-- expected a polynomial ring with at least 14 generators";    
+    if numgens S < 10 then
+        error "-- expected a polynomial ring with at least 10 generators";    
     simplicialComplex apply(hachimoriTable#7, f -> product(f, i -> S_i))
     )
 
