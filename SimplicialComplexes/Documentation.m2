@@ -120,7 +120,7 @@ doc ///
     	    @SUBSECTION "Basic operations producing abstract simplicial complexes"@
 	Text
     	    @UL {
-		TO (inducedComplex, SimplicialComplex, List),
+		TO (inducedSubcomplex, SimplicialComplex, List),
 		TO (dual, SimplicialComplex),
 		TO (boundaryMap,ZZ, SimplicialComplex),
 		TO (link, SimplicialComplex, RingElement),
@@ -1383,12 +1383,12 @@ doc ///
 ------------------------------------------------------------------------------
 doc///
     Key
-        (inducedComplex, SimplicialComplex, List)
-        inducedComplex	
+        (inducedSubcomplex, SimplicialComplex, List)
+        inducedSubcomplex	
     Headline
         make the induced simplicial complex on a subset of vertices
     Usage
-        inducedComplex(Delta, V)
+        inducedSubcomplex(Delta, V)
     Inputs
         Delta : SimplicialComplex
         V : List
@@ -1405,7 +1405,7 @@ doc///
 	Example
 	    S = ZZ[x_0..x_3];
 	    Δ = simplicialComplex{x_0*x_1*x_2, x_2*x_3, x_1*x_3}
-	    Γ = inducedComplex(Δ, {x_1, x_2, x_3})
+	    Γ = inducedSubcomplex(Δ, {x_1, x_2, x_3})
 	    vertices Γ
 	    assert (isWellDefined Γ and set vertices Γ === set {x_1, x_2, x_3})
 	    assert all (first entries facets Γ, 
