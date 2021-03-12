@@ -120,7 +120,7 @@ doc ///
     	    @SUBSECTION "Basic operations producing abstract simplicial complexes"@
 	Text
     	    @UL {
-		TO (inducedComplex, SimplicialComplex, List),
+		TO (inducedSubcomplex, SimplicialComplex, List),
 		TO (dual, SimplicialComplex),
 		TO (boundaryMap,ZZ, SimplicialComplex),
 		TO (link, SimplicialComplex, RingElement),
@@ -1383,12 +1383,12 @@ doc ///
 ------------------------------------------------------------------------------
 doc///
     Key
-        (inducedComplex, SimplicialComplex, List)
-        inducedComplex	
+        (inducedSubcomplex, SimplicialComplex, List)
+        inducedSubcomplex	
     Headline
         make the induced simplicial complex on a subset of vertices
     Usage
-        inducedComplex(Delta, V)
+        inducedSubcomplex(Delta, V)
     Inputs
         Delta : SimplicialComplex
         V : List
@@ -1405,7 +1405,7 @@ doc///
 	Example
 	    S = ZZ[x_0..x_3];
 	    Δ = simplicialComplex{x_0*x_1*x_2, x_2*x_3, x_1*x_3}
-	    Γ = inducedComplex(Δ, {x_1, x_2, x_3})
+	    Γ = inducedSubcomplex(Δ, {x_1, x_2, x_3})
 	    vertices Γ
 	    assert (isWellDefined Γ and set vertices Γ === set {x_1, x_2, x_3})
 	    assert all (first entries facets Γ, 
@@ -1934,7 +1934,7 @@ doc ///
     Key
         (faces, SimplicialComplex)
     Headline
-        get faces of a simplicial complex
+        get the faces of a simplicial complex
     Usage
         faces Delta
     Inputs
@@ -1989,6 +1989,7 @@ doc ///
         (vertices, SimplicialComplex)
 	(dim, SimplicialComplex)	    
 	(faces, ZZ, SimplicialComplex)
+	(fVector, SimplicialComplex)	
 ///
 
 doc /// 
@@ -2007,38 +2008,54 @@ doc ///
 	    with one row, whose entries are squarefree monomials representing
 	    the faces of $\Delta$ of dimension $i$
     Description
-        Text
-	    In Macaulay2, every @TO2(SimplicialComplex, "simplicial complex")@
-	    is equipped with a polynomial ring, and the matrix of {\tt i}-faces
-	    is defined over this ring.
+        Text	    
+	    In this package, an abstract simplicial complex $\Delta$ is
+            constructed as squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
+            in the abstract simplicial complex are identified with a subset of
+            the variables in the polynomial ring and each face is identified
+            with the product of the corresponding variables.  This method
+            returns a @TO Matrix@ whose entries are the monomials
+            corresponding to the $i$-faces of $\Delta$.
+    	Text
+    	    The faces of the @TO2(simplexComplex, "simplex")@ correspond to
+    	    all subsets of the underlying vertex set.
+        Example
+            S = QQ[x_0..x_3];
+	    Δ = simplexComplex(3, S)
+	    netList for i from -1 to dim Δ list {i,faces(i, Δ)}
+	    assert all(-1..dim Δ, i ->  faces(i, Δ) === sub(matrix{rsort subsets(vertices Δ, i+1)/product}, S))
 	Text
-	    This triangulation of the real projective plane has 6 vertices,
-	    15 edges, and 10 triangles.
+	    The faces of the @TO2(dunceHatComplex, "dunce hat")@
+    	    are a proper subset of the $7$-simplex.
+    	Example	    
+	    R = ZZ[a..h];
+	    Γ = dunceHatComplex R
+	    netList for i from -1 to dim Γ list {i,faces(i, Γ)}
+	    monomialIdeal Γ
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no faces.
 	Example
-	    R = ZZ[a..f];
-	    D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
-	                                      b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
-	    faces(-1,D)
-	    faces(0,D)
-	    faces(1,D)
-	    faces(2,D)
-	    fVector D
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    dim irrelevant
+	    faces (-1, irrelevant)
+	    assert(faces(-1, irrelevant) === basis(0,S))
+	    void = simplicialComplex monomialIdeal 1_S
+	    faces(-1, void)
+	    assert all(-2..7, i -> faces(i, void) == 0)
 	Text
-	    Note that every simplicial complex contains an empty face, except
-	    for the void complex.
-	Example
-	    R' = ZZ[a..d];
-	    void = simplicialComplex monomialIdeal 1_R'
-	    faces(-1,void)
-	Text
-	    To avoid repeated computation, the matrix of {\tt i}-faces
-	    is cached at {\tt D.cache.faces#i}. This function will use this
-	    value if it has already been computed.
+	    To avoid repeated computation, the values of this method are saved
+	    the @TO2(CacheTable, "cache table")@ of the abstract simplicial
+	    complex $\Delta$.
     SeeAlso
-        SimplicialComplexes
-	facets
-	boundaryMap
-	fVector
+        "finding attributes and properties"  
+        (facets, SimplicialComplex)
+        (vertices, SimplicialComplex)
+	(dim, SimplicialComplex)	    
+	(faces, SimplicialComplex)
+	(fVector, SimplicialComplex)
 ///
 
 
