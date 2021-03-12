@@ -1577,7 +1577,7 @@ doc ///
     	    Miller-Sturmfels.  Specifically, an abstract simplicial complex
     	    $\Delta$ is Cohen-Macaulay if and only if, for all faces $F$ in
     	    $\Delta$ and all $i$ such that 
-	    $i < \operatorname{dim} \operatorname{link}(\Delta, F)}, 
+	    $i < \operatorname{dim} \operatorname{link}(\Delta, F)$, 
 	    the $i$-th reduced homology of $\operatorname{link}(\Delta, F)$
     	    vanishes.
 	Example 
