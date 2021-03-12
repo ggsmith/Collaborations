@@ -391,7 +391,28 @@ vertices SimplicialComplex := D -> (
     )
 -- vertices Face := F -> F.vertices
 
--- 'faces' method is defined in 'Polyhedra" package
+
+-- 'faces' method defined in Polyhedra
+faces (ZZ, SimplicialComplex) := Matrix => (i, D) -> (
+    S := ring D;
+    if not D.cache.?faces then (
+	D.cache.faces = new MutableHashTable;
+	E := (coefficientRing S)(monoid[gens S, SkewCommutative => true]);
+	phi := map(E, S, gens E);
+	J := phi(ideal D);
+	D.cache.faces.ring = E/J;
+	);
+    if not D.cache.faces#?i then (
+    	D.cache.faces#i = if dim D < -1 or i < -1 or i > dim D then 
+	    matrix(S, {{}})
+    	else if i === -1 then matrix {{1_S}}
+    	else (
+	    R := D.cache.faces.ring;
+	    sub(matrix basis(i+1, R), vars S)
+	    )
+	);
+    D.cache.faces#i
+    )
 faces SimplicialComplex := HashTable => D -> (
     hashTable apply(toList(-1..dim D), i -> i => faces(i, D))
     )
@@ -407,129 +428,6 @@ lcmM = (L) -> (
 -- lcmM finds the lcm of a list of monomials; the quickest method Sorin knows
     m := intersect toList (L/(i -> monomialIdeal(i)));
     m_0)
-
-
-
----------------------------------------
--- frame procedure for original "faces" now renamed
--- (unchanged) to facesM, which has the option
--- to return also a list of Faces
--- added by Janko
-
---faces = method(Options=>{useFaceClass=>false})
-
--- 'faces' method defined in Polyhedra
-faces (ZZ, SimplicialComplex) := Matrix => (r, D) -> (
-    -*
-    if opt.useFaceClass then (
-   	matrixToFaces(facesM(r,D))
-	) 
-    *-
-    facesM(r,D)
-    )
-
-
-
-
--------------------------------------------------
--- convert Matrix with Monomials to List of Faces
--- added by Janko
-
-matrixToFaces = method()
-matrixToFaces Matrix := M -> (
-    if M == 0 then return {};
-    apply ((entries M)#0, face)
-    )
-
-facesM = method()
-facesM (ZZ, SimplicialComplex) := (r,D) -> (
-    R := ring D;
-    if dim D < -1 then return matrix(R,{{}});
-    if dim D == -1 then(
-	if r == -1 then return matrix(R,{{1}})
-	else return matrix(R,{{}})
-	);
-    if not D.cache.?faces then (
-	D.cache.faces = new MutableHashTable;
-	B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
-	D.cache.faces.ideal = (map(B,ring(ideal D),gens B))(ideal D);
-	);
-    if r < -1 or r > dim D then matrix(R, {{}})
-    else (
-	if not D.cache.faces#?r then (
-	    J := D.cache.faces.ideal;
-	    D.cache.faces#r = substitute(matrix basis(r+1,coker gens J), vars R));
-	D.cache.faces#r
-     	)
-    )
-
-
-    
--*
---TODO: potential replacement for facesM. Need to check if it speeds up computing time.
-facesM (ZZ, SimplicialComplex) := (r,D) -> (
-    R := ring D;
-    if dim D < -1 then return matrix(R,{{}});
-    if dim D == -1 then(
-	if r == -1 then return matrix(R,{{1}})
-	else return matrix(R,{{}})
-	);
-    if not D.cache.?faces then (
-	D.cache.faces = new MutableHashTable;
-	B := (coefficientRing R) (monoid [gens R]);
-	D.cache.faces.ideal = (map(B,ring(ideal D),gens B))(ideal D + ideal(for x in gens R list x^2))
-       	);
-    if r < -1 or r > dim D then matrix(R, {{}})
-    else (
-	if not D.cache.faces#?r then (
-	    J := D.cache.faces.ideal;
-	    D.cache.faces#r = substitute(matrix basis(r+1,coker gens J), vars R));
-	D.cache.faces#r
-     	)
-    )
-*-
-    
-
-
-
-------------------Testing facesM----------------------
-
-facesMTEST1 = (r,D) -> (
-    R := ring D;
-    if dim D < -1 then return matrix(R,{{}});
-    if dim D == -1 then(
-	if r == -1 then return matrix(R,{{1}})
-	else return matrix(R,{{}})
-	);
-    B := (coefficientRing R) (monoid [gens R, SkewCommutative=>true]);
-    J := (map(B,ring(ideal D),gens B))(ideal D);
-    if r < -1 or r > dim D then matrix(R, {{}})
-    else substitute(matrix basis(r+1,coker gens J), vars R)
-    )
-
-
-facesMTEST2 = (r,D) -> (
-    R := ring D;
-    if dim D < -1 then return matrix(R,{{}});
-    if dim D == -1 then(
-	if r == -1 then return matrix(R,{{1}})
-	else return matrix(R,{{}})
-	);
-    J := ideal D + ideal(for x in gens R list x^2);
-    if r < -1 or r > dim D then matrix(R, {{}})
-    else substitute(matrix basis(r+1, R/J), vars R)
-    )
-
-n = 21
-R = QQ[x_0..x_n]
-D = simplexComplex(n,R)
-E = simplexComplex(n,R)
-
---elapsedTime facesMTEST1(17,D);
---elapsedTime facesMTEST(19,E);
---benchmark "facesMTEST1(17,D)"
---benchmark "facesMTEST2(17,D)"
-
 
 
 
