@@ -20,8 +20,8 @@ rough section planning
 - Should give some of the motivation in identifying Cohen-Macaulay rings
 - Prop 3.1 ch 3 of Stanley gives a condition for checking CM
 - Show examples of shellable + non-shellable
-- Rudin is Cohen-Macaulay but not shellable
-- Ziegler ball not shellabe or CM
+- Rudin ball/Ziegler ball is Cohen-Macaulay but not shellable
+- Certain "chess-board" complexes are pure but not Cohen-Macaulay
 - Use Reisner's criterion (corollary 5.3.9) in Bruns-Herzog for an example + non-example
 - Another way to check CM is to look at the minimal free resolution to compute projective
   dimension and compare with dimension (may be worth mentoning)

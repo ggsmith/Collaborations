@@ -1868,9 +1868,11 @@ doc ///
         	TO (ring, SimplicialComplex),		
         	TO (coefficientRing, SimplicialComplex),		
         	TO (dim, SimplicialComplex),
-        	TO (facets, SimplicialComplex),		
+        	TO (facets, SimplicialComplex),	
 		TO (vertices, SimplicialComplex),
-        	TO (faces, ZZ, SimplicialComplex)
+        	TO (faces, ZZ, SimplicialComplex),
+		TO (fVector, SimplicialComplex),
+		TO (isPure, SimplicialComplex)
 	    }@
     SeeAlso
         "making an abstract simplicial complex"
@@ -1934,7 +1936,7 @@ doc ///
     Key
         (faces, SimplicialComplex)
     Headline
-        get faces of a simplicial complex
+        get the faces of a simplicial complex
     Usage
         faces Delta
     Inputs
@@ -1989,6 +1991,7 @@ doc ///
         (vertices, SimplicialComplex)
 	(dim, SimplicialComplex)	    
 	(faces, ZZ, SimplicialComplex)
+	(fVector, SimplicialComplex)	
 ///
 
 doc /// 
@@ -2007,41 +2010,114 @@ doc ///
 	    with one row, whose entries are squarefree monomials representing
 	    the faces of $\Delta$ of dimension $i$
     Description
-        Text
-	    In Macaulay2, every @TO2(SimplicialComplex, "simplicial complex")@
-	    is equipped with a polynomial ring, and the matrix of {\tt i}-faces
-	    is defined over this ring.
+        Text	    
+	    In this package, an abstract simplicial complex $\Delta$ is
+            constructed as squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
+            in the abstract simplicial complex are identified with a subset of
+            the variables in the polynomial ring and each face is identified
+            with the product of the corresponding variables.  This method
+            returns a @TO Matrix@ whose entries are the monomials
+            corresponding to the $i$-faces of $\Delta$.
+    	Text
+    	    The faces of the @TO2(simplexComplex, "simplex")@ correspond to
+    	    all subsets of the underlying vertex set.
+        Example
+            S = QQ[x_0..x_3];
+	    Δ = simplexComplex(3, S)
+	    netList for i from -1 to dim Δ list {i,faces(i, Δ)}
+	    assert all(-1..dim Δ, i ->  faces(i, Δ) === sub(matrix{rsort subsets(vertices Δ, i+1)/product}, S))
 	Text
-	    This triangulation of the real projective plane has 6 vertices,
-	    15 edges, and 10 triangles.
+	    The faces of the @TO2(dunceHatComplex, "dunce hat")@
+    	    are a proper subset of the $7$-simplex.
+    	Example	    
+	    R = ZZ[a..h];
+	    Γ = dunceHatComplex R
+	    netList for i from -1 to dim Γ list {i,faces(i, Γ)}
+	    monomialIdeal Γ
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no faces.
 	Example
-	    R = ZZ[a..f];
-	    D = simplicialComplex monomialIdeal(a*b*c,a*b*f,a*c*e,a*d*e,a*d*f,
-	                                      b*c*d,b*d*e,b*e*f,c*d*f,c*e*f)
-	    faces(-1,D)
-	    faces(0,D)
-	    faces(1,D)
-	    faces(2,D)
-	    fVector D
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    dim irrelevant
+	    faces (-1, irrelevant)
+	    assert(faces(-1, irrelevant) === basis(0,S))
+	    void = simplicialComplex monomialIdeal 1_S
+	    faces(-1, void)
+	    assert all(-2..7, i -> faces(i, void) == 0)
 	Text
-	    Note that every simplicial complex contains an empty face, except
-	    for the void complex.
-	Example
-	    R' = ZZ[a..d];
-	    void = simplicialComplex monomialIdeal 1_R'
-	    faces(-1,void)
-	Text
-	    To avoid repeated computation, the matrix of {\tt i}-faces
-	    is cached at {\tt D.cache.faces#i}. This function will use this
-	    value if it has already been computed.
+	    To avoid repeated computation, the values of this method are saved
+	    the @TO2(CacheTable, "cache table")@ of the abstract simplicial
+	    complex $\Delta$.
     SeeAlso
-        SimplicialComplexes
-	facets
-	boundaryMap
-	fVector
+        "finding attributes and properties"  
+        (facets, SimplicialComplex)
+        (vertices, SimplicialComplex)
+	(dim, SimplicialComplex)	    
+	(faces, SimplicialComplex)
+	(fVector, SimplicialComplex)
 ///
 
 
+doc /// 
+    Key
+        (isPure, SimplicialComplex)
+    Headline
+        whether the facets are equidimensional
+    Usage
+        isPure Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        : Boolean
+	    which is true if the facets of $\Delta$ are of the same dimension,
+	    and false otherwise.
+    Description
+    	Text	
+	    An abstract simplicial complex is {\em pure} of dimension $d$ if
+	    every face of dimension less that $d$ lies in a facet of dimension
+	    exactly $d$.  In other words, all the facets of a pure simplicial
+	    complex have the same dimension.
+        Text
+	    Most classic examples of abstract simplicial complexes are pure.
+        Example
+            S = ZZ[x_1..x_18];
+	    isPure simplexComplex(5, S)
+	    isPure bartnetteSphereComplex S
+	    isPure bjornerComplex S
+	    isPure dunceHatComplex S
+	    isPure poincareSphereComplex S
+    	Text
+	    The abstract simplicial complex from Example 1.8 of
+            Miller-Sturmfels' {\em Combinatorial Commutative Algebra} consists
+            of a triangle (on vertices $a$, $b$, $c$), two edges (connecting
+            $c$ to $d$ and $b$ to $d$), and an isolated vertex (namely $e$).
+            It has six minimal nonfaces.  Moreover, its 1-skeleton and
+            2-skeleton are not pure.
+    	Example
+	    R = ZZ/101[a..f];
+	    Γ = simplicialComplex {e, c*d, b*d, a*b*c}
+	    isPure Γ
+	    isPure skeleton (1, Γ)
+	    isPure skeleton (2, Γ)
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no faces.  Both are pure.
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    isPure irrelevant
+	    void = simplicialComplex monomialIdeal 1_S
+	    isPure void 
+    SeeAlso
+        "finding attributes and properties"      
+	(dim, SimplicialComplex)
+	(facets, SimplicialComplex)
+	(skeleton, ZZ, SimplicialComplex)
+///
+ 
 
 
 ------------------------------------------------------------------------------
@@ -2775,38 +2851,7 @@ doc///
 	lyubeznikSimplicialComplex
 ///
 
-doc /// 
-    Key
-        (isPure, SimplicialComplex)
-    Headline
-        returns whether the facets are equidimensional
-    Usage
-        isPure D
-    Inputs
-        D : SimplicialComplex
-    Outputs
-        : Boolean
-	    which is true if the facets of {\tt D} are of the same dimension,
-	    and false otherwise.
-    Description
-        Text
-	    The simplicial complex below is a triangulated fish.
-        Example
-            R = ZZ[a..f];
-	    D = simplicialComplex {a*b*c, a*b*d, d*e*f};
-	    isPure D
-	Text
-	    By removing an edge of one of the triangles, we obtain a 
-	    simplicial complex with a lower dimensional facet.
-        Example
-	    D' = simplicialComplex {a*b*c, b*d, d*e*f}
-	    isPure D'
-    SeeAlso
-        SimplicialComplexes 
-	(dim,SimplicialComplex)
-	facets
-///
- 
+
 
 
 
