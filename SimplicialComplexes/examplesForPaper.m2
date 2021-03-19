@@ -18,8 +18,8 @@ kΔ = S/IΔ
 
 fΔ = fVector Δ
 
---
-for j to d list(
+-- computing h-vector
+hΔ = for j to d list(
     sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(fΔ#(i-1))
     )
 
@@ -66,7 +66,7 @@ fΔ = fVector Δ
 d = dim Δ
 
 R = QQ[t]
-sum for i to d+1 list fΔ#(i-1)*t^i*(1-t)^(d+1-i)
+hΔ = sum for i to d+1 list fΔ#(i-1)*t^i*(1-t)^(d+1-i)
 reduceHilbert(hilbertSeries kΔ)
 
 --------------------- Euler characteristic ---------------------------------
@@ -78,15 +78,55 @@ sum for i to d list (-1)^i*(fΔ#(i))
 -- The Zeigler ball is also Cohen-Macaulay, but not shellable. We compute
 -- the Cohen-Macaulay property a different way, using B.H 5.3.9
 
+faceList = flatten flatten for i from -1 to dim Δ list entries (faces Δ)#i
 
-faceList = flatten flatten for i to dim Δ list entries (faces Δ)#i
-
-homologyRankForLink = (Δ,F) -> (
+totalHomologyRankForLink = (Δ,F) -> (
     linkF := link(Δ, F);
     dL := dim linkF;
-    dF := #support F;
-    sum for i from -1 to dL-dF-2 list rank (homology link(Δ,F))#i
+    sum for i from -1 to dL-1 list rank (homology link(Δ,F))#i
     ) 
 
-all(faceList, F -> homologyRankForLink(Δ,F) == 0)
+all(faceList, F -> totalHomologyRankForLink(Δ,F) == 0)
+
+------------- Projective Plane In Characteristic 2-------------------------
+
+-------------------------- h-vector ---------------------------------------
+
+S = ZZ/2[x_0..x_5]
+Δ = simplicialComplex{ S_0*S_1*S_4, S_0*S_1*S_5, S_0*S_2*S_5, S_0*S_3*S_3,
+                       S_0*S_3*S_4, S_1*S_2*S_3, S_1*S_2*S_4, S_1*S_3*S_5, 
+		       S_2*S_4*S_5, S_3*S_4*S_5 }
+IΔ = ideal Δ
+kΔ = S/IΔ
+fΔ = fVector Δ
+d = dim Δ
+
+R = QQ[t]
+hΔ = sum for i to d+1 list fΔ#(i-1)*t^i*(1-t)^(d+1-i)
+reduceHilbert(hilbertSeries kΔ)
+
+--------------------- Euler characteristic ---------------------------------
+
+sum for i to d list (-1)^i*(fΔ#(i))
+
+---------------- Cohen-Macaulay and Shellability ---------------------------
+
+-- The Zeigler ball is also Cohen-Macaulay, but not shellable. We compute
+-- the Cohen-Macaulay property a different way, using B.H 5.3.9
+
+faceList = flatten flatten for i from -1 to dim Δ list entries (faces Δ)#i
+
+totalHomologyRankForLink = (Δ,F) -> (
+    linkF := link(Δ, F);
+    dL := dim linkF;
+    sum for i from -1 to dL-1 list rank (homology link(Δ,F))#i
+    ) 
+
+all(faceList, F -> totalHomologyRankForLink(Δ,F) == 0)
+
+-- If not Cohen-Macaulay, find the specific face where this condition fails
+for F in faceList do(
+    print"--";
+    print(F, link(Δ,F), totalHomologyRankForLink(Δ,F))
+    )
 
