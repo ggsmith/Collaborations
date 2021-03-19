@@ -922,43 +922,44 @@ doc ///
 	    irrelevant = simplexComplex (-1, S)
 	    monomialIdeal irrelevant
 	    dim irrelevant
-	    F = fVector irrelevant
-	    assert (facets irrelevant === matrix {{1_S}} and dim irrelevant === -1 and F#-1 === 1)
+	    fVector irrelevant
+	    assert(facets irrelevant === matrix {{1_S}})
+	    assert(dim irrelevant === -1 and fVector irrelevant === {1})
     	Example
 	    Δ0 = simplexComplex (0, S)
 	    monomialIdeal Δ0
 	    dim Δ0
-	    F0 = fVector Δ0
-	    assert (facets Δ0 === matrix {{a}} and dim Δ0 === 0)
-	    assert all(-1..0, i -> F0#i === binomial(0+1,i+1))
+	    fVector Δ0
+	    assert(facets Δ0 === matrix {{a}} and dim Δ0 === 0)
+    	    assert(fVector Δ0 == {1,1})	    
     	Example
 	    Δ1 = simplexComplex (1, S)
 	    monomialIdeal Δ1
 	    dim Δ1
-	    F1 = fVector Δ1
-	    assert (facets Δ1 === matrix {{a*b}} and dim Δ1 === 1)
-	    assert all(-1..1, i -> F1#i === binomial(1+1,i+1))
+	    fVector Δ1
+	    assert(facets Δ1 === matrix {{a*b}} and dim Δ1 === 1)
+	    assert(fVector Δ1 === {1,2,1})
     	Example
 	    Δ2 = simplexComplex (2, S)
 	    monomialIdeal Δ2
 	    dim Δ2
-	    F2 = fVector Δ2	    
-	    assert (facets Δ2 === matrix {{a*b*c}} and dim Δ2 === 2)
-	    assert all(-1..2, i -> F2#i === binomial(2+1,i+1))
+	    fVector Δ2	    
+	    assert(facets Δ2 === matrix {{a*b*c}} and dim Δ2 === 2)
+	    assert(fVector Δ2 === {1,3,3,1})
     	Example
 	    Δ3 = simplexComplex (3, S)
 	    monomialIdeal Δ3
 	    dim Δ3
-	    F3 = fVector Δ3
-	    assert (facets Δ3 === matrix {{a*b*c*d}} and dim Δ3 === 3)
-	    assert all(-1..3, i -> F3#i === binomial(3+1,i+1))
+	    fVector Δ3
+	    assert(facets Δ3 === matrix {{a*b*c*d}} and dim Δ3 === 3)
+	    assert(fVector Δ3 === toList apply(-1..3, i -> binomial(3+1,i+1)))
     	Example
 	    Δ4 = simplexComplex (4, S)
 	    monomialIdeal Δ4
 	    dim Δ4
-	    F4 = fVector Δ4
-	    assert (facets Δ4 === matrix {{a*b*c*d*e}} and dim Δ4 === 4)
-	    assert all(-1..4, i -> F4#i === binomial(4+1,i+1))
+	    fVector Δ4
+	    assert(facets Δ4 === matrix {{a*b*c*d*e}} and dim Δ4 === 4)
+	    assert(fVector Δ4 === toList apply(-1..4, i -> binomial(4+1,i+1)))	    
 	Text
 	    The vertices in the $d$-simplex are the first $d+1$ variables in
 	    the given polynomial ring.	    
@@ -993,10 +994,10 @@ doc ///
 	    Δ = bartnetteSphereComplex S
 	    dim Δ
 	    fVector Δ
-	    assert (dim Δ === 3 and isPure Δ)
-	    assert (ideal Δ === ideal(b*c*d, a*c*e, c*d*e, a*b*f, b*d*f, a*e*f,
+	    assert(dim Δ === 3 and isPure Δ)
+	    assert(ideal Δ === ideal(b*c*d, a*c*e, c*d*e, a*b*f, b*d*f, a*e*f,
 		    c*d*g, a*e*g, b*f*g, b*d*h, c*e*h, a*f*h, g*h))
-	    assert (apply(-1..3, i -> (fVector Δ)#i) === (1,8,27,38,19))
+	    assert(fVector Δ === {1,8,27,38,19})
 	Text
 	    The vertices in the Bartnette sphere are the first 8 variables in
 	    the given polynomial ring.
@@ -1004,7 +1005,7 @@ doc ///
 	    R = QQ[x_0..x_10];
 	    Γ = bartnetteSphereComplex R
 	    monomialIdeal Γ
-    	    assert (dim Γ === 3 and isPure Γ)	    
+    	    assert(dim Γ === 3 and isPure Γ)	    
     	Text
 	    Our enumeration of the vertices follows Example 9.5.23 in Jesús A
             De Loera, Jörg Rambau, and Francisco Santos, 
@@ -1046,9 +1047,9 @@ doc ///
 	    Δ = poincareSphereComplex S
 	    dim Δ
 	    fVector Δ
-	    assert (dim Δ === 3 and isPure Δ)
-	    assert (apply(-1..3, i -> (fVector Δ)#i) === (1,16,106,180,90))
 	    prune HH chainComplex Δ
+	    assert(dim Δ === 3 and isPure Δ)
+	    assert(fVector Δ === {1,16,106,180,90})
 	Text
 	    This abstract simplicial complex is Cohen-Macaulay.
 	Text
@@ -1094,8 +1095,8 @@ doc ///
 	    Δ = nonPiecewiseLinearSphereComplex S
 	    dim Δ 
 	    fVector Δ
-	    assert (dim Δ === 5 and isPure Δ)
-	    assert (apply(-1..5, i -> (fVector Δ)#i) === (1,18,141,515,930,807,269))
+	    assert(dim Δ === 5 and isPure Δ)
+	    assert(fVector Δ === {1,18,141,515,930,807,269})
 	Text
 	    This abstract simplicial complex is Cohen-Macaulay.
 	Text
@@ -1137,8 +1138,8 @@ doc ///
 	    Δ = rudinBallComplex S
 	    dim Δ
 	    fVector Δ
-	    assert (dim Δ === 3 and isPure Δ)
-	    assert (apply(-1..3, i -> (fVector Δ)#i) === (1,14,66,94,41))
+	    assert(dim Δ === 3 and isPure Δ)
+	    assert(fVector Δ === {1,14,66,94,41})
 	Text
 	    Our enumeration of the vertices follows the {\tt rudin}
 	    example in Masahiro Hachimori's
@@ -1176,8 +1177,8 @@ doc ///
 	    Δ = grunbaumBallComplex S
 	    dim Δ 
 	    fVector Δ
-	    assert (dim Δ === 3 and isPure Δ)
-	    assert (apply(-1..3, i -> (fVector Δ)#i) === (1,14,54,70,29))
+	    assert(dim Δ === 3 and isPure Δ)
+	    assert(fVector Δ === {1,14,54,70,29})
 	Text
 	    Our enumeration of the vertices follows the {\tt gruenbaum}
 	    example in Masahiro Hachimori's
@@ -1216,8 +1217,8 @@ doc ///
 	    Δ = zieglerBallComplex S
 	    dim Δ 
 	    fVector Δ
-	    assert (dim Δ === 3 and isPure Δ)
-	    assert (apply(-1..3, i -> (fVector Δ)#i) === (1,10,38,50,21))
+	    assert(dim Δ === 3 and isPure Δ)
+	    assert(fVector Δ === {1,10,38,50,21})
 	Text
 	    Our enumeration of the vertices follows the {\tt ziegler}
 	    example in Masahiro Hachimori's
@@ -1265,8 +1266,8 @@ doc ///
 	    Δ = dunceHatComplex S
 	    dim Δ 
 	    fVector Δ
-	    assert (dim Δ === 2 and isPure Δ)
-	    assert (apply(-1..2, i -> (fVector Δ)#i) === (1,8,24,17))
+	    assert(dim Δ === 2 and isPure Δ)
+	    assert(fVector Δ === {1,8,24,17})
 	Text
 	    Our enumeration of the vertices follows the {\tt dunce hat}
 	    example in Masahiro Hachimori's
@@ -1305,8 +1306,8 @@ doc ///
 	    Δ = bjornerComplex S
 	    dim Δ 
 	    fVector Δ
-	    assert (dim Δ === 2 and isPure Δ)
-	    assert (apply(-1..2, i -> (fVector Δ)#i) === (1,6,15,11))
+	    assert(dim Δ === 2 and isPure Δ)
+	    assert(fVector Δ === {1,6,15,11})
 	    prune HH chainComplex Δ
 	Text
 	    A shellable abstract simplicial complex $\Delta$ is {\em extendably
@@ -2132,6 +2133,85 @@ doc ///
 	(skeleton, ZZ, SimplicialComplex)
 ///
  
+doc ///
+    Key
+        (fVector, SimplicialComplex)
+    Headline
+        get the f-vector of an abstract simplicial complex
+    Usage
+        f = fVector Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        f : List
+	    where the $i$-th entry is the number of faces in $\Delta$ of
+	    dimension $i-1$ and $0 \leqslant i \leqslant \text{dim} \Delta$	    
+    Description
+    	Text
+	    The {\em f-vector} of an abstract simplicial complex is the vector
+	    $(f_{-1}, f_0, f_1, \dotsc, f_d)$ of nonnegative integers such
+	    that $f_i$ is the number of $i$-dimensional faces in the
+	    simplicial complex.
+    	Text
+	    Since the $i$-dimensional faces of the 
+	    @TO2(simplexComplex, "simplex")@ correspond to all subsets of
+	    vertices have cardinality $i+1$, the entries in its f-vector are
+	    binomial coefficients.	    
+	Example	    
+	    S = ZZ[x_0..x_6];
+	    netList for n from -1 to 6 list fVector simplexComplex(n, S)	    
+    	    assert all(1..7, i -> (fVector simplexComplex(6,S))#i === binomial(7,i))
+	Text
+	    Our classic examples of abstract simplicial complexes illustrate
+	    more possibilities.	    
+	Example
+	    S = ZZ[x_1..x_16];
+	    fVector bartnetteSphereComplex S
+	    fVector bjornerComplex S
+	    fVector dunceHatComplex S
+	    fVector poincareSphereComplex S
+	    fVector rudinBallComplex S
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no faces.  Every abstract simplicial complex other than the void
+	    complex has a unique face of dimension $-1$.
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    fVector irrelevant
+	    assert(fVector irrelevant === {1})
+	    void = simplicialComplex monomialIdeal 1_S
+	    fVector void 	    
+	    assert(fVector void === {0})
+	Text
+	    The f-vector is computed as the Hilbert function of the quotient
+	    of an exterior algebra by the corresponding Stanley-Reisner
+	    ideal.
+    SeeAlso
+        "finding attributes and properties"      
+	(dim, SimplicialComplex)
+	(faces, SimplicialComplex)    
+///
+
+-*
+    Sasha: As far as I'm aware, the flag functionality isn't currently implemented. 
+    When/if it is, this example should be added to the documentation above.
+	Text
+	    The option {\tt Flag}, checks if the multigrading corresponds to
+	    a proper d-coloring of {\tt D}, where d is the dimension of {\tt D}
+	    plus one. If that is not the case, then the output is an empty HashTable.
+	Text
+            The boundary of the 3-dimensional cross-polytope is
+            3-colorable. If we define this simplicial complex over
+            a {\tt Z^3}-graded ring, we can ask for its flag
+            f-vector.
+        Example
+            grading = {{1,0,0},{1,0,0},{0,1,0},{0,1,0},{0,0,1},{0,0,1}};
+            S = ZZ[x_1..x_6, Degrees => grading];
+            I = monomialIdeal(x_1*x_2,x_3*x_4,x_5*x_6);
+            fVector(simplicialComplex I, Flag => true)
+*-
+ 
 
 
 ------------------------------------------------------------------------------
@@ -2870,77 +2950,6 @@ doc///
 
 
 
--------------------------------------------------------------
--------------------------------------------------------------
--- 20/07/2018 Lorenzo: new/modified documentation
-
-doc ///
-    Key
-        (fVector,SimplicialComplex)
-    Headline
-        the f-vector of a simplicial complex
-    Usage
-        f = fVector D
-    Inputs
-        D : SimplicialComplex
-    Outputs
-        f : List
-	    where the {\tt i}-th entry is the number of faces
-	    in {\tt D} of dimension {\tt i} for {\tt -1 <= i <= dim D},
-	    or of squarefree degree {\tt i}.
-    Description
-        Text
-            The pentagonal bipyramid has 7 vertices, 15 edges
-            and 10 triangles.
-	Example
-            R = ZZ[a..g];
-            biPyramid = simplicialComplex monomialIdeal(a*g, b*d, b*e, c*e, c*f, d*f);
-            fVector biPyramid
-	Text
-            Every simplicial complex other than the void
-            complex has a unique face of dimension -1.
-        Example
-            void = simplicialComplex monomialIdeal 1_R;
-            fVector void
-	Text
-            For a larger example we consider the polarization
-            of an Artinian monomial ideal from section 3.2 in
-            Miller-Sturmfels, Combinatorial Commutative Algebra.
-        Example
-            S = ZZ[x_1..x_4, y_1..y_4, z_1..z_4];
-            I = monomialIdeal(x_1*x_2*x_3*x_4, y_1*y_2*y_3*y_4, z_1*z_2*z_3*z_4, x_1*x_2*x_3*y_1*y_2*z_1, x_1*y_1*y_2*y_3*z_1*z_2, x_1*x_2*y_1*z_1*z_2*z_3);
-	    D = simplicialComplex I;
-	    fVector D
-    Caveat
-        The f-vector is computed using the Hilbert series
-        of the Stanley-Reisner ideal. For example, see
-        Hosten and Smith's chapter Monomial Ideals, in 
-	@HREF("https://www.springer.com/gp/book/9783540422303", 
-	"Computations in Algebraic Geometry with Macaulay2")@,
-	Springer 2001.
-    SeeAlso
-        SimplicialComplexes
-        faces
-///
-
--*
-    Sasha: As far as I'm aware, the flag functionality isn't currently implemented. 
-    When/if it is, this example should be added to the documentation above.
-	Text
-	    The option {\tt Flag}, checks if the multigrading corresponds to
-	    a proper d-coloring of {\tt D}, where d is the dimension of {\tt D}
-	    plus one. If that is not the case, then the output is an empty HashTable.
-	Text
-            The boundary of the 3-dimensional cross-polytope is
-            3-colorable. If we define this simplicial complex over
-            a {\tt Z^3}-graded ring, we can ask for its flag
-            f-vector.
-        Example
-            grading = {{1,0,0},{1,0,0},{0,1,0},{0,1,0},{0,0,1},{0,0,1}};
-            S = ZZ[x_1..x_6, Degrees => grading];
-            I = monomialIdeal(x_1*x_2,x_3*x_4,x_5*x_6);
-            fVector(simplicialComplex I, Flag => true)
-*-
 
 doc ///
     Key
