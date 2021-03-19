@@ -93,9 +93,10 @@ all(faceList, F -> totalHomologyRankForLink(Δ,F) == 0)
 -------------------------- h-vector ---------------------------------------
 
 S = ZZ/2[x_0..x_5]
-Δ = simplicialComplex{ S_0*S_1*S_4, S_0*S_1*S_5, S_0*S_2*S_5, S_0*S_3*S_3,
+Δ = simplicialComplex{ S_0*S_1*S_4, S_0*S_1*S_5, S_0*S_2*S_3, S_0*S_2*S_5,
                        S_0*S_3*S_4, S_1*S_2*S_3, S_1*S_2*S_4, S_1*S_3*S_5, 
 		       S_2*S_4*S_5, S_3*S_4*S_5 }
+
 IΔ = ideal Δ
 kΔ = S/IΔ
 fΔ = fVector Δ
@@ -111,8 +112,8 @@ sum for i to d list (-1)^i*(fΔ#(i))
 
 ---------------- Cohen-Macaulay and Shellability ---------------------------
 
--- The Zeigler ball is also Cohen-Macaulay, but not shellable. We compute
--- the Cohen-Macaulay property a different way, using B.H 5.3.9
+-- This complex is not Cohen-Macaulay over a field of characteristic 2. We
+-- show this using Bruns-Herzog 5.3.9
 
 faceList = flatten flatten for i from -1 to dim Δ list entries (faces Δ)#i
 
@@ -129,4 +130,6 @@ for F in faceList do(
     print"--";
     print(F, link(Δ,F), totalHomologyRankForLink(Δ,F))
     )
+
+--------------- Homogenization Of Chain Complexes---------------------------
 
