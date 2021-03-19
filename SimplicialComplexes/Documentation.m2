@@ -2161,7 +2161,7 @@ doc ///
 	    There are two "trivial" simplicial complexes: the irrelevant
 	    complex has the empty set as a facet whereas the void complex has
 	    no faces.  Every abstract simplicial complex other than the void
-	    complex has a unique face of dimension $-1.
+	    complex has a unique face of dimension $-1$.
 	Example
 	    irrelevant = simplicialComplex monomialIdeal gens S
 	    fVector irrelevant
