@@ -1363,16 +1363,30 @@ doc ///
 	    vertices.  There is $1$ threefold with five vertices, $2$ with six
 	    vertices, $5$ with seven vertices, $39$ with eight vertices, and
 	    $1,297$ with nine vertices.
-        Example
-            S = ZZ[a..j];
-	    Δ = smallManifold(2, 9, 654, S)
-	    assert(isWellDefined Δ and dim Δ === 2 and # vertices Δ === 9)
-	    assert (simplicialComplex faces(2, simplexComplex(3, S)) === smallManifold(2,4,0,S))	    
 	Example
+            S = ZZ[a..j];
 	    Γ = smallManifold(3, 8, 21, S)
 	    prune HH Γ
 	    assert(isWellDefined Γ and dim Γ === 3 and # vertices Γ === 8)
-	    assert (simplicialComplex faces(3, simplexComplex(4, S)) === smallManifold(3,5,0,S))	
+	    assert (simplicialComplex faces(3, simplexComplex(4, S)) === smallManifold(3,5,0,S))
+	Text
+	    Frank Lutz also includes some information of the topological type of
+	    the manifolds @HREF("http://page.math.tu-berlin.de/~lutz/stellar/2_manifolds_all.type", "on his webpage.")@. 
+	    The 2-sphere, 2-torus, real projective 2-space and Klein Bottle can all
+	    be accessed from the database. Here are the smallest instances which appear
+	    in the database for real projective 2-space and the Klein Bottle (note that our 
+	    index begins counting at zero instead of one):
+        Example
+	    RP2 = smallManifold(2, 6, 1, S)
+	    KleinBottle = smallManifold(2, 8, 12, S)
+	Text
+	    From Theorems 6.3 and 6.4 in Chapter one of Munkres' 
+	    @HREF("https://www.pearson.com/us/higher-education/product/Munkres-Topology-2nd-Edition/9780131816299.html", 
+	    "Algebraic Topology")@, both real projective 2-space and the Klein Bottle should 
+	    have zero homology except in the first position.
+	Example
+	    RP2H = prune HH RP2
+	    KBH = prune HH KleinBottle            	
     SeeAlso
         "making an abstract simplicial complex"
 	(dim, SimplicialComplex)
