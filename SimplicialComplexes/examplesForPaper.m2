@@ -167,6 +167,9 @@ KleinBottle = simplicialComplex {a*b*f, a*d*f, d*e*f, e*f*h,
     b*h*i, b*c*i, a*c*g, a*e*g, e*g*i, d*e*i, a*d*i, a*c*i}
 isWellDefined KleinBottle
 prune homology KleinBottle
+-- The Klein Bottle can be found in the small manifold database
+-- (many times. The smallest example is (2,8,13).
+
 
 -- Real Projective Space
 -- This triangulation comes from Theorem 6.4 of Munkres.
