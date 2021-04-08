@@ -117,9 +117,10 @@ doc ///
 		TO smallManifold			
     	    }@
     	Text
-    	    @SUBSECTION "Basic operations producing abstract simplicial complexes"@
+    	    @SUBSECTION "Other operations producing abstract simplicial complexes"@
 	Text
     	    @UL {
+		TO (prune, SimplicialComplex),
 		TO (inducedSubcomplex, SimplicialComplex, List),
 		TO (dual, SimplicialComplex),
 		TO (boundaryMap,ZZ, SimplicialComplex),
@@ -1396,6 +1397,78 @@ doc ///
 ------------------------------------------------------------------------------
 -- more advanced constructors
 ------------------------------------------------------------------------------
+doc ///
+    Key 
+        (prune, SimplicialComplex)
+    Headline 
+        make a minimal presentation of an abstract simplicial complex
+    Usage 
+        prune Delta
+    Inputs
+        Delta : SimplicialComplex  
+    Outputs 
+        : SimplicialComplex
+	    where vertices are precisely the generators in its polynomial ring
+    Description
+        Text
+	    In this package, an abstract simplicial complex is represented by
+	    its Stanley-Reisner ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  When the
+	    vertex set of $\Delta$ is a proper subset of the variables in its
+	    polynomial ring, this method creates an isomorphic abstract
+	    simplicial complex such that the generators of its polynomial ring
+	    are the vertices of $\Delta$.	    
+	Text
+	    When monomial ideal of the abstract simplicial complex contains no
+	    linear forms, this method just returns the input.
+	Example
+    	    S = QQ[a..e];
+	    Δ4 = simplexComplex(4, S)
+	    monomialIdeal Δ4
+	    prune Δ4
+	    assert(Δ4 === prune Δ4)
+	Text
+	    When the monomial ideal contains one or more variables, this
+	    method returns an isomorphic abstract simplicial complex
+	    represented by a monomial ideal in a smaller polynomial ring.
+	Example
+	    Γ = simplicialComplex monomialIdeal(a, a*b, b*c, c*d)
+	    monomialIdeal Γ
+	    prune Γ
+	    monomialIdeal prune Γ
+	    R = ring prune Γ;
+	    (gens R, vertices  Γ)
+	    assert(ring Γ =!= ring prune Γ)
+	    assert(gens R  === apply(vertices Γ, x -> sub(x, R)))    	    	    
+        Example
+	    Δ2 = simplexComplex(2, S)
+	    prune Δ2
+	    R = ring prune Δ2;
+	    (gens R, vertices  Δ2)
+	    assert(ring Δ2 =!= ring prune Δ2)
+	    assert(gens R  === apply(vertices Δ2, x -> sub(x, R)))
+        Text
+	    There are two distinct abstract simplicial complexes has have no
+	    vertices.
+	Example
+	    void = simplicialComplex monomialIdeal(1_S)
+	    facets void
+	    monomialIdeal prune void
+	    assert(gens ring prune void === {})
+	    assert(monomialIdeal prune void == 1)
+    	Example
+	    irrelevant = simplicialComplex{1_S}
+	    facets irrelevant
+	    prune irrelevant
+	    monomialIdeal prune irrelevant
+	    assert(gens ring prune irrelevant === {})
+	    assert(monomialIdeal prune irrelevant == 0)
+    SeeAlso
+        "making an abstract simplicial complex"
+	(vertices, SimplicialComplex)
+	(facets, SimplicialComplex)	
+///
+
 doc///
     Key
         (inducedSubcomplex, SimplicialComplex, List)
@@ -1861,6 +1934,7 @@ doc ///
 ///
 
 
+
 ------------------------------------------------------------------------------
 -- basic properties and invariants
 ------------------------------------------------------------------------------
@@ -2323,48 +2397,6 @@ doc ///
 	    C4 = elementaryCollapse(C3,R_1)	   
 	    C5 = elementaryCollapse(C4,R_2)
 	    C6 = elementaryCollapse(C5,R_3)   
-    SeeAlso
-        "making an abstract simplicial complex"
-        SimplicialComplex
-///
-
-doc ///
-    Key 
-        (prune, SimplicialComplex)
-    Headline 
-        reconstruct a simplicial complex in a smaller ambient ring
-    Usage 
-        prune D
-    Inputs
-        D : SimplicialComplex  
-    Outputs 
-        : SimplicialComplex
-	    A simplicial over a new polynomial ring whose varialbles correspond to
-	    the vertices of {\tt D}.
-    Description
-        Text
-	    If the vertex set of {\tt D} is a strict subset of {\tt gens ring D}, then
-	    prune creates an isomorphic simplicial complex in a new ambient ring whose
-	    set of generators is {\tt vertices D}.
-        Example
-       	    R = ZZ/1999[a..f];
-       	    D = simplicialComplex{b*c, c*d}
-       	    E = prune D
-	    ring E    
-        Text
-	    If the simplicial complex has no vertices, prune creates a simplicial complex
-	    in a polynomial ring with no variables.
-	Example
-	    void = simplicialComplex(monomialIdeal(1_R))
-	    facets void
-	    prune void
-	    ring prune void
-	    facets prune void
-	    irrelevant = simplicialComplex{1_R}
-	    facets irrelevant
-	    prune irrelevant
-	    ring prune irrelevant
-	    facets prune irrelevant
     SeeAlso
         "making an abstract simplicial complex"
         SimplicialComplex

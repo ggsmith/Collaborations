@@ -306,6 +306,16 @@ smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
 ------------------------------------------------------------------------------
 -- more advanced constructors 
 ------------------------------------------------------------------------------
+prune SimplicialComplex := SimplicialComplex => opts -> D -> (
+    V := vertices D;
+    if gens ring D === V then return D;
+    R := (coefficientRing D)(monoid[V]);
+    if dim D < -1 then return simplicialComplex monomialIdeal(1_R);
+    if dim D === 1 then return simplicialComplex {1_R};
+    simplicialComplex for x in first entries facets D list (
+	if sum first exponents x =!= 1 then substitute(x, R) else continue)
+    )
+
 inducedSubcomplex = method()
 inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D, V) -> (
     if any(V, v -> not member(v, vertices D)) then 
@@ -378,7 +388,6 @@ wedge (SimplicialComplex, SimplicialComplex, RingElement, RingElement) := Simpli
     facetsE := first entries includeE facets E;
     simplicialComplex(facetsD | facetsE)
     )
-
 
 ------------------------------------------------------------------------------
 -- basic properties and invariants
@@ -1200,18 +1209,3 @@ elementaryCollapse (SimplicialComplex,RingElement) := SimplicialComplex => (D,F)
     )
 
 
-prune SimplicialComplex := SimplicialComplex => opts -> (D -> (
-	R := (coefficientRing D)(monoid[]);
-	if facets D == 0 then return simplicialComplex(monomialIdeal(1_R));
-	if facets D == matrix{{1_(ring D)}} then return simplicialComplex{1_R}; 
-	if gens ring D === vertices D then return D;
-    	R = (coefficientRing D)(monoid[vertices D]);
-    	Projection := matrix{for x in gens ring D list(
-	    	if member(x, vertices D)
-	    	then R_(position(vertices D, v -> v == x))
-	    	else 0
-	    	)
-	    };
-    	target map(D,Projection)
-    	)
-    )
