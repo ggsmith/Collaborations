@@ -2850,7 +2850,7 @@ doc ///
 	    For more details on Lyubeznik resolutions and their construction, see
 	    Jeff Mermin 
 	    @HREF("https://www.degruyter.com/view/book/9783110250404/10.1515/9783110250404.127.xml", 
-		"Three Simplicial Resoltuions")@, (English summary) Progress in
+		"Three Simplicial Resolutions")@, (English summary) Progress in
 	     commutative algebra 1, 127–141, de Gruyter, Berlin, 2012.
         Example
 	    S = QQ[x,y];
@@ -2870,7 +2870,7 @@ doc ///
     SeeAlso 
         "making an abstract simplicial complex"          
         SimplicialComplexes
-	lyubeznikResolution
+	lyubeznikSimplicialComplex
 	taylorResolution
 ///
 

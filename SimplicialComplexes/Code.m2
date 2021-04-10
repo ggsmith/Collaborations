@@ -522,6 +522,7 @@ makeLabels = (D,L,i,Sext) -> (
     -- D is a simplicial complex
     -- L is a list of monomials 
     -- i is an integer
+    -- Sext is a ring
     Vertices := vertices D;
     F := flatten entries faces(i,D);
     if #F == 0 
@@ -666,7 +667,7 @@ faceBuchberger = (m, L) -> (
      all(L, n -> mon//n == 0)
      )
 
--- requires numgens R == #L. I dislike this.
+-- requires numgens R == #L. I dislike this. Currently not exported.
 buchbergerComplex = method()
 buchbergerComplex(List,Ring) := (L,R) -> (
     P := ideal apply(gens R, x -> x^2);
@@ -827,8 +828,6 @@ lyubeznikResolution MonomialIdeal := opts -> I -> (
 	 )
      )
 
--- This code can be more optimal (model like buchberger/lyubeznik constructors).
--- It is a bit more tedious, so I haven't gotten around to it yet.
 scarfSimplicialComplex = method()
 scarfSimplicialComplex (List,Ring) := (L,A) -> (
     -- The scarfSimplicialComplex is the subcomplex of the (#L-1)-simplex
@@ -853,7 +852,7 @@ scarfSimplicialComplex (List,Ring) := (L,A) -> (
     	)
     )
 
--- natrual functionality for a MonomialIdeal
+-- natural functionality for a MonomialIdeal
 scarfSimplicialComplex (MonomialIdeal,Ring) := (I,A) -> (
     if numgens I == 0 
     then return ((coefficientRing(ring I))^1)[0];

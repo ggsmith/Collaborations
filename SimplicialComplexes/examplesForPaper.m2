@@ -1,6 +1,11 @@
 restart
 needsPackage"SimplicialComplexes"
 
+------------------------ STANLEY RIESNER THEORY ----------------------------
+
+-- Can jettison either the Rudin ball or the Ziegler ball example.
+-- Everything I can think to show is covered by one of these together
+-- with the projective plane example
 
 -------------------------------RUDIN BALL-----------------------------------
 
@@ -10,7 +15,7 @@ S = QQ[x_0..x_13]
 Δ = rudinBallComplex S
 d = dim Δ
 
--- ideal and Stanley-Riesner ring of Δ
+-- Stanley-Riesenr ideal and Stanley-Riesner ring of Δ
 IΔ = ideal Δ
 kΔ = S/IΔ
 
@@ -19,21 +24,21 @@ kΔ = S/IΔ
 fΔ = fVector Δ
 
 -- computing h-vector
-hΔ = for j to d list(
-    sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(fΔ#(i-1))
+hΔ = for j to d+1 list(
+    sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(fΔ#(i))
     )
 
 -- Here is another formula for computing the h-vector from the f vector. The
 -- coefficients of t^k is the kth entry in the h-vector
 R = QQ[t]
-sum for i to d+1 list fΔ#(i-1)*t^i*(1-t)^(d+1-i)
+sum for i to d+1 list fΔ#(i)*t^i*(1-t)^(d+1-i)
 
 -- We can compare to the numerator of the hilbert series of kΔ
 reduceHilbert(hilbertSeries kΔ)
 
 ------------------------- Euler characteristic -----------------------------
 
-sum for i to d list (-1)^i*(fΔ#(i))
+sum for i to d list (-1)^i*(fΔ#(i+1))
 
 ----------------- Cohen-Macaulay And Shellability -------------------------
 
@@ -44,17 +49,26 @@ sum for i to d list (-1)^i*(fΔ#(i))
 
 dim S - pdim(S^1/IΔ) == dim(S^1/IΔ)
 
--- We show Δ is not shellable by showing that there is a subcomplex of Δ that
--- is not pure. Stanley, chapter 3 prop 3.1
+-- This is not shellable because ???
 
-all(subsets(gens S), A -> isPure inducedSubcomplex(Δ,A))
+facetsList = (first entries facets Δ)
+F = facetsList#3
+L = delete(F,facetsList)
+Γ = simplicialComplex L
+prune homology Γ
+sum for i to d list rank (prune homology Γ)#i
 
--- Here is an specific instance of the failure of an induced subcomplex to be
--- pure.
-inducedSubcomplex(Δ, {S_0,S_1,S_2})
+-- There is an alogrithm implemented  in the SimplicialDecomposability 
+-- package that determines if a simplicial complex is shellable.
+-- However, determining if a simplicial complex is shellable is an 
+-- NP-hard problem, and therefore this algorithm is inherently slow. 
+-- There is a topological proof outlined in the paper by rudin, which 
+-- uses homeomorphisms of toplogical space.    
+
+-- needsPackage"SimplicialDecomposability"
 
 
---------------------------- Ziegler BALL ----------------------------------
+--------------------------- ZIEGLER BALL ----------------------------------
 
 -------------------------- h-vector ---------------------------------------
 
@@ -66,12 +80,12 @@ fΔ = fVector Δ
 d = dim Δ
 
 R = QQ[t]
-hΔ = sum for i to d+1 list fΔ#(i-1)*t^i*(1-t)^(d+1-i)
+hΔ = sum for i to d+1 list fΔ#(i) * t^i * (1-t)^(d+1-i)
 reduceHilbert(hilbertSeries kΔ)
 
 --------------------- Euler characteristic ---------------------------------
 
-sum for i to d list (-1)^i*(fΔ#(i))
+sum for i to d list (-1)^i*(fΔ#(i+1))
 
 ---------------- Cohen-Macaulay and Shellability ---------------------------
 
@@ -88,7 +102,7 @@ totalHomologyRankForLink = (Δ,F) -> (
 
 all(faceList, F -> totalHomologyRankForLink(Δ,F) == 0)
 
-------------- Projective Plane In Characteristic 2-------------------------
+------------- PROJECTIVE PLANE IN CHARACTERISTIC 2-------------------------
 
 -------------------------- h-vector ---------------------------------------
 
@@ -103,12 +117,12 @@ fΔ = fVector Δ
 d = dim Δ
 
 R = QQ[t]
-hΔ = sum for i to d+1 list fΔ#(i-1)*t^i*(1-t)^(d+1-i)
+hΔ = sum for i to d+1 list fΔ#(i) * t^i * (1-t)^(d+1-i)
 reduceHilbert(hilbertSeries kΔ)
 
 --------------------- Euler characteristic ---------------------------------
 
-sum for i to d list (-1)^i*(fΔ#(i))
+sum for i to d list (-1)^i*(fΔ#(i+1))
 
 ---------------- Cohen-Macaulay and Shellability ---------------------------
 
@@ -130,6 +144,110 @@ for F in faceList do(
     print"--";
     print(F, link(Δ,F), totalHomologyRankForLink(Δ,F))
     )
+
+----------- HOMONGENIZATION AND RESOLUTIONS OF MONOMIAL IDEALS -------------
+restart
+needsPackage"SimplicialComplexes"
+
+----------------Homogenization Of A Simplicial Complex ---------------------
+
+-- We homogenize a simplicial complex Δ by labelling the vertices
+-- with monomials.
+
+-- All simplicial complexes are defined over S and all monomial ideals 
+-- are defined over R.
+S = ZZ/101[x_0..x_13]
+R = QQ[y_0..y_3]
+
+Δ = simplicialComplex{S_0*S_1*S_2, S_2*S_3}
+I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
+
+M = first entries mingens I
+chainComplex(Δ, Labels => M)
+
+(res I).dd == (chainComplex(Δ, Labels => M_{2,1,0,3})).dd
+
+prune homology chainComplex(Δ, Labels => M)
+prune homology chainComplex(Δ, Labels => reverse M)
+
+------------------------- Known Constructors ------------------------------
+
+------------------------- Taylor Resolution -------------------------------
+
+I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
+
+T = taylorResolution I
+T == chainComplex(simplexComplex(numgens I - 1, S), Labels => M)
+prune homology T
+
+------------------------- The Scarf Compex ---------------------------------
+
+-- We define a 1-dimensional simplicial complex homeomorphic to a
+-- "figure 8"
+S = ZZ/101[x_0..x_13]
+Δ = simplicialComplex{S_0*S_1, S_0*S_2, S_1*S_2, S_2*S_3, S_2*S_4, S_3*S_4}
+
+-- The nearly Scarf ideal of a simplicial complex is constructed in a
+-- ring where the number of variables is the number of faces of Δ.
+
+faceList = flatten for i to dim Δ list first entries (faces Δ)#i
+numFaces = #faceList
+R = QQ[y_0 .. y_(numFaces-1)]
+
+-- For each variable v in Δ we determine a squarefree monomial where 
+-- the variables that appear correspond to faces that do not contain
+-- the vertex v.
+nearlyScarfΔ = monomialIdeal(for v in first entries(faces Δ)#0 list(
+    	product for F in faceList list(
+	    if F%v == 0
+	    then continue
+	    else R_(position(faceList, G -> G == F))
+    	    )
+    	)
+    )
+
+-- The scarf complex, or scarf simplicial complex of nearlyScarfΔ
+-- is Δ. To see this, We reorder the generators of our ideal to
+-- correspond to the the order of the vertices of Δ.
+M = first entries mingens nearlyScarfΔ
+Γ = scarfSimplicialComplex(M_{1,2,0,3,4}, S)
+facets Γ == facets Δ
+
+-- The scarfChainComplex of an ideal I is the homogenization of
+-- scarfSimplicialComplex by the generators of I.
+(scarfChainComplex(nearlyScarfΔ)).dd
+prune homology scarfChainComplex(nearlyScarfΔ)
+
+-- Verifying the the Scarf complex is a homogenization.
+(scarfChainComplex(nearlyScarfΔ)
+    == chainComplex(scarfSimplicialComplex(nearlyScarfΔ, S), Labels => M))
+
+------------------------ Buchberber Complex -------------------------------
+
+-- If I is a square-free monomial ideal, then the Buchberger resolution is
+-- the taylor resolution.
+R = QQ[y_0..y_3]
+I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
+
+taylorResolution I == buchbergerResolution I
+
+J = monomialIdeal(R_0^2, R_1^2, R_2^2, R_0*R_2, R_1*R_3)
+buchbergerSimplicialComplex(J,S)
+buchbergerResolution J
+prune homology buchbergerResolution J
+
+----------------------- Lyubeznik Resolution ------------------------------
+
+I = monomialIdeal(R_0^2, R_0*R_1, R_1^3)
+for P in permutations 3 do(
+    print "--";
+    print lyubeznikSimplicialComplex(I, S, MonomialOrder => P)
+    )
+
+(lyubeznikResolution({R_0^2, R_0*R_1, R_1^3})).dd
+(lyubeznikResolution({R_0*R_1, R_0^2, R_1^3})).dd
+
+----------------------------------------------------------------------------------------------------
 
 --------------- Small 2 Manifolds Database -----------------
 
@@ -178,4 +296,38 @@ RP2 = simplicialComplex {a*b*g, a*f*g, e*f*g, e*g*i, d*e*i,
     b*c*j, c*d*h, d*e*h, e*h*j, e*f*j, a*f*j, a*b*j}
 isWellDefined P2
 prune homology P2
->>>>>>> a0d279586b3627822065dcfad049b4fc5c58fc55
+
+
+---------------------- SCRAP WORK -----------------------------
+restart
+needsPackage"SimplicialComplexes"
+
+S = QQ[x_0..x_10]
+Δ = smallManifold(3,9,17,S)
+d = dim Δ
+
+-- ideal and Stanley-Riesner ring of Δ
+IΔ = ideal Δ
+kΔ = S/IΔ
+
+------------------------- f-vector And h-vector ----------------------------
+
+fΔ = fVector Δ
+
+-- computing h-vector
+hΔ = for j to d+1 list(
+    sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(fΔ#(i))
+    )
+
+-- Here is another formula for computing the h-vector from the f vector. The
+-- coefficients of t^k is the kth entry in the h-vector
+R = QQ[t]
+sum for i to d+1 list fΔ#(i)*t^i*(1-t)^(d+1-i)
+
+-- We can compare to the numerator of the hilbert series of kΔ
+reduceHilbert(hilbertSeries kΔ)
+
+
+
+----------------------------------------------------------------------------
+
