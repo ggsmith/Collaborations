@@ -151,6 +151,8 @@ needsPackage"SimplicialComplexes"
 
 ----------------Homogenization Of A Simplicial Complex ---------------------
 
+-- In the paper, swap the roles of R and S for all the examples.
+
 -- We homogenize a simplicial complex Δ by labelling the vertices
 -- with monomials.
 
@@ -159,13 +161,43 @@ needsPackage"SimplicialComplexes"
 S = ZZ/101[x_0..x_13]
 R = QQ[y_0..y_3]
 
+-- Give a simplicial complex Δ and a monomial ideal I where the number of
+-- minimial generators of I is the same as the number of vertices of
+-- Δ, we can construct construct a chain complex of R-modules, by
+-- I-homogenization of C(Δ,F).
+
 Δ = simplicialComplex{S_0*S_1*S_2, S_2*S_3}
 I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
-
 M = first entries mingens I
 chainComplex(Δ, Labels => M)
 
-(res I).dd == (chainComplex(Δ, Labels => M_{2,1,0,3})).dd
+-- In this example, Δ supports the minimal free resolution of I. We can
+-- verify computationally,
+
+(res I) == (chainComplex(Δ, Labels => M_{2,1,0,3}))
+
+-- However, the fact that the res method choose the same basis when
+-- it constructs the minimal free resolution is a stroke of luck.
+-- In general, if you wanted to verify that chaincomplex(Δ, Labels => M)
+-- is the minimal free resolution, you can compute the
+-- homology of the complex or show that the entries in the differential
+-- matrices are all contained in (R_0,...,R_3). Alternatively, you can
+-- show that for every monomial m in the LCM-lattice of I, the induced
+-- subcomplex on the vertices whose label divides m is an acyclic
+-- simplicial complex.
+
+lcmLattice = unique sort apply(remove(subsets M, 0), m -> lcm m)
+
+for m in lcmLattice list(
+    vertexList := for i to #(vertices Δ)-1 list(
+	if m % M_i == 0 then S_i else continue
+	);
+    prune homology inducedSubcomplex(Δ,vertexList)
+    )
+
+-- The homogenization process is sensitive to how you label the vertices,
+-- and therefore sensitive to the ordering of the list monomials you 
+-- inpute as labels.
 
 prune homology chainComplex(Δ, Labels => M)
 prune homology chainComplex(Δ, Labels => reverse M)
@@ -174,9 +206,29 @@ prune homology chainComplex(Δ, Labels => reverse M)
 
 ------------------------- Taylor Resolution -------------------------------
 
-I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
+-- Because every induced subcomplex of a simplex is acyclic, every 
+-- I-homogeniztion of a simplex returns a free resolution, which is known
+-- as the Taylor resolution of I. This resolution is often not minimal. 
 
+-- Same ideal as previous example.
+
+I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
 T = taylorResolution I
+
+-- This method is already implemented in the chain complex extras package.
+-- The version of taylorResolution in ChainComplex extras is that it
+-- is computing the Koszul complex on the minimal generators of I, 
+-- where as our method is I-homogenizing a simplex. They typically wont 
+-- have the same output as our method used mingens I and the
+-- ChainComplexExtras version uses gens I. This can result in
+-- two different orderings of the generators of I.
+
+-- I think that while these two functions are the same, it is worth
+-- keeping our version of the same method (currently it has the same name,
+-- and I don't plan to change it), since it is build upon the idea of
+-- homogenization, and therefore, the output is completely predictable to
+-- the user.
+
 T == chainComplex(simplexComplex(numgens I - 1, S), Labels => M)
 prune homology T
 
@@ -218,7 +270,18 @@ facets Γ == facets Δ
 (scarfChainComplex(nearlyScarfΔ)).dd
 prune homology scarfChainComplex(nearlyScarfΔ)
 
--- Verifying the the Scarf complex is a homogenization.
+-- The situation for the scarfChainComplex is the same as the Taylor
+-- resolution, in that it is implemented in ChainComplexExtras
+-- (although ChainComplexExtras does not compute the scarf chain complex),
+-- but now we have different naming conventions. However,
+-- I feel that our implementation is better, because it is
+-- constructed as the homogenization of the scarf simplicial complex,
+-- and the output is predictable to the user. Meaning if you compute
+-- the scarf simplicial complex by hand and homogenize, the choice of
+-- basis in the m2 computation is the same as the "by hand" computation.
+-- It is unclear to me how the ChainComplexExtras version computes the
+-- basis for the chain complex.
+
 (scarfChainComplex(nearlyScarfΔ)
     == chainComplex(scarfSimplicialComplex(nearlyScarfΔ, S), Labels => M))
 
@@ -228,24 +291,54 @@ prune homology scarfChainComplex(nearlyScarfΔ)
 -- the taylor resolution.
 R = QQ[y_0..y_3]
 I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
-
 taylorResolution I == buchbergerResolution I
+
+-- Otherwise, the buchberger produces a subcomplex of the Taylor resolution
+-- where you only keep faces in which no monomial generator "properly"
+-- divides the label of that face.
 
 J = monomialIdeal(R_0^2, R_1^2, R_2^2, R_0*R_2, R_1*R_3)
 buchbergerSimplicialComplex(J,S)
 buchbergerResolution J
 prune homology buchbergerResolution J
 
+-- When the BuchbergerResolution is a minimal free resolution, then
+-- the scarf simplicial complex and buchberger simplicial complex coincide
+
+facets scarfSimplicialComplex(J,S) == facets buchbergerSimplicialComplex(J, S)
+scarfChainComplex J == buchbergerResolution J
+
 ----------------------- Lyubeznik Resolution ------------------------------
 
+-- The Lyubeznik resolution is one where you are given a monomial ideal I
+-- and a total ordering on the generators (any total ordering works). You
+-- then use a divisibility condition to find all of the "rooted faces" of
+-- the Taylor resolution. Keeping just the rooted faces returns a simplicial
+-- complex that supports a resolution of I. The resolution you get is dependent
+-- on the total ordering you use to begin with. We deal with the total ording
+-- by either using an ordered list as input, or by inputing the ideal and 
+-- an option MonomialOrder which takes a list and reorders the set mingens I.
+
+-- The default ordering convention for lyubeznikSimplicial Complex is
 I = monomialIdeal(R_0^2, R_0*R_1, R_1^3)
+(facets lyubeznikSimplicialComplex(I,S) 
+    === facets lyubeznikSimplicialComplex(first entries mingens I, S))
+
+-- We can compute all of the Lyubeznik simplicial Complexes, to see how
+-- many unique resolutions we construct. 
 for P in permutations 3 do(
     print "--";
     print lyubeznikSimplicialComplex(I, S, MonomialOrder => P)
     )
 
+-- We see that there are two, and they correspond to the following
+-- orderings of mingens I. The first returns the Taylor resolution
+-- of I and the latter returns the scarfChainComplex I
 (lyubeznikResolution({R_0^2, R_0*R_1, R_1^3})).dd
 (lyubeznikResolution({R_0*R_1, R_0^2, R_1^3})).dd
+
+lyubeznikResolution({R_0^2, R_0*R_1, R_1^3}) == taylorResolution {R_0^2, R_0*R_1, R_1^3}
+lyubeznikResolution({R_0*R_1, R_0^2, R_1^3}) == scarfChainComplex I
 
 ----------------------------------------------------------------------------------------------------
 
@@ -330,4 +423,3 @@ reduceHilbert(hilbertSeries kΔ)
 
 
 ----------------------------------------------------------------------------
-
