@@ -348,47 +348,51 @@ lyubeznikResolution({R_0*R_1, R_0^2, R_1^3}) == scarfChainComplex I
 -- included his database in the package, which allows for a nice
 -- testbed of examples.
 
--- There are exactly 29 non-shellable 3-manifolds with 9 vertices.
-R = ZZ/101[x_0..x_8];
-Δ = smallManifold(3,9,18,R)
--- todo demonstrate this using one of the techniques above.
-
 -- We can use databases like this to find examples of maps
-S = ZZ/101[y_0..y_6]
-Γ = smallManifold(2,7,3,S)
+S = ZZ[y_0..y_8]
+Γ = smallManifold(3,9,1,S)
 maplist = flatten for i to 4 list (
     for j in subsets(toList(x_0..x_8),7) list (
     	phi := map(smallManifold(3,9,i,R),Γ,j);
     	if isWellDefined phi then phi else continue
     	)
     );
+netList maplist
+-- By our construction, these should be inclusions.
 isInjective\maplist
-
--- Since we have inclusions, we can compute relative homology
--- for these manifolds.
-H = homology(target maplist_0, image maplist_0)
-prune H
+-- Since we have inclusions, we can compute relative homology between
+-- these manifolds.
+relhoms = for i to length maplist - 1 list prune homology(target maplist_i, image maplist_i);
+netList relhoms
 
 -- Some homology computations.
--- Klein Bottle
--- This triangulation is taken from Theorem 6.3 of Munkres.
+-- The Klein Bottle can be found in the small manifold database
+-- (many times. The smallest example is (2,8,13).
+KleinBottle = smallManifold(2, 8, 12, R)
+prune homology KleinBottle
+-- And real projective space:
+RP2 = smallManifold(2, 6, 1, R)
+prune homology RP2
+-- Theorem 6.3 and 6.4 from Munkres confirm that these are
+-- the correct homology groups.
+
+-- Perhaps not useful anymore:
+-- This triangulation of the Klein bottle is taken from 
+-- Theorem 6.3 of Munkres.
 T = ZZ[a..k]
 KleinBottle = simplicialComplex {a*b*f, a*d*f, d*e*f, e*f*h,
     a*e*h, a*b*h, b*c*f, c*f*g, f*g*j, f*h*j, g*i*j, h*i*j,
     b*h*i, b*c*i, a*c*g, a*e*g, e*g*i, d*e*i, a*d*i, a*c*i}
 isWellDefined KleinBottle
 prune homology KleinBottle
--- The Klein Bottle can be found in the small manifold database
--- (many times. The smallest example is (2,8,13).
 
-
--- Real Projective Space
--- This triangulation comes from Theorem 6.4 of Munkres.
+-- This triangulation of real projective space comes from 
+-- Theorem 6.4 of Munkres.
 RP2 = simplicialComplex {a*b*g, a*f*g, e*f*g, e*g*i, d*e*i,
     c*d*i, b*c*g, c*g*h, g*h*k, g*i*k, h*j*k, i*j*k, c*i*j,
     b*c*j, c*d*h, d*e*h, e*h*j, e*f*j, a*f*j, a*b*j}
-isWellDefined P2
-prune homology P2
+isWellDefined RP2
+prune homology RP2
 
 
 ---------------------- SCRAP WORK -----------------------------
