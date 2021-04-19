@@ -349,11 +349,14 @@ lyubeznikResolution({R_0*R_1, R_0^2, R_1^3}) == scarfChainComplex I
 -- testbed of examples.
 
 -- We can use databases like this to find examples of maps
-S = ZZ[y_0..y_8]
-Γ = smallManifold(3,9,1,S)
+-- TODO: the homology in these is boring. maybe keep searching for something
+-- better?
+R = ZZ[x_0..x_6];
+S = ZZ[y_0..y_8];
+Γ = smallManifold(2,7,7,R)
 maplist = flatten for i to 4 list (
-    for j in subsets(toList(x_0..x_8),7) list (
-    	phi := map(smallManifold(3,9,i,R),Γ,j);
+    for j in subsets(toList(S_0..S_8),7) list (
+    	phi := map(smallManifold(3,9,i+50,S),Γ,j);
     	if isWellDefined phi then phi else continue
     	)
     );
@@ -367,7 +370,7 @@ netList relhoms
 
 -- Some homology computations.
 -- The Klein Bottle can be found in the small manifold database
--- (many times. The smallest example is (2,8,13).
+-- (many times. The smallest example is (2,8,13)).
 KleinBottle = smallManifold(2, 8, 12, R)
 prune homology KleinBottle
 -- And real projective space:
