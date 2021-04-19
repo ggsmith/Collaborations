@@ -623,7 +623,8 @@ shift = (I) -> (
     );
 
 
--- Compute the algebraic shifting of a simplicial complex and the colored shifting if the ring is multigraded.
+-- Compute the algebraic shifting of a simplicial complex and the
+-- colored shifting if the ring is multigraded.
 algebraicShifting = method (Options => {Multigrading => false})
 algebraicShifting SimplicialComplex := opts -> S -> (
     if not opts.Multigrading then (
@@ -1185,6 +1186,14 @@ homology(SimplicialComplex,SimplicialComplex) := ChainComplex => opts -> (D,E) -
     inclusion := map(D,E, gens ring D);
     C := coker chainComplex inclusion;
     homology C
+    )
+
+homology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
+    homology(i, chainComplex f)
+    )
+
+homology SimplicialMap := GradedModuleMap => opts -> f -> (
+    homology(chainComplex f)
     )
 
 elementaryCollapse = method();

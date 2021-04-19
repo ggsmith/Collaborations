@@ -430,3 +430,66 @@ reduceHilbert(hilbertSeries kΔ)
 
 
 ----------------------------------------------------------------------------
+
+S = QQ[x_0..x_4]
+Δ = simplicialComplex{S_0*S_1, S_0*S_2, S_1*S_2, S_2*S_3, S_2*S_4, S_3*S_4}
+IΔ = ideal Δ
+res IΔ
+betti res IΔ
+betti res dual(monomialIdeal IΔ)
+
+M = first entries mingens IΔ
+lcmLattice = unique sort apply(remove(subsets M, 0), m -> lcm m)
+
+hochster = (i, m) -> (
+    barF := product select(vertices Δ, v -> not member(v, support m));
+    rank (homology link(dual Δ, barF_S))_i
+    )
+
+matrix for i from -1  to length res IΔ - 2 list(
+    for m in lcmLattice list(
+	hochster(i,m)
+	)
+    )
+
+
+
+F = lcmLattice#-2
+barF = product select(vertices Δ, v -> not member(v, support F))
+facets dual Δ
+
+link(dual Δ, barF_S)
+prune homology link(dual Δ, barF)
+
+---------------------hopf----------------------------------
+restart
+needsPackage"SimplicialComplexes"
+
+S = ZZ[a_0, a_1, a_2, b_0, b_1, b_2, c_0, c_1 ,c_2, d_0, d_1, d_2]
+R = ZZ[w,x,y,z]
+
+threeSphere = simplicialComplex{
+    a_0*b_0*c_0*c_2, a_0*a_2*b_0*c_2, a_2*b_0*b_2*c_2, a_2*b_1*b_2*c_2, a_2*b_1*c_1*c_2, 
+    a_1*a_2*b_1*c_1, a_0*a_1*b_1*c_1, a_0*b_0*b_1*c_1, a_0*b_0*c_0*c_1,  
+    b_1*c_2*d_0*d_1, a_0*c_2*d_0*d_1, a_0*b_1*d_0*d_1, b_1*c_1*c_2*d_1, a_2*c_1*c_2*d_1,
+    a_0*a_2*c_2*d_1, b_0*b_1*c_1*d_1, a_0*b_0*b_1*d_1, a_0*a_2*b_0*d_1,
+    b_0*c_1*d_1*d_2, a_2*c_1*d_1*d_2, a_2*b_0*d_1*d_2, b_1*c_2*d_0*d_2, a_0*c_2*d_0*d_2,
+    a_0*b_1*d_0*d_2, b_0*c_0*c_2*d_2, a_0*c_0*c_2*d_2, b_1*b_2*c_2*d_2, b_0*b_2*c_2*d_2,
+    b_0*c_0*c_1*d_2, a_0*c_0*c_1*d_2, a_1*a_2*c_1*d_2, a_0*a_1*c_1*d_2, a_2*b_1*b_2*d_2,
+    a_2*b_0*b_2*d_2, a_1*a_2*b_1*d_2, a_0*a_1*b_1*d_2
+    }
+
+prune homology threeSphere
+
+twoSphere = simplicialComplex{w*x*y, w*x*z, w*y*z, x*y*z}
+p = map(R,S,{w,w,w,x,x,x,y,y,y,z,z,z})
+hopfFibration = map(twoSphere, threeSphere, p)
+prune homology hopfFibration
+circle = simplicialComplex{w*x, x*y, y*w}
+i = map(S,R,{a_0, a_1, a_2, 0})
+fibre = map(threeSphere,circle,i)
+
+
+
+
+methods homology
