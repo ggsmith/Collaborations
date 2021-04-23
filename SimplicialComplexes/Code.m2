@@ -593,7 +593,7 @@ homology(Nothing,SimplicialComplex) :=
 homology(SimplicialComplex) := GradedModule => opts -> Delta -> (
      homology(chainComplex Delta))
 
-
+-- TODO: Should there be a cohomology method?
 
 -- helper functions for algebraicShifting. Not exported.
 shiftMonomial = (m) -> (

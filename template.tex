@@ -4,7 +4,7 @@
 \documentclass[12pt,leqno]{amsart}
 \pdfoutput=1
 \usepackage{amsmath, amssymb, amsthm}
-%\usepackage{rsfso}
+% \usepackage{rsfso}
 \usepackage[svgnames]{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{arrows,cd}
@@ -27,6 +27,12 @@
 %% --LAYOUT-------------------------------------------------------------------
 \usepackage[centering, includeheadfoot, hmargin=1.0in, tmargin=1.0in,
   bmargin=1in, headheight=6pt]{geometry}
+%% --DISPLAY CODE------------------------------------------------------------
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
 %% --OTHER ENVIRONMENTS-------------------------------------------------------
 \newtheorem{lemma}{Lemma}[section]
 \newtheorem{theorem}[lemma]{Theorem}
@@ -51,6 +57,7 @@
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\Spec}{Spec}
+\DeclareUnicodeCharacter{0394}{\Delta}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -74,7 +81,7 @@
 \date{\today}
 
 \begin{abstract}
-  This article demonstrates some of the updated features of the \texttt{SimplicialComplexes} package in Macaulay2. todo
+  This article demonstrates some of the updated features of the \texttt{SimplicialComplexes} package in \emph{Macaulay2}. todo
 \end{abstract}
 
 \maketitle
@@ -86,21 +93,207 @@
 \addtocounter{lemma}{-1}
 
 \noindent
-Something
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Combinatorial Topology}
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Stanley Riesner Theory}
+\section{Stanley-Reisner Theory}
+
+\noindent
+Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_{n-1}\}$, let $k$ be a commutative ring, and let $S = k[x_0,x_1,...,x_n]$. The \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
+%
+\begin{displaymath}
+  I_\Delta := \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{ v_{i_1},v_{i_2},...,v_{i_k} \} \not \subset \Delta \right) \subset S,
+\end{displaymath}
+%
+and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = S/I_\Delta$. This correspondence between simplicial complexes and square-free monomial ideals is one-to-one. Stanley-Reisner theory connects homological properties of $k[\Delta]$ to combinatorial and topological properties of $\Delta$. A survey of results can be found in \cite{BH, Stanley, MS}.
+
+%In this section, we will show how one can use the \texttt{SimplicialComplexes} package to realize some of the cornerstone results of Stanley-Reisner theory. There will be two flavors to the examples that we cover. The first will be to compute an example of the ``dual version'' of Hochster's Formula \cite[Corollary 1.40]{MS}. This formula describes the multigraded Betti numbers of $I_\Delta$ in terms of the dimension of the homology of links in the Alexander dual of $\Delta$. The second will flavor will be to investigate the connections between shellability, the Cohen-Macaulay property, and the $h$-vector of pure simplicial complexes.
+%
+\begin{example}\label{first example of the Stanley-Reisner correspondence}
+  Consider the ``figure 8'' simplicial complex
+  %
+  \begin{displaymath}
+    \begin{tikzpicture}[scale = .5]
+%      \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+      \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+%      \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+      \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+      \filldraw (0,0) circle (5pt);
+      \filldraw (0,5) circle (5pt);
+      \filldraw (4,2.5) circle (5pt);
+      \filldraw (8,0) circle (5pt);
+      \filldraw (8,5) circle (5pt);
+      \node at (-.5,-.5) {$v_0$};
+      \node at (-.5,5.5) {$v_1$};
+      \node at (4,1.75) {$v_2$};
+      \node at (8.5,-.5) {$v_3$};
+      \node at (8.5,5.5) {$v_4$};
+      \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
+      \node at (9,2.5) {.};
+    \end{tikzpicture}
+  \end{displaymath}
+  %
+  The Stanley-Reisner ideal of $\Delta$ is $I_\Delta = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\ x_2x_3x_4)$. We can exhibit the correspondence between $\Delta$ and $I_\Delta$ using the methods \texttt{simplicialComplex} and \texttt{ideal}.
+  %
+  \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i28 : S = QQ[x_0..x_4];
+    i29 : I$Δ$ = monomialIdeal(x_0*x_1*x_2,x_0*x_3,x_1*x_3,x_0*x_4,x_1*x_4,x_2*x_3*x_4);
+    o29 : MonomialIdeal of S
+    i30 : $Δ$ = simplicialComplex I$Δ$
+    o30 = simplicialComplex | x_3x_4 x_2x_4 x_2x_3 x_1x_2 x_0x_2 x_0x_1 |
+    o30 : SimplicialComplex
+    i31 : I$Δ$ == ideal $Δ$
+    o31 = true
+  \end{lstlisting}
+  %
+\end{example}
+%
+If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m_i = \displaystyle \prod x_j^{a_{i_j}}$, then the \textbf{Alexander dual} of $I$ is defined to be $\displaystyle I^* := \bigcap_{i=1}^q\hspace{2pt} (x_0^{a_{i_1}},\ x_1^{a_{i_2}},...,\ x_{n-1}^{a_{i_{n-1}}})$. If $I = I_\Delta$ for some simplicial complex $\Delta$, then $I^*$ is also a square-free monomial ideal and is the Stanley-Reisner ideal of a simplicial complex $\Delta^*$, which we call the \textbf{Alexander dual} complex to $\Delta$. There is also a combinatorial description of $\Delta^*$, given by $\Delta^* = \{ F \subset V \ | \ V \setminus F \not \in \Delta \}$. One of the attractive features of Alexander duality, is the relationship between the cohomology of $\Delta$ and the homology of $\Delta^*$, see \cite[Theorem 5.6]{MS}.
+%
+\begin{theorem}[Alexander duality for simplicial complexes]\label{Combinatorial Alexander duality}
+  Let $\Delta$ be a simplicial complex with vertex set $V = \{v_1,v_2,..,v_n \}$. Then
+  %
+  \begin{displaymath}
+    \widetilde{H}_{i-1}(\Delta^*) = \widetilde{H}^{n-2-i}(\Delta)
+  \end{displaymath}
+  %
+  for all $i \in \mathbb Z$.
+\end{theorem}
+% 
+\begin{example}\label{Alexander Duality}
+  Using the bowtie complex $\Delta$ from Example \ref{first example of the Stanley-Reisner correspondence},  can use the \texttt{dual} method to compute the Alexander dual of $\Delta$.
+  % 
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i133 : dual $Δ$
+    o133 = simplicialComplex | x_1x_2x_4 x_0x_2x_4 x_1x_2x_3 x_0x_2x_3 |
+    o133 : SimplicialComplex
+\end{lstlisting}
+  %
+  which is the simplicial complex
+ \begin{displaymath}
+    \begin{tikzpicture}[scale = .5]
+      \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+      \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+      \filldraw[gray!10] (0,0) -- (8,0) -- (4,2.5) -- cycle;
+      \filldraw[gray!10] (0,5) -- (8,5) -- (4,2.5) -- cycle;
+      \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+      \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+      \draw[-,very thick] (0,5) -- (8,5);
+      \draw[-,very thick] (0,0) -- (8,0);
+      \filldraw (0,0) circle (5pt);
+      \filldraw (0,5) circle (5pt);
+      \filldraw (4,2.5) circle (5pt);
+      \filldraw (8,0) circle (5pt);
+      \filldraw (8,5) circle (5pt);
+      \node at (-.5,-.5) {$v_3$};
+      \node at (-.5,5.5) {$v_1$};
+      \node at (4,1.75) {$v_2$};
+      \node at (8.5,-.5) {$v_0$};
+      \node at (8.5,5.5) {$v_4$};
+      \node at (-2.5,2.5) {\huge $\Delta^* = $};
+      \node at (9,2.5) {.};
+    \end{tikzpicture}
+  \end{displaymath}
+    % 
+  By the definition of the Alexander dual, we know that $(I_\Delta)^* = I_{\Delta^*}$. We can verify this directly.
+  % 
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i134 : dual(monomialIdeal $Δ$) == monomialIdeal dual $Δ$
+    o134 = true
+\end{lstlisting}
+  % 
+  We can also verify the combinatorial description of $\Delta^*$ by showing that the minimal generators of $I_\Delta$ correspond the complements of the facets of $\Delta^*$,
+  % 
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i140 : dualFacets = first entries facets dual $Δ$
+    o140 = {x x x , x x x , x x x , x x x }
+             1 2 4   0 2 4   1 2 3   0 2 3
+    o140 : List
+    i141 : sort first entries gens I$Δ$ == sort for F in dualFacets list(
+               product for v in vertices $Δ$ list(
+                   if member(v, support F) then continue else v)
+                   )
+               )
+    o141 = true
+\end{lstlisting}
+  % 
+  Finally, we exhibit the isomorphisms described in Theorem \ref{Combinatorial Alexander duality},
+  % 
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i94 : all(-1..5, i -> prune HH^(3-i)(dual chainComplex $Δ$) == prune HH_(i-1) dual $Δ$)
+    o94 = true
+\end{lstlisting}
+\end{example}
+%
+For a face $F \in \Delta$, we define the \textbf{link} of $F$, is the subcomplex of $\Delta$ defined by
+%
+\begin{displaymath}
+  \mathrm{link}_\Delta(F) := \{ G \in \Delta \ | \ F \cup G \in \Delta \ \text{ and } \ F \cap G = \varnothing \}.
+\end{displaymath}
+%
+With this definition, we have all the pieces necessary to present a substantive result of Stanley-Reisner theory, which is the ``dual version'' of Hochster's formula, see \cite[Corollary 1.40]{MS}. This formula allows us to compute the multigraded Betti numbers of $I_\Delta$, which are defined to be $\beta_{i,m}(I_\Delta) = \big( \mathrm{Tor}_i^S(I_\Delta, k) \big)_m$. For a subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the betti number in homological degree $i$ and multidegree $(a_1,...,a_n) \in \mathbb Z^n$, where $a_i = 1$ if $v_i \in F$ and $a_i = 0$ otherwise.
+%
+
+%
+\begin{theorem}[Hochster's Formula, dual version]
+  Let $\Delta$ be a simplicial complex with vertex set $V = \{ v_0,v_1,...,v_{n-1} \}$. The nonzero multigraded Betti numbers of $I_\Delta$ and $S/I_\Delta$ lie in squarefree degrees. Moreover, if $F \subset V$, then
+  %
+  \begin{displaymath}
+    \beta_{i,F} (I_\Delta) = \beta_{i+1,F} (S/I_\Delta) = \dim_k\Big(\widetilde H_{i-1} \big( \mathrm{link}_{\Delta^*}(V \setminus F)\; ; \; k \big) \Big).
+  \end{displaymath}
+\end{theorem}
+%
+\begin{example}
+  In Example \ref{Alexander Duality}, we computed the Alexander dual of the bowtie complex. We can use the \texttt{link} method to compute the links of various faces. For example, we compute the link of the central vertex $v_2$, whose link is a square.
+  % 
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i27 : link(dual $Δ$, x_2)
+    o27 = simplicialComplex | x_1x_4 x_0x_4 x_1x_3 x_0x_3 |
+    o27 : SimplicialComplex
+\end{lstlisting}
+  %
+  We can also construct a function that computes the multigraded betti numbers $\beta_{i,F}(S/I_\Delta)$.
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    hochster = (i, m) -> (
+        G := product select(vertices $Δ$, v -> not member(v, support m));
+        rank (homology link(dual $Δ$, G_S))_i
+        )
+\end{lstlisting}
+  %
+  Since we have a bound on the nonzero betti numbers of $I_\Delta$, we can collect them into a matrix
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i94 : V = vertices $Δ$;
+    i95 : squarefreeMonomials = unique sort apply(remove(subsets V, 0), m -> lcm m);
+    i96 : matrix for i to length res I$Δ$ - 1 list (
+              for F in squarefreeMonomials list hochster(i-1,F)
+              )
+    o96 = | 0 0 0 0 0 0 0 1 1 0 1 1 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 |
+          | 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 0 0 1 0 1 1 0 1 1 0 |
+          | 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 2 |
+                   3        31
+    o96 : Matrix ZZ  <--- ZZ
+\end{lstlisting}
+  %
+  where the rows index the homological degree (starting at $0$), and the columns indicate the multidegrees.
+\end{example}
+%
 
 
 
+
+
+
+
+
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Resolutions Of Monomial Ideals}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Topology?}
 
 
 
@@ -176,8 +369,7 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
       publisher={available at \url{http://www.math.uiuc.edu/Macaulay2/}},
     }
 
-    \bib{MR4014733}{article}{
-      label = {MFRG20}
+    \bib{MFRG}{article}{
       author={\`Alvarez Montaner, Josep},
       author={Fern\'{a}ndez-Ramos, Oscar},
       author={Gimenez, Philippe},
@@ -189,6 +381,21 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
       issn={0021-8693},
       review={\MR{4014733}},
       doi={10.1016/j.jalgebra.2019.09.013},
+    }
+
+    \bib{BT}{article}{
+      author={Bj\"{o}rner, Anders},
+      author={Tancer, Martin},
+      title={Note: Combinatorial Alexander duality---a short and elementary
+        proof},
+      journal={Discrete Comput. Geom.},
+      volume={42},
+      date={2009},
+      number={4},
+      pages={586--593},
+      issn={0179-5376},
+      review={\MR{2556456}},
+      doi={10.1007/s00454-008-9102-x},
     }
     
     
@@ -205,3 +412,4 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
 %%% mode: latex
 %%% TeX-master: t
 %%% End:
+$t$

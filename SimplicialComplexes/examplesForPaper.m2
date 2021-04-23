@@ -1,11 +1,94 @@
-restart
-needsPackage"SimplicialComplexes"
 
 ------------------------ STANLEY RIESNER THEORY ----------------------------
 
 -- Can jettison either the Rudin ball or the Ziegler ball example.
 -- Everything I can think to show is covered by one of these together
 -- with the projective plane example
+
+-------------------- DUALS, LINKS, HOCHSTER's FORMULA-----------------------
+restart
+needsPackage"SimplicialComplexes"
+options SimplicialComplexes
+
+S = QQ[x_0..x_4];
+IΔ = monomialIdeal(x_0*x_1*x_2, x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 , x_2*x_3*x_4 );
+--IΔ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
+Δ = simplicialComplex IΔ
+IΔ == ideal Δ
+--kΔ = S/IΔ;
+
+
+-- Exhibiting the relation bewtween the Alexander dual of the 
+-- Stanley-Reisner and the Alexander dual of the corresponding
+-- simplicial complex.
+
+dual Δ
+dualFacets = first entries facets dual Δ
+sort first entries gens IΔ == sort for F in dualFacets list(
+    product for v in vertices Δ list(
+	if member(v, support F) then continue else v
+	)
+    ) 
+dual(monomialIdeal Δ) == monomialIdeal dual Δ
+
+-- Simplicial version of Alexander duality and homology.
+
+netList for i from -1 to 5 list{
+    prune HH^(3-i)(dual chainComplex Δ), prune HH_(i-1) dual Δ
+    }
+
+all(-1..5, i -> prune HH^(3-i)(dual chainComplex Δ) == prune HH_(i-1) dual Δ)
+
+-- Computing link in the bowtie complex
+
+netList for i to #vertices dual Δ - 1 list{x_i, link(dual Δ, x_i)}
+link(dual Δ, x_2)
+
+-- Hochster's Formula (dual version)
+
+M = first entries mingens IΔ
+lcmLattice = unique sort apply(remove(subsets M, 0), m -> lcm m)
+
+hochster = (i, F) -> (
+    G := product select(vertices Δ, v -> not member(v, support F));
+    rank (homology link(dual Δ, G_S))_i
+    )
+V = vertices Δ;
+squarefreeMonomials = unique sort apply(remove(subsets V, 0), m -> lcm m);
+matrix for i to length res IΔ - 1 list (
+    for F in squarefree list hochster(i-1,F)
+    )
+
+hochster(1, S_0^3*S_1*S_2*S_3*S_4)
+
+res IΔ
+
+betti res IΔ
+betti res dual(monomialIdeal IΔ)
+
+
+
+viewHelp cohomology
+
+F = lcmLattice#-2
+barF = product select(vertices Δ, v -> not member(v, support F))
+facets dual Δ
+
+link(dual Δ, barF_S)
+prune homology link(dual Δ, barF)
+
+d = dim Δ
+fΔ = fVector Δ
+hΔ = for j to d+1 list(
+    sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(fΔ#(i))
+    )
+
+-- There is a criterion for an h-vector to be the h-vector of some
+-- Cohen-Macaulay complex. We can use this to verify that a simplicial
+-- complex is not Cohen-Macaulay. In particual, if the h-vector has a
+-- negative entry, the complex cannot be Cohen-Macaulay.
+needsPackage"LexIdeals"
+netList for i from 1 to length hΔ - 2 list{hΔ_i, hΔ_(i+1), macaulayBound(hΔ_i,i)}
 
 -------------------------------RUDIN BALL-----------------------------------
 
@@ -38,7 +121,8 @@ reduceHilbert(hilbertSeries kΔ)
 
 ------------------------- Euler characteristic -----------------------------
 
-sum for i to d list (-1)^i*(fΔ#(i+1))
+sum for i from 1 to d+1 list (-1)^(i+1)*(fΔ#i)
+1 + sum for i to d list (-1)^i*(rank homology(i,Δ))
 
 ----------------- Cohen-Macaulay And Shellability -------------------------
 
@@ -85,7 +169,8 @@ reduceHilbert(hilbertSeries kΔ)
 
 --------------------- Euler characteristic ---------------------------------
 
-sum for i to d list (-1)^i*(fΔ#(i+1))
+sum for i from 1 to d+1 list (-1)^(i+1)*(fΔ#i)
+1 + sum for i to d list (-1)^i*(rank homology(i,Δ))
 
 ---------------- Cohen-Macaulay and Shellability ---------------------------
 
@@ -102,14 +187,15 @@ totalHomologyRankForLink = (Δ,F) -> (
 
 all(faceList, F -> totalHomologyRankForLink(Δ,F) == 0)
 
+-- needsPackage"SimplicialDecomposability"
+
 ------------- PROJECTIVE PLANE IN CHARACTERISTIC 2-------------------------
 
 -------------------------- h-vector ---------------------------------------
 
 S = ZZ/2[x_0..x_5]
-Δ = simplicialComplex{ S_0*S_1*S_4, S_0*S_1*S_5, S_0*S_2*S_3, S_0*S_2*S_5,
-                       S_0*S_3*S_4, S_1*S_2*S_3, S_1*S_2*S_4, S_1*S_3*S_5, 
-		       S_2*S_4*S_5, S_3*S_4*S_5 }
+-- RP2 is in the small manifolds database.
+Δ = smallManifold(2,6,1,S)
 
 IΔ = ideal Δ
 kΔ = S/IΔ
@@ -120,9 +206,20 @@ R = QQ[t]
 hΔ = sum for i to d+1 list fΔ#(i) * t^i * (1-t)^(d+1-i)
 reduceHilbert(hilbertSeries kΔ)
 
+hΔ = for j to d+1 list(
+          sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(fΔ#(i))
+          )
+
+needsPackage"LexIdeals"
+netList for i to 2 list{hΔ_(i+1), macaulayBound(hΔ_i,i)}
+
+viewHelp macaulayBound
+
 --------------------- Euler characteristic ---------------------------------
 
-sum for i to d list (-1)^i*(fΔ#(i+1))
+sum for i from 1 to d+1 list (-1)^(i+1)*(fΔ#i)
+1 + sum for i to d list (-1)^i*(rank homology(i,Δ))
+
 
 ---------------- Cohen-Macaulay and Shellability ---------------------------
 
@@ -428,35 +525,7 @@ reduceHilbert(hilbertSeries kΔ)
 
 ----------------------------------------------------------------------------
 
-S = QQ[x_0..x_4]
-Δ = simplicialComplex{S_0*S_1, S_0*S_2, S_1*S_2, S_2*S_3, S_2*S_4, S_3*S_4}
-IΔ = ideal Δ
-res IΔ
-betti res IΔ
-betti res dual(monomialIdeal IΔ)
 
-M = first entries mingens IΔ
-lcmLattice = unique sort apply(remove(subsets M, 0), m -> lcm m)
-
-hochster = (i, m) -> (
-    barF := product select(vertices Δ, v -> not member(v, support m));
-    rank (homology link(dual Δ, barF_S))_i
-    )
-
-matrix for i from -1  to length res IΔ - 2 list(
-    for m in lcmLattice list(
-	hochster(i,m)
-	)
-    )
-
-
-
-F = lcmLattice#-2
-barF = product select(vertices Δ, v -> not member(v, support F))
-facets dual Δ
-
-link(dual Δ, barF_S)
-prune homology link(dual Δ, barF)
 
 ---------------------hopf----------------------------------
 restart
@@ -485,8 +554,62 @@ prune homology hopfFibration
 circle = simplicialComplex{w*x, x*y, y*w}
 i = map(S,R,{a_0, a_1, a_2, 0})
 fibre = map(threeSphere,circle,i)
+prune homology fibre
 
 
+--------------- Embedding Circles in the torus ---------------------------
+restart
+needsPackage"SimplicialComplexes"
+
+-- We know the homology of the torus well, and our database contains a
+-- minimal triangulaton of this surface. To see the generators for the
+-- H^1 of the torus, we embed circles into this minimal triangulation.
+
+S = ZZ[x_0..x_6]
+Torus = smallManifold(2,7,6,S)
+R = ZZ[y_0..y_5]
+Circle = simplicialComplex(for i to 5 list R_i*R_((i+1)%6))
+
+-- Corresponds to one of the generators of H^1
+f1 = map(Torus,Circle,matrix{{S_3,S_0,S_0,S_2,S_2,S_3}})
+chainComplex f1
+prune homology f1
+image f1
+prune homology(Torus, image f1)
+-- faces(1,Circle),(chainComplex f1)_1,transpose faces(1,Torus)
+
+-- Corresponds to the Other generator of H^1
+f2 = map(Torus,Circle,matrix{{S_3,S_6,S_6,S_5,S_5,S_3}})
+chainComplex f2
+prune homology f2
+image h
+prune homology(Torus, image f2)
+-- faces(1,Circle),(chainComplex f2)_1,transpose faces(1,Torus)
+
+h = map(Torus,Circle,matrix{{S_3,S_1,S_1,S_4,S_4,S_3}})
+chainComplex h
+prune homology h
+image h
+prune homology(Torus, image h)
+--faces(1,Circle),(chainComplex h)_1,transpose faces(1,Torus)
+
+g = map(Torus,Circle,matrix{{S_3,S_1,S_4,S_3,S_0,S_2}})
+chainComplex g
+prune homology g
+image g
+prune homology(Torus, image g)
+-- faces(1,Circle),(chainComplex g)_1,transpose faces(1,Torus)
+  
+viewHelp
 
 
-methods homology
+L = {{ 1, 2, 4 }, { 1, 2, 7 }, { 1, 2, 8 }, { 1, 3, 4 }, { 1, 3, 5 },
+    { 1, 3, 6 }, { 1, 5, 6 }, { 1, 7, 8 }, { 2, 3, 5 }, { 2, 3, 7 }, { 2, 3, 8 }, 
+    { 2, 4, 5 }, { 3, 4, 8 }, { 3, 6, 7 }, { 4, 5, 6 }, { 4, 6, 8 }, { 6, 7, 8 }
+    }
+
+for F in L list(
+    product for v in F list S_(v-1)
+    )
+
+viewHelp
