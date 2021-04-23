@@ -448,33 +448,34 @@ lyubeznikResolution({R_0*R_1, R_0^2, R_1^3}) == scarfChainComplex I
 -- We can use databases like this to find examples of maps
 -- TODO: the homology in these is boring. maybe keep searching for something
 -- better?
-R = ZZ[x_0..x_6];
-S = ZZ[y_0..y_8];
-Γ = smallManifold(2,7,7,R)
-maplist = flatten for i to 4 list (
-    for j in subsets(toList(S_0..S_8),7) list (
-    	phi := map(smallManifold(3,9,i+50,S),Γ,j);
+restart
+needsPackage "SimplicialComplexes"
+R = ZZ[a..i];
+S = ZZ[x_0..x_6];
+Γ = smallManifold(2,7,1,S);
+maplist = flatten for i to 2 list (
+    for j in subsets(toList(R_0..R_8),7) list (
+    	phi := map(smallManifold(3,9,i,R),Γ,j);
     	if isWellDefined phi then phi else continue
     	)
     );
 netList maplist
 -- By our construction, these should be inclusions.
 isInjective\maplist
--- Since we have inclusions, we can compute relative homology between
--- these manifolds.
-relhoms = for i to length maplist - 1 list prune homology(target maplist_i, image maplist_i);
-netList relhoms
 
 -- Some homology computations.
--- The Klein Bottle can be found in the small manifold database
--- (many times. The smallest example is (2,8,13)).
+-- The torus, Klein Bottle, and real projective plane can be found 
+-- in the small manifold database (many times). The smallest example is (2,8,13)).
+Torus = smallManifold(2, 7, 6, R)
+Wrap = 60
 KleinBottle = smallManifold(2, 8, 12, R)
-prune homology KleinBottle
--- And real projective space:
+ideal KleinBottle
 RP2 = smallManifold(2, 6, 1, R)
-prune homology RP2
--- Theorem 6.3 and 6.4 from Munkres confirm that these are
+-- Theorems 6.2, 6.3, and 6.4 from Munkres confirm that these are
 -- the correct homology groups.
+prune homology Torus 
+prune homology KleinBottle
+prune homology RP2
 
 -- Perhaps not useful anymore:
 -- This triangulation of the Klein bottle is taken from 
