@@ -24,6 +24,9 @@
   pdftitle={The simplicial complexes package for Macaulay2},
   pdfauthor={Ben Hersey, Gregory G. Smith, and Alexandre Zotine}
 }
+%% --Extras------------------------------------------------------------------
+\usepackage{caption}
+\usepackage{subcaption}
 %% --LAYOUT-------------------------------------------------------------------
 \usepackage[centering, includeheadfoot, hmargin=1.0in, tmargin=1.0in,
   bmargin=1in, headheight=6pt]{geometry}
@@ -111,31 +114,69 @@ Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,..
 %
 and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = S/I_\Delta$. This correspondence between simplicial complexes and square-free monomial ideals is one-to-one. Stanley-Reisner theory connects homological properties of $k[\Delta]$ to combinatorial and topological properties of $\Delta$. A survey of results can be found in \cite{BH, Stanley, MS}.
 
-%In this section, we will show how one can use the \texttt{SimplicialComplexes} package to realize some of the cornerstone results of Stanley-Reisner theory. There will be two flavors to the examples that we cover. The first will be to compute an example of the ``dual version'' of Hochster's Formula \cite[Corollary 1.40]{MS}. This formula describes the multigraded Betti numbers of $I_\Delta$ in terms of the dimension of the homology of links in the Alexander dual of $\Delta$. The second will flavor will be to investigate the connections between shellability, the Cohen-Macaulay property, and the $h$-vector of pure simplicial complexes.
+If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m_i = \displaystyle \prod x_j^{a_{i_j}}$, then the \textbf{Alexander dual} of $I$ is defined to be $\displaystyle I^* := \bigcap_{i=1}^q\hspace{2pt} (x_0^{a_{i_1}},\ x_1^{a_{i_2}},...,\ x_{n-1}^{a_{i_{n-1}}})$. If $I = I_\Delta$ for some simplicial complex $\Delta$, then $I^*$ is also a square-free monomial ideal and is the Stanley-Reisner ideal of a simplicial complex $\Delta^*$, which we call the \textbf{Alexander dual} complex to $\Delta$. There is also a combinatorial description of $\Delta^*$, given by $\Delta^* = \{ F \subset V \ | \ V \setminus F \not \in \Delta \}$. One of the attractive features of Alexander duality is the relationship between the cohomology of $\Delta$ and the homology of $\Delta^*$. More specifically, if $\Delta$ is a simplicial complex on $n$ vertices, then $    \widetilde{H}_{i-1}(\Delta^*) = \widetilde{H}^{n-2-i}(\Delta)$ for all $i \in \mathbb Z$, see \cite[Theorem 5.6]{MS}.
 %
-\begin{example}\label{first example of the Stanley-Reisner correspondence}
-  Consider the ``figure 8'' simplicial complex
+% \begin{theorem}[Alexander duality for simplicial complexes]\label{Combinatorial Alexander duality}
+%   Let $\Delta$ be a simplicial complex with vertex set $V = \{v_1,v_2,..,v_n \}$. Then
+%   %
+%   \begin{displaymath}
+%     \widetilde{H}_{i-1}(\Delta^*) = \widetilde{H}^{n-2-i}(\Delta)
+%   \end{displaymath}
+%   %
+%   for all $i \in \mathbb Z$.
+% \end{theorem}
+%
+\begin{example}\label{Stanley-Reisner ideal and Alexander duality}
+  Consider the ``figure 8'' simplicial complex $\Delta$, depicted in Figure \ref{the figure 8 and its dual}
   %
-  \begin{displaymath}
-    \begin{tikzpicture}[scale = .5]
-%      \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-      \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-%      \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-      \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-      \filldraw (0,0) circle (5pt);
-      \filldraw (0,5) circle (5pt);
-      \filldraw (4,2.5) circle (5pt);
-      \filldraw (8,0) circle (5pt);
-      \filldraw (8,5) circle (5pt);
-      \node at (-.5,-.5) {$v_0$};
-      \node at (-.5,5.5) {$v_1$};
-      \node at (4,1.75) {$v_2$};
-      \node at (8.5,-.5) {$v_3$};
-      \node at (8.5,5.5) {$v_4$};
-      \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
-      \node at (9,2.5) {.};
-    \end{tikzpicture}
-  \end{displaymath}
+  \begin{figure}[h]
+    \begin{subfigure}{0.3\textwidth}
+      \begin{tikzpicture}[scale = .5]
+        % \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+        \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+        % \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+        \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+        \filldraw (0,0) circle (5pt);
+        \filldraw (0,5) circle (5pt);
+        \filldraw (4,2.5) circle (5pt);
+        \filldraw (8,0) circle (5pt);
+        \filldraw (8,5) circle (5pt);
+        \node at (-.5,-.5) {$v_0$};
+        \node at (-.5,5.5) {$v_1$};
+        \node at (4,1.75) {$v_2$};
+        \node at (8.5,-.5) {$v_3$};
+        \node at (8.5,5.5) {$v_4$};
+        % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
+      \end{tikzpicture}
+%      \caption{The simplicial complex $\Delta$}\label{figure 8 complex}
+    \end{subfigure}
+    \hspace{50pt}
+    \begin{subfigure}{0.3\textwidth}
+      \begin{tikzpicture}[scale = .5]
+        \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+        \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+        \filldraw[gray!10] (0,0) -- (8,0) -- (4,2.5) -- cycle;
+        \filldraw[gray!10] (0,5) -- (8,5) -- (4,2.5) -- cycle;
+        \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+        \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+        \draw[-,very thick] (0,5) -- (8,5);
+        \draw[-,very thick] (0,0) -- (8,0);
+        \filldraw (0,0) circle (5pt);
+        \filldraw (0,5) circle (5pt);
+        \filldraw (4,2.5) circle (5pt);
+        \filldraw (8,0) circle (5pt);
+        \filldraw (8,5) circle (5pt);
+        \node at (-.5,-.5) {$v_3$};
+        \node at (-.5,5.5) {$v_1$};
+        \node at (4,1.75) {$v_2$};
+        \node at (8.5,-.5) {$v_0$};
+        \node at (8.5,5.5) {$v_4$};
+        % \node at (-2.5,2.5) {\huge $\Delta^* = $};
+      \end{tikzpicture}
+%      \caption{The Alexandual Dual of $\Delta$}
+    \end{subfigure}
+    \caption{The simplicial complex $\Delta$ (left) and its Alexander dual $\Delta^*$ (right).}\label{the figure 8 and its dual}
+  \end{figure}
   %
   The Stanley-Reisner ideal of $\Delta$ is $I_\Delta = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\ x_2x_3x_4)$. We can exhibit the correspondence between $\Delta$ and $I_\Delta$ using the methods \texttt{simplicialComplex} and \texttt{ideal}.
   %
@@ -150,22 +191,7 @@ and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = 
     o31 = true
   \end{lstlisting}
   %
-\end{example}
-%
-If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m_i = \displaystyle \prod x_j^{a_{i_j}}$, then the \textbf{Alexander dual} of $I$ is defined to be $\displaystyle I^* := \bigcap_{i=1}^q\hspace{2pt} (x_0^{a_{i_1}},\ x_1^{a_{i_2}},...,\ x_{n-1}^{a_{i_{n-1}}})$. If $I = I_\Delta$ for some simplicial complex $\Delta$, then $I^*$ is also a square-free monomial ideal and is the Stanley-Reisner ideal of a simplicial complex $\Delta^*$, which we call the \textbf{Alexander dual} complex to $\Delta$. There is also a combinatorial description of $\Delta^*$, given by $\Delta^* = \{ F \subset V \ | \ V \setminus F \not \in \Delta \}$. One of the attractive features of Alexander duality, is the relationship between the cohomology of $\Delta$ and the homology of $\Delta^*$, see \cite[Theorem 5.6]{MS}.
-%
-\begin{theorem}[Alexander duality for simplicial complexes]\label{Combinatorial Alexander duality}
-  Let $\Delta$ be a simplicial complex with vertex set $V = \{v_1,v_2,..,v_n \}$. Then
-  %
-  \begin{displaymath}
-    \widetilde{H}_{i-1}(\Delta^*) = \widetilde{H}^{n-2-i}(\Delta)
-  \end{displaymath}
-  %
-  for all $i \in \mathbb Z$.
-\end{theorem}
-% 
-\begin{example}\label{Alexander Duality}
-  Using the bowtie complex $\Delta$ from Example \ref{first example of the Stanley-Reisner correspondence},  can use the \texttt{dual} method to compute the Alexander dual of $\Delta$.
+  We can use the \texttt{dual} method to compute the Alexander dual of $\Delta$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i133 : dual $Δ$
@@ -174,30 +200,6 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
 \end{lstlisting}
   %
   which is the simplicial complex
- \begin{displaymath}
-    \begin{tikzpicture}[scale = .5]
-      \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-      \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-      \filldraw[gray!10] (0,0) -- (8,0) -- (4,2.5) -- cycle;
-      \filldraw[gray!10] (0,5) -- (8,5) -- (4,2.5) -- cycle;
-      \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-      \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-      \draw[-,very thick] (0,5) -- (8,5);
-      \draw[-,very thick] (0,0) -- (8,0);
-      \filldraw (0,0) circle (5pt);
-      \filldraw (0,5) circle (5pt);
-      \filldraw (4,2.5) circle (5pt);
-      \filldraw (8,0) circle (5pt);
-      \filldraw (8,5) circle (5pt);
-      \node at (-.5,-.5) {$v_3$};
-      \node at (-.5,5.5) {$v_1$};
-      \node at (4,1.75) {$v_2$};
-      \node at (8.5,-.5) {$v_0$};
-      \node at (8.5,5.5) {$v_4$};
-      \node at (-2.5,2.5) {\huge $\Delta^* = $};
-      \node at (9,2.5) {.};
-    \end{tikzpicture}
-  \end{displaymath}
     % 
   By the definition of the Alexander dual, we know that $(I_\Delta)^* = I_{\Delta^*}$. We can verify this directly.
   % 
@@ -221,7 +223,7 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
     o141 = true
 \end{lstlisting}
   % 
-  Finally, we exhibit the isomorphisms described in Theorem \ref{Combinatorial Alexander duality},
+  Finally, we exhibit the isomorphisms between the cohomology of $\Delta$ and the homology of $\Delta^*$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i94 : all(-1..5, i -> prune HH^(3-i)(dual chainComplex $Δ$) == prune HH_(i-1) dual $Δ$)
@@ -248,7 +250,7 @@ With this definition, we have all the pieces necessary to present a substantive 
 \end{theorem}
 %
 \begin{example}
-  In Example \ref{Alexander Duality}, we computed the Alexander dual of the bowtie complex. We can use the \texttt{link} method to compute the links of various faces. For example, we compute the link of the central vertex $v_2$, whose link is a square.
+  In Example \ref{Stanley-Reisner ideal and Alexander duality}, we computed the Alexander dual of the figure 8 complex. We can use the \texttt{link} method to compute the links of various faces. For example, we compute the link of the central vertex $v_2$, whose link is a square.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i27 : link(dual $Δ$, x_2)
@@ -280,14 +282,33 @@ With this definition, we have all the pieces necessary to present a substantive 
     o96 : Matrix ZZ  <--- ZZ
 \end{lstlisting}
   %
-  where the rows index the homological degree (starting at $0$), and the columns indicate the multidegrees.
+  where the row are indexed by the homological degree (starting at $0$), and the columns are indexed by the squarefree multidegrees.
 \end{example}
 %
+We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure, codimension $1$, simplicial complex. We say that a $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. These conditions are linked by the chain of conditions: shellable $\Longrightarrow$ Cohen-Macaulay $\Longrightarrow$ pure, \cite[Corollary 5,1.5 \& Theorem 5.1.13]{BH}. The figure 8 complex from example \ref{Stanley-Reisner ideal and Alexander duality} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
 
 
 
-
-
+% \begin{figure}[h]
+%   \begin{tikzpicture}[scale = .5]
+%     \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+%     \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+%     \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+%     \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+%     \filldraw (0,0) circle (5pt);
+%     \filldraw (0,5) circle (5pt);
+%     \filldraw (4,2.5) circle (5pt);
+%     \filldraw (8,0) circle (5pt);
+%     \filldraw (8,5) circle (5pt);
+%     \node at (-.5,-.5) {$v_0$};
+%     \node at (-.5,5.5) {$v_1$};
+%     \node at (4,1.75) {$v_2$};
+%     \node at (8.5,-.5) {$v_3$};
+%     \node at (8.5,5.5) {$v_4$};
+%     % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
+%   \end{tikzpicture}
+%   \caption{The bowtie complex}\label{bowtie figure}
+% \end{figure}
 
 
 
@@ -398,6 +419,17 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
       doi={10.1007/s00454-008-9102-x},
     }
     
+    \bib{Cook}{article}{
+      author={Cook, David, II},
+      title={Simplicial decomposability},
+      journal={J. Softw. Algebra Geom.},
+      volume={2},
+      date={2010},
+      pages={20--23},
+      issn={1948-7916},
+      review={\MR{2881131}},
+      doi={10.2140/jsag.2010.2.20},
+    }
     
   \end{biblist}
 \end{bibdiv}

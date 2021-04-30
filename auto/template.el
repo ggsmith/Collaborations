@@ -32,14 +32,15 @@
     "mathptmx"
     "microtype"
     "hyperref"
+    "caption"
+    "subcaption"
     "geometry"
     "listings")
    (TeX-add-symbols
     "PP")
    (LaTeX-add-labels
-    "first example of the Stanley-Reisner correspondence"
-    "Combinatorial Alexander duality"
-    "Alexander Duality")
+    "Stanley-Reisner ideal and Alexander duality"
+    "the figure 8 and its dual")
    (LaTeX-add-environments
     "example")
    (LaTeX-add-amsthm-newtheorems
