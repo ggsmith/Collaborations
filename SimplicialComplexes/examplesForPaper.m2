@@ -6,6 +6,8 @@
 -- with the projective plane example
 
 -------------------- DUALS, LINKS, HOCHSTER's FORMULA-----------------------
+printWidth = 60
+
 restart
 needsPackage"SimplicialComplexes"
 options SimplicialComplexes
@@ -195,7 +197,7 @@ all(faceList, F -> totalHomologyRankForLink(Δ,F) == 0)
 
 S = ZZ/2[x_0..x_5]
 -- RP2 is in the small manifolds database.
-Δ = smallManifold(2,6,1,S)
+Δ = smallManifold(2,6,1,S);
 
 IΔ = ideal Δ
 kΔ = S/IΔ
@@ -230,8 +232,7 @@ faceList = flatten flatten for i from -1 to dim Δ list entries (faces Δ)#i
 
 totalHomologyRankForLink = (Δ,F) -> (
     linkF := link(Δ, F);
-    dL := dim linkF;
-    sum for i from -1 to dL-1 list rank (homology link(Δ,F))#i
+    sum for i from -1 to dim(linkF) - 1 list rank (homology link(Δ,F))#i
     ) 
 
 all(faceList, F -> totalHomologyRankForLink(Δ,F) == 0)

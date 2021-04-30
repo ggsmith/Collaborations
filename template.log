@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.11.6)  23 APR 2021 12:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.11.6)  27 APR 2021 13:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -704,143 +704,168 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip66
 )
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/01/03 v3.4h Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 61.
+\captionmargin=\dimen275
+\captionmargin@=\dimen276
+\captionwidth=\dimen277
+\caption@tempdima=\dimen278
+\caption@indent=\dimen279
+\caption@parindent=\dimen280
+\caption@hangindent=\dimen281
+Package caption Info: AMS or SMF document class detected.
+)
+Package caption Info: AMS or SMF document class.
+\c@caption@flags=\count296
+\c@continuedfloat=\count297
+Package caption Info: hyperref package is loaded.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2020/01/22 v1.3d Sub-captions (AR)
+\c@subfigure=\count298
+\c@subtable=\count299
+)
 (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
 
 (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
-\Gm@cnth=\count296
-\Gm@cntv=\count297
-\c@Gm@tempcnt=\count298
-\Gm@bindingoffset=\dimen275
-\Gm@wd@mp=\dimen276
-\Gm@odd@mp=\dimen277
-\Gm@even@mp=\dimen278
-\Gm@layoutwidth=\dimen279
-\Gm@layoutheight=\dimen280
-\Gm@layouthoffset=\dimen281
-\Gm@layoutvoffset=\dimen282
+\Gm@cnth=\count300
+\Gm@cntv=\count301
+\c@Gm@tempcnt=\count302
+\Gm@bindingoffset=\dimen282
+\Gm@wd@mp=\dimen283
+\Gm@odd@mp=\dimen284
+\Gm@even@mp=\dimen285
+\Gm@layoutwidth=\dimen286
+\Gm@layoutheight=\dimen287
+\Gm@layouthoffset=\dimen288
+\Gm@layoutvoffset=\dimen289
 \Gm@dimlist=\toks42
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count299
+\lst@mode=\count303
 \lst@gtempboxa=\box59
 \lst@token=\toks43
-\lst@length=\count300
-\lst@currlwidth=\dimen283
-\lst@column=\count301
-\lst@pos=\count302
-\lst@lostspace=\dimen284
-\lst@width=\dimen285
-\lst@newlines=\count303
-\lst@lineno=\count304
-\lst@maxwidth=\dimen286
+\lst@length=\count304
+\lst@currlwidth=\dimen290
+\lst@column=\count305
+\lst@pos=\count306
+\lst@lostspace=\dimen291
+\lst@width=\dimen292
+\lst@newlines=\count307
+\lst@lineno=\count308
+\lst@maxwidth=\dimen293
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2019/09/10 1.8c (Carsten Heinz)
-\c@lstnumber=\count305
-\lst@skipnumbers=\count306
+\c@lstnumber=\count309
+\lst@skipnumbers=\count310
 \lst@framebox=\box60
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2019/09/10 1.8c listings configuration
 ))
 Package: listings 2019/09/10 1.8c (Carsten Heinz)
-\c@lemma=\count307
-\c@maintheorem=\count308
+\c@lemma=\count311
+\c@maintheorem=\count312
    defining Unicode char U+0394 (decimal 916)
 
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count309
+\l__kernel_color_stack_int=\count313
 \l__pdf_internal_box=\box61
 )
 (./template.aux)
 \openout1 = `template.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Trying to load font information for T1+ptm on input line 64
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 67
 .
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
 LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line
- 64.
+ 67.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line
- 64.
+ 67.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line
- 64.
+ 67.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
 LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line
- 64.
+ 67.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 64.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 67.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 64.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 67.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 6
-4.
+7.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 64.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 67.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 64.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 67.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 64.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 67.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count310
-\scratchdimen=\dimen287
+\scratchcounter=\count314
+\scratchdimen=\dimen294
 \scratchbox=\box62
-\nofMPsegments=\count311
-\nofMParguments=\count312
+\nofMPsegments=\count315
+\nofMParguments=\count316
 \everyMPshowfont=\toks44
-\MPscratchCnt=\count313
-\MPscratchDim=\dimen288
-\MPnumerator=\count314
-\makeMPintoPDFobject=\count315
+\MPscratchCnt=\count317
+\MPscratchDim=\dimen295
+\MPnumerator=\count318
+\makeMPintoPDFobject=\count319
 \everyMPtoPDFconversion=\toks45
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -852,14 +877,14 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros
-LaTeX Info: Redefining \microtypecontext on input line 64.
+LaTeX Info: Redefining \microtypecontext on input line 67.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `basictext'.
-LaTeX Info: Redefining \showhyphens on input line 64.
+LaTeX Info: Redefining \showhyphens on input line 67.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -868,7 +893,7 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
 \AtBeginShipoutBox=\box63
-Package hyperref Info: Link coloring ON on input line 64.
+Package hyperref Info: Link coloring ON on input line 67.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
@@ -879,16 +904,19 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count316
+\c@section@level=\count320
 )
-LaTeX Info: Redefining \ref on input line 64.
-LaTeX Info: Redefining \pageref on input line 64.
-LaTeX Info: Redefining \nameref on input line 64.
+LaTeX Info: Redefining \ref on input line 67.
+LaTeX Info: Redefining \pageref on input line 67.
+LaTeX Info: Redefining \nameref on input line 67.
 
 (./template.out) (./template.out)
 \@outlinefile=\write4
 \openout4 = `template.out'.
 
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: listings package is loaded.
+Package caption Info: End \AtBeginDocument code.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -926,9 +954,9 @@ LaTeX Info: Redefining \nameref on input line 64.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count317
+\c@lstlisting=\count321
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 8
-4.
+7.
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
@@ -948,48 +976,61 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 106.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 109.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 106.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 109.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 106.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 109.
 
 
 Package amsrefs Warning: Use of \cites is recommended instead of \cite 
-(amsrefs)                for multiple cites 'BH, Stanley, MS' on input line 112
+(amsrefs)                for multiple cites 'BH, Stanley, MS' on input line 115
 .
 
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 135.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 135.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 135.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 144.
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 
 Package amsrefs Warning: The form \cite{...}*{...} is recommended
-(amsrefs)                instead of \cite[...]{...} on input line 155.
+(amsrefs)                instead of \cite[...]{...} on input line 117.
 
-[2] [3] [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 408.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 408.
+
+Overfull \hbox (5.43645pt too wide) in paragraph at lines 150--152
+[][] 
+ []
+
+
+Overfull \hbox (5.43645pt too wide) in paragraph at lines 175--177
+[][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 185.
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+Underfull \hbox (badness 1221) in paragraph at lines 432--432
+[]\T1/ptm/m/n/10 (+20) David Cook II, \T1/ptm/m/it/10 (+20) Sim-pli-cial de-com
+-pos-abil-ity\T1/ptm/m/n/10 (+20) , J. Softw. Al-ge-bra Geom. \T1/ptm/b/n/10 2 
+\T1/ptm/m/n/10 (+20) (2010), 20--23, DOI
+ []
+
+[4]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 439.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 439.
  (./template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 408.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 408.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 439.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 439.
 Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: 6BC193BD5F57A7F61C7EDA9B24D2D4DE;338.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 408.
+(rerunfilecheck)             Checksum: 2C64C407ED22D5E304F857465BE73CBF;338.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 439.
  ) 
 Here is how much of TeX's memory you used:
- 24393 strings out of 481239
- 449318 string characters out of 5920377
- 743263 words of memory out of 5000000
- 38848 multiletter control sequences out of 15000+600000
- 616053 words of font info for 212 fonts, out of 8000000 for 9000
+ 25477 strings out of 481239
+ 468855 string characters out of 5920377
+ 760629 words of memory out of 5000000
+ 39924 multiletter control sequences out of 15000+600000
+ 601737 words of font info for 184 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 60i,7n,80p,865b,1948s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,11n,80p,1036b,1947s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
 e/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
@@ -1003,10 +1044,10 @@ w/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pf
 b></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/t
 exlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/urw/times/utmri8a.pfb>
-Output written on template.pdf (4 pages, 198729 bytes).
+Output written on template.pdf (4 pages, 202140 bytes).
 PDF statistics:
- 203 PDF objects out of 1000 (max. 8388607)
- 182 compressed objects within 2 object streams
- 79 named destinations out of 1000 (max. 500000)
- 48701 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 207 PDF objects out of 1000 (max. 8388607)
+ 186 compressed objects within 2 object streams
+ 81 named destinations out of 1000 (max. 500000)
+ 42045 words of extra memory for PDF output out of 42996 (max. 10000000)
 
