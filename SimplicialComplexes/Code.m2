@@ -582,18 +582,41 @@ chainComplex SimplicialComplex := ChainComplex => {Labels => {}} >> opts -> (
     	)
     )
 
-homology(ZZ,SimplicialComplex,Ring) := Module => opts -> (i,Delta,R) -> (
-     homology(i, chainComplex Delta ** R))
-homology(ZZ,SimplicialComplex) := Module => opts -> (i,Delta) -> (
-     homology(i, chainComplex Delta))
-homology(Nothing,SimplicialComplex,Ring) :=
-homology(SimplicialComplex,Ring) := GradedModule => opts -> (Delta,R) -> (
-     homology(chainComplex Delta ** R))
-homology(Nothing,SimplicialComplex) :=
-homology(SimplicialComplex) := GradedModule => opts -> Delta -> (
-     homology(chainComplex Delta))
+homology(ZZ, SimplicialComplex, Ring) := Module => opts -> (i,Delta,R) -> (
+    homology(i, chainComplex Delta ** R)
+    )
+ 
+homology(ZZ, SimplicialComplex) := Module => opts -> (i,Delta) -> (
+    homology(i, chainComplex Delta)
+    )
+ 
+homology(Nothing, SimplicialComplex, Ring) :=
+homology(SimplicialComplex, Ring) := GradedModule => opts -> (Delta,R) -> (
+    homology(chainComplex Delta ** R)
+    )
 
--- TODO: Should there be a cohomology method?
+homology(Nothing, SimplicialComplex) :=
+homology(SimplicialComplex) := GradedModule => opts -> Delta -> (
+    homology(chainComplex Delta)
+    )
+
+cohomology(ZZ, SimplicialComplex, Ring) := Module => opts -> (i,Delta,R) -> (
+    cohomology(i, Hom(chainComplex Delta ** R, R))
+    )
+
+cohomology(ZZ, SimplicialComplex) := Module => opts -> (i,Delta) -> (
+    cohomology(i, Hom(chainComplex Delta, coefficientRing Delta))
+    )
+
+cohomology(Nothing, SimplicialComplex, Ring) :=
+cohomology(SimplicialComplex, Ring) := GradedModule => opts -> (Delta,R) -> (
+    cohomology(Hom(chainComplex Delta ** R, R))
+    )
+
+cohomology(Nothing, SimplicialComplex) :=
+cohomology(SimplicialComplex) := GradedModule => opts -> (Delta,R) -> (
+    cohomology(Hom(chainComplex Delta, coefficientRing Delta))
+    )
 
 -- helper functions for algebraicShifting. Not exported.
 shiftMonomial = (m) -> (
@@ -1177,13 +1200,14 @@ isSurjective SimplicialMap := Boolean => f -> (
     )
 
 homology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E) -> (
-    inclusion := map(D,E, gens ring D);
+    inclusion := map(D, E, gens ring D);
     C := coker chainComplex inclusion;
     homology(i,C)
     )
 
-homology(SimplicialComplex,SimplicialComplex) := ChainComplex => opts -> (D,E) -> (
-    inclusion := map(D,E, gens ring D);
+homology(Nothing, SimplicialComplex, SimplicialComplex) :=
+homology(SimplicialComplex, SimplicialComplex) := ChainComplex => opts -> (D,E) -> (
+    inclusion := map(D, E, gens ring D);
     C := coker chainComplex inclusion;
     homology C
     )
@@ -1192,8 +1216,31 @@ homology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
     homology(i, chainComplex f)
     )
 
-homology SimplicialMap := GradedModuleMap => opts -> f -> (
+homology(Nothing, SimplicialMap) :=
+homology(SimplicialMap) := GradedModuleMap => opts -> f -> (
     homology(chainComplex f)
+    )
+
+cohomology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E) -> (
+    inclusion := map(D, E, gens ring D);
+    C := coker chainComplex inclusion;
+    cohomology(i, Hom(C, coefficientRing D))
+    )
+
+cohomology(Nothing, SimplicialComplex, SimplicialComplex) :=
+cohomology(SimplicialComplex, SimplicialComplex) := ChainComplex => opts -> (D,E) -> (
+    inclusion := map(D, E, gens ring D);
+    C := coker chainComplex inclusion;
+    cohomology Hom(C, coefficientRing D)
+    )
+
+cohomology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
+    cohomology(i, Hom(chainComplex f, coefficientRing source f))
+    )
+
+cohomology(Nothing, SimplicialMap)
+cohomology(SimplicialMap) := GradedModuleMap => opts -> f -> (
+    cohomology(Hom(chainComplex f, coefficientRing source f))
     )
 
 elementaryCollapse = method();
