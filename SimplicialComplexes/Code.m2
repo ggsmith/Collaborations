@@ -1238,7 +1238,7 @@ cohomology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
     cohomology(i, Hom(chainComplex f, coefficientRing source f))
     )
 
-cohomology(Nothing, SimplicialMap)
+cohomology(Nothing, SimplicialMap) :=
 cohomology(SimplicialMap) := GradedModuleMap => opts -> f -> (
     cohomology(Hom(chainComplex f, coefficientRing source f))
     )

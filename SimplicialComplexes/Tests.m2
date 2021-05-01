@@ -558,6 +558,24 @@ assert ((source Phi) === (chainComplex D'))
 assert ((target Phi) === (chainComplex D))
 ///
 
+
+------------------------------------------------------------------------------
+-- Testing (homology, SimplicialMap)
+
+S = ZZ/101[a,b,c,d]
+D = simplicialComplex{1_S}
+E = simplicialComplex{0_S}
+f = map(D,E,map(S,S))
+assert((homology f)_(-1) == 0)
+assert((homology f)_0 == 0)
+g = map(simplexComplex(2,S), D, map(S,S))
+assert all(-1..2, i -> (homology g)_i == 0)
+D = simplicialComplex{a*b, b*c, a*c}
+I = map(D,D, id_(ring D))
+assert((homology I)_(-1) == 0)
+assert((homology I)_0 == 0)
+assert((prune homology I)_1 == matrix{{1_(coefficientRing D)}})
+
 ------------------------------------------------------------------------------
 -- Testing more chainComplex maps
 -- These examples come from Munkres' Algebraic Topology
