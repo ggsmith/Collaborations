@@ -66,6 +66,7 @@ export {
     "bjornerComplex",
     "dunceHatComplex",
     "grunbaumBallComplex",
+    "kleinBottleComplex",
     "nonPiecewiseLinearSphereComplex",
     "poincareSphereComplex", 
     "rudinBallComplex",

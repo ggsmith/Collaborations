@@ -231,8 +231,6 @@ bjornerComplex PolynomialRing := SimplicialComplex => S -> (
     simplicialComplex apply(hachimoriTable#13, f -> product(f, i -> S_i))
     )
 
-
-
 -- Frank Lutz has enumerated all 2 and 3-manifolds with less than 10 vertices;
 -- see http://page.math.tu-berlin.de/~lutz/stellar/3-manifolds.html
 small2ManifoldsFile := currentFileDirectory | "small2ManifoldsLibrary.txt"
@@ -292,6 +290,12 @@ smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
     simplicialComplex apply((smallManifoldsTable(d,v))#(v,i+1), f -> product(f, i -> S_(i-1)))
     )
 
+kleinBottleComplex = method()
+kleinBottleComplex PolynomialRing := SimplicialComplex => S -> (
+    if numgens S < 8 then
+        error "-- expected a polynomial ring with at least 8 generators";
+    smallManifold(2, 8, 12, S)
+    )
 
 ---- inspired by Sage math 
 --   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html
@@ -301,8 +305,14 @@ smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
 -- TODO: add realProjectiveSpaceComplex (ZZ == dimension)
 -- TODO: add surfaceComplex (ZZ == genus)
 
+-*
 
+realProjectiveSpaceComplex := method()
+realProjectiveSpaceComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
+    -- If n = 0
+    )
 
+*-
 ------------------------------------------------------------------------------
 -- more advanced constructors 
 ------------------------------------------------------------------------------
@@ -596,7 +606,7 @@ homology(SimplicialComplex, Ring) := GradedModule => opts -> (Delta,R) -> (
     )
 
 homology(Nothing, SimplicialComplex) :=
-homology(SimplicialComplex) := GradedModule => opts -> Delta -> (
+homology SimplicialComplex := GradedModule => opts -> Delta -> (
     homology(chainComplex Delta)
     )
 
@@ -614,7 +624,7 @@ cohomology(SimplicialComplex, Ring) := GradedModule => opts -> (Delta,R) -> (
     )
 
 cohomology(Nothing, SimplicialComplex) :=
-cohomology(SimplicialComplex) := GradedModule => opts -> (Delta,R) -> (
+cohomology SimplicialComplex := GradedModule => opts -> (Delta,R) -> (
     cohomology(Hom(chainComplex Delta, coefficientRing Delta))
     )
 
@@ -1217,7 +1227,7 @@ homology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
     )
 
 homology(Nothing, SimplicialMap) :=
-homology(SimplicialMap) := GradedModuleMap => opts -> f -> (
+homology SimplicialMap := GradedModuleMap => opts -> f -> (
     homology(chainComplex f)
     )
 
@@ -1238,8 +1248,8 @@ cohomology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
     cohomology(i, Hom(chainComplex f, coefficientRing source f))
     )
 
-cohomology(Nothing, SimplicialMap)
-cohomology(SimplicialMap) := GradedModuleMap => opts -> f -> (
+cohomology(Nothing, SimplicialMap) :=
+cohomology SimplicialMap := GradedModuleMap => opts -> f -> (
     cohomology(Hom(chainComplex f, coefficientRing source f))
     )
 

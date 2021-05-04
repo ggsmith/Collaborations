@@ -1333,7 +1333,7 @@ doc ///
     Headline 
         get a small manifold from the Frank Lutz database
     Usage 
-        smoothManifold(d, v, i, R)
+        smoothManifold(d, v, i, S)
     Inputs
         d : ZZ 
 	    equal to dimension of the manifold
@@ -1374,9 +1374,9 @@ doc ///
 	Text
 	    Frank Lutz also includes some information of the topological type of
 	    the manifolds @HREF("http://page.math.tu-berlin.de/~lutz/stellar/2_manifolds_all.type", "on his webpage.")@. 
-	    The 2-sphere, 2-torus, real projective 2-space and Klein Bottle can all
+	    The 2-sphere, 2-torus, real projective plane and Klein Bottle can all
 	    be accessed from the database. Here are the smallest instances which appear
-	    in the database for real projective 2-space and the Klein Bottle (note that our 
+	    in the database for real projective plane and the Klein Bottle (note that our 
 	    index begins counting at zero instead of one):
         Example
 	    RP2 = smallManifold(2, 6, 1, S)
@@ -1384,7 +1384,7 @@ doc ///
 	Text
 	    From Theorems 6.3 and 6.4 in Chapter one of Munkres' 
 	    @HREF("https://www.pearson.com/us/higher-education/product/Munkres-Topology-2nd-Edition/9780131816299.html", 
-	    "Algebraic Topology")@, both real projective 2-space and the Klein Bottle should 
+	    "Algebraic Topology")@, both real projective plane and the Klein Bottle should 
 	    have zero homology except in the first position.
 	Example
 	    RP2H = prune HH RP2
@@ -1392,6 +1392,41 @@ doc ///
     SeeAlso
         "making an abstract simplicial complex"
 	(dim, SimplicialComplex)
+///
+
+doc /// 
+    Key 
+        (kleinBottleComplex, PolynomialRing)
+        kleinBottleComplex
+    Headline 
+        make a minimal triangulation of the Klein bottle
+    Usage 
+        kleinBottleComplex S
+    Inputs
+        S : PolynomialRing 
+	    that specifies the polynomial ring containing the Stanley-Reisner ideal
+    Outputs 
+        : SimplicialComplex
+	    corresponding to a minimal triangulation of the Klein bottle
+    Description
+        Text
+            This function accesses Frank Lutz's database of all small triangulated 2-manifolds
+	    via the method @TO smallManifold@ to obtain the minimal triangulation of the Klein
+	    bottle.
+	Example
+	    S = ZZ[x_0..x_7];
+	    KleinBottle = kleinBottleComplex S
+ 	Text
+	    From Theorem 6.3 in Chapter one of Munkres' 
+	    @HREF("https://www.pearson.com/us/higher-education/product/Munkres-Topology-2nd-Edition/9780131816299.html", 
+	    "Algebraic Topology")@ states that the first homology of the Klein bottle should have
+	    rank one free part, and $\mathbb{Z}/2\mathbb{Z}$ torsion. The second homology should be zero.
+	Example
+	    prune HH KleinBottle            	
+    SeeAlso
+        "making an abstract simplicial complex"
+	(smallManifold, ZZ, ZZ, ZZ, PolynomialRing)
+	smallManifold
 ///
 
 ------------------------------------------------------------------------------
