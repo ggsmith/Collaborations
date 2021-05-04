@@ -3503,6 +3503,78 @@ doc ///
     (homology,SimplicialComplex,SimplicialComplex)
 ///
 
+doc ///
+    Key    
+        (homology,SimplicialMap)
+        (homology,Nothing,SimplicialMap)
+    Headline
+        Compute the induced map on homology of a simplicial map.
+    Usage
+        homology f
+    Inputs
+        f:SimplicialMap
+    Outputs
+        :GradedModuleMap
+    Description
+        Text
+            The graded module map from the homology of {\tt source f}
+	    to the homology of {\tt target f}. As an example, we map a
+	    circle into the torus in two ways, and we get two distinct
+	    maps in homology.
+        Example
+            S = ZZ[x_0..x_6];
+            R = ZZ[y_0..y_2];
+            Torus = smallManifold(2,7,6,S);
+            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
+            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
+            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
+	    prune homology f1
+	    prune homology f2	    
+    SeeAlso
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+        (homology,ZZ,SimplicialMap)
+        (homology,SimplicialComplex,Ring)
+        (homology,ZZ,SimplicialComplex)
+        (homology,ZZ,SimplicialComplex,Ring)
+        (homology,SimplicialComplex,SimplicialComplex)
+///
+
+doc ///
+    Key    
+        (homology,ZZ,SimplicialMap)
+    Headline
+        Compute the induced map on homology of a simplicial map.
+    Usage
+        homology(i,f)
+    Inputs
+	i:ZZ
+	f:SimplicialMap
+    Outputs
+        :Matrix
+    Description
+        Text
+            The map from the $i$-th homology of {\tt source f}
+	    to the $i$-th homology of {\tt target f}. As an example, we map a
+	    circle into the torus in two ways, and we get two distinct
+	    maps in homology.
+        Example
+            S = ZZ[x_0..x_6];
+            R = ZZ[y_0..y_2];
+            Torus = smallManifold(2,7,6,S);
+            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
+            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
+            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
+	    prune homology(1, f1)
+	    prune homology(1, f2)
+    SeeAlso
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+        (homology,ZZ,SimplicialMap)
+        (homology,SimplicialComplex,Ring)
+        (homology,ZZ,SimplicialComplex)
+        (homology,ZZ,SimplicialComplex,Ring)
+        (homology,SimplicialComplex,SimplicialComplex)
+///
+
 doc///
     Key    
         (substitute,SimplicialComplex,PolynomialRing)
@@ -4115,6 +4187,7 @@ doc ///
     Key
     	(homology, SimplicialComplex, SimplicialComplex)
 	(homology, ZZ, SimplicialComplex, SimplicialComplex)
+	(homology, Nothing, SimplicialComplex, SimplicialComplex)
     Headline
     	compute the relative homology of two simplicial complexes
     Usage
