@@ -640,7 +640,7 @@ assert isWellDefined f
 assert isInjective f
 g = barycentricSubdivision(id_D, T, T)
 assert isWellDefined g
-h = barycentricSubdivision(f,T,S)
+h = barycentricSubdivision(f,S,T)
 assert isWellDefined h
 irrelevant = simplicialComplex {1_R}
 bIrrelevant = barycentricSubdivision(irrelevant, R)

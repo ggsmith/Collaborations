@@ -2458,9 +2458,9 @@ doc ///
         f : SimplicialMap
 	    from the simplicial complex {\tt D} to the simplicial complex {\tt E}
 	R : Ring
-	    the ambient ring for the barycentric subdivision of {\tt D}
-	S : Ring
 	    the ambient ring for the barycentric subdivision of {\tt E}
+	S : Ring
+	    the ambient ring for the barycentric subdivision of {\tt D}
     Outputs 
         : SimplicialMap
 	    from the barycentric subdivision of {\tt D} to the barycentric
@@ -2487,7 +2487,7 @@ doc ///
 	    S = ZZ/2[z_0..z_2];
 	    BD = barycentricSubdivision(D,R)	    
     	    BE = barycentricSubdivision(E,S)
-	    Bf = barycentricSubdivision(f,R,S)
+	    Bf = barycentricSubdivision(f,S,R)
         Text
 	    In order to understand the data of {\tt Bf}, we first look at 
 	    the corresponce between the faces of {\tt D}, {\tt E} and
