@@ -10,7 +10,7 @@ SimplicialComplex = new Type of HashTable
 SimplicialComplex.synonym = "abstract simplicial complex"
 
 -- 'facets' method defined in Polyhedra
-facets SimplicialComplex := Matrix => D -> D.facets
+facets SimplicialComplex := List => D -> D.facets
 
 expression SimplicialComplex := D -> (expression simplicialComplex) expression facets D
 net SimplicialComplex := net @@ expression
@@ -22,7 +22,7 @@ ring SimplicialComplex := PolynomialRing => D -> D.ring
 coefficientRing SimplicialComplex := Ring => D -> coefficientRing ring D
 
 dim SimplicialComplex := ZZ => (cacheValue symbol dim) (
-    D -> max apply(first entries facets D, s -> # support(s)) - 1
+    D -> max apply(facets D, s -> # support(s)) - 1
     )
    
 simplicialComplex = method()   
@@ -43,7 +43,7 @@ simplicialComplex List := SimplicialComplex => L -> (
     -- remove any non-maximal faces from 'facetsList'
     I = monomialIdeal mingens I;
     -- contracting with G complements the support of the monomials
-    F := sort contract (gens I, G);
+    F := first entries sort contract (gens I, G);
     -- Alexander duality for monomial ideals in part of the 'Core'
     --   the dual method checks that I is squarefree
     I = dual I;
@@ -69,13 +69,13 @@ simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
 	return new SimplicialComplex from {
 	    symbol ring           => S,
 	    symbol monomialIdeal  => monomialIdeal 1_S,
-	    symbol facets         => map(S^1, S^0, 0),
+	    symbol facets         => first entries map(S^1, S^0, 0),
 	    symbol cache          => new CacheTable
 	    }
 	);    
     G := matrix {{product gens S}};
     -- contracting with G complements the support of the monomials    
-    F := sort contract (gens J, G);
+    F := first entries sort contract (gens J, G);
     new SimplicialComplex from {
 	symbol ring           => S,
 	symbol monomialIdeal  => I,
@@ -116,14 +116,14 @@ isWellDefined SimplicialComplex := Boolean => D -> (
 	    << "-- expected the ring of `.monomialIdeal' to be `.ring'" << endl;
 	return false
 	);     
-    if not instance (D.facets, Matrix) then (
+    if not instance (D.facets, List) then (
 	if debugLevel > 0 then 
-	    << "-- expected `.facets' to be a Matrix" << endl;
+	    << "-- expected `.facets' to be a List" << endl;
 	return false
 	);        
-    if ring D.facets =!= D.ring then (
+    if any(D.facets, F -> ring F =!= D.ring) then (
 	if debugLevel > 0 then 
-	    << "-- expected the ring of `.facets' to be `.ring'" << endl;
+	    << "-- expected the entries in `.facets' to be elements of `.ring'" << endl;
 	return false
 	); 
     if not instance (D.cache, CacheTable) then (
@@ -141,14 +141,13 @@ isWellDefined SimplicialComplex := Boolean => D -> (
     -- check whether the facets correspond to the monomialIdeal
     S := ring D;
     G := matrix {{product gens S}};
-    if D.facets =!= sort contract (gens dual monomialIdeal D, G) then (
+    if D.facets =!= first entries sort contract (gens dual monomialIdeal D, G) then (
 	if debugLevel > 0 then
 	    << "-- expected '.facets' to list the facets corresponding to `.monomialIdeal' << "endl;
     	return false
 	);	    
     true
     )
-
 
 ------------------------------------------------------------------------------
 -- constructors for classic examples
@@ -322,7 +321,7 @@ prune SimplicialComplex := SimplicialComplex => opts -> D -> (
     R := (coefficientRing D)(monoid[V]);
     if dim D < -1 then return simplicialComplex monomialIdeal(1_R);
     if dim D === 1 then return simplicialComplex {1_R};
-    simplicialComplex for x in first entries facets D list (
+    simplicialComplex for x in facets D list (
 	if sum first exponents x =!= 1 then substitute(x, R) else continue)
     )
 
@@ -353,7 +352,7 @@ skeleton (ZZ, SimplicialComplex) := SimplicialComplex => (n, D) -> (
     if n < -1 then return simplicialComplex monomialIdeal 1_S;
     if n === -1 then return simplicialComplex {1_S};
     if n >= dim D then return D;
-    simplicialComplex matrix {apply(toList(0..n), i -> faces(i,D))}
+    simplicialComplex flatten for i to n list faces (i,D)
     )
 
 star = method ()
@@ -394,8 +393,8 @@ wedge (SimplicialComplex, SimplicialComplex, RingElement, RingElement) := Simpli
 	            else if i == vIndex then RW_uIndex
 	            else RW_(nD + i - 1))
 		);
-    facetsD := first entries includeD facets D;
-    facetsE := first entries includeE facets E;
+    facetsD := apply(facets D, F -> includeD(F));
+    facetsE := apply(facets E, F -> includeE(F));
     simplicialComplex(facetsD | facetsE)
     )
 
@@ -406,13 +405,13 @@ wedge (SimplicialComplex, SimplicialComplex, RingElement, RingElement) := Simpli
 -- 'vertices' method is defined in 'Polyhedra" package
 vertices SimplicialComplex := D -> (
     if dim D < 0 then {}
-    else support product first entries facets D
+    else support product facets D
     )
 -- vertices Face := F -> F.vertices
 
 
 -- 'faces' method defined in Polyhedra
-faces (ZZ, SimplicialComplex) := Matrix => (i, D) -> (
+faces (ZZ, SimplicialComplex) := List => (i, D) -> (
     S := ring D;
     if not D.cache.?faces then (
 	D.cache.faces = new MutableHashTable;
@@ -422,12 +421,14 @@ faces (ZZ, SimplicialComplex) := Matrix => (i, D) -> (
 	D.cache.faces.ring = E/J;
 	);
     if not D.cache.faces#?i then (
-    	D.cache.faces#i = if dim D < -1 or i < -1 or i > dim D then 
-	    matrix(S, {{}})
-    	else if i === -1 then matrix {{1_S}}
-    	else (
-	    R := D.cache.faces.ring;
-	    sub(matrix basis(i+1, R), vars S)
+    	D.cache.faces#i = first entries( 
+	    if dim D < -1 or i < -1 or i > dim D then 
+	        matrix(S, {{}})
+    	    else if i === -1 then matrix {{1_S}}
+    	    else (
+	    	R := D.cache.faces.ring;
+	    	sub(matrix basis(i+1, R), vars S)
+	    	)
 	    )
 	);
     D.cache.faces#i
@@ -438,7 +439,7 @@ faces SimplicialComplex := HashTable => D -> (
 
 -- method defined in the Polyhedra package
 isPure SimplicialComplex := Boolean => D -> (
-     F := first entries facets D;
+     F := facets D;
      L := unique apply(F, m -> # support m);
      #L <= 1
      )
@@ -534,7 +535,7 @@ makeLabels = (D,L,i,Sext) -> (
     -- i is an integer
     -- Sext is a ring
     Vertices := vertices D;
-    F := flatten entries faces(i,D);
+    F := faces(i,D);
     if #F == 0 
     then matrix{{1_Sext}} 
     else
@@ -568,8 +569,8 @@ boundaryMap (ZZ,SimplicialComplex) := opts -> (r,D) -> (
 	)
     else (
     	R := ring D;	
-	b1 := faces(r,D);
-	b2 := faces(r-1,D);
+	b1 := sub(matrix{faces(r,D)}, R);
+	b2 := sub(matrix{faces(r-1,D)}, R);
 	ones = map(coefficientRing R,R, toList(numgens R:1));
 	ones map(R, rawKoszulMonomials(numgens R,raw b2,raw b1))
 	)
@@ -975,16 +976,16 @@ face(apply(v,j->sub(j,R)),R))
 -- substitute a complex to another ring
 substitute(SimplicialComplex,PolynomialRing):=(D,R)->(
     n := numgens ring D;
-    simplicialComplex first entries sub(facets D, (vars R)_{0..n-1})
+    simplicialComplex for F in facets D list sub(F, (vars R)_{0..n-1})
     )
 
-
 -*
-installPackage "SimplicialComplexes"
+needsPackage "SimplicialComplexes"
 R = QQ[a..e]
 D = simplicialComplex monomialIdeal(a*b*c*d*e)
 substitute(D,R)
-F=(faces(1,D,useFaceClass=>true))#0
+faces(1,D)
+F = (first entries faces(1,D, Output => List))#0
 isFaceOf(F,D)
 *-
 
@@ -1036,9 +1037,8 @@ map(SimplicialComplex, SimplicialComplex, RingMap) := SimplicialMap => opts -> (
     )
 
 map(SimplicialComplex, Matrix) := SimplicialMap => opts -> (D,A) -> (
-    Facets := first entries facets D;
     phi := map(ring D, A);
-    Image := simplicialComplex(for F in Facets list phi(F));
+    Image := simplicialComplex(for F in facets D list phi(F));
     map(Image,D,A)
     )
 
@@ -1115,9 +1115,7 @@ isWellDefined SimplicialMap := Boolean => f -> (
 	return false	
 	);
     -- check that the image of a face is a face
-    if not all(first entries facets D, 
-	m -> any(first entries facets E, 
-	    e -> e % (product support g m) == 0)) 
+    if not all(facets D, m -> any(facets E, e -> e % (product support g m) == 0))
     then (
     	if debugLevel > 0 then (
 	    << "-- expected image of a face to be a face");
@@ -1139,7 +1137,7 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     psi := map(EE,ED,sub(matrix f,EE));
     g := i -> (
 	if i === -1 then map(CE_(-1), CD_(-1), 1) else (
-	    map(CE_i, CD_i, matrix table(first entries faces(i, E), first entries faces(i, D),
+	    map(CE_i, CD_i, matrix table(faces(i, E), faces(i, D),
 		    (n,m) -> (
 			if phi m == n
 			then coefEE(psi(sub(m,ED)))
@@ -1159,8 +1157,8 @@ barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -
     if dim D == -infinity then return simplicialComplex(monomialIdeal(1_S));
     if numgens S < numFaces D - 1
     then error(" -- expected the ring to have at least " | numFaces D - 1 | " generators");
-    faceList := first entries matrix{apply(dim D + 1, i-> faces(i, D))};
-    baryFacets := flatten for F in first entries facets D list(
+    faceList := flatten for i to dim D + 1 list faces(i, D);
+    baryFacets := flatten for F in facets D list(
 	for vertexList in permutations(support F) list(
 	    L := apply(#vertexList, i -> product vertexList_{0..i});
     	    if L === {} then 1_S
@@ -1174,7 +1172,7 @@ barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -
 -- TODO: Unexported? I forgot if that's intended
 numFaces = method()
 numFaces SimplicialComplex := ZZ => D -> (
-    sum(-1 .. dim D, i -> numColumns faces(i,D))
+    sum(-1 .. dim D, i -> #faces(i,D))
     )
 
 --TODO: Are we using cached data to construct the barycentric subdivisions
@@ -1182,8 +1180,8 @@ numFaces SimplicialComplex := ZZ => D -> (
 barycentricSubdivision (SimplicialMap, Ring, Ring) := SimplicialMap => (f,S,R) -> (
     D := source f;
     E := target f;
-    faceListSource := first entries matrix{apply(dim D + 1, i -> faces(i,D))};
-    faceListTarget := first entries matrix{apply(dim E + 1, i -> faces(i,E))};
+    faceListSource := flatten for i to dim D + 1 list faces(i,D);
+    faceListTarget := flatten for i to dim E + 1 list faces(i,E);
     variableList := for F in faceListSource list(
        	S_(position(faceListTarget, G -> G == product support (map f)(F)))
 	);
@@ -1197,14 +1195,14 @@ isInjective SimplicialMap := Boolean => f -> (
     )
 
 image SimplicialMap := SimplicialComplex => f -> (
-    simplicialComplex(for F in first entries facets(source f) list (
+    simplicialComplex(for F in facets(source f) list (
 	    sub(product support (map f)(F), ring target f)
 	    )
 	)
     )
 
 isSurjective SimplicialMap := Boolean => f -> (
-    facets image f == facets target f    
+    facets image f === facets target f
     )
 
 homology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E) -> (
@@ -1255,14 +1253,14 @@ elementaryCollapse = method();
 elementaryCollapse (SimplicialComplex,RingElement) := SimplicialComplex => (D,F) -> (
     if not size F == 1 then error "The second argument should be a monomial representing a face";
     facetsContainingF := {};
-    for G in first entries facets D do(
+    for G in facets D do(
 	if G % F == 0 then facetsContainingF = append(facetsContainingF,G)
 	);
     if #facetsContainingF === 0 then error "this face does not belong to the simplicial complex";
     if #facetsContainingF > 1 then error "cannont collapse by this face";
     G := first facetsContainingF;
     if first degree F =!= first degree G - 1 then error "this face is not a maximal proper subface of a facet";
-    newFacetList := delete(G,first entries facets D);
+    newFacetList := delete(G, facets D);
     for m in subsets(support G, first degree G - 1) do (
 	if product m =!= F 
 	then newFacetList = append(newFacetList, product m)

@@ -168,15 +168,15 @@ doc ///
     Key
         (facets, SimplicialComplex)
     Headline
-        get the matrix of maximal faces 
+        get the list of maximal faces 
     Usage
         facets Delta
     Inputs
 	Delta : SimplicialComplex
     Outputs
-	: Matrix 
-	    that has one row whose entries are the squarefree monomials
-	    representing the facets in $\Delta$
+	: List 
+	    whose entries are the squarefree monomials representing the facets 
+	    in $\Delta$
     Description
         Text
 	    In this package, an abstract simplicial complex is constructed as
@@ -185,10 +185,10 @@ doc ///
 	    in the abstract simplicial complex are identified with a subset of
 	    the variables in the polynomial ring and each face is identified
 	    with the product of the corresponding variables.  This method
-	    returns a matrix whose entries are the squarefree monomials
+	    returns a list whose entries are the squarefree monomials
 	    representing the maximal faces in the abstract simplicial complex.
 	Text
-	    The matrix has one row and the order of the columns is determined
+	    The order of the facets is determined
 	    by the @TO2(MonomialOrder, "monomial order")@ on the underlying
 	    polynomial ring.  The facets of an abstract simplicial complex are
 	    used when outputing or printing; see @TO (net, SimplicialComplex)@.
@@ -200,7 +200,7 @@ doc ///
 	    S = ZZ[a..e];
 	    Δ = simplicialComplex monomialIdeal (a*b*c*d*e)
 	    facets Δ
-	    assert (facets Δ == matrix{{b*c*d*e, a*c*d*e, a*b*d*e, a*b*c*e, a*b*c*d}}
+	    assert (facets Δ == {b*c*d*e, a*c*d*e, a*b*d*e, a*b*c*e, a*b*c*d}
 		and isPure Δ and dim Δ === 3)
     	Text
 	    The abstract simplicial complex from Example 1.8 of
@@ -211,7 +211,7 @@ doc ///
     	Example
 	    Γ = simplicialComplex {e, c*d, b*d, a*b*c}
 	    facets Γ
-	    assert (facets Γ == matrix {{e, c*d, b*d, a*b*c}} and 
+	    assert (facets Γ == {e, c*d, b*d, a*b*c} and 
 		ideal Γ == ideal (a*d, b*c*d, a*e, b*e, c*e, d*e) and 
 		not isPure Γ and dim Γ === 2)
 	Text
@@ -222,7 +222,7 @@ doc ///
 	    facets irrelevant
 	    void = simplicialComplex monomialIdeal 1_S
 	    facets void	    
-	    assert (facets irrelevant == matrix{{1_S}} and facets void == 0)
+	    assert (facets irrelevant == {1_S} and facets void == {})
     	Text
 	    The matrix of facets is part of the defining data of an
 	    abstract simplicial complex, so this method does no computation.
@@ -774,7 +774,7 @@ doc ///
 	    Γ = simplicialComplex monomialIdeal (a*b*c*d*e, f)
 	    monomialIdeal Γ
 	    facets Γ
-	    assert (sub(facets Γ, S) === facets Δ)
+	    assert((for F in facets Γ list sub(F,S)) === facets Δ)
     	Text
 	    The abstract simplicial complex from Example 1.8 of
             Miller-Sturmfels' {\em Combinatorial Commutative Algebra} consists
@@ -801,8 +801,7 @@ doc ///
 	    void = simplicialComplex monomialIdeal 1_R
 	    monomialIdeal void
 	    facets void
-	    assert (facets irrelevant === matrix{{1_S}} and 
-		facets void === map(R^1, R^0, 0))
+	    assert (facets irrelevant === {1_S} and facets void === {})
     	Text
 	    Although an abstract simplicial complex can be represented by a
 	    Stanley-Reisner ideal in any polynomial ring with a sufficiently
@@ -924,42 +923,42 @@ doc ///
 	    monomialIdeal irrelevant
 	    dim irrelevant
 	    fVector irrelevant
-	    assert(facets irrelevant === matrix {{1_S}})
+	    assert(facets irrelevant === {1_S})
 	    assert(dim irrelevant === -1 and fVector irrelevant === {1})
     	Example
 	    Δ0 = simplexComplex (0, S)
 	    monomialIdeal Δ0
 	    dim Δ0
 	    fVector Δ0
-	    assert(facets Δ0 === matrix {{a}} and dim Δ0 === 0)
+	    assert(facets Δ0 === {a} and dim Δ0 === 0)
     	    assert(fVector Δ0 == {1,1})	    
     	Example
 	    Δ1 = simplexComplex (1, S)
 	    monomialIdeal Δ1
 	    dim Δ1
 	    fVector Δ1
-	    assert(facets Δ1 === matrix {{a*b}} and dim Δ1 === 1)
+	    assert(facets Δ1 === {a*b} and dim Δ1 === 1)
 	    assert(fVector Δ1 === {1,2,1})
     	Example
 	    Δ2 = simplexComplex (2, S)
 	    monomialIdeal Δ2
 	    dim Δ2
 	    fVector Δ2	    
-	    assert(facets Δ2 === matrix {{a*b*c}} and dim Δ2 === 2)
+	    assert(facets Δ2 === {a*b*c} and dim Δ2 === 2)
 	    assert(fVector Δ2 === {1,3,3,1})
     	Example
 	    Δ3 = simplexComplex (3, S)
 	    monomialIdeal Δ3
 	    dim Δ3
 	    fVector Δ3
-	    assert(facets Δ3 === matrix {{a*b*c*d}} and dim Δ3 === 3)
+	    assert(facets Δ3 === {a*b*c*d} and dim Δ3 === 3)
 	    assert(fVector Δ3 === toList apply(-1..3, i -> binomial(3+1,i+1)))
     	Example
 	    Δ4 = simplexComplex (4, S)
 	    monomialIdeal Δ4
 	    dim Δ4
 	    fVector Δ4
-	    assert(facets Δ4 === matrix {{a*b*c*d*e}} and dim Δ4 === 4)
+	    assert(facets Δ4 === {a*b*c*d*e} and dim Δ4 === 4)
 	    assert(fVector Δ4 === toList apply(-1..4, i -> binomial(4+1,i+1)))	    
 	Text
 	    The vertices in the $d$-simplex are the first $d+1$ variables in
@@ -1531,8 +1530,7 @@ doc///
 	    Γ = inducedSubcomplex(Δ, {x_1, x_2, x_3})
 	    vertices Γ
 	    assert (isWellDefined Γ and set vertices Γ === set {x_1, x_2, x_3})
-	    assert all (first entries facets Γ, 
-		F -> member(F, first entries faces(#support F - 1, Δ))) 
+	    assert all (facets Γ, F -> member(F, faces(#support F - 1, Δ))) 
     SeeAlso 
         "making an abstract simplicial complex" 
 	(ring, SimplicialComplex)	
@@ -1651,11 +1649,11 @@ doc ///
 	    link (Δ, e)
 	    link (Δ, b*c)
 	    link (Δ, a*e)
-	    assert (facets link (Δ, a) === matrix {{e, c*d, b*d, b*c}})
-	    assert (facets link (Δ, c) === matrix {{b*e, b*d, a*d, a*b}})
-	    assert (facets link (Δ, e) === matrix {{a, b*c}})
-	    assert (facets link (Δ, b*c) === matrix {{e,d,a}}) 
-	    assert (facets link (Δ, a*e) === matrix {{1_S}})
+	    assert (facets link (Δ, a) ===  {e, c*d, b*d, b*c})
+	    assert (facets link (Δ, c) ===  {b*e, b*d, a*d, a*b})
+	    assert (facets link (Δ, e) === {a, b*c})
+	    assert (facets link (Δ, b*c) === {e,d,a}) 
+	    assert (facets link (Δ, a*e) === {1_S})
 	    assert (isPure link (Δ, c) and dim link (Δ, a*e) === -1)
 	Text
 	    The link of the empty face equals the original simplicial complex.
@@ -1708,7 +1706,7 @@ doc ///
 	    B = bartnetteSphereComplex R'
 	    pdim comodule ideal B === codim ideal B  -- B is Cohen-Macaulay
     	    -- directly verify the Reisner criterion
-	    assert all (flatten apply(-1..2, i -> first entries (faces B)#i), f -> (
+	    assert all (flatten apply(-1..2, i -> (faces B)#i), f -> (
 		     L := link (B, f);
 		     all (-1..dim L - 1, j -> HH_j(L) == 0)))
     SeeAlso
@@ -1874,7 +1872,7 @@ doc ///
             Γ = simplicialComplex {e, f}
 	    Δ' = Δ * Γ
 	    assert (dim Δ' === dim Δ + 1)
-	    assert (apply(2+dim Δ', i -> numColumns faces(i-1,Δ')) == {1,6,12,8})
+	    assert (apply(2+dim Δ', i -> #faces(i-1,Δ')) == {1,6,12,8})
         Text
             The join of a hexagon and a pentagon is a 3-sphere.
         Example
@@ -2089,7 +2087,7 @@ doc ///
 	    dim Δ
 	    subsets vertices Δ
 	    assert(faces Δ === hashTable for i from -1 to 3 list 
-		i => sub(matrix{rsort subsets(vertices Δ, i+1)/product}, S))
+		i => first entries sub(matrix{rsort subsets(vertices Δ, i+1)/product}, S))
 	Text
 	    The faces of the @TO2(bartnetteSphereComplex, "Bartnette sphere")@
     	    are a proper subset of the $7$-simplex.
@@ -2105,7 +2103,7 @@ doc ///
 	Example
 	    irrelevant = simplicialComplex monomialIdeal gens S
 	    faces irrelevant
-	    assert(faces irrelevant === hashTable{-1 => basis(0,S)})
+	    assert(faces irrelevant === hashTable{-1 => {1_S}})
 	    void = simplicialComplex monomialIdeal 1_S
 	    faces void
     	    assert(faces void === hashTable{})
@@ -2117,6 +2115,8 @@ doc ///
 	(faces, ZZ, SimplicialComplex)
 	(fVector, SimplicialComplex)	
 ///
+
+-- TODO: clean up the assertion using new faces functionality
 
 doc /// 
     Key
@@ -2130,8 +2130,8 @@ doc ///
 	    the dimension of the faces
 	Delta : SimplicialComplex
     Outputs
-        : Matrix
-	    with one row, whose entries are squarefree monomials representing
+        : List
+	    whose entries are squarefree monomials representing
 	    the faces of $\Delta$ of dimension $i$
     Description
         Text	    
@@ -2141,7 +2141,7 @@ doc ///
             in the abstract simplicial complex are identified with a subset of
             the variables in the polynomial ring and each face is identified
             with the product of the corresponding variables.  This method
-            returns a @TO Matrix@ whose entries are the monomials
+            returns a @TO List@ whose entries are the monomials
             corresponding to the $i$-faces of $\Delta$.
     	Text
     	    The faces of the @TO2(simplexComplex, "simplex")@ correspond to
@@ -2150,7 +2150,7 @@ doc ///
             S = QQ[x_0..x_3];
 	    Δ = simplexComplex(3, S)
 	    netList for i from -1 to dim Δ list {i,faces(i, Δ)}
-	    assert all(-1..dim Δ, i ->  faces(i, Δ) === sub(matrix{rsort subsets(vertices Δ, i+1)/product}, S))
+	    assert all(-1..dim Δ, i ->  faces(i, Δ) === first entries sub(matrix{rsort subsets(vertices Δ, i+1)/product}, S))
 	Text
 	    The faces of the @TO2(dunceHatComplex, "dunce hat")@
     	    are a proper subset of the $7$-simplex.
@@ -2167,10 +2167,10 @@ doc ///
 	    irrelevant = simplicialComplex monomialIdeal gens S
 	    dim irrelevant
 	    faces (-1, irrelevant)
-	    assert(faces(-1, irrelevant) === basis(0,S))
+	    assert(faces(-1, irrelevant) === {1_S})
 	    void = simplicialComplex monomialIdeal 1_S
 	    faces(-1, void)
-	    assert all(-2..7, i -> faces(i, void) == 0)
+	    assert all(-2..7, i -> faces(i, void) == {})
 	Text
 	    To avoid repeated computation, the values of this method are saved
 	    the @TO2(CacheTable, "cache table")@ of the abstract simplicial
@@ -2465,12 +2465,12 @@ doc ///
 	    S = QQ[y_0..y_6];
 	    D = simplexComplex(2,R)
 	    B = barycentricSubdivision(D,S)
-	    BFacets = first entries facets B
+	    BFacets = facets B
 	Text
 	    To make sense of the facets of the barycentric subdivision, we order
 	    the faces of {\tt D} as follows.
         Example
-	    DFaces = flatten for i to dim D + 1 list first entries faces(i, D)
+	    DFaces = flatten for i to dim D + 1 list faces(i, D)
         Text
 	    The indices of the variables appearing in each monomial (Facet) {\tt F}
 	    in {\tt facets B} determines a sequence of monomials (faces) in
@@ -2528,8 +2528,8 @@ doc ///
 	    the corresponce between the faces of {\tt D}, {\tt E} and
 	    the vertices of {\tt BD}, {\tt BE}, respectively.
         Example
-	    DFaces = flatten for i to dim D + 1 list first entries faces(i,D)
-	    EFaces = flatten for i to dim E + 1 list first entries faces(i,E)
+	    DFaces = flatten for i to dim D + 1 list faces(i,D)
+	    EFaces = flatten for i to dim E + 1 list faces(i,E)
 	    (netList for y in vertices BD list(y => DFaces_(index y)),
 	     netList for z in vertices BE list(z => EFaces_(index z)))
         Text
