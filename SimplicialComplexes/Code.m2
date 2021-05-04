@@ -1202,11 +1202,9 @@ numFaces SimplicialComplex := ZZ => D -> (
     sum(-1 .. dim D, i -> numColumns faces(i,D))
     )
 
---TODO: I think that the roles of R and S should swap in this code, so that
--- the syntax better matches the syntaxs for maps.
 --TODO: Are we using cached data to construct the barycentric subdivisions
 -- for the source and target?
-barycentricSubdivision (SimplicialMap, Ring, Ring) := SimplicialMap => (f,R,S) -> (
+barycentricSubdivision (SimplicialMap, Ring, Ring) := SimplicialMap => (f,S,R) -> (
     D := source f;
     E := target f;
     faceListSource := first entries matrix{apply(dim D + 1, i -> faces(i,D))};
