@@ -164,7 +164,6 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     simplicialComplex {product(n+1, i -> S_i)}
     )
 
-
 -- Masahiro Hachimori created a library of interesting simplicial complexes; see
 --   http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html
 hachimoriFile := currentFileDirectory | "hachimoriLibrary.txt"
@@ -296,22 +295,48 @@ kleinBottleComplex PolynomialRing := SimplicialComplex => S -> (
     smallManifold(2, 8, 12, S)
     )
 
----- inspired by Sage math 
---   https://doc.sagemath.org/html/en/reference/homology/sage/homology/examples.html
--- TODO: add brucknerGrunbaumComplex
--- TODO: add chessboardComplex
--- TODO: add kleinBottleComplex
--- TODO: add realProjectiveSpaceComplex (ZZ == dimension)
--- TODO: add surfaceComplex (ZZ == genus)
-
--*
-
-realProjectiveSpaceComplex := method()
+--TODO: document
+realProjectiveSpaceComplex = method()
 realProjectiveSpaceComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
-    -- If n = 0
+    if n == 0 and numgens S < 1 then
+    	error "-- expected a polynomial ring with at least 1 generator";
+    if n == 1 and numgens S < 3 then
+    	error "-- expected a polynomial ring with at least 3 generators";
+    if n == 2 and numgens S < 6 then
+    	error "-- expected a polynomial ring with at least 6 generators";
+    if n == 3 and numgens S < 11 then
+    	error "-- expected a polynomial ring with at least 11 generators";
+    if n == 4 and numgens S < 16 then
+    	error "-- expected a polynomial ring with at least 16 generators";
+    --if n > 4 and numgens S < 2^(n+1)-1 then
+    --	error ("-- expected a polynomial ring with at least " | toString (2^(n+1)-1) | " generators");
+    if n == 0 then return simplicialComplex {S_0};
+    if n == 1 then return simplicialComplex {S_0*S_1, S_0*S_2, S_1*S_2};
+    if n == 2 then return smallManifold(2, 6, 1, S);
+    if n == 3 then (
+	return simplicialComplex apply({{1,2,3,7},{1,4,7,9},{2,3,4,8},{2,5,8,10},{3,6,7,10},
+		{1,2,3,11},{1,4,7,10},{2,3,4,11},{2,5,9,10},{3,6,8,9},{1,2,6,9},{1,4,8,9},
+		{2,3,7,8},{2,6,9,10},{3,6,9,10},{1,2,6,11},{1,4,8,10},{2,4,6,10},{3,4,5,9},
+		{4,5,6,7},{1,2,7,9},{1,5,6,8},{2,4,6,11},{3,4,5,11},{4,5,6,11},{1,3,5,10},
+		{1,5,6,11},{2,4,8,10},{3,4,8,9},{4,5,7,9},{1,3,5,11},{1,5,8,10},{2,5,7,8},
+		{3,5,9,10},{4,6,7,10},{1,3,7,10},{1,6,8,9},{2,5,7,9},{3,6,7,8},{5,6,7,8}}, f -> product(f, i -> S_(i-1)))
+	);
+    if n == 4 then (
+        return simplicialComplex apply({{2,5,6,13,14},{0,7,8,11,14},{0,2,7,11,12},{2,3,5,12,14},{0,3,9,12,13},{0,6,9,11,12},{5,7,9,13,15},{0,4,8,10,14},{0,4,8,10,15},{4,6,9,10,11},{2,3,5,10,12},{1,5,8,11,15},
+		{2,4,7,11,12},{2,4,7,11,13},{6,8,9,12,13},{1,7,9,10,14},{2,6,8,10,13},{0,1,6,12,13},{0,3,4,10,15},{2,6,8,10,15},{3,7,8,11,13},{3,7,8,11,14},{1,2,6,13,14},{6,8,9,10,13},{2,3,6,14,15},
+		{4,6,7,11,12},{2,3,5,6,10},{2,4,5,12,14},{2,3,5,6,14},{3,7,8,9,13},{3,7,8,9,14},{1,2,9,14,15},{0,2,8,11,15},{3,6,7,14,15},{1,3,8,12,13},{0,1,4,13,14},{0,5,6,13,14},{1,5,9,11,15},{2,3,6,10,15},
+		{3,7,9,13,15},{2,7,8,10,13},{3,5,8,12,14},{0,2,3,9,12},{0,5,6,11,14},{0,2,3,9,15},{0,5,6,9,11},{4,8,9,12,14},{1,5,7,12,15},{0,5,6,9,13},{0,1,7,10,12},{3,4,6,7,11},{0,1,7,10,14},{0,2,9,11,12},
+		{3,4,6,7,15},{1,5,7,10,12},{0,2,9,11,15},{4,6,8,9,10},{4,8,9,10,14},{4,6,8,9,12},{3,4,7,13,15},{3,5,6,11,14},{5,6,9,10,11},{1,6,7,14,15},{5,6,9,10,13},{3,4,7,11,13},{2,4,9,11,12},{4,5,7,12,15},
+		{1,3,4,10,11},{0,3,9,13,15},{0,6,9,12,13},{1,6,7,12,15},{0,2,7,10,12},{7,8,9,10,13},{0,7,8,10,14},{0,4,5,8,14},{0,4,5,8,15},{7,8,9,10,14},{1,5,8,12,15},{4,6,9,11,12},{0,3,4,13,15},{0,1,3,12,13},
+		{0,2,7,8,10},{1,2,8,11,13},{2,5,6,10,13},{0,2,7,8,11},{1,2,8,11,15},{0,1,3,10,12},{0,1,6,13,14},{1,4,9,10,11},{5,7,9,10,13},{1,4,9,10,14},{1,2,6,14,15},{0,6,7,11,12},{4,6,7,12,15},{2,4,5,13,14},
+		{0,6,7,11,14},{4,5,8,12,14},{4,5,8,12,15},{0,5,8,11,14},{1,3,5,10,11},{0,5,8,11,15},{1,3,5,10,12},{1,6,8,12,13},{1,6,8,12,15},{2,3,9,14,15},{0,2,8,10,15},{1,3,8,11,13},{1,3,5,8,11},{1,3,5,8,12},
+		{3,7,9,14,15},{2,7,8,11,13},{1,2,4,13,14},{0,1,6,7,12},{0,1,3,4,10},{0,2,3,10,12},{0,1,6,7,14},{1,5,9,10,11},{2,5,7,10,12},{0,1,3,4,13},{2,5,7,10,13},{0,2,3,10,15},{1,2,6,8,13},{1,2,9,11,15},
+		{2,3,9,12,14},{1,2,6,8,15},{3,6,7,11,14},{3,4,6,10,11},{0,1,4,10,14},{3,4,6,10,15},{2,4,5,7,12},{2,4,5,7,13},{1,2,4,11,13},{3,5,8,11,14},{0,5,9,13,15},{4,6,8,12,15},{1,2,4,9,11},{1,2,4,9,14},
+		{0,5,9,11,15},{4,6,8,10,15},{0,4,5,13,14},{0,4,5,13,15},{1,5,7,9,10},{1,5,7,9,15},{2,4,9,12,14},{3,5,6,10,11},{4,5,7,13,15},{3,8,9,12,13},{3,8,9,12,14},{1,3,4,11,13},{1,7,9,14,15}}, 
+	    f -> product(f, i-> S_i))
+	);
+    if n > 4 then error "--not yet implemented";
     )
-
-*-
 ------------------------------------------------------------------------------
 -- more advanced constructors 
 ------------------------------------------------------------------------------
