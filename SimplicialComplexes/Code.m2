@@ -644,16 +644,6 @@ cohomology(ZZ, SimplicialComplex) := Module => opts -> (i,Delta) -> (
     cohomology(i, Hom(chainComplex Delta, module coefficientRing Delta))
     )
 
-cohomology(Nothing, SimplicialComplex, Ring) :=
-cohomology(SimplicialComplex, Ring) := GradedModule => opts -> (Delta,R) -> (
-    cohomology(Hom(chainComplex Delta ** R, module R))
-    )
-
-cohomology(Nothing, SimplicialComplex) :=
-cohomology SimplicialComplex := GradedModule => opts -> (Delta,R) -> (
-    cohomology(Hom(chainComplex Delta, module coefficientRing Delta))
-    )
-
 -- helper functions for algebraicShifting. Not exported.
 shiftMonomial = (m) -> (
     variables := flatten entries vars ring m;
@@ -1258,21 +1248,10 @@ cohomology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E
     cohomology(i, Hom(C, module coefficientRing D))
     )
 
-cohomology(Nothing, SimplicialComplex, SimplicialComplex) :=
-cohomology(SimplicialComplex, SimplicialComplex) := ChainComplex => opts -> (D,E) -> (
-    inclusion := map(D, E, gens ring D);
-    C := coker chainComplex inclusion;
-    cohomology Hom(C, module coefficientRing D)
-    )
-
 cohomology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
     cohomology(i, Hom(chainComplex f, module coefficientRing source f))
     )
 
-cohomology(Nothing, SimplicialMap) :=
-cohomology SimplicialMap := GradedModuleMap => opts -> f -> (
-    cohomology(Hom(chainComplex f, module coefficientRing source f))
-    )
 
 elementaryCollapse = method();
 elementaryCollapse (SimplicialComplex,RingElement) := SimplicialComplex => (D,F) -> (
