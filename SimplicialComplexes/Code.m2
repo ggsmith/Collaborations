@@ -637,21 +637,21 @@ homology SimplicialComplex := GradedModule => opts -> Delta -> (
     )
 
 cohomology(ZZ, SimplicialComplex, Ring) := Module => opts -> (i,Delta,R) -> (
-    cohomology(i, Hom(chainComplex Delta ** R, R))
+    cohomology(i, Hom(chainComplex Delta ** R, module R))
     )
 
 cohomology(ZZ, SimplicialComplex) := Module => opts -> (i,Delta) -> (
-    cohomology(i, Hom(chainComplex Delta, coefficientRing Delta))
+    cohomology(i, Hom(chainComplex Delta, module coefficientRing Delta))
     )
 
 cohomology(Nothing, SimplicialComplex, Ring) :=
 cohomology(SimplicialComplex, Ring) := GradedModule => opts -> (Delta,R) -> (
-    cohomology(Hom(chainComplex Delta ** R, R))
+    cohomology(Hom(chainComplex Delta ** R, module R))
     )
 
 cohomology(Nothing, SimplicialComplex) :=
 cohomology SimplicialComplex := GradedModule => opts -> (Delta,R) -> (
-    cohomology(Hom(chainComplex Delta, coefficientRing Delta))
+    cohomology(Hom(chainComplex Delta, module coefficientRing Delta))
     )
 
 -- helper functions for algebraicShifting. Not exported.
@@ -1255,23 +1255,23 @@ homology SimplicialMap := GradedModuleMap => opts -> f -> (
 cohomology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E) -> (
     inclusion := map(D, E, gens ring D);
     C := coker chainComplex inclusion;
-    cohomology(i, Hom(C, coefficientRing D))
+    cohomology(i, Hom(C, module coefficientRing D))
     )
 
 cohomology(Nothing, SimplicialComplex, SimplicialComplex) :=
 cohomology(SimplicialComplex, SimplicialComplex) := ChainComplex => opts -> (D,E) -> (
     inclusion := map(D, E, gens ring D);
     C := coker chainComplex inclusion;
-    cohomology Hom(C, coefficientRing D)
+    cohomology Hom(C, module coefficientRing D)
     )
 
 cohomology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
-    cohomology(i, Hom(chainComplex f, coefficientRing source f))
+    cohomology(i, Hom(chainComplex f, module coefficientRing source f))
     )
 
 cohomology(Nothing, SimplicialMap) :=
 cohomology SimplicialMap := GradedModuleMap => opts -> f -> (
-    cohomology(Hom(chainComplex f, coefficientRing source f))
+    cohomology(Hom(chainComplex f, module coefficientRing source f))
     )
 
 elementaryCollapse = method();
