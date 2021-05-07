@@ -1429,6 +1429,47 @@ doc ///
 	smallManifold
 ///
 
+doc /// 
+    Key 
+        (realProjectiveSpaceComplex, ZZ, PolynomialRing)
+        realProjectiveSpaceComplex
+    Headline 
+        make a small triangulation of real projective space
+    Usage 
+        realProjectiveSpaceComplex(n, S)
+    Inputs
+    	n : ZZ
+	    that specifies the dimension of real projective space
+        S : PolynomialRing 
+	    that specifies the polynomial ring containing the Stanley-Reisner ideal
+    Outputs 
+        : SimplicialComplex
+	    corresponding to a triangulation of real projective space
+    Description
+        Text
+            This method implements some of the minimal triangulations of real projective space
+	    found in the literature. For $n = 0, 1$, these are just the obvious point and 1-sphere.
+	    For $n = 2$, the minimal triangulation is provided by
+	    @HREF("http://page.math.tu-berlin.de/~lutz/", "Frank H. Lutz's")@ 
+	    @HREF("http://page.math.tu-berlin.de/~lutz/stellar/", "small manifold database")@.
+	    Frank Lutz has also provided minimal triangulations for $n = 3$ and $4$, in 
+	    "Triangulated Manifolds with Few Vertices: Combinatorial Manifolds",
+	    @HREF("https://arxiv.org/abs/math/0506372", "arXiv:math/0506372v1")@.
+	Example
+	    S = ZZ[x_0..x_10]
+	    Δ = realProjectiveSpaceComplex(3, S)
+    Caveat
+    	Since no minimal or small triangulations of real projective space have been constructed
+	for n > 4, we haven't implemented the triangulations for higher projective space yet.
+	Due to the exponential growth of the number of vertices, computations quickly become
+	intractable.            	
+    SeeAlso
+        "making an abstract simplicial complex"
+	(smallManifold, ZZ, ZZ, ZZ, PolynomialRing)
+	smallManifold
+///
+
+
 ------------------------------------------------------------------------------
 -- more advanced constructors
 ------------------------------------------------------------------------------
