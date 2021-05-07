@@ -39,7 +39,7 @@ S2 = simplicialComplex {a,b}
 J = S1 * S2
 assert((fVector(S1 * S2))#2 == (fVector(S1))#2 + (fVector(S1))#1*(fVector(S2))#1)
 assert(star(J, sub(x*y*z, ring J)) === J)
-assert(#(flatten entries facets(star(J, sub(a, ring J)))) == 1)
+assert(#(facets(star(J, sub(a, ring J)))) == 1)
 ///
 
 ------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ st73 = simplicialComplex I
 shifted = algebraicShifting (st73)
 assert(fVector st73 === fVector shifted)
 assert(prune homology st73 == prune homology shifted)
-assert(not member(x_1*x_2*x_3*x_4, flatten entries facets(shifted)))
+assert(not member(x_1*x_2*x_3*x_4, facets(shifted)))
 ///
 
 
@@ -139,8 +139,8 @@ R = ZZ[x];
 void = simplicialComplex monomialIdeal(1_R)
 assert isPure void
 assert(dim void == -infinity)
-assert(faces(0,void) == 0)
-assert(faces(-1,void) == 0)
+assert(faces(0,void) == {})
+assert(faces(-1,void) == {})
 assert(vertices void == {})
 C = chainComplex void
 assert(C.dd^2 == 0 )
@@ -151,8 +151,8 @@ assert(fVector void === {0})
 irrelevant = simplicialComplex monomialIdeal gens R
 assert isPure irrelevant
 assert(dim irrelevant === -1)
-assert(faces(0,irrelevant) == 0)
-assert(numgens source faces(-1,irrelevant) === 1)
+assert(faces(0,irrelevant) == {})
+assert(#faces(-1,irrelevant) === 1)
 assert(irrelevant === dual irrelevant)
 assert(fVector irrelevant === {1})
 C = chainComplex irrelevant
@@ -170,15 +170,15 @@ assert not isWellDefined irrelevantToVoid
 pvoid = prune void
 assert isPure pvoid
 assert(dim pvoid == -infinity)
-assert(faces(0,pvoid) == 0)
-assert(faces(-1,pvoid) == 0)
+assert(faces(0,pvoid) == {})
+assert(faces(-1,pvoid) == {})
 assert(vertices pvoid == {})
 
 pirrelevant = prune irrelevant
 assert isPure irrelevant
 assert(dim irrelevant === -1)
-assert(faces(0,irrelevant) == 0)
-assert(numgens source faces(-1,irrelevant) === 1)
+assert(faces(0,irrelevant) == {})
+assert(#faces(-1,irrelevant) === 1)
 assert(irrelevant === dual irrelevant)
 ///
 
@@ -252,10 +252,10 @@ abelian = (n) -> (
     join(L1,L2))
 
 D = simplicialComplex abelian 8
-numgens source faces(0,D)
-numgens source faces(1,D)
-numgens source faces(2,D)
-numgens source faces(3,D)
+#faces(0,D)
+#faces(1,D)
+#faces(2,D)
+#faces(3,D)
 C = chainComplex D
 assert(C.dd^2 == 0)
 prune HH(C)
@@ -296,7 +296,6 @@ assert(rank H_3 == 1)
 assert(H_2 == 0)
 assert(H_1 == 0)
 ///
-
 
 ------------------------------------------------------------------------------
 TEST ///
@@ -561,7 +560,6 @@ assert ((target Phi) === (chainComplex D))
 
 ------------------------------------------------------------------------------
 -- Testing (homology, SimplicialMap)
-
 S = ZZ/101[a,b,c,d]
 D = simplicialComplex{1_S}
 E = simplicialComplex{0_S}
@@ -634,7 +632,7 @@ T = ZZ/101[y_0..y_6]
 S = ZZ/101[z_0..z_25]
 D = simplicialComplex{x_0*x_1*x_2}
 E = barycentricSubdivision(D,T)
-assert (#vertices E == sum (for i to 2 list #(first entries (faces D)#i)))
+assert (#vertices E == sum (for i to 2 list #((faces D)#i)))
 f = map(E,D,{y_2,y_5,y_6})
 assert isWellDefined f
 assert isInjective f
