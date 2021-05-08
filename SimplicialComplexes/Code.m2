@@ -479,7 +479,29 @@ fVector SimplicialComplex := List => D -> (
     apply(toList(0..1+dim D), i -> hilbertFunction(i, D.cache.faces.ring))
     )
     
--*   
+flagfVector = method();
+flagfVector SimplicialComplex := HashTable => D ->(
+    T := newRing(ring D/ideal D, SkewCommutative => true);
+    multidegrees := sort apply(flatten entries basis T, m -> degree m);
+    hashTable for m in multidegrees list m => hilbertFunction(m,T)
+    )
+
+flagfVector(List,SimplicialComplex) := ZZ => (m,D) ->(
+    T := newRing(ring D/ideal D, SkewCommutative => true);
+    hilbertFunction(m,T)
+    )
+
+isProper = method()
+isProper SimplicialComplex := Boolean => D -> (
+    M := matrix unique degrees ring D;
+    if numRows M =!= rank M then(
+	error "multidgrading does not define a coloring"
+	);
+    newDegrees := (matrix degrees ring D)*(inverse M);
+    all(flatten for F in faces(1,D) list degree F, i -> i < 2)
+    )
+
+-*
     I := ideal D;
     if not opts.Flag then (
 	S := newRing(ring D, Degrees => {#(gens ring D):1});
@@ -521,16 +543,15 @@ fVector SimplicialComplex := List => D -> (
 -- D. Used by fVector. Not exported.
 -*
 isBalanced = (D) -> (
-     d := dim D +1;
+     d := dim D + 1;
      m := true;
      if not d == #(degree first gens ring D) then (
          m = false;
      );
-     apply(flatten entries faces(1,D), f -> if max(degree f) > 1 then m = false);
+     apply(faces(1,D), f -> if max(degree f) > 1 then m = false);
      return m;
      );
 *-
-
 
 
 
@@ -698,9 +719,6 @@ algebraicShifting SimplicialComplex := opts -> S -> (
     return simplicialComplex sI
     )
     )
-
-
-
 
 
 --------------------------------------------------------------------------

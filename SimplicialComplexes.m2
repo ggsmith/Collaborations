@@ -47,10 +47,12 @@ export {
     "buchbergerSimplicialComplex",
     "buchbergerResolution",
     "elementaryCollapse",
+    "flagfVector",
 --    "face",  
     "inducedSubcomplex",
 --  "isFaceOf",    
 --  "isSubface", 
+    "isProper",
     "link",
     "lyubeznikSimplicialComplex", 
     "lyubeznikResolution",
@@ -109,3 +111,4 @@ check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
 options SimplicialComplexes
+

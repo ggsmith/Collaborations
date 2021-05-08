@@ -59,6 +59,28 @@ assert(prune HH_1 conewrtv == 0)
 ///
 
 ------------------------------------------------------------------------------
+-- flagfVector for a colored complex
+TEST ///
+R = QQ[a .. e, Degrees => {{1,0,0,0},{0,1,0,0},{1,0,0,0},{0,0,0,1},{0,1,0,0}}]
+D = simplicialComplex{a*b, b*c, c*d*e, a*e}
+assert isProper D
+assert(flagfVector({0,1,0,1}, D) == 1)
+assert(flagfVector({0,1,0,0}, D) == 2)
+assert(flagfVector({1,1,0,0}, D) == 4)
+ffV = hashTable flatten for i from -1 to 2 list(
+    for F in faces(i, D) list degree F => flagfVector(degree F, D)
+    )
+assert(ffV === flagfVector D)
+-- degenerate cases
+void = simplicialComplex monomialIdeal(1_R)
+irrelevant = simplicialComplex monomialIdeal gens R
+assert(flagfVector void === hashTable{})
+assert(flagfVector irrelevant === hashTable{{0,0,0,0} => 1})
+assert isProper void
+assert isProper irrelevant
+///
+
+------------------------------------------------------------------------------
 -- Example from Betti numbers of strongly color-stable ideals and
 -- squarefree strongly color-stable ideals
 -- Satoshi Murai
@@ -72,7 +94,6 @@ assert((fVector(delta))#1 == (fVector(shifted))#1)
 assert((fVector(delta))#2 == (fVector(shifted))#2)
 assert(prune homology delta != prune homology shifted)
 ///
-
 
 ------------------------------------------------------------------------------
 -- Boundary of the 4-Cross-Polytope
