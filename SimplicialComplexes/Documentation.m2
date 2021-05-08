@@ -1428,6 +1428,47 @@ doc ///
 	smallManifold
 ///
 
+doc /// 
+    Key 
+        (realProjectiveSpaceComplex, ZZ, PolynomialRing)
+        realProjectiveSpaceComplex
+    Headline 
+        make a small triangulation of real projective space
+    Usage 
+        realProjectiveSpaceComplex(n, S)
+    Inputs
+    	n : ZZ
+	    that specifies the dimension of real projective space
+        S : PolynomialRing 
+	    that specifies the polynomial ring containing the Stanley-Reisner ideal
+    Outputs 
+        : SimplicialComplex
+	    corresponding to a triangulation of real projective space
+    Description
+        Text
+            This method implements some of the minimal triangulations of real projective space
+	    found in the literature. For $n = 0, 1$, these are just the obvious point and 1-sphere.
+	    For $n = 2$, the minimal triangulation is provided by
+	    @HREF("http://page.math.tu-berlin.de/~lutz/", "Frank H. Lutz's")@ 
+	    @HREF("http://page.math.tu-berlin.de/~lutz/stellar/", "small manifold database")@.
+	    Frank Lutz has also provided minimal triangulations for $n = 3$ and $4$, in 
+	    "Triangulated Manifolds with Few Vertices: Combinatorial Manifolds",
+	    @HREF("https://arxiv.org/abs/math/0506372", "arXiv:math/0506372v1")@.
+	Example
+	    S = ZZ[x_0..x_10]
+	    Δ = realProjectiveSpaceComplex(3, S)
+    Caveat
+    	Since no minimal or small triangulations of real projective space have been constructed
+	for n > 4, we haven't implemented the triangulations for higher projective space yet.
+	Due to the exponential growth of the number of vertices, computations quickly become
+	intractable.            	
+    SeeAlso
+        "making an abstract simplicial complex"
+	(smallManifold, ZZ, ZZ, ZZ, PolynomialRing)
+	smallManifold
+///
+
+
 ------------------------------------------------------------------------------
 -- more advanced constructors
 ------------------------------------------------------------------------------
@@ -3385,31 +3426,35 @@ undocumented { "Multigrading" }
     C1==C2
 ///
 
-
-
-
-
 doc ///
-    Key    
+    Key
         (homology, ZZ, SimplicialComplex)
     Headline
         compute the homology of an abstract simplicial complex
     Usage
-        homology(j, D)
+        homology(k, Delta)
     Inputs
-        j : ZZ
-        D : SimplicialComplex
+        k : ZZ
+        Delta : SimplicialComplex
     Outputs
         : Module
+            which is the k-th homology group of Delta
     Description
         Text
-            Compute the $j$-th reduced homology of $D$ with coefficients in 
-	    @TO (coefficientRing,SimplicialComplex)@ C.
-
+            Compute the $k$-th reduced homology of $\Delta$ with coefficients in 
+            @TO (coefficientRing,SimplicialComplex)@ $\Delta$.
+        Text
+            The 2-sphere has vanishing first homology, but non-trivial second homology.
         Example
-            R = ZZ[x_0..x_5];
-            D = simplicialComplex {x_0*x_1*x_2, x_1*x_2*x_3, x_0*x_1*x_4, x_0*x_3*x_4, x_2*x_3*x_4, x_0*x_2*x_5, x_0*x_3*x_5, x_1*x_3*x_5, x_1*x_4*x_5, x_2*x_4*x_5}
-            prune homology(1,D)
+            S = ZZ[x_0..x_4];
+            Δ = skeleton(2, simplexComplex(3,S));
+            prune homology(1, Δ)
+            prune homology(2, Δ)
+        Text
+            A figure eight has rank two first homology.
+        Example
+            figureEight = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2, x_2*x_3, x_2*x_4, x_3*x_4}
+            prune homology(1, figureEight)
     SeeAlso
         (homology,ZZ,SimplicialComplex,Ring)
         boundaryMap
@@ -3423,22 +3468,25 @@ doc ///
     Headline
         compute the homology of an abstract simplicial complex
     Usage
-        homology(j, D, R)
+        homology(k, Delta, R)
     Inputs
-        j : ZZ
-        D : SimplicialComplex
+        k : ZZ
+        Delta : SimplicialComplex
         R : Ring
     Outputs
         : Module
+	    which is the k-th homology group of Delta over R
     Description
         Text
-            Compute the $j$-th reduced homology of $D$ with coefficients in $R$.
+            Compute the $k$-th reduced homology of $\Delta$ with coefficients in R.
+            The Klein bottle has torsion in its first homology, but this is not
+	    detected when we take coefficients in $\mathbb{Q}$.
         Example
-            R = ZZ[x_0..x_5];
-	    D = simplicialComplex {x_0*x_1*x_2, x_1*x_2*x_3, x_0*x_1*x_4, x_0*x_3*x_4, x_2*x_3*x_4, x_0*x_2*x_5, x_0*x_3*x_5, x_1*x_3*x_5, x_1*x_4*x_5, x_2*x_4*x_5}
-            prune homology(1, D, ZZ)
-            prune homology(1, D, QQ)
-            prune homology(1, D, ZZ/2)
+            S = ZZ[x_0..x_7];
+	    kleinBottle = kleinBottleComplex S;
+	    prune homology(1, kleinBottle, ZZ)
+	    prune homology(1, kleinBottle, QQ)
+	    prune homology(1, kleinBottle, ZZ/2)
     SeeAlso
         (homology, ZZ, SimplicialComplex)
         boundaryMap
@@ -3452,55 +3500,66 @@ doc ///
         (homology, Nothing, SimplicialComplex, Ring)
     Headline
         compute the homology of an abstract simplicial complex
-  Usage
-    homology(C,R)
-  Inputs
-    C:SimplicialComplex
-    R:Ring
-  Outputs
-    :GradedModule
-  Description
-   Text
-     The graded module of reduced homologies of C with coefficients in R.
-
-   Example
-    R=ZZ[x_0..x_5];
-    D = simplicialComplex {x_0*x_1*x_2, x_1*x_2*x_3, x_0*x_1*x_4, x_0*x_3*x_4, x_2*x_3*x_4, x_0*x_2*x_5, x_0*x_3*x_5, x_1*x_3*x_5, x_1*x_4*x_5, x_2*x_4*x_5}
-    homology(D)
-    homology(D,QQ)
-    homology(D,ZZ/2)
-  SeeAlso
-    (homology,SimplicialComplex)
-    (homology,ZZ,SimplicialComplex)
-    (homology,ZZ,SimplicialComplex,Ring)
-    (homology,SimplicialComplex,SimplicialComplex)
+    Usage
+        homology(Delta, R)
+    Inputs
+        Delta : SimplicialComplex
+        R : Ring
+    Outputs
+        : GradedModule
+	    which is the homology of Delta
+    Description
+        Text
+            Computes the graded module of reduced homologies of $\Delta$ with coefficients in $R$.
+	    The Klein bottle has torsion in its first homology, but this is not
+	    detected when we take coefficients in $\mathbb{Q}$.
+        Example
+            S = ZZ[x_0..x_7];
+	    kleinBottle = kleinBottleComplex S;
+	    prune homology(kleinBottle, ZZ)
+	    prune homology(kleinBottle, QQ)
+	    prune homology(kleinBottle, ZZ/2)
+    SeeAlso
+        (homology,SimplicialComplex)
+        (homology,ZZ,SimplicialComplex)
+        (homology,ZZ,SimplicialComplex,Ring)
+        (homology,SimplicialComplex,SimplicialComplex)
 ///
 
 doc ///
-  Key    
-    (homology,SimplicialComplex)
-    (homology,Nothing,SimplicialComplex)
-  Headline
-    Compute the homology of a simplicial complex.
-  Usage
-    homology C
-  Inputs
-    C:SimplicialComplex
-  Outputs
-    :GradedModule
-  Description
-   Text
-     The graded module of reduced homologies of C with coefficients in R.
-
-   Example
-    R=ZZ[x_0..x_5];
-    D = simplicialComplex {x_0*x_1*x_2, x_1*x_2*x_3, x_0*x_1*x_4, x_0*x_3*x_4, x_2*x_3*x_4, x_0*x_2*x_5, x_0*x_3*x_5, x_1*x_3*x_5, x_1*x_4*x_5, x_2*x_4*x_5}
-    homology D
-  SeeAlso
-    (homology,SimplicialComplex,Ring)
-    (homology,ZZ,SimplicialComplex)
-    (homology,ZZ,SimplicialComplex,Ring)
-    (homology,SimplicialComplex,SimplicialComplex)
+    Key    
+        (homology,SimplicialComplex)
+        (homology,Nothing,SimplicialComplex)
+    Headline
+        Compute the homology of a simplicial complex.
+    Usage
+        homology Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        : GradedModule
+	    which is the homology of Delta
+    Description
+        Text
+            Compute the graded module of reduced homologies of $\Delta$ with coefficients in 
+            @TO (coefficientRing,SimplicialComplex)@ $\Delta$.
+        Text
+            The 2-sphere has vanishing first homology, but non-trivial second homology.
+        Example
+            S = ZZ[x_0..x_4];
+            Δ = skeleton(2, simplexComplex(3,S));
+            prune homology Δ
+            prune homology Δ
+        Text
+            A figure eight has rank two first homology.
+        Example
+            figureEight = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2, x_2*x_3, x_2*x_4, x_3*x_4}
+            prune homology figureEight
+    SeeAlso
+        (homology,SimplicialComplex,Ring)
+        (homology,ZZ,SimplicialComplex)
+        (homology,ZZ,SimplicialComplex,Ring)
+        (homology,SimplicialComplex,SimplicialComplex)
 ///
 
 doc ///
@@ -3512,9 +3571,10 @@ doc ///
     Usage
         homology f
     Inputs
-        f:SimplicialMap
+        f : SimplicialMap
     Outputs
-        :GradedModuleMap
+        : GradedModuleMap
+	    which is the induced map on homology
     Description
         Text
             The graded module map from the homology of {\tt source f}
@@ -3547,10 +3607,11 @@ doc ///
     Usage
         homology(i,f)
     Inputs
-	i:ZZ
-	f:SimplicialMap
+	i : ZZ
+	f : SimplicialMap
     Outputs
-        :Matrix
+        : Matrix
+	    which is the induced map on homology
     Description
         Text
             The map from the $i$-th homology of {\tt source f}
@@ -3573,6 +3634,110 @@ doc ///
         (homology,ZZ,SimplicialComplex)
         (homology,ZZ,SimplicialComplex,Ring)
         (homology,SimplicialComplex,SimplicialComplex)
+///
+
+doc ///
+    Key    
+        (cohomology, ZZ, SimplicialComplex)
+    Headline
+        compute the cohomology of an abstract simplicial complex
+    Usage
+        cohomology(k, Delta)
+    Inputs
+        k : ZZ
+        Delta : SimplicialComplex
+    Outputs
+        : Module
+	    which is the k-th cohomology group of Delta
+    Description
+        Text
+            Compute the $k$-th reduced cohomology of $\Delta$ with coefficients in 
+	    @TO (coefficientRing,SimplicialComplex)@ $\Delta$.
+	Text
+	    The 2-sphere has vanishing first cohomology, but non-trivial second cohomology.
+        Example
+            S = ZZ[x_0..x_4];
+            Δ = skeleton(2, simplexComplex(3,S));
+	    prune cohomology(1, Δ)
+            prune cohomology(2, Δ)
+	Text
+	    A figure eight has rank two first cohomology.
+	Example
+            figureEight = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2, x_2*x_3, x_2*x_4, x_3*x_4}
+            prune cohomology(1, figureEight)
+    SeeAlso
+        (cohomology,ZZ,SimplicialComplex,Ring)
+        boundaryMap
+        (chainComplex,SimplicialComplex)
+        (cohomology,ZZ,SimplicialComplex,SimplicialComplex)
+///
+
+doc ///
+    Key    
+        (cohomology, ZZ, SimplicialComplex, Ring)
+    Headline
+        compute the cohomology of an abstract simplicial complex
+    Usage
+        cohomology(k, Delta, R)
+    Inputs
+        k : ZZ
+        Delta : SimplicialComplex
+        R : Ring
+    Outputs
+        : Module
+	    which is the k-th cohomology group of Delta over R
+    Description
+        Text
+            Compute the $k$-th reduced cohomology of $\Delta$ with coefficients in R.
+            The Klein bottle has torsion in its first cohomology, but this is not
+	    detected when we take coefficients in $\mathbb{Q}$.
+        Example
+            S = ZZ[x_0..x_7];
+	    kleinBottle = kleinBottleComplex S;
+	    prune cohomology(1, kleinBottle, ZZ)
+	    prune cohomology(1, kleinBottle, QQ)
+	    prune cohomology(1, kleinBottle, ZZ/2)
+    SeeAlso
+        (cohomology, ZZ, SimplicialComplex)
+        boundaryMap
+        (chainComplex, SimplicialComplex)
+    	(cohomology,ZZ,SimplicialComplex,SimplicialComplex)
+///
+
+doc ///
+    Key    
+        (cohomology,ZZ,SimplicialMap)
+    Headline
+        Compute the induced map on cohomology of a simplicial map.
+    Usage
+        cohomology(i,f)
+    Inputs
+	i : ZZ
+	f : SimplicialMap
+    Outputs
+        : Matrix
+	    which is the induced map on cohomology
+    Description
+        Text
+            The map from the $i$-th cohomology of {\tt source f}
+	    to the $i$-th cohomology of {\tt target f}. As an example, we map a
+	    circle into the torus in two ways, and we get two distinct
+	    maps in cohomology.
+        Example
+            S = ZZ[x_0..x_6];
+            R = ZZ[y_0..y_2];
+            Torus = smallManifold(2,7,6,S);
+            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
+            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
+            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
+	    prune cohomology(1, f1)
+	    prune cohomology(1, f2)
+    SeeAlso
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+        (cohomology,ZZ,SimplicialMap)
+        (cohomology,ZZ,SimplicialComplex)
+        (cohomology,ZZ,SimplicialComplex,Ring)
+        (cohomology,ZZ,SimplicialComplex,SimplicialComplex)
 ///
 
 doc///
@@ -4204,7 +4369,7 @@ doc ///
 	Text
 	    Contracting an edge of a hexagon will not change the homology.
 	Example
-	    R = ZZ[x_0..x_5]
+	    R = ZZ[x_0..x_5];
 	    Hexagon = simplicialComplex {x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_0}
 	    Edge = simplicialComplex {x_0*x_1}
 	    prune homology Hexagon
@@ -4212,20 +4377,21 @@ doc ///
 	Text
 	    Gluing two antipodal points on a sphere introduces a non-trivial loop. 
 	Example
-	    R' = ZZ[y_0..y_4]
+	    S = ZZ[y_0..y_4];
 	    Sphere = simplicialComplex {y_0*y_1*y_3, y_0*y_2*y_3, y_1*y_2*y_3, 
 		                        y_0*y_1*y_4, y_0*y_2*y_4, y_1*y_2*y_4}
+	    prune homology Sphere
 	    Poles = simplicialComplex {y_3, y_4}
-	    prune homology(Sphere,Poles)
+	    prune homology(Sphere, Poles)
 	Text
 	    This method assumes that {\tt E} is a subcomplex {\tt D}, and may still run
 	    nonsensically. Note also that the complexes need not be defined over the same
 	    ring.
 	Example
-	    R'' = ZZ[z_0..z_5]
+	    T = ZZ[z_0..z_5];
 	    Fish = simplicialComplex {z_0*z_1, z_1*z_2, z_2*z_3, z_3*z_0, 
 		                      z_0*z_4, z_0*z_5, z_4*z_5}
-	    prune homology(Fish,Hexagon)
+	    prune homology(Fish, Hexagon)
 	    inclusion = map(Hexagon, Fish, gens ring Hexagon);
 	    isWellDefined inclusion
     Caveat
@@ -4235,6 +4401,58 @@ doc ///
 	(homology,SimplicialComplex,Ring)
     	(homology,ZZ,SimplicialComplex)
     	(homology,ZZ,SimplicialComplex,Ring)
+///
+
+doc ///
+    Key
+	(cohomology, ZZ, SimplicialComplex, SimplicialComplex)
+    Headline
+    	compute the relative homology of two simplicial complexes
+    Usage
+    	cohomology(k,D,E)
+    Inputs
+        k : ZZ
+        D : SimplicialComplex
+	E : SimplicialComplex
+    Outputs
+    	: Module
+    Description
+    	Text
+	    This method computes the relative cohomology of a simplicial complex {\tt D}
+	    contracted along a subcomplex {\tt E}.
+	Text
+	    Contracting an edge of a hexagon will not change the cohomology.
+	Example
+	    R = ZZ[x_0..x_5];
+	    Hexagon = simplicialComplex {x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_0}
+	    Edge = simplicialComplex {x_0*x_1}
+	    prune cohomology(1, Hexagon)
+	    prune cohomology(1, Hexagon, Edge) == prune cohomology(1,Hexagon)
+	Text
+	    Gluing two antipodal points on a sphere introduces a non-trivial loop. 
+	Example
+	    S = ZZ[y_0..y_4];
+	    Sphere = simplicialComplex {y_0*y_1*y_3, y_0*y_2*y_3, y_1*y_2*y_3, 
+		                        y_0*y_1*y_4, y_0*y_2*y_4, y_1*y_2*y_4}
+	    prune cohomology(1, Sphere)
+	    Poles = simplicialComplex {y_3, y_4}
+	    prune cohomology(1, Sphere, Poles)
+	Text
+	    This method assumes that {\tt E} is a subcomplex {\tt D}, and may still run
+	    nonsensically. Note also that the complexes need not be defined over the same
+	    ring.
+	Example
+	    T = ZZ[z_0..z_5];
+	    Fish = simplicialComplex {z_0*z_1, z_1*z_2, z_2*z_3, z_3*z_0, 
+		                      z_0*z_4, z_0*z_5, z_4*z_5}
+	    prune cohomology(1, Fish, Hexagon)
+	    inclusion = map(Hexagon, Fish, gens ring Hexagon);
+	    isWellDefined inclusion
+    Caveat
+        This method does not check if {\tt E} is contained in {\tt D}.
+    SeeAlso
+        (cohomology,ZZ,SimplicialComplex)
+    	(cohomology,ZZ,SimplicialComplex,Ring)
 ///
     
 doc ///
