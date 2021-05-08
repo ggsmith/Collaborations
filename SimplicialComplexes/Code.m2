@@ -479,14 +479,14 @@ fVector SimplicialComplex := List => D -> (
     apply(toList(0..1+dim D), i -> hilbertFunction(i, D.cache.faces.ring))
     )
     
-flagfVector = method();
+flagfVector = method()
 flagfVector SimplicialComplex := HashTable => D ->(
     T := newRing(ring D/ideal D, SkewCommutative => true);
     multidegrees := sort apply(flatten entries basis T, m -> degree m);
     hashTable for m in multidegrees list m => hilbertFunction(m,T)
     )
 
-flagfVector(List,SimplicialComplex) := ZZ => (m,D) ->(
+flagfVector (List,SimplicialComplex) := ZZ => (m,D) ->(
     T := newRing(ring D/ideal D, SkewCommutative => true);
     hilbertFunction(m,T)
     )
@@ -494,14 +494,16 @@ flagfVector(List,SimplicialComplex) := ZZ => (m,D) ->(
 isProper = method()
 isProper SimplicialComplex := Boolean => D -> (
     M := matrix unique degrees ring D;
-    if numRows M =!= rank M then(
-	error "multidgrading does not define a coloring"
-	);
+    if numRows M =!= rank M then return false;
     newDegrees := (matrix degrees ring D)*(inverse M);
-    all(flatten for F in faces(1,D) list degree F, i -> i < 2)
+    E := sub(D, newRing(ring D, Degrees => entries newDegrees));
+    all(flatten for F in faces(1,E) list degree F, i -> i < 2)
     )
 
 -*
+(matrix unique degrees ring Γ)*(inverse matrix unique degrees ring Γ)
+
+
     I := ideal D;
     if not opts.Flag then (
 	S := newRing(ring D, Degrees => {#(gens ring D):1});
@@ -698,16 +700,19 @@ shift = (I) -> (
 algebraicShifting = method (Options => {Multigrading => false})
 algebraicShifting SimplicialComplex := opts -> S -> (
     if not opts.Multigrading then (
-    R := newRing(ring S, Degrees => {#(gens ring S):1});
-    f := map(R, ring S);
-    g := map(ring S, R);
-    J := g(shift(gin(f(ideal S), Multigraded => opts.Multigrading)));
-    return simplicialComplex monomialIdeal J
-    )
+    	R := newRing(ring S, Degrees => {#(gens ring S):1});
+    	f := map(R, ring S);
+    	g := map(ring S, R);
+    	J := g(shift(gin(f(ideal S), Multigraded => opts.Multigrading)));
+    	return simplicialComplex monomialIdeal J
+    	)
     else (
-        sI := monomialIdeal shift(gin(ideal S, Multigraded => opts.Multigrading));
-    return simplicialComplex sI
-    )
+	M := matrix unique degrees ring S;
+    	newDegrees := (matrix degrees ring S)*(inverse M);
+    	E := sub(S, newRing(ring S, Degrees => entries newDegrees));
+        sI := monomialIdeal shift(gin(ideal E, Multigraded => opts.Multigrading));
+    	return sub(simplicialComplex sI, ring S)
+    	)
     )
 
 
@@ -1008,11 +1013,28 @@ face(apply(v,j->sub(j,R)),R))
 
 -- substitute a complex to another ring
 substitute(SimplicialComplex,PolynomialRing):=(D,R)->(
-    n := numgens ring D;
-    simplicialComplex for F in facets D list sub(F, (vars R)_{0..n-1})
+    if ideal D === ideal(1_(ring D))
+    then(
+	I := sub(ideal D, R);
+	return simplicialComplex(monomialIdeal I)
+	)
+    else(
+	n := numgens ring D;
+    	return simplicialComplex for F in facets D list sub(F, (vars R)_{0..n-1})
+	)
     )
+    
+    
+    
+-*    
 
--*
+simplicialComplex for F in facets void list sub(F, (vars R)_{0..4})
+
+ideal void
+ideal irrelevant
+
+
+sub(ideal void, newRing(R, Degrees => {1,1,1,1,1}))
 needsPackage "SimplicialComplexes"
 R = QQ[a..e]
 D = simplicialComplex monomialIdeal(a*b*c*d*e)

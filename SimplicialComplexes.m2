@@ -111,4 +111,3 @@ check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
 options SimplicialComplexes
-

@@ -2343,7 +2343,181 @@ doc ///
 	(faces, SimplicialComplex)    
 ///
 
+doc ///
+    Key
+        (flagfVector,List,SimplicialComplex)
+    Headline
+        get a flag $f$-number of a colored simplicial complex
+    Usage
+        f = flagfVector(L, Delta)
+    Inputs
+        L : List
+        Delta : SimplicialComplex
+    Outputs
+        : ZZ
+	    the flag f-number corresponding to the color set determined by {\tt L}.    
+    Description
+    	Text
+	    A {\em proper coloring} of a simplicial complex $\Delta$, is a labelling
+	    of the vertices with colors such that no two vertices in the same face
+	    are the same color. The color set of a face is the set of colors of its
+	    vertices. Given a set of colors $S$, the {\em flag $f$-number} corresponding
+	    to $S$ is the number of faces with color set $S$. The 
+	    @TO2((flagfVector, SimplicialComplex), "flag $f$-vector")@ 
+	    of $\Delta$ is the collection of the flag f-numbers of $\Delta$ for all 
+	    color sets.
+    	Text
+	    A coloring of $\Delta$ is determined by a multigradig on {\tt ring Δ}. Two 
+	    vertices of $\Delta$ have the same color if the corresponding ring variable 
+	    have the same multidegree. As an example we consider the 2-simplex.
+	Example	    
+	    R = QQ[a,b,c , Degrees => {{1,0,0},{0,1,0},{0,0,1}}]
+	    Δ = simplexComplex(2,R)
+	    flagfVector({1,1,1}, Δ) == 1
+	Text
+	    We can compute $i$th entry of the $f$-vector of $\Delta$ by taking the 
+	    taking the sum of the flag $f$-numbers over color sets of size $i+1$.
+	Example
+	    fVector Δ
+	    {flagfVector({0,0,0},Δ),
+	        flagfVector({1,0,0},Δ) + flagfVector({0,1,0},Δ) + flagfVector({0,0,1},Δ),
+	       	flagfVector({1,1,0},Δ) + flagfVector({1,0,1},Δ) + flagfVector({0,1,1},Δ),
+	       	flagfVector({1,1,1},Δ)}
+	Text
+            This method does not check if the multigrading on {\tt ring D} determines
+	    a proper colororing, or if the distinct multidgrees are linearly
+	    independent. However, we can check this with the {\tt isProper} method.
+	Example
+            isProper Δ
+	    Γ1 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{1,0,0},{0,0,1}}));
+	    isProper Γ1
+	    Γ2 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{0,1,0},{0,2,1}}));
+	    isProper Γ2
+	    Γ3 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{0,1,0},{1,1,0}}));
+	    isProper Γ3
+	Text
+	    The flag $f$-vector is computed as the multigraded Hilbert function of the quotient
+	    of an exterior algebra by the corresponding Stanley-Reisner
+	    ideal.
+    SeeAlso
+        "finding attributes and properties"      
+        (flagfVector,List,SimplicialComplex)
+	(fVector, SimplicialComplex)    
+	(isProper, SimplicialComplex)
+	(algebraicShifting,SimplicialComplex)
+///
+
+doc ///
+    Key
+	(flagfVector, SimplicialComplex)
+	flagfVector
+    Headline
+        get the flag f-vector of an colored simplicial complex
+    Usage
+        f = flagfVector Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        f : HashTable
+	    where each key determines a color sets and the value is the
+	    flag f-number corresponding to that color set.    
+    Description
+    	Text
+	    A {\em proper coloring} of a simplicial complex $\Delta$, is a labelling
+	    of the vertices with colors such that no two vertices in the same face
+	    are the same color. The color set of a face is the set of colors of its
+	    vertices. Given a set of colors $S$, the
+	    @TO2((flagfVector,List,SimplicialComplex),"flag $f$-number")@ corresponding
+	    to $S$ is the number of faces with color set $S$. The {\em flag $f$-vector} 
+	    of $\Delta$ is the collection of the flag f-numbers of $\Delta$ for all 
+	    color sets.
+    	Text
+	    A coloring of $\Delta$ is determined by a multigradig on {\tt ring Δ}, where
+	    the distinct multidegrees are linearly independent. Two vertices of $\Delta$ 
+	    have the same color if their corresponding ring variables have the same
+	    multidegree. Moreover, a color set is uniquely determined by the sum of
+	    the corresponding multidegrees. As an example we consider the 2-simplex.
+	Example	    
+	    R = QQ[a,b,c , Degrees => {{1,0,0},{0,1,0},{0,0,1}}]
+	    Δ = simplexComplex(2,R)
+	    flagfVector Δ
+	Text
+	    We can compute $i$th entry of the $f$-vector of $\Delta$ by taking the 
+	    taking the sum of the flag $f$-numbers over color sets of size $i+1$.
+	Example
+	    fV = for i from -1 to dim Δ list(
+		sum for S in keys flagfVector Δ list(
+		    if sum S == i+1 then 1 else 0
+		    )
+		)
+	    fV == fVector Δ
+	Text
+            This method does not check if the multigrading on {\tt ring D} determines
+	    a proper colororing, or if the distinct multidgrees are linearly
+	    independent. However, we can check this with the {\tt isProper} method.
+	Example
+            isProper Δ
+	    Γ1 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{1,0,0},{0,0,1}}));
+	    isProper Γ1
+	    Γ2 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{0,1,0},{0,2,1}}));
+	    isProper Γ2
+	    Γ3 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{0,1,0},{1,1,0}}));
+	    isProper Γ3
+	Text
+	    The flag $f$-vector is computed as the multigraded Hilbert function of the quotient
+	    of an exterior algebra by the corresponding Stanley-Reisner
+	    ideal.
+    SeeAlso
+        "finding attributes and properties"      
+	(flagfVector,List,SimplicialComplex)
+	(fVector, SimplicialComplex)    
+	(isProper, SimplicialComplex)
+	(algebraicShifting,SimplicialComplex)
+///
+
+doc ///
+    Key
+        (isProper, SimplicialComplex)
+	isProper
+    Headline
+        determine if a simplicial complex has is properly colored
+    Usage
+        isProper Delta
+    Inputs
+        Delta : SimplicialComplex
+    Outputs
+        : Boolean
+	    That is true if the multigrading on {\tt ring Δ} determines a proper
+	    coloring.
+    Description
+    	Text
+	    A {\em proper coloring} of a simplicial complex $\Delta$, is a labelling
+	    of the vertices with colors such that no two vertices in the same face
+	    are the same color.
+    	Text
+	    A coloring of $\Delta$ is determined by a multigradig on {\tt ring Δ}, where
+	    the distinct multidegrees are linearly independent. Two vertices of $\Delta$ 
+	    have the same color if their corresponding ring variables have the same
+	    multidegree.
+	Example	    
+	    R = QQ[a,b,c , Degrees => {{1,0,0},{0,1,0},{0,0,1}}]
+	    Δ = simplexComplex(2,R)
+            isProper Δ
+	    Γ1 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{1,0,0},{0,0,1}}));
+	    isProper Γ1
+	    Γ2 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{0,1,0},{0,2,1}}));
+	    isProper Γ2
+	    Γ3 = sub(Δ, newRing(ring Δ, Degrees => {{1,0,0},{0,1,0},{1,1,0}}));
+	    isProper Γ3
+    SeeAlso
+        "finding attributes and properties"      
+	(flagfVector,SimplicialComplex)
+	(flagfVector,List,SimplicialComplex)
+///
+
 -*
+viewHelp flagfVector
+
     Sasha: As far as I'm aware, the flag functionality isn't currently implemented. 
     When/if it is, this example should be added to the documentation above.
 	Text

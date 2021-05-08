@@ -61,6 +61,8 @@ assert(prune HH_1 conewrtv == 0)
 ------------------------------------------------------------------------------
 -- flagfVector for a colored complex
 TEST ///
+restart
+needsPackage"SimplicialComplexes"
 R = QQ[a .. e, Degrees => {{1,0,0,0},{0,1,0,0},{1,0,0,0},{0,0,0,1},{0,1,0,0}}]
 D = simplicialComplex{a*b, b*c, c*d*e, a*e}
 assert isProper D
