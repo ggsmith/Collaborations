@@ -3813,6 +3813,7 @@ doc ///
 doc ///
     Key    
         (cohomology, ZZ, SimplicialComplex)
+	[(cohomology, ZZ, SimplicialComplex), Degree]
     Headline
         compute the cohomology of an abstract simplicial complex
     Usage
@@ -3820,6 +3821,8 @@ doc ///
     Inputs
         k : ZZ
         Delta : SimplicialComplex
+	Degree => ZZ
+	    this option is ignored
     Outputs
         : Module
 	    which is the k-th cohomology group of Delta
@@ -3849,6 +3852,7 @@ doc ///
 doc ///
     Key    
         (cohomology, ZZ, SimplicialComplex, Ring)
+	[(cohomology, ZZ, SimplicialComplex, Ring), Degree]
     Headline
         compute the cohomology of an abstract simplicial complex
     Usage
@@ -3857,6 +3861,8 @@ doc ///
         k : ZZ
         Delta : SimplicialComplex
         R : Ring
+	Degree => ZZ
+	    this option is ignored
     Outputs
         : Module
 	    which is the k-th cohomology group of Delta over R
@@ -3880,14 +3886,17 @@ doc ///
 
 doc ///
     Key    
-        (cohomology,ZZ,SimplicialMap)
+        (cohomology, ZZ, SimplicialMap)
+	[(cohomology, ZZ, SimplicialMap), Degree]
     Headline
-        Compute the induced map on cohomology of a simplicial map.
+        C=compute the induced map on cohomology of a simplicial map.
     Usage
         cohomology(i,f)
     Inputs
 	i : ZZ
 	f : SimplicialMap
+	Degree => ZZ
+	    this option is ignored	
     Outputs
         : Matrix
 	    which is the induced map on cohomology
@@ -4580,6 +4589,8 @@ doc ///
 doc ///
     Key
 	(cohomology, ZZ, SimplicialComplex, SimplicialComplex)
+	[(cohomology, ZZ, SimplicialComplex, SimplicialComplex), Degree]
+	[cohomology, Degree]
     Headline
     	compute the relative homology of two simplicial complexes
     Usage
@@ -4588,6 +4599,8 @@ doc ///
         k : ZZ
         D : SimplicialComplex
 	E : SimplicialComplex
+	symbol Degree => ZZ
+	    this option is ignored
     Outputs
     	: Module
     Description
@@ -4625,8 +4638,8 @@ doc ///
     Caveat
         This method does not check if {\tt E} is contained in {\tt D}.
     SeeAlso
-        (cohomology,ZZ,SimplicialComplex)
-    	(cohomology,ZZ,SimplicialComplex,Ring)
+        (cohomology, ZZ, SimplicialComplex)
+    	(cohomology, ZZ, SimplicialComplex, Ring)
 ///
     
 doc ///
