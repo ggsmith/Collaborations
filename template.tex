@@ -60,6 +60,7 @@
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Proj}{Proj}
 \DeclareMathOperator{\Spec}{Spec}
+\DeclareUnicodeCharacter{0393}{\Gamma}
 \DeclareUnicodeCharacter{0394}{\Delta}
 
 
@@ -107,27 +108,15 @@ Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i2 : R = ZZ[a..i];
     i3 : S = ZZ[x_0..x_6];
-    i4 : TODO GAMMA = smallManifold(2,7,1,S);
+    i4 : $Γ$ = smallManifold(2,7,1,S);
     i5 : maplist = flatten for i to 2 list (
          for j in subsets(toList(R_0..R_8),7) list (
-         	phi := map(smallManifold(3,9,i,R),TODO GAMMA,j);
-         	if isWellDefined phi then phi else continue
-         	)
+             phi := map(smallManifold(3,9,i,R),$Γ$,j);
+             if isWellDefined phi then phi else continue
+             )
          );
-    i6 : netList maplist TODO I think I want less maps or don't netList since it's long.
-         +-----------------+
-    o6 = || a b e f g h i ||
-         +-----------------+
-         || a d e f g h i ||
-         +-----------------+
-         || b d e f g h i ||
-         +-----------------+
-         || a b d e f g h ||
-         +-----------------+
-         || a c d e f g h ||
-         +-----------------+
-         || b c d e f g h ||
-         +-----------------+
+    i6 : maplist_0
+    o6 = | a b e f g h i |
   \end{lstlisting}
   %
   By construction, all of these maps should be inclusions.
@@ -143,41 +132,25 @@ The database also contains many triangulations of various interesting surfaces, 
 \begin{example}\label{example of using database}
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i8 : Torus = smallManifold(2, 7, 6, R)
-    o8 = simplicialComplex | cfg afg beg aeg cdg bdg def bef adf bcf cde ace abd abc |
-    o8 : SimplicialComplex
-    i9 : KleinBottle = smallManifold(2, 8, 12, R)
-    o9 = simplicialComplex | cgh agh cfh afh efg dfg aeg cdg bef adf bcf cde bde ace abd abc | TODO Spacing
-    o9 : SimplicialComplex
-    i10 : RP2 = smallManifold(2, 6, 1, R)
-    o10 = simplicialComplex | bef aef cdf adf bcf cde bde ace abd abc |
-    o10 : SimplicialComplex
+    i8 : Torus = smallManifold(2, 7, 6, R);
+    i9 : KleinBottle = smallManifold(2, 8, 12, R);
+    i10 : RP2 = smallManifold(2, 6, 1, R);
   \end{lstlisting}
   %
   We can check that these are the right surfaces by computing their homology. Theorems 6.2, 6.3, and 6.4 from Munkres confirm that they match \cite{Munkres}.
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i11 : prune homology Torus 
-    o11 = -1 : 0  
-           0 : 0  
-                 2
-           1 : ZZ
-                 1
-           2 : ZZ
-    o11 : GradedModule
-    i12 : prune homology KleinBottle
-    o12 = -1 : 0             
-           0 : 0             
-           1 : cokernel | 2 |
-                        | 0 |
-           2 : 0             
-    o12 : GradedModule
-    i13 : prune homology RP2
-    o13 = -1 : 0             
-           0 : 0             
-           1 : cokernel | 2 |
-           2 : 0             
-    o13 : GradedModule
+    i11 : for i to 2 list prune HH_i Torus
+                2    1
+    o11 = {0, ZZ , ZZ }
+    o11 : List
+    i12 : for i to 2 list prune HH_i KleinBottle
+    o12 = {0, cokernel | 2 |, 0}
+                       | 0 |
+    o12 : List
+    i13 : for i to 2 list prune HH_i RP2
+    o13 = {0, cokernel | 2 |, 0}
+    o13 : List
   \end{lstlisting}
   We can explicitly identify the generators of the homology for the torus.
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
@@ -185,7 +158,6 @@ The database also contains many triangulations of various interesting surfaces, 
   \end{lstlisting}
   %
 \end{example}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Stanley-Reisner Theory}
@@ -409,6 +381,57 @@ We thank todo .
                
 partially supported by
 the Natural Sciences and Engineering Research Council of Canada (NSERC).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center}
+  \begin{tikzpicture}[scale = .3]
+    \draw[-,very thick] (0,0) -- (15,0) -- (15,15) -- (0,15) -- cycle;
+    \draw[-,very thick] (0,5) -- (5,0);
+    \draw[-,very thick] (0,5) -- (10,0);
+    \draw[-,very thick] (0,5) -- (5,10);
+    \draw[-,very thick] (0,10) -- (5,10);
+    \draw[-,very thick] (0,15) -- (5,10);
+    \draw[-,very thick] (5,10) -- (10,0);
+    \draw[-,very thick] (5,10) -- (5,15);
+    \draw[-,very thick] (5,10) -- (10,5);
+    \draw[-,very thick] (5,15) -- (10,5);
+    \draw[-,very thick] (5,15) -- (15,10);
+    \draw[-,very thick] (10,0) -- (10,5);
+    \draw[-,very thick] (10,5) -- (15,0);
+    \draw[-,very thick] (10,5) -- (15,5);
+    \draw[-,very thick] (10,5) -- (15,10);
+    \draw[-,very thick] (10,15) -- (15,10);
+    \filldraw (0,0) circle (5pt);
+    \filldraw (5,0) circle (5pt);
+    \filldraw (10,0) circle (5pt);
+    \filldraw (15,0) circle (5pt);
+    \filldraw (15,5) circle (5pt);
+    \filldraw (15,10) circle (5pt);
+    \filldraw (15,15) circle (5pt);
+    \filldraw (10,15) circle (5pt);
+    \filldraw (5,15) circle (5pt);
+    \filldraw (0,15) circle (5pt);
+    \filldraw (0,10) circle (5pt);
+    \filldraw (0,5) circle (5pt);
+    \filldraw (5,10) circle (5pt);
+    \filldraw (10,5) circle (5pt);
+    \node at (-.5,-.5) {d};
+    \node at (5,-.75) {g};
+    \node at (10,-.75) {f};
+    \node at (15.5,-.5) {d};
+    \node at (15.75,5) {c};
+    \node at (15.75,10) {a};
+    \node at (15.5,15.5) {d};
+    \node at (10,15.75) {f};
+    \node at (5,15.75) {g};
+    \node at (-.5,15.5) {d};
+    \node at (-.75,10) {a};
+    \node at (-.75,5) {c};
+    \node at (5.5,10.5) {b};
+    \node at (9.5,4.5) {e};
+  \end{tikzpicture}\\
+\end{center}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

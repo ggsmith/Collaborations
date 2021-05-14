@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.11.6)  27 APR 2021 13:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.11.6)  14 MAY 2021 13:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -781,7 +781,11 @@ File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count313
 \l__pdf_internal_box=\box61
 )
-(./template.aux)
+(./template.aux
+
+LaTeX Warning: Label `example of using database' multiply defined.
+
+)
 \openout1 = `template.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
@@ -964,6 +968,13 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+
+Overfull \hbox (6.088pt too wide) in paragraph at lines 117--118
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][] 
+ []
+
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `ztmcm' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
@@ -976,61 +987,71 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 109.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 141.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 109.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 141.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 109.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 141.
 
+Overfull \hbox (113.79274pt too wide) in paragraph at lines 150--151
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][] 
+ []
+
+[2]
 
 Package amsrefs Warning: Use of \cites is recommended instead of \cite 
-(amsrefs)                for multiple cites 'BH, Stanley, MS' on input line 115
+(amsrefs)                for multiple cites 'BH, Stanley, MS' on input line 200
 .
 
 
 Package amsrefs Warning: The form \cite{...}*{...} is recommended
-(amsrefs)                instead of \cite[...]{...} on input line 117.
+(amsrefs)                instead of \cite[...]{...} on input line 202.
 
 
-Overfull \hbox (5.43645pt too wide) in paragraph at lines 150--152
+Overfull \hbox (5.43645pt too wide) in paragraph at lines 235--237
 [][] 
  []
 
 
-Overfull \hbox (5.43645pt too wide) in paragraph at lines 175--177
+Overfull \hbox (5.43645pt too wide) in paragraph at lines 260--262
 [][] 
  []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 185.
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
-Underfull \hbox (badness 1221) in paragraph at lines 432--432
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 270.
+[3] [4]
+Underfull \vbox (badness 3039) has occurred while \output is active []
+
+ [5]
+Underfull \hbox (badness 1221) in paragraph at lines 577--577
 []\T1/ptm/m/n/10 (+20) David Cook II, \T1/ptm/m/it/10 (+20) Sim-pli-cial de-com
 -pos-abil-ity\T1/ptm/m/n/10 (+20) , J. Softw. Al-ge-bra Geom. \T1/ptm/b/n/10 2 
 \T1/ptm/m/n/10 (+20) (2010), 20--23, DOI
  []
 
-[4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 439.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 439.
+[6]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 584.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 584.
  (./template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 439.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 439.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 584.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 584.
 Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: 2C64C407ED22D5E304F857465BE73CBF;338.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 439.
+(rerunfilecheck)             Checksum: BA740F7CE5D6D4C1D6E3EE9A01DFC16D;338.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 584.
  ) 
 Here is how much of TeX's memory you used:
- 25477 strings out of 481239
- 468855 string characters out of 5920377
- 760629 words of memory out of 5000000
- 39924 multiletter control sequences out of 15000+600000
- 601737 words of font info for 184 fonts, out of 8000000 for 9000
+ 25554 strings out of 481239
+ 469922 string characters out of 5920377
+ 761660 words of memory out of 5000000
+ 39928 multiletter control sequences out of 15000+600000
+ 601997 words of font info for 188 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 60i,11n,80p,1036b,1947s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,11n,80p,1036b,1944s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
 e/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
@@ -1044,10 +1065,10 @@ w/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pf
 b></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/t
 exlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/urw/times/utmri8a.pfb>
-Output written on template.pdf (4 pages, 202140 bytes).
+Output written on template.pdf (6 pages, 211574 bytes).
 PDF statistics:
- 207 PDF objects out of 1000 (max. 8388607)
- 186 compressed objects within 2 object streams
- 81 named destinations out of 1000 (max. 500000)
+ 295 PDF objects out of 1000 (max. 8388607)
+ 271 compressed objects within 3 object streams
+ 148 named destinations out of 1000 (max. 500000)
  42045 words of extra memory for PDF output out of 42996 (max. 10000000)
 
