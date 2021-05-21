@@ -41,7 +41,7 @@
    (LaTeX-add-labels
     "example of using database"
     "Stanley-Reisner ideal and Alexander duality"
-    "the figure 8 and its dual")
+    "the figure-8 and its dual")
    (LaTeX-add-environments
     "example")
    (LaTeX-add-amsthm-newtheorems

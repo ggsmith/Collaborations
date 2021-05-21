@@ -25,7 +25,7 @@ IΔ == ideal Δ
 -- simplicial complex.
 
 dual Δ
-dualFacets = first entries facets dual Δ
+dualFacets = facets dual Δ
 sort first entries gens IΔ == sort for F in dualFacets list(
     product for v in vertices Δ list(
 	if member(v, support F) then continue else v
@@ -40,6 +40,8 @@ netList for i from -1 to 5 list{
     }
 
 all(-1..5, i -> prune HH^(3-i)(dual chainComplex Δ) == prune HH_(i-1) dual Δ)
+
+all(-1..5, i -> prune HH^(3-i) Δ == prune HH_(i-1) dual Δ)
 
 -- Computing link in the bowtie complex
 
@@ -58,7 +60,7 @@ hochster = (i, F) -> (
 V = vertices Δ;
 squarefreeMonomials = unique sort apply(remove(subsets V, 0), m -> lcm m);
 matrix for i to length res IΔ - 1 list (
-    for F in squarefree list hochster(i-1,F)
+    for F in squarefreeMonomials list hochster(i-1,F)
     )
 
 hochster(1, S_0^3*S_1*S_2*S_3*S_4)
@@ -67,10 +69,6 @@ res IΔ
 
 betti res IΔ
 betti res dual(monomialIdeal IΔ)
-
-
-
-viewHelp cohomology
 
 F = lcmLattice#-2
 barF = product select(vertices Δ, v -> not member(v, support F))
@@ -91,6 +89,19 @@ hΔ = for j to d+1 list(
 -- negative entry, the complex cannot be Cohen-Macaulay.
 needsPackage"LexIdeals"
 netList for i from 1 to length hΔ - 2 list{hΔ_i, hΔ_(i+1), macaulayBound(hΔ_i,i)}
+
+IΔ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
+Δ = simplicialComplex IΔ
+kΔ = S/IΔ
+d = dim Δ
+fΔ = fVector Δ
+hΔ = for j to d+1 list(
+    sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(fΔ#(i))
+    )
+R = QQ[t]
+hΔ = sum for i to d+1 list fΔ#(i) * t^i * (1-t)^(d+1-i)
+reduceHilbert(hilbertSeries kΔ)
+
 
 -------------------------------RUDIN BALL-----------------------------------
 

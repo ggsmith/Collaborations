@@ -212,7 +212,7 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
 % \end{theorem}
 %
 \begin{example}\label{Stanley-Reisner ideal and Alexander duality}
-  Consider the ``figure 8'' simplicial complex $\Delta$, depicted in Figure \ref{the figure 8 and its dual}
+  Consider the ``figure-8'' simplicial complex $\Delta$, depicted in Figure \ref{the figure-8 and its dual}
   %
   \begin{figure}[h]
     \begin{subfigure}{0.3\textwidth}
@@ -233,7 +233,7 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
         \node at (8.5,5.5) {$v_4$};
         % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
       \end{tikzpicture}
-%      \caption{The simplicial complex $\Delta$}\label{figure 8 complex}
+%      \caption{The simplicial complex $\Delta$}\label{figure-8 complex}
     \end{subfigure}
     \hspace{50pt}
     \begin{subfigure}{0.3\textwidth}
@@ -260,7 +260,7 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
       \end{tikzpicture}
 %      \caption{The Alexandual Dual of $\Delta$}
     \end{subfigure}
-    \caption{The simplicial complex $\Delta$ (left) and its Alexander dual $\Delta^*$ (right).}\label{the figure 8 and its dual}
+    \caption{The simplicial complex $\Delta$ (left) and its Alexander dual $\Delta^*$ (right).}\label{the figure-8 and its dual}
   \end{figure}
   %
   The Stanley-Reisner ideal of $\Delta$ is $I_\Delta = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\ x_2x_3x_4)$. We can exhibit the correspondence between $\Delta$ and $I_\Delta$ using the methods \texttt{simplicialComplex} and \texttt{ideal}.
@@ -311,7 +311,7 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
   Finally, we exhibit the isomorphisms between the cohomology of $\Delta$ and the homology of $\Delta^*$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i94 : all(-1..5, i -> prune HH^(3-i)(dual chainComplex $Δ$) == prune HH_(i-1) dual $Δ$)
+    i94 : all(-1..5, i -> all(-1..5, i -> prune HH^(3-i) $Δ$ == prune HH_(i-1) dual $Δ$)
     o94 = true
 \end{lstlisting}
 \end{example}
@@ -322,7 +322,7 @@ For a face $F \in \Delta$, we define the \textbf{link} of $F$, is the subcomplex
   \mathrm{link}_\Delta(F) := \{ G \in \Delta \ | \ F \cup G \in \Delta \ \text{ and } \ F \cap G = \varnothing \}.
 \end{displaymath}
 %
-With this definition, we have all the pieces necessary to present a substantive result of Stanley-Reisner theory, which is the ``dual version'' of Hochster's formula, see \cite[Corollary 1.40]{MS}. This formula allows us to compute the multigraded Betti numbers of $I_\Delta$, which are defined to be $\beta_{i,m}(I_\Delta) = \big( \mathrm{Tor}_i^S(I_\Delta, k) \big)_m$. For a subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the betti number in homological degree $i$ and multidegree $(a_1,...,a_n) \in \mathbb Z^n$, where $a_i = 1$ if $v_i \in F$ and $a_i = 0$ otherwise.
+We can now exhibit a more substantive result of Stanley-Reisner theory, which is the ``dual version'' of Hochster's formula, see \cite[Corollary 1.40]{MS}. This formula allows us to compute the multigraded Betti numbers of $I_\Delta$, which are defined to be $\beta_{i,m}(I_\Delta) = \big( \mathrm{Tor}_i^S(I_\Delta, k) \big)_m$. For a subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the betti number in homological degree $i$ and multidegree $(a_1,...,a_n) \in \mathbb Z^n$, where $a_i = 1$ if $v_i \in F$ and $a_i = 0$ otherwise.
 %
 
 %
@@ -335,7 +335,7 @@ With this definition, we have all the pieces necessary to present a substantive 
 \end{theorem}
 %
 \begin{example}
-  In Example \ref{Stanley-Reisner ideal and Alexander duality}, we computed the Alexander dual of the figure 8 complex. We can use the \texttt{link} method to compute the links of various faces. For example, we compute the link of the central vertex $v_2$, whose link is a square.
+  In Example \ref{Stanley-Reisner ideal and Alexander duality}, we computed the Alexander dual of the figure-8 complex. We can use the \texttt{link} method to compute the links of various faces. For example, we compute the link of the central vertex $v_2$, whose link is a square.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i27 : link(dual $Δ$, x_2)
@@ -370,8 +370,15 @@ With this definition, we have all the pieces necessary to present a substantive 
   where the row are indexed by the homological degree (starting at $0$), and the columns are indexed by the squarefree multidegrees.
 \end{example}
 %
-We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure, codimension $1$, simplicial complex. We say that a $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. These conditions are linked by the chain of conditions: shellable $\Longrightarrow$ Cohen-Macaulay $\Longrightarrow$ pure, \cite[Corollary 5,1.5 \& Theorem 5.1.13]{BH}. The figure 8 complex from example \ref{Stanley-Reisner ideal and Alexander duality} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
+We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure, codimension $1$, simplicial complex. We say that a $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}. The figure-8 complex from example \ref{Stanley-Reisner ideal and Alexander duality} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
 
+For Stanley-Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if an only if $\widetilde H_i(\mathrm{link}_\Delta(F);k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{Link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
+%
+\begin{displaymath}
+  \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t + \cdots h_k t^k}{(1-t)^d}
+\end{displaymath}
+%
+where $d = \dim \Delta + 1$, and $0 \leq k \leq d$ is such that $h_k \not = 0$.
 
 
 % \begin{figure}[h]
