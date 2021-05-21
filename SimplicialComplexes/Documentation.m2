@@ -123,7 +123,6 @@ doc ///
 		TO (prune, SimplicialComplex),
 		TO (inducedSubcomplex, SimplicialComplex, List),
 		TO (dual, SimplicialComplex),
-		TO (boundaryMap,ZZ, SimplicialComplex),
 		TO (link, SimplicialComplex, RingElement),
 		TO (skeleton, ZZ, SimplicialComplex),
 		TO (star, SimplicialComplex, RingElement),
@@ -224,14 +223,14 @@ doc ///
 	    facets void	    
 	    assert (facets irrelevant == {1_S} and facets void == {})
     	Text
-	    The matrix of facets is part of the defining data of an
-	    abstract simplicial complex, so this method does no computation.
+	    The list of facets is part of the defining data of an abstract
+	    simplicial complex, so this method does no computation.
+	Example
+	    peek Δ
     SeeAlso 
         "finding attributes and properties"
 	(net, SimplicialComplex)
 	(ring, SimplicialComplex)
-	(dim, SimplicialComplex)	
-	(isPure, SimplicialComplex)	
 	(faces, SimplicialComplex)
 ///
 
@@ -251,14 +250,15 @@ doc ///
 	    a symbolic representation used for printing
     Description
         Text
-	    The net of an abstract simplicial complex is a matrix with one row
-	    where the entries are the monomials representing the facets (also
-	    known as maximal faces).  This function is the primary function
-	    called upon by @TO (symbol <<, Thing)@ to format for printing.
+	    The net of an abstract simplicial complex is an expression that
+	    lists the monomials representing the facets (also known as the
+	    maximal faces).  This function is the primary function called upon
+	    by @TO (symbol <<, Thing)@ to format for printing.	    
         Example
             S = ZZ[a..f];
 	    Δ = simplicialComplex monomialIdeal(a*f, b*d, c*e)
     	    net Δ
+	    assert instance(net Δ, Net)
 	Text
 	    The void complex has no facets whereas the irrelevant complex has
 	    the empty set as a facet.
@@ -456,6 +456,7 @@ doc ///
 	    R = ZZ/101[a..e];
 	    Γ = simplicialComplex {e, c*d, b*d, a*b*c}
 	    ring Γ
+	    ideal Γ
 	    assert (ring Γ === R and coefficientRing Γ === ZZ/101)	    
 	Text
 	    The irrelevant complex has the empty set as a facet whereas the
@@ -537,7 +538,7 @@ doc ///
 	    assert (ring Δ' === S' and coefficientRing Δ' === ZZ/101 and
 		numgens ideal Δ' === 2)
     	Text
-	    As the Stanley-Reisner ideal is part the defining data of an
+	    The Stanley-Reisner ideal is part the defining data of an
 	    abstract simplicial complex, so this method does no computation.	
     	Text
 	    Although an abstract simplicial complex can be represented by a
@@ -575,7 +576,7 @@ doc ///
 	    A face $F$ in an abstract simplicial complex $\Delta$ of
 	    cardinality $|F| = i + 1$ has {\em dimension} $i$.  The dimension
 	    of $\Delta$ is the maximum of the dimensions of its faces or it is
-	    $-\infty$ if $\Delta$ is the void complex which has no faces.
+	    $-\infty$ if $\Delta$ is the void complex (which has no faces).
 	Text
      	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
      	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
@@ -617,6 +618,8 @@ doc ///
 	Text
 	    To avoid repeating a computation, the package caches the result in
 	    the @TO CacheTable@ of the abstract simplicial complex.
+	Example
+	    peek Δ.cache
     SeeAlso
         "finding attributes and properties"    
     	(facets, SimplicialComplex)
@@ -634,7 +637,7 @@ doc ///
         simplicialComplex L
     Inputs
         L : List
-	   whose entries are monomials in a ring corresponding to faces
+	   whose entries are monomials in a polynomial ring corresponding to faces
 	   or a @TO Matrix@ with one row and monomial entries
     Outputs
         : SimplicialComplex
@@ -672,7 +675,7 @@ doc ///
 	Text
 	    Although the list of faces may include non-facets, an abstract
 	    simplicial complex is displayed by listing its facets.  The order
-	    of faces in the list is unimportant.
+	    of faces in the input list is unimportant.
     	Example
 	    Γ = simplicialComplex {a*b*d*e, b*c, a*b*c*d,  a*c*d*e, a*c*d,  b*c*d*e, d, a*b*c*e}
 	    monomialIdeal Γ
@@ -873,8 +876,8 @@ doc ///
       	        {"the ring of the ", TT "monomialIdeal", " value equals the
 		    value of the ", TT "ring", " key,"},
        	        {"the value of the ", TT "facets", " key is a ", 
-		    TO Matrix, ","},				
-     	        {"the ring of the ", TT "facets", " value equals the
+		    TO List, ","},				
+     	        {"the ring of each entry in ", TT "facets", " equals the
 		    value of the ", TT "ring", " key,"},		
                 {"the value of the ", TT "cache", " key is a ", TO CacheTable,
                     "."}
@@ -991,7 +994,8 @@ doc ///
     	    facets.  It is smallest possible non-polytopal simplicial 3-sphere.
     	Example
 	    S = ZZ[a..h];
-	    Δ = bartnetteSphereComplex S
+	    Δ = bartnetteSphereComplex S;
+	    matrix {facets Δ}
 	    dim Δ
 	    fVector Δ
 	    assert(dim Δ === 3 and isPure Δ)
@@ -1003,7 +1007,7 @@ doc ///
 	    the given polynomial ring.
 	Example
 	    R = QQ[x_0..x_10];
-	    Γ = bartnetteSphereComplex R
+	    Γ = bartnetteSphereComplex R;
 	    monomialIdeal Γ
     	    assert(dim Γ === 3 and isPure Γ)	    
     	Text
@@ -1044,7 +1048,8 @@ doc ///
 	    homology sphere with 16 vertices.
     	Example
 	    S = ZZ/101[a..q];
-	    Δ = poincareSphereComplex S
+	    Δ = poincareSphereComplex S;
+	    matrix {facets Δ}
 	    dim Δ
 	    fVector Δ
 	    prune HH chainComplex Δ
@@ -1092,7 +1097,8 @@ doc ///
 	    "Björner–Lutz homology sphere")@ by taking a double suspension.
     	Example
 	    S = ZZ/101[a..s];
-	    Δ = nonPiecewiseLinearSphereComplex S
+	    Δ = nonPiecewiseLinearSphereComplex S;
+	    matrix {facets Δ}	  
 	    dim Δ 
 	    fVector Δ
 	    assert(dim Δ === 5 and isPure Δ)
@@ -1135,11 +1141,14 @@ doc ///
     	    "shellable")@.  This abstract simplicial complex has a convex realization.
     	Example
 	    S = ZZ/101[a..s];
-	    Δ = rudinBallComplex S
+	    Δ = rudinBallComplex S;
+	    matrix {facets Δ}	
 	    dim Δ
 	    fVector Δ
 	    assert(dim Δ === 3 and isPure Δ)
 	    assert(fVector Δ === {1,14,66,94,41})
+	Text
+	    This abstract simplicial complex is Cohen-Macaulay but not shellable.	    	    
 	Text
 	    Our enumeration of the vertices follows the {\tt rudin}
 	    example in Masahiro Hachimori's
@@ -1174,11 +1183,14 @@ doc ///
     	    "shellable")@.
     	Example
 	    S = ZZ/101[a..s];
-	    Δ = grunbaumBallComplex S
+	    Δ = grunbaumBallComplex S;
+	    matrix {facets Δ}		    
 	    dim Δ 
 	    fVector Δ
 	    assert(dim Δ === 3 and isPure Δ)
 	    assert(fVector Δ === {1,14,54,70,29})
+	Text
+	    This abstract simplicial complex is Cohen-Macaulay but not shellable.	    
 	Text
 	    Our enumeration of the vertices follows the {\tt gruenbaum}
 	    example in Masahiro Hachimori's
@@ -1214,11 +1226,14 @@ doc ///
 	    "non-shellable ")@ 3-ball with 10 vertices and 21 facets.
     	Example
 	    S = ZZ/101[a..n];
-	    Δ = zieglerBallComplex S
+	    Δ = zieglerBallComplex S;
+	    matrix {facets Δ}
 	    dim Δ 
 	    fVector Δ
 	    assert(dim Δ === 3 and isPure Δ)
 	    assert(fVector Δ === {1,10,38,50,21})
+	Text
+	    This abstract simplicial complex is Cohen-Macaulay but not shellable.	    
 	Text
 	    Our enumeration of the vertices follows the {\tt ziegler}
 	    example in Masahiro Hachimori's
@@ -1310,6 +1325,8 @@ doc ///
 	    assert(fVector Δ === {1,6,15,11})
 	    prune HH chainComplex Δ
 	Text
+	    This abstract simplicial complex is Cohen-Macaulay and shellable.	    
+	Text
 	    A shellable abstract simplicial complex $\Delta$ is {\em extendably
 	    shellable} if any shelling of a subcomplex can be extended to a
 	    shelling of $\Delta$.  The bjorner complex is not extendably shellable.
@@ -1347,7 +1364,7 @@ doc ///
 	    corresponding to a triangulation of a $d$-manifold
     Description
         Text
-            This function accesses a database of all small triangulated 2 or
+            This function accesses a database of all small triangulated 2- or
 	    3-manifolds with at most ten vertices.  The enumeration of these
 	    abstract simplicial complex follows
 	    @HREF("http://page.math.tu-berlin.de/~lutz/", "Frank H. Lutz's")@
@@ -1366,7 +1383,8 @@ doc ///
 	    $1,297$ with nine vertices.
 	Example
             S = ZZ[a..j];
-	    Γ = smallManifold(3, 8, 21, S)
+	    Γ = smallManifold(3, 8, 21, S);
+	    matrix {facets Γ}
 	    prune HH Γ
 	    assert(isWellDefined Γ and dim Γ === 3 and # vertices Γ === 8)
 	    assert (simplicialComplex faces(3, simplexComplex(4, S)) === smallManifold(3,5,0,S))
@@ -1481,6 +1499,8 @@ doc ///
         prune Delta
     Inputs
         Delta : SimplicialComplex  
+	Exclude => List
+	    the optional input is ignored
     Outputs 
         : SimplicialComplex
 	    where vertices are precisely the generators in its polynomial ring
@@ -2035,6 +2055,7 @@ doc ///
 		TO (vertices, SimplicialComplex),
         	TO (faces, ZZ, SimplicialComplex),
 		TO (fVector, SimplicialComplex),
+		TO (flagfVector, List, SimplicialComplex),
 		TO (isPure, SimplicialComplex)
 	    }@
     SeeAlso
@@ -2046,7 +2067,7 @@ doc ///
     Key
         (vertices, SimplicialComplex)
     Headline
-        lists the vertices of an abstract simplicial complex
+        get the list of the vertices for an abstract simplicial complex
     Usage
         vertices Delta
     Inputs
@@ -2057,11 +2078,12 @@ doc ///
             $\Delta$
     Description
         Text        
-	    In this package, an abstract simplicial complex is represented as
-            squarefree monomial ideal in a @TO2((ring, SimplicialComplex),
-            "polynomial ring")@.  This method returns the list of variables in
-            this polynomial ring that corresponds to the vertices in the
-            simplicial complex.
+	    In this package, an abstract simplicial complex is represented by
+	    its Stanley-Reisner ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@, so the
+            vertices are identified with a subset of the variables. 
+	    This method returns the list of variables in this polynomial ring
+            that corresponds to the vertices.
         Example
             S = QQ[a..e];
             vertices simplexComplex(4, S)
@@ -2099,7 +2121,7 @@ doc ///
     Key
         (faces, SimplicialComplex)
     Headline
-        get the faces of a simplicial complex
+        get the list of faces for an abstract simplicial complex
     Usage
         faces Delta
     Inputs
@@ -2134,7 +2156,8 @@ doc ///
     	    are a proper subset of the $7$-simplex.
     	Example	    
 	    R = ZZ[a..h];
-	    Γ = bartnetteSphereComplex R
+	    Γ = bartnetteSphereComplex R;
+	    matrix {facets Γ}
     	    faces Γ
 	    monomialIdeal Γ
 	Text
@@ -2197,7 +2220,8 @@ doc ///
     	    are a proper subset of the $7$-simplex.
     	Example	    
 	    R = ZZ[a..h];
-	    Γ = dunceHatComplex R
+	    Γ = dunceHatComplex R;
+	    matrix {facets Γ}
 	    netList for i from -1 to dim Γ list {i,faces(i, Γ)}
 	    monomialIdeal Γ
 	Text
@@ -2216,6 +2240,9 @@ doc ///
 	    To avoid repeated computation, the values of this method are saved
 	    the @TO2(CacheTable, "cache table")@ of the abstract simplicial
 	    complex $\Delta$.
+	Example
+	    peek Δ.cache
+	    peek Δ.cache.faces
     SeeAlso
         "finding attributes and properties"  
         (facets, SimplicialComplex)
@@ -2345,7 +2372,7 @@ doc ///
 
 doc ///
     Key
-        (flagfVector,List,SimplicialComplex)
+        (flagfVector, List, SimplicialComplex)
     Headline
         get a flag $f$-number of a colored simplicial complex
     Usage

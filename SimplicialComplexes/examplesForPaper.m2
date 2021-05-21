@@ -471,23 +471,21 @@ maplist = flatten for i to 2 list (
     	if isWellDefined phi then phi else continue
     	)
     );
-netList maplist
+maplist_0
 -- By our construction, these should be inclusions.
 isInjective\maplist
 
 -- Some homology computations.
 -- The torus, Klein Bottle, and real projective plane can be found 
 -- in the small manifold database (many times). The smallest example is (2,8,13)).
-Torus = smallManifold(2, 7, 6, R)
-Wrap = 60
-KleinBottle = smallManifold(2, 8, 12, R)
-ideal KleinBottle
-RP2 = smallManifold(2, 6, 1, R)
+Torus = smallManifold(2, 7, 6, R);
+KleinBottle = smallManifold(2, 8, 12, R);
+RP2 = smallManifold(2, 6, 1, R);
 -- Theorems 6.2, 6.3, and 6.4 from Munkres confirm that these are
 -- the correct homology groups.
-prune homology Torus 
-prune homology KleinBottle
-prune homology RP2
+for i to 2 list prune HH_i Torus
+for i to 2 list prune HH_i KleinBottle
+for i to 2 list prune HH_i RP2
 
 -- Perhaps not useful anymore:
 -- This triangulation of the Klein bottle is taken from 
