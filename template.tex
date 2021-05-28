@@ -62,6 +62,9 @@
 \DeclareMathOperator{\Spec}{Spec}
 \DeclareUnicodeCharacter{0393}{\Gamma}
 \DeclareUnicodeCharacter{0394}{\Delta}
+\DeclareUnicodeCharacter{22C8}{\bowtie}
+%\DeclareUnicodeCharacter{29D3}{}
+%\DeclareUnicodeCharacter{}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -183,8 +186,8 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
 %   for all $i \in \mathbb Z$.
 % \end{theorem}
 %
-\begin{example}\label{Stanley-Reisner ideal and Alexander duality}
-  Consider the ``figure-8'' simplicial complex $\Delta$, depicted in Figure \ref{the figure-8 and its dual}
+\begin{example}\label{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex}
+  Consider the simplicial complex $\bowtie$, depicted in Figure \ref{the figure-8 and its dual}
   %
   \begin{figure}[h]
     \begin{subfigure}{0.3\textwidth}
@@ -232,26 +235,26 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
       \end{tikzpicture}
 %      \caption{The Alexandual Dual of $\Delta$}
     \end{subfigure}
-    \caption{The simplicial complex $\Delta$ (left) and its Alexander dual $\Delta^*$ (right).}\label{the figure-8 and its dual}
+    \caption{The simplicial complex $\bowtie$ (left) and its Alexander dual $\bowtie^*$ (right).}\label{the figure-8 and its dual}
   \end{figure}
   %
-  The Stanley-Reisner ideal of $\Delta$ is $I_\Delta = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\ x_2x_3x_4)$. We can exhibit the correspondence between $\Delta$ and $I_\Delta$ using the methods \texttt{simplicialComplex} and \texttt{ideal}.
+  The Stanley-Reisner ideal of $\bowtie$ is $I_{\bowtie} = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\ x_2x_3x_4)$. We can exhibit the correspondence between $\Delta$ and $I_\Delta$ using the methods \texttt{simplicialComplex} and \texttt{ideal}.
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i28 : S = QQ[x_0..x_4];
-    i29 : I$Δ$ = monomialIdeal(x_0*x_1*x_2,x_0*x_3,x_1*x_3,x_0*x_4,x_1*x_4,x_2*x_3*x_4);
+    i29 : I$⋈$ = monomialIdeal(x_0*x_1*x_2,x_0*x_3,x_1*x_3,x_0*x_4,x_1*x_4,x_2*x_3*x_4);
     o29 : MonomialIdeal of S
-    i30 : $Δ$ = simplicialComplex I$Δ$
+    i30 : $⋈$ = simplicialComplex I$⋈$
     o30 = simplicialComplex | x_3x_4 x_2x_4 x_2x_3 x_1x_2 x_0x_2 x_0x_1 |
     o30 : SimplicialComplex
-    i31 : I$Δ$ == ideal $Δ$
+    i31 : I$⋈$ == ideal $⋈$
     o31 = true
   \end{lstlisting}
   %
   We can use the \texttt{dual} method to compute the Alexander dual of $\Delta$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i133 : dual $Δ$
+    i133 : dual $⋈$
     o133 = simplicialComplex | x_1x_2x_4 x_0x_2x_4 x_1x_2x_3 x_0x_2x_3 |
     o133 : SimplicialComplex
 \end{lstlisting}
@@ -285,7 +288,7 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i94 : all(-1..5, i -> all(-1..5, i -> prune HH^(3-i) $Δ$ == prune HH_(i-1) dual $Δ$)
     o94 = true
-\end{lstlisting}
+\end{lstlisting}  
 \end{example}
 %
 For a face $F \in \Delta$, we define the \textbf{link} of $F$, is the subcomplex of $\Delta$ defined by
@@ -295,8 +298,6 @@ For a face $F \in \Delta$, we define the \textbf{link} of $F$, is the subcomplex
 \end{displaymath}
 %
 We can now exhibit a more substantive result of Stanley-Reisner theory, which is the ``dual version'' of Hochster's formula, see \cite[Corollary 1.40]{MS}. This formula allows us to compute the multigraded Betti numbers of $I_\Delta$, which are defined to be $\beta_{i,m}(I_\Delta) = \big( \mathrm{Tor}_i^S(I_\Delta, k) \big)_m$. For a subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the betti number in homological degree $i$ and multidegree $(a_1,...,a_n) \in \mathbb Z^n$, where $a_i = 1$ if $v_i \in F$ and $a_i = 0$ otherwise.
-%
-
 %
 \begin{theorem}[Hochster's Formula, dual version]
   Let $\Delta$ be a simplicial complex with vertex set $V = \{ v_0,v_1,...,v_{n-1} \}$. The nonzero multigraded Betti numbers of $I_\Delta$ and $S/I_\Delta$ lie in squarefree degrees. Moreover, if $F \subset V$, then
@@ -338,11 +339,13 @@ We can now exhibit a more substantive result of Stanley-Reisner theory, which is
                    3        31
     o96 : Matrix ZZ  <--- ZZ
 \end{lstlisting}
-  %
+  % 
   where the row are indexed by the homological degree (starting at $0$), and the columns are indexed by the squarefree multidegrees.
 \end{example}
-%
-We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure, codimension $1$, simplicial complex. We say that a $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}. The figure-8 complex from example \ref{Stanley-Reisner ideal and Alexander duality} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
+% 
+We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure, codimension $1$, simplicial complex. We say that a $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}.
+
+% The figure-8 complex from example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
 
 For Stanley-Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if an only if $\widetilde H_i(\mathrm{link}_\Delta(F);k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{Link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
 %
@@ -350,7 +353,41 @@ For Stanley-Reisner rings, we can use the combinatorics of $\Delta$ to determine
   \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t + \cdots h_k t^k}{(1-t)^d}
 \end{displaymath}
 %
-where $d = \dim \Delta + 1$, and $0 \leq k \leq d$ is such that $h_k \not = 0$.
+where $d = \dim \Delta + 1$, and $0 \leq k \leq d$ is such that $h_k \not = 0$. If $\Delta$ is a $d$-dimensional Cohen-Macaulay complex with $n$ vertices, then \cite[Lemma 5.1.10]{BH} proves that
+%
+\begin{displaymath}
+  0 \leq h_i \leq \binom{n-d+i}{i}
+\end{displaymath}
+%
+for $i = 0,1,...,d+1$. We can also compute the $h$-vector using the combinatorics of $\Delta$. Specifically, if $\Delta$ is a $d$-dimensional simplicial complex, then \cite[Lemma 5.18]{BH} tells us that
+%
+\begin{displaymath}
+  h_j = \sum_{i=0}^j (-1)^{j-1} \binom{d+1-i}{j-1}f_{i-1}
+\end{displaymath}
+%
+for $j = 0,1,...,d+1$.
+%
+\begin{example}\label{Example: Shellability, the Cohen-Macaulay property, and the h-vector}
+  The figure $8$ complex introduced in example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is Shellable and Cohen-Macaulay. We can verify the Cohen-Macaulay property using \cite[Corollary 5.3.9]{BH}.
+  % 
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i43 : faceList = flatten for i from -1 to dim $Δ$ list (faces $Δ$)#i
+    o43 = {1, x , x , x , x , x , x x , x x , x x , x x , x x , x x }
+               0   1   2   3   4   0 1   0 2   1 2   2 3   2 4   3 4
+    o43 : List
+    i44 : all(faceList, F -> all(0..dim(link($⋈$,F))-1, i -> HH_i link($Δ$,F) == 0))
+    o44 = true
+\end{lstlisting}
+  % 
+  This simplicial complex is also shellable, but this package does not provide a method for determining this quality. However, such a method is available in the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, see \cite{Cook}.
+
+  We instead consider the ``bowtie'' simplicial complex, which we can obtain by filling in the facets of the $2$-faces of the figure $8$ simplicial complex, see Figure 
+\end{example}
+
+%
+
+
+
 
 
 % \begin{figure}[h]
