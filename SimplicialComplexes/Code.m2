@@ -12,7 +12,7 @@ SimplicialComplex.synonym = "abstract simplicial complex"
 -- 'facets' method defined in Polyhedra
 facets SimplicialComplex := List => D -> D.facets
 
-expression SimplicialComplex := D -> (expression simplicialComplex) expression facets D
+expression SimplicialComplex := D -> (expression simplicialComplex) expression matrix {facets D}
 net SimplicialComplex := net @@ expression
 texMath SimplicialComplex := D -> texMath expression D
 
@@ -480,15 +480,15 @@ fVector SimplicialComplex := List => D -> (
     )
     
 flagfVector = method()
-flagfVector SimplicialComplex := HashTable => D ->(
+flagfVector SimplicialComplex := HashTable => D -> (
     T := newRing(ring D/ideal D, SkewCommutative => true);
     multidegrees := sort apply(flatten entries basis T, m -> degree m);
-    hashTable for m in multidegrees list m => hilbertFunction(m,T)
+    hashTable for m in multidegrees list m => hilbertFunction(m, T)
     )
 
-flagfVector (List,SimplicialComplex) := ZZ => (m,D) ->(
+flagfVector (List, SimplicialComplex) := ZZ => (m, D) -> (
     T := newRing(ring D/ideal D, SkewCommutative => true);
-    hilbertFunction(m,T)
+    hilbertFunction(m, T)
     )
 
 isProper = method()
