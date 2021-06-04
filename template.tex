@@ -385,6 +385,27 @@ for $j = 0,1,...,d+1$.
 
   Let's also consider the ``bowtie'' simplicial complex $\fbowtie$, which is obtained by filling in the loops of the simplicial complex $\bowtie$, see Figure \ref{Figure: the bowtie complex}. Since the intersection of the two facets of $\fbowtie$ is a single point, which has codimension 2, the bowtie complex is not shellable. The simplicial complex $\fbowtie$ is not Cohen-Macaulay either, which we can verify by computing the $h$-vector of $\fbowtie$.
   %
+  \begin{figure}[h]
+    \begin{tikzpicture}[scale = .5]
+      \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+      \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+      \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+      \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+      \filldraw (0,0) circle (5pt);
+      \filldraw (0,5) circle (5pt);
+      \filldraw (4,2.5) circle (5pt);
+      \filldraw (8,0) circle (5pt);
+      \filldraw (8,5) circle (5pt);
+      \node at (-.5,-.5) {$v_0$};
+      \node at (-.5,5.5) {$v_1$};
+      \node at (4,1.75) {$v_2$};
+      \node at (8.5,-.5) {$v_3$};
+      \node at (8.5,5.5) {$v_4$};
+      % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
+    \end{tikzpicture}
+    \caption{The bowtie complex}\label{Figure: the bowtie complex}
+  \end{figure}
+  %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i3 : I$⧓$ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
     o3 : MonomialIdeal of S
@@ -405,27 +426,6 @@ for $j = 0,1,...,d+1$.
 
   Some notable examples of simplicial complexes that are Cohen-Macaulay, but not shellable, are the Rudin ball and the Ziegler ball. Both of these complexes are included in the \texttt{SimplicialComplexes} and can be constructed using the methods \texttt{rudinBallComplex} and \texttt{zieglerBallComplex} respectively.
 \end{example}
-%
-\begin{figure}[h]
-  \begin{tikzpicture}[scale = .5]
-    \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-    \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-    \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-    \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-    \filldraw (0,0) circle (5pt);
-    \filldraw (0,5) circle (5pt);
-    \filldraw (4,2.5) circle (5pt);
-    \filldraw (8,0) circle (5pt);
-    \filldraw (8,5) circle (5pt);
-    \node at (-.5,-.5) {$v_0$};
-    \node at (-.5,5.5) {$v_1$};
-    \node at (4,1.75) {$v_2$};
-    \node at (8.5,-.5) {$v_3$};
-    \node at (8.5,5.5) {$v_4$};
-    % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
-  \end{tikzpicture}
-  \caption{The bowtie complex}\label{Figure: the bowtie complex}
-\end{figure}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Resolutions Of Monomial Ideals}
