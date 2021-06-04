@@ -40,8 +40,9 @@
     "PP")
    (LaTeX-add-labels
     "example of using database"
-    "Stanley-Reisner ideal and Alexander duality"
-    "the figure-8 and its dual")
+    "Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex"
+    "the figure-8 and its dual"
+    "Example: Shellability, the Cohen-Macaulay property, and the h-vector")
    (LaTeX-add-environments
     "example")
    (LaTeX-add-amsthm-newtheorems

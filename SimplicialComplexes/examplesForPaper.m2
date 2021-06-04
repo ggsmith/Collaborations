@@ -190,15 +190,20 @@ sum for i from 1 to d+1 list (-1)^(i+1)*(fΔ#i)
 -- The Zeigler ball is also Cohen-Macaulay, but not shellable. We compute
 -- the Cohen-Macaulay property a different way, using B.H 5.3.9
 
-faceList = flatten flatten for i from -1 to dim Δ list entries (faces Δ)#i
+faceList = flatten for i from -1 to dim Δ list (faces Δ)#i
+all(faceList, F -> all(0..dim(link(Δ,F))-1, i -> HH_i link(Δ,F) == 0))
 
-totalHomologyRankForLink = (Δ,F) -> (
+homologyRankForLink = (Δ,F,i) -> (
     linkF := link(Δ, F);
     dL := dim linkF;
     sum for i from -1 to dL-1 list rank (homology link(Δ,F))#i
     ) 
 
+HH_2(link(Δ,x_2))
+
 all(faceList, F -> totalHomologyRankForLink(Δ,F) == 0)
+
+
 
 -- needsPackage"SimplicialDecomposability"
 
