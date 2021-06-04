@@ -476,13 +476,11 @@ needsPackage "SimplicialComplexes"
 R = ZZ[a..i];
 S = ZZ[x_0..x_6];
 Γ = smallManifold(2,7,1,S);
-maplist = flatten for i to 2 list (
-    for j in subsets(toList(R_0..R_8),7) list (
-    	phi := map(smallManifold(3,9,i,R),Γ,j);
-    	if isWellDefined phi then phi else continue
-    	)
+maplist = for j in subsets(toList(R_0..R_8),7) list (
+    phi := map(smallManifold(3,9,1,R),Γ,j);
+    if isWellDefined phi then phi else continue
     );
-maplist_0
+netList maplist
 -- By our construction, these should be inclusions.
 isInjective\maplist
 
@@ -490,6 +488,7 @@ isInjective\maplist
 -- The torus, Klein Bottle, and real projective plane can be found 
 -- in the small manifold database (many times). The smallest example is (2,8,13)).
 Torus = smallManifold(2, 7, 6, R);
+matrix {facets Torus}
 KleinBottle = smallManifold(2, 8, 12, R);
 RP2 = smallManifold(2, 6, 1, R);
 -- Theorems 6.2, 6.3, and 6.4 from Munkres confirm that these are
@@ -497,6 +496,38 @@ RP2 = smallManifold(2, 6, 1, R);
 for i to 2 list prune HH_i Torus
 for i to 2 list prune HH_i KleinBottle
 for i to 2 list prune HH_i RP2
+
+-- To see the generators for the
+-- H^1 of the torus, we embed circles into this minimal triangulation.
+
+T = ZZ[y_0..y_2];
+Circle = skeleton(1, simplexComplex(2,T));
+
+-- Corresponds to one of the generators of H^1
+f1 = map(Torus,Circle,matrix{{R_3,R_6,R_5}});
+prune homology(1, f1)
+-- prune homology(1, Torus, image f1)
+-- faces(1,Circle),(chainComplex f1)_1,transpose faces(1,Torus)
+
+-- Corresponds to the Other generator of H^1
+f2 = map(Torus,Circle,matrix{{R_3,R_0,R_2}})
+prune homology(1, f2)
+-- prune homology(1, Torus, image f2)
+-- faces(1,Circle),(chainComplex f2)_1,transpose faces(1,Torus)
+
+h = map(Torus,Circle,matrix{{S_3,S_1,S_1,S_4,S_4,S_3}})
+chainComplex h
+prune homology h
+image h
+prune homology(Torus, image h)
+--faces(1,Circle),(chainComplex h)_1,transpose faces(1,Torus)
+
+g = map(Torus,Circle,matrix{{S_3,S_1,S_4,S_3,S_0,S_2}})
+chainComplex g
+prune homology g
+image g
+prune homology(Torus, image g)
+-- faces(1,Circle),(chainComplex g)_1,transpose faces(1,Torus)
 
 -- Perhaps not useful anymore:
 -- This triangulation of the Klein bottle is taken from 
@@ -582,48 +613,6 @@ fibre = map(threeSphere,circle,i)
 prune homology fibre
 
 
---------------- Embedding Circles in the torus ---------------------------
-restart
-needsPackage"SimplicialComplexes"
-
--- We know the homology of the torus well, and our database contains a
--- minimal triangulaton of this surface. To see the generators for the
--- H^1 of the torus, we embed circles into this minimal triangulation.
-
-S = ZZ[x_0..x_6]
-Torus = smallManifold(2,7,6,S)
-R = ZZ[y_0..y_5]
-Circle = simplicialComplex(for i to 5 list R_i*R_((i+1)%6))
-
--- Corresponds to one of the generators of H^1
-f1 = map(Torus,Circle,matrix{{S_3,S_0,S_0,S_2,S_2,S_3}})
-chainComplex f1
-prune homology f1
-image f1
-prune homology(Torus, image f1)
--- faces(1,Circle),(chainComplex f1)_1,transpose faces(1,Torus)
-
--- Corresponds to the Other generator of H^1
-f2 = map(Torus,Circle,matrix{{S_3,S_6,S_6,S_5,S_5,S_3}})
-chainComplex f2
-prune homology f2
-image h
-prune homology(Torus, image f2)
--- faces(1,Circle),(chainComplex f2)_1,transpose faces(1,Torus)
-
-h = map(Torus,Circle,matrix{{S_3,S_1,S_1,S_4,S_4,S_3}})
-chainComplex h
-prune homology h
-image h
-prune homology(Torus, image h)
---faces(1,Circle),(chainComplex h)_1,transpose faces(1,Torus)
-
-g = map(Torus,Circle,matrix{{S_3,S_1,S_4,S_3,S_0,S_2}})
-chainComplex g
-prune homology g
-image g
-prune homology(Torus, image g)
--- faces(1,Circle),(chainComplex g)_1,transpose faces(1,Torus)
   
 viewHelp
 
