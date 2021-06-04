@@ -90,14 +90,20 @@ hΔ = for j to d+1 list(
 needsPackage"LexIdeals"
 netList for i from 1 to length hΔ - 2 list{hΔ_i, hΔ_(i+1), macaulayBound(hΔ_i,i)}
 
-IΔ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
-Δ = simplicialComplex IΔ
-kΔ = S/IΔ
-d = dim Δ
-fΔ = fVector Δ
-hΔ = for j to d+1 list(
-    sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(fΔ#(i))
+restart
+needsPackage"SimplicialComplexes"
+S = QQ[x_0..x_4];
+
+I⧓ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
+⧓ = simplicialComplex I⧓;
+k⧓ = S/I⧓;
+d = dim ⧓;
+f⧓ = fVector ⧓
+h⧓ = for j to d+1 list(
+    sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(f⧓#(i))
     )
+
+
 R = QQ[t]
 hΔ = sum for i to d+1 list fΔ#(i) * t^i * (1-t)^(d+1-i)
 reduceHilbert(hilbertSeries kΔ)

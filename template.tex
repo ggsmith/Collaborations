@@ -36,6 +36,7 @@
   basicstyle=\ttfamily,
   mathescape
 }
+\usepackage{stix}
 %% --OTHER ENVIRONMENTS-------------------------------------------------------
 \newtheorem{lemma}{Lemma}[section]
 \newtheorem{theorem}[lemma]{Theorem}
@@ -63,7 +64,7 @@
 \DeclareUnicodeCharacter{0393}{\Gamma}
 \DeclareUnicodeCharacter{0394}{\Delta}
 \DeclareUnicodeCharacter{22C8}{\bowtie}
-%\DeclareUnicodeCharacter{29D3}{}
+\DeclareUnicodeCharacter{29D3}{\fbowtie}
 %\DeclareUnicodeCharacter{}
 
 
@@ -188,7 +189,8 @@ The database also contains many triangulations of various interesting surfaces, 
     i13 : for i to 2 list prune HH_i RP2
     o13 = {0, cokernel | 2 |, 0}
     o13 : List
-  \end{lstlisting}
+\end{lstlisting}
+  %
   We can explicitly identify the generators of the homology for the torus.
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i0 : TODO. Ben's code
@@ -274,7 +276,7 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
     \caption{The simplicial complex $\bowtie$ (left) and its Alexander dual $\bowtie^*$ (right).}\label{the figure-8 and its dual}
   \end{figure}
   %
-  The Stanley-Reisner ideal of $\bowtie$ is $I_{\bowtie} = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\ x_2x_3x_4)$. We can exhibit the correspondence between $\Delta$ and $I_\Delta$ using the methods \texttt{simplicialComplex} and \texttt{ideal}.
+  The Stanley-Reisner ideal of $\bowtie$ is $I_{\bowtie} = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\ x_2x_3x_4)$. We can exhibit the correspondence between $\bowtie$ and $I_{\bowtie}$ using the methods \texttt{simplicialComplex} and \texttt{ideal}.
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i28 : S = QQ[x_0..x_4];
@@ -287,7 +289,7 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
     o31 = true
   \end{lstlisting}
   %
-  We can use the \texttt{dual} method to compute the Alexander dual of $\Delta$.
+  We can use the \texttt{dual} method to compute the Alexander dual of $\bowtie$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i133 : dual $⋈$
@@ -297,37 +299,37 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
   %
   which is the simplicial complex
     % 
-  By the definition of the Alexander dual, we know that $(I_\Delta)^* = I_{\Delta^*}$. We can verify this directly.
+  By the definition of the Alexander dual, we know that $(I_{\bowtie})^* = I_{\bowtie^*}$. We can verify this directly.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i134 : dual(monomialIdeal $Δ$) == monomialIdeal dual $Δ$
+    i134 : dual(monomialIdeal $⋈$) == monomialIdeal dual $⋈$
     o134 = true
 \end{lstlisting}
   % 
-  We can also verify the combinatorial description of $\Delta^*$ by showing that the minimal generators of $I_\Delta$ correspond the complements of the facets of $\Delta^*$,
+  We can also verify the combinatorial description of $\bowtie^*$ by showing that the minimal generators of $I_{\bowtie}$ correspond the complements of the facets of $\bowtie^*$,
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i140 : dualFacets = first entries facets dual $Δ$
+    i140 : dualFacets = first entries facets dual $⋈$
     o140 = {x x x , x x x , x x x , x x x }
              1 2 4   0 2 4   1 2 3   0 2 3
     o140 : List
-    i141 : sort first entries gens I$Δ$ == sort for F in dualFacets list(
-               product for v in vertices $Δ$ list(
+    i141 : sort first entries gens I$⋈$ == sort for F in dualFacets list(
+               product for v in vertices $⋈$ list(
                    if member(v, support F) then continue else v)
                    )
                )
     o141 = true
 \end{lstlisting}
   % 
-  Finally, we exhibit the isomorphisms between the cohomology of $\Delta$ and the homology of $\Delta^*$.
+  Finally, we exhibit the isomorphisms between the cohomology of $\bowtie$ and the homology of $\bowtie^*$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i94 : all(-1..5, i -> all(-1..5, i -> prune HH^(3-i) $Δ$ == prune HH_(i-1) dual $Δ$)
+    i94 : all(-1..5, i -> all(-1..5, i -> prune HH^(3-i) $⋈$ == prune HH_(i-1) dual $⋈$)
     o94 = true
 \end{lstlisting}  
 \end{example}
 %
-For a face $F \in \Delta$, we define the \textbf{link} of $F$, is the subcomplex of $\Delta$ defined by
+For a simplicial complex $\Delta$ and a face $F \in \Delta$, we define the \textbf{link} of $F$ to be the subcomplex of $\Delta$ defined by
 %
 \begin{displaymath}
   \mathrm{link}_\Delta(F) := \{ G \in \Delta \ | \ F \cup G \in \Delta \ \text{ and } \ F \cap G = \varnothing \}.
@@ -344,29 +346,29 @@ We can now exhibit a more substantive result of Stanley-Reisner theory, which is
 \end{theorem}
 %
 \begin{example}
-  In Example \ref{Stanley-Reisner ideal and Alexander duality}, we computed the Alexander dual of the figure-8 complex. We can use the \texttt{link} method to compute the links of various faces. For example, we compute the link of the central vertex $v_2$, whose link is a square.
+  In Example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex}, we computed the Alexander dual of the complex $\bowtie$. We can use the \texttt{link} method to compute the links of various faces. For example, we compute the link of the central vertex $v_2$, whose link is a square.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i27 : link(dual $Δ$, x_2)
+    i27 : link(dual $⋈$, x_2)
     o27 = simplicialComplex | x_1x_4 x_0x_4 x_1x_3 x_0x_3 |
     o27 : SimplicialComplex
 \end{lstlisting}
   %
-  We can also construct a function that computes the multigraded betti numbers $\beta_{i,F}(S/I_\Delta)$.
+  We can also construct a function that computes the multigraded betti numbers $\beta_{i,F}(S/I_{\bowtie})$.
   %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     hochster = (i, m) -> (
-        G := product select(vertices $Δ$, v -> not member(v, support m));
-        rank (homology link(dual $Δ$, G_S))_i
+        G := product select(vertices $⋈$, v -> not member(v, support m));
+        rank (homology link(dual $⋈$, G_S))_i
         )
 \end{lstlisting}
   %
   Since we have a bound on the nonzero betti numbers of $I_\Delta$, we can collect them into a matrix
   %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i94 : V = vertices $Δ$;
+    i94 : V = vertices $⋈$;
     i95 : squarefreeMonomials = unique sort apply(remove(subsets V, 0), m -> lcm m);
-    i96 : matrix for i to length res I$Δ$ - 1 list (
+    i96 : matrix for i to length res I$⋈$ - 1 list (
               for F in squarefreeMonomials list hochster(i-1,F)
               )
     o96 = | 0 0 0 0 0 0 0 1 1 0 1 1 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 |
@@ -404,51 +406,62 @@ for $i = 0,1,...,d+1$. We can also compute the $h$-vector using the combinatoric
 for $j = 0,1,...,d+1$.
 %
 \begin{example}\label{Example: Shellability, the Cohen-Macaulay property, and the h-vector}
-  The figure $8$ complex introduced in example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is Shellable and Cohen-Macaulay. We can verify the Cohen-Macaulay property using \cite[Corollary 5.3.9]{BH}.
+  The simplicial complex $\bowtie$ introduced in example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is Shellable and Cohen-Macaulay. We can verify the Cohen-Macaulay property using \cite[Corollary 5.3.9]{BH}.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i43 : faceList = flatten for i from -1 to dim $Δ$ list (faces $Δ$)#i
+    i43 : faceList = flatten for i from -1 to dim $⋈$ list (faces $⋈$)#i
     o43 = {1, x , x , x , x , x , x x , x x , x x , x x , x x , x x }
                0   1   2   3   4   0 1   0 2   1 2   2 3   2 4   3 4
     o43 : List
-    i44 : all(faceList, F -> all(0..dim(link($⋈$,F))-1, i -> HH_i link($Δ$,F) == 0))
+    i44 : all(faceList, F -> all(0..dim(link($⋈$,F))-1, i -> HH_i link($⋈$,F) == 0))
     o44 = true
 \end{lstlisting}
   % 
   This simplicial complex is also shellable, but this package does not provide a method for determining this quality. However, such a method is available in the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, see \cite{Cook}.
 
-  We instead consider the ``bowtie'' simplicial complex, which we can obtain by filling in the facets of the $2$-faces of the figure $8$ simplicial complex, see Figure 
+  Let's also consider the ``bowtie'' simplicial complex $\fbowtie$, which is obtained by filling in the loops of the simplicial complex $\bowtie$, see Figure \ref{Figure: the bowtie complex}. Since the intersection of the two facets of $\fbowtie$ is a single point, which has codimension 2, the bowtie complex is not shellable. The simplicial complex $\fbowtie$ is not Cohen-Macaulay either, which we can verify by computing the $h$-vector of $\fbowtie$.
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i3 : I$⧓$ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
+    o3 : MonomialIdeal of S
+    i4 : $⧓$ = simplicialComplex I$⧓$;
+    i5 : k$⧓$ = S/I$⧓$;
+    i6 : d = dim $⧓$;
+    i7 : f$⧓$ = fVector $⧓$
+    o7 = {1, 5, 6, 2}
+    o7 : List
+    i8 : h$⧓$ = for j to d+1 list(
+             sum for i to j list (-1)^(j-i)*binomial(d+1-i,j-i)*(f$⧓$#(i))
+             )
+    o8 = {1, 2, -1, 0}
+    o8 : List
+\end{lstlisting}
+  %
+  Since the $h$-vector of $\fbowtie$ has a negative entry, this simplicial complex cannot be Cohen-Macaulay, by \cite[Lemma 5.1.10]{BH}.
+
+  Some notable examples of simplicial complexes that are Cohen-Macaulay, but not shellable, are the Rudin ball and the Ziegler ball. Both of these complexes are included in the \texttt{SimplicialComplexes} and can be constructed using the methods \texttt{rudinBallComplex} and \texttt{zieglerBallComplex} respectively.
 \end{example}
-
 %
-
-
-
-
-
-% \begin{figure}[h]
-%   \begin{tikzpicture}[scale = .5]
-%     \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-%     \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-%     \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-%     \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-%     \filldraw (0,0) circle (5pt);
-%     \filldraw (0,5) circle (5pt);
-%     \filldraw (4,2.5) circle (5pt);
-%     \filldraw (8,0) circle (5pt);
-%     \filldraw (8,5) circle (5pt);
-%     \node at (-.5,-.5) {$v_0$};
-%     \node at (-.5,5.5) {$v_1$};
-%     \node at (4,1.75) {$v_2$};
-%     \node at (8.5,-.5) {$v_3$};
-%     \node at (8.5,5.5) {$v_4$};
-%     % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
-%   \end{tikzpicture}
-%   \caption{The bowtie complex}\label{bowtie figure}
-% \end{figure}
-
-
-
+\begin{figure}[h]
+  \begin{tikzpicture}[scale = .5]
+    \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+    \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+    \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+    \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+    \filldraw (0,0) circle (5pt);
+    \filldraw (0,5) circle (5pt);
+    \filldraw (4,2.5) circle (5pt);
+    \filldraw (8,0) circle (5pt);
+    \filldraw (8,5) circle (5pt);
+    \node at (-.5,-.5) {$v_0$};
+    \node at (-.5,5.5) {$v_1$};
+    \node at (4,1.75) {$v_2$};
+    \node at (8.5,-.5) {$v_3$};
+    \node at (8.5,5.5) {$v_4$};
+    % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
+  \end{tikzpicture}
+  \caption{The bowtie complex}\label{Figure: the bowtie complex}
+\end{figure}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Resolutions Of Monomial Ideals}
