@@ -96,10 +96,44 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \addcontentsline{toc}{section}{Overview}
-\addtocounter{section}{1}
+%\addtocounter{section}{1}
 \addtocounter{lemma}{-1}
 
-\noindent
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{S:Introduction}
+
+This paper gives an overview of the features of the \texttt{SimplicialComplexes} package in \emph{Macaulay2} \cite{M2}. The previous version of this package was developed by Sorin Popescu, Mike Stillman, and Gregory G. Smith in 2010. We have taken the opportunity to clean up the package and perform some maintenance to ensure that it stays computationally relevant and viable. We have also implemented a new data type in \texttt{SimplicialMap} in order to work with simplicial maps, and several constructors for well-known complexes.
+
+In this package, simplicial complexes are represented algebraically through Stanley-Reisner ideals: Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_{n-1}\}$, $k$ be any commutative ring, and set $S = k[x_0,...,x_n]$. Then the \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
+%
+\begin{displaymath}
+  I_\Delta := \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{ v_{i_1},v_{i_2},...,v_{i_k} \} \not \subset \Delta \right) \subset S,
+\end{displaymath}
+%
+and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = S/I_\Delta$. In other words, $I_\Delta$ consists of generators corresponding to the \textit{non-faces} of $\Delta$. This produces a one-to-one correspondence between simplicial complexes and square-free monomial ideals, which makes it useful for computation in \textit{Macaulay2}.
+
+\begin{example}\label{example of using database}
+  There are two ways of constructing a simplicial complex, one by listing the products of the variables forming faces, or by constructing the Stanley-Reisner ideal (which has generators given by the \textit{non-faces}). For instance, we can construct the 1-skeleton of a 2-simplex using both methods:
+  %
+  \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i2 : S = ZZ[x_0,x_1,x_2];
+    i3 : $Δ$ = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2}
+    o3 = simplicialComplex {x x , x x , x x }
+                             1 2   0 2   0 1
+    o3 : SimplicialComplex
+    i4 : I$Δ$ = monomialIdeal {x_0*x_1*x_2};
+    i5 : $Δ$' = simplicialComplex I$Δ$
+    o5 = simplicialComplex {x x , x x , x x }
+                             1 2   0 2   0 1
+    o5 : SimplicialComplex
+  \end{lstlisting}
+  %
+\end{example}
+
+In Section \ref{S:Combinatorial Topology}, we demonstrate some of the topological features of the package. Namely, the use of the small manifolds database provided by Frank Lutz (cite), and some homological computations. In Section \ref{S:Stanley-Reisner Theory} we review some Stanley-Reisner theory and describe how to work with simplicial complexes using their corresponding Stanley-Reisner ideal. We also cover $f$- and $h$-vectors, shellability, and being Cohen-Macaulay. We give examples on how to check if a simplicial complex is Cohen-Macaulay using the package.
+
+Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the various complex constructions we obtain by resolving the corresponding Stanley-Reisner ideals. We demonstrate how to find the minimal free resolution of the irrelevant ideal of $\PP^1 \times \PP^1$, as well as giving examples of Scarf resolutions, and a Taylor resolution which is not minimal.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Combinatorial Topology}
@@ -166,13 +200,15 @@ The database also contains many triangulations of various interesting surfaces, 
 \section{Stanley-Reisner Theory}
 
 \noindent
-Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_{n-1}\}$, let $k$ be a commutative ring, and let $S = k[x_0,x_1,...,x_n]$. The \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
+Stanley-Reisner theory connects homological properties of $k[\Delta]$ to combinatorial and topological properties of $\Delta$. We shall discuss some of the consequences here, but a survey of results can be found in \cites{BH, Stanley, MS}.
+
+Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_{n-1}\}$, $k$ be any commutative ring, and set $S = k[x_0,...,x_n]$. Then the \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
 %
 \begin{displaymath}
   I_\Delta := \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{ v_{i_1},v_{i_2},...,v_{i_k} \} \not \subset \Delta \right) \subset S,
 \end{displaymath}
 %
-and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = S/I_\Delta$. This correspondence between simplicial complexes and square-free monomial ideals is one-to-one. Stanley-Reisner theory connects homological properties of $k[\Delta]$ to combinatorial and topological properties of $\Delta$. A survey of results can be found in \cite{BH, Stanley, MS}.
+and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = S/I_\Delta$. In other words, $I_\Delta$ consists of generators corresponding to the \textit{non-faces} of $\Delta$. This produces a one-to-one correspondence between simplicial complexes and square-free monomial ideals, which makes it useful for computation in \textit{Macaulay2}.
 
 If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m_i = \displaystyle \prod x_j^{a_{i_j}}$, then the \textbf{Alexander dual} of $I$ is defined to be $\displaystyle I^* := \bigcap_{i=1}^q\hspace{2pt} (x_0^{a_{i_1}},\ x_1^{a_{i_2}},...,\ x_{n-1}^{a_{i_{n-1}}})$. If $I = I_\Delta$ for some simplicial complex $\Delta$, then $I^*$ is also a square-free monomial ideal and is the Stanley-Reisner ideal of a simplicial complex $\Delta^*$, which we call the \textbf{Alexander dual} complex to $\Delta$. There is also a combinatorial description of $\Delta^*$, given by $\Delta^* = \{ F \subset V \ | \ V \setminus F \not \in \Delta \}$. One of the attractive features of Alexander duality is the relationship between the cohomology of $\Delta$ and the homology of $\Delta^*$. More specifically, if $\Delta$ is a simplicial complex on $n$ vertices, then $    \widetilde{H}_{i-1}(\Delta^*) = \widetilde{H}^{n-2-i}(\Delta)$ for all $i \in \mathbb Z$, see \cite[Theorem 5.6]{MS}.
 %
