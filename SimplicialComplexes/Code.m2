@@ -500,61 +500,9 @@ isProper SimplicialComplex := Boolean => D -> (
     all(flatten for F in faces(1,E) list degree F, i -> i < 2)
     )
 
--*
-(matrix unique degrees ring Γ)*(inverse matrix unique degrees ring Γ)
-
-
-    I := ideal D;
-    if not opts.Flag then (
-	S := newRing(ring D, Degrees => {#(gens ring D):1});
-	maptoS := map(S, ring D);
-	I = maptoS(I);
-     );
-     N := poincare cokernel generators I;
-     if opts.Flag then (
-     	 if not isBalanced(D) then (
-             stderr << "-- the grading does not correspond to a proper d-coloring." << endl;
-             return new HashTable from {}
-     	     );
-     	 R := newRing(ring N, Degrees => apply(gens ring N, g -> apply(gens ring N, f -> if index(f) == index(g) then 1 else 0)));
-         maptoR := map(R, ring N);
-         N = maptoR(N);
-     	 );
-     if N == 0 then (
-         new HashTable from {-1 => 0}
-     )
-     else (
-         d := dim D + 1;
-         apply(gens ring N, t -> while 0 == substitute(N, t => 1) do N = N // (1-t));
-         supp := apply(flatten entries monomials(N), m -> degree m);
-         allsubsets := apply(subsets(#(gens ring N)), s -> apply(toList(0..#(gens ring N)-1), l -> if member(l,s) then 1 else 0));
-         flagh := L -> coefficient((flatten entries monomials part(L, N))#0, part(L, N));
-     	 flagf := M -> sum(supp, m -> if all(m,M, (i,j) -> j >= i) then flagh(m) else 0);
-     	 h := j -> sum(supp, s -> if sum(s)==j then flagh(s) else 0);
-     	 f := j -> sum(0..j+1, i -> binomial(d-i, d-j-1)*h(i));
-     	 if opts.Flag then (
-             new HashTable from apply(allsubsets, j -> j => flagf(j))
-     	     )
-	 else
-     	 new HashTable from prepend(-1=>1, apply(toList(0..d-1), j -> j => f(j)))
-     	 )
-     )
-*-
-
--- Check if the grading on the ring defines a proper (dim(D)+1)-coloring on
--- D. Used by fVector. Not exported.
--*
-isBalanced = (D) -> (
-     d := dim D + 1;
-     m := true;
-     if not d == #(degree first gens ring D) then (
-         m = false;
-     );
-     apply(faces(1,D), f -> if max(degree f) > 1 then m = false);
-     return m;
-     );
-*-
-
+------------------------------------------------------------------------------
+-- Associated chain complexes
+------------------------------------------------------------------------------
 
 
 
@@ -666,6 +614,11 @@ cohomology(ZZ, SimplicialComplex, Ring) := Module => opts -> (i,Delta,R) -> (
 cohomology(ZZ, SimplicialComplex) := Module => opts -> (i,Delta) -> (
     cohomology(i, Hom(chainComplex Delta, module coefficientRing Delta))
     )
+
+
+
+
+
 
 -- helper functions for algebraicShifting. Not exported.
 shiftMonomial = (m) -> (
