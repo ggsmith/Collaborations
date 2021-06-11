@@ -123,12 +123,12 @@ and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = 
     i2 : S = ZZ[x_0,x_1,x_2];
     i3 : $Δ$ = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2}
     o3 = simplicialComplex {x x , x x , x x }
-    1 2   0 2   0 1
+                             1 2   0 2   0 1
     o3 : SimplicialComplex
     i4 : I$Δ$ = monomialIdeal {x_0*x_1*x_2};
     i5 : $Δ$' = simplicialComplex I$Δ$
     o5 = simplicialComplex {x x , x x , x x }
-    1 2   0 2   0 1
+                             1 2   0 2   0 1
     o5 : SimplicialComplex
   \end{lstlisting}
   %
@@ -143,7 +143,8 @@ Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the vari
 \label{S:Combinatorial Topology}
 
 Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 or less vertices. We have implemented these databases into the package---however we have excluded the database of 3-manifolds with 10 vertices, due to the large number of examples causing long loading times.
-\begin{example}\label{example of using database}
+
+\begin{example}\label{E:using manifold database}
   These databases can be used to find nice testbeds of examples: for instance, we can search for simplicial maps
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
@@ -169,8 +170,61 @@ Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 
   \end{lstlisting}
   %
 \end{example}
-The database also contains many triangulations of various interesting surfaces, such as the torus, Klein bottle, and real projective plane. Here are the smallest indices (and hence minimal triangulations of) these surfaces in the database
-\begin{example}\label{example of using database}
+\begin{figure}[h]
+  \begin{center}
+  \begin{tikzpicture}[scale = .3]
+    \draw[-,very thick] (0,0) -- (15,0) -- (15,15) -- (0,15) -- cycle;
+    \draw[-,very thick] (0,5) -- (5,0);
+    \draw[-,very thick] (0,5) -- (10,0);
+    \draw[-,very thick] (0,5) -- (5,10);
+    \draw[-,very thick] (0,10) -- (5,10);
+    \draw[-,very thick] (0,15) -- (5,10);
+    \draw[-,very thick] (5,10) -- (10,0);
+    \draw[-,very thick] (5,10) -- (5,15);
+    \draw[-,very thick] (5,10) -- (10,5);
+    \draw[-,very thick] (5,15) -- (10,5);
+    \draw[-,very thick] (5,15) -- (15,10);
+    \draw[-,very thick] (10,0) -- (10,5);
+    \draw[-,very thick] (10,5) -- (15,0);
+    \draw[-,very thick] (10,5) -- (15,5);
+    \draw[-,very thick] (10,5) -- (15,10);
+    \draw[-,very thick] (10,15) -- (15,10);
+    \filldraw (0,0) circle (5pt);
+    \filldraw (5,0) circle (5pt);
+    \filldraw (10,0) circle (5pt);
+    \filldraw (15,0) circle (5pt);
+    \filldraw (15,5) circle (5pt);
+    \filldraw (15,10) circle (5pt);
+    \filldraw (15,15) circle (5pt);
+    \filldraw (10,15) circle (5pt);
+    \filldraw (5,15) circle (5pt);
+    \filldraw (0,15) circle (5pt);
+    \filldraw (0,10) circle (5pt);
+    \filldraw (0,5) circle (5pt);
+    \filldraw (5,10) circle (5pt);
+    \filldraw (10,5) circle (5pt);
+    \node at (-.5,-.5) {d};
+    \node at (5,-.75) {g};
+    \node at (10,-.75) {f};
+    \node at (15.5,-.5) {d};
+    \node at (15.75,5) {c};
+    \node at (15.75,10) {a};
+    \node at (15.5,15.5) {d};
+    \node at (10,15.75) {f};
+    \node at (5,15.75) {g};
+    \node at (-.5,15.5) {d};
+    \node at (-.75,10) {a};
+    \node at (-.75,5) {c};
+    \node at (5.5,10.5) {b};
+    \node at (9.5,4.5) {e};
+  \end{tikzpicture}\\
+  \end{center}
+  \caption{The minimal triangulation of the torus. Image credit: Frank Lutz TODO}\label{F: torus triangulation}
+\end{figure}
+
+The database also contains many triangulations of various interesting surfaces, such as the torus, Klein bottle, and real projective plane. Below are the smallest indices (and hence minimal triangulations of) these surfaces in the database, and see Figure \ref{F: torus triangulation} for a visual representation of the torus triangulation.
+
+\begin{example}\label{E: common surfaces and homology}
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i8 : Torus = smallManifold(2, 7, 6, R);
@@ -194,9 +248,23 @@ The database also contains many triangulations of various interesting surfaces, 
     o13 : List
 \end{lstlisting}
   %
-  We can explicitly identify the generators of the homology for the torus.
+  We can explicitly identify the generators of the homology by mapping circles onto the torus.
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i0 : TODO. Ben's code
+    i6 : Circle = skeleton(1, simplexComplex(2,T));
+    i7 : f1 = map(Torus,Circle,matrix{{R_3,R_6,R_5}});
+    o7 : prints are being ugly
+    i8 : prune homology(1, f1)
+    o8 = | 1 |
+         | 0 |
+                  2        1
+    o8 : Matrix ZZ  <--- ZZ
+    i9 : f2 = map(Torus,Circle,matrix{{R_3,R_0,R_2}});
+    o9 : prints are being ugly
+    i10 : prune homology(1, f2)
+    o10 = | 0 |
+          | 1 |
+                   2        1
+    o10 : Matrix ZZ  <--- ZZ
   \end{lstlisting}
   %
 \end{example}
@@ -478,58 +546,6 @@ We thank todo .
                
 partially supported by
 the Natural Sciences and Engineering Research Council of Canada (NSERC).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{center}
-  \begin{tikzpicture}[scale = .3]
-    \draw[-,very thick] (0,0) -- (15,0) -- (15,15) -- (0,15) -- cycle;
-    \draw[-,very thick] (0,5) -- (5,0);
-    \draw[-,very thick] (0,5) -- (10,0);
-    \draw[-,very thick] (0,5) -- (5,10);
-    \draw[-,very thick] (0,10) -- (5,10);
-    \draw[-,very thick] (0,15) -- (5,10);
-    \draw[-,very thick] (5,10) -- (10,0);
-    \draw[-,very thick] (5,10) -- (5,15);
-    \draw[-,very thick] (5,10) -- (10,5);
-    \draw[-,very thick] (5,15) -- (10,5);
-    \draw[-,very thick] (5,15) -- (15,10);
-    \draw[-,very thick] (10,0) -- (10,5);
-    \draw[-,very thick] (10,5) -- (15,0);
-    \draw[-,very thick] (10,5) -- (15,5);
-    \draw[-,very thick] (10,5) -- (15,10);
-    \draw[-,very thick] (10,15) -- (15,10);
-    \filldraw (0,0) circle (5pt);
-    \filldraw (5,0) circle (5pt);
-    \filldraw (10,0) circle (5pt);
-    \filldraw (15,0) circle (5pt);
-    \filldraw (15,5) circle (5pt);
-    \filldraw (15,10) circle (5pt);
-    \filldraw (15,15) circle (5pt);
-    \filldraw (10,15) circle (5pt);
-    \filldraw (5,15) circle (5pt);
-    \filldraw (0,15) circle (5pt);
-    \filldraw (0,10) circle (5pt);
-    \filldraw (0,5) circle (5pt);
-    \filldraw (5,10) circle (5pt);
-    \filldraw (10,5) circle (5pt);
-    \node at (-.5,-.5) {d};
-    \node at (5,-.75) {g};
-    \node at (10,-.75) {f};
-    \node at (15.5,-.5) {d};
-    \node at (15.75,5) {c};
-    \node at (15.75,10) {a};
-    \node at (15.5,15.5) {d};
-    \node at (10,15.75) {f};
-    \node at (5,15.75) {g};
-    \node at (-.5,15.5) {d};
-    \node at (-.75,10) {a};
-    \node at (-.75,5) {c};
-    \node at (5.5,10.5) {b};
-    \node at (9.5,4.5) {e};
-  \end{tikzpicture}\\
-\end{center}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{bibdiv}
