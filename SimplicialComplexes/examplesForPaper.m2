@@ -510,7 +510,7 @@ prune homology(1, f1)
 -- faces(1,Circle),(chainComplex f1)_1,transpose faces(1,Torus)
 
 -- Corresponds to the Other generator of H^1
-f2 = map(Torus,Circle,matrix{{R_3,R_0,R_2}})
+f2 = map(Torus,Circle,matrix{{R_3,R_0,R_2}});
 prune homology(1, f2)
 -- prune homology(1, Torus, image f2)
 -- faces(1,Circle),(chainComplex f2)_1,transpose faces(1,Torus)
