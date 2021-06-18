@@ -108,7 +108,7 @@
 
 This paper gives an overview of the features of the \texttt{SimplicialComplexes} package in \emph{Macaulay2} \cite{M2}. The previous version of this package was developed by Sorin Popescu, Mike Stillman, and Gregory G. Smith in 2010. We have taken the opportunity to clean up the package and perform some maintenance to ensure that it stays computationally relevant and viable. We have also implemented a new data type in \texttt{SimplicialMap} in order to work with simplicial maps, and several constructors for well-known complexes.
 
-In this package, simplicial complexes are represented algebraically through Stanley-Reisner ideals: Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_{n-1}\}$, $k$ be any commutative ring, and set $S = k[x_0,...,x_n]$. Then the \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
+In this package, simplicial complexes are represented algebraically through Stanley-Reisner ideals: Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_n\}$, $k$ be any commutative ring, and set $S = k[x_0,...,x_n]$. Then the \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
 %
 \begin{displaymath}
   I_\Delta := \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{ v_{i_1},v_{i_2},...,v_{i_k} \} \not \subset \Delta \right) \subset S,
@@ -276,7 +276,7 @@ The database also contains many triangulations of various interesting surfaces, 
 \noindent
 Stanley-Reisner theory connects homological properties of $k[\Delta]$ to combinatorial and topological properties of $\Delta$. We will discuss some of the connections here, but a survey of results can be found in \cites{BH, Stanley, MS}.
 
-Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_{n-1}\}$, let $k$ be a commutative ring, and let $S = k[x_0,x_1,...,x_n]$. The \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
+Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_n\}$, let $k$ be a commutative ring, and let $S = k[x_0,x_1,...,x_n]$. The \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
 %
 \begin{displaymath}
   I_\Delta := \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{ v_{i_1},v_{i_2},...,v_{i_k} \} \not \subset \Delta \right) \subset S,
@@ -410,7 +410,7 @@ For a simplicial complex $\Delta$ and a face $F \in \Delta$, we define the \text
 We can now exhibit a more substantive result of Stanley-Reisner theory, which is the ``dual version'' of Hochster's formula, see \cite[Corollary 1.40]{MS}. This formula allows us to compute the multigraded Betti numbers of $I_\Delta$, which are defined to be $\beta_{i,m}(I_\Delta) = \big( \mathrm{Tor}_i^S(I_\Delta, k) \big)_m$. For a subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the Betti number in homological degree $i$ and multidegree $(a_1,...,a_n) \in \mathbb Z^n$, where $a_i = 1$ if $v_i \in F$ and $a_i = 0$ otherwise.
 %
 \begin{theorem}[Hochster's Formula, dual version]
-  Let $\Delta$ be a simplicial complex with vertex set $V = \{ v_0,v_1,...,v_{n-1} \}$. The nonzero multigraded Betti numbers of $I_\Delta$ and $S/I_\Delta$ lie in squarefree degrees. Moreover, if $F \subset V$, then
+  Let $\Delta$ be a simplicial complex with vertex set $V = \{v_0,v_1,...,v_n\}$ and $S = k[x_0,x_1,...,x_n]$, where $k$ is a field. The nonzero multigraded Betti numbers of $I_\Delta$ and $S/I_\Delta$ lie in squarefree degrees. Moreover, if $F \subset V$, then
   %
   \begin{displaymath}
     \beta_{i,F} (I_\Delta) = \beta_{i+1,F} (S/I_\Delta) = \dim_k\Big(\widetilde H_{i-1} \big( \mathrm{link}_{\Delta^*}(V \setminus F)\; ; \; k \big) \Big).
@@ -469,10 +469,10 @@ where $d = \dim \Delta + 1$, and $0 \leq k \leq d$ is such that $h_k \not = 0$. 
   0 \leq h_i \leq \binom{n-d+i}{i}
 \end{displaymath}
 %
-for $i = 0,1,...,d+1$. We can also compute the $h$-vector using the combinatorics of $\Delta$. Specifically, if $\Delta$ is a $d$-dimensional simplicial complex, then \cite[Lemma 5.18]{BH} tells us that
+for $i = 0,1,...,d+1$. We can also compute the $h$-vector using the combinatorics of $\Delta$. Specifically, if $\Delta$ is a $d$-dimensional simplicial complex, then \cite[Lemma 5.1.8]{BH} tells us that
 %
 \begin{displaymath}
-  h_j = \sum_{i=0}^j (-1)^{j-1} \binom{d+1-i}{j-1}f_{i-1}
+  h_j = \sum_{i=0}^j (-1)^{j-i} \binom{d+1-i}{j-i}f_{i-1}
 \end{displaymath}
 %
 for $j = 0,1,...,d+1$.
@@ -540,6 +540,19 @@ for $j = 0,1,...,d+1$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Resolutions of Monomial Ideals}
 \label{S:Resolutions of Monomial Ideals}
+%
+
+%
+Let $\Delta$ be a simplicial complex with $q$ vertices and let $\widetilde C(\Delta;k)$ be the augmented chain complex of $\Delta$ with incidence function $\varepsilon$. We will let $S = k[x_0,...,x_n]$ be a polynomial ring over the commutative ring $k$, which is typically a field. We assume that the ring $S$ has the fine $\mathbb N^{n+1}$ grading.
+
+For a monomial ideal $I \subset S$, minimally generated by $m_1,m_2,...,m_q$, a \textbf{labelling} of $\Delta$ by $I$ is a bijection which assigns a minimal generator of $I$ to each vertex of $\Delta$. Without loss of generality, we will assume this assignment is $v_i \longmapsto m_i$ for $i = 1,2,...,q$. For each face $F \in \Delta$ we can construct the monomial $m_F = \mathrm{lcm}(m_i \ | \ i \in F )$. The $I$-\textbf{homogenization} of $\widetilde{C} (\Delta;k)$ is the chain complex $(\mathbf G, d)$ such that $G_0 = S$ and $G_i = \bigoplus_{F \in \Delta(i-1)}S(m_F)$. We will use $\{f_F \ | \ F \in \Delta \}$ to denote the canonical basis of $G$ and the differential of $\mathbf G$ to the be determined by
+%
+\begin{displaymath}
+  d(f_F) = \sum \frac{m_F}{m_{F'}} \cdot \varepsilon(F,F') f_{F'},
+\end{displaymath}
+%
+where the sum is taken over all faces $F' \in \Delta$ such that $\dim(F') = \dim(F)-1$.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
