@@ -39,6 +39,12 @@ doc ///
 		", Graduate Texts in Mathematics 227, ",
 		"Springer-Verlag, New York, 2005. ",
 		"ISBN: 0-387-22356-8" }, 
+	    	{"Irena Peeva, ",
+		 HREF("https://doi.org/10.1007/978-0-85729-177-6", 
+		     "Graded Syzygies"),
+	    	 ", Algebra and Applications 14, ",
+		 "Springer-Verlag, London, 2011. ",
+		 "ISBN: 978-0-85729-176-9" },
 		{"Richard Stanley, ",
 		HREF("https://www.springer.com/gp/book/9780817643690", 
 		    "Combinatorics and commutative algebra"),
@@ -2587,7 +2593,7 @@ doc ///
         information about the chain complexes and their homogenizations
     Description
         Text
-	    Each abstract simplicial complex determines a chain complex of
+	    Each abstract simplicial complex $\Delta$ determines a chain complex of
 	    free modules over its 	    
 	    @TO2((coefficientRing, SimplicialComplex), "coefficient ring")@.
 	    For all integers $i$, the $i$-th term in this chain complex has
@@ -2642,72 +2648,172 @@ doc ///
 
 doc ///
     Key
+	(boundaryMap, ZZ, SimplicialComplex)        
+	boundaryMap	
+	[boundaryMap, Labels]
+    Headline
+        make a boundary map between the oriented faces of an abstract simplicial complexes
+    Usage 
+        boundaryMap(i, Delta)
+    Inputs
+        i : ZZ
+	    which gives the dimension of faces in the source of the map
+	Delta : SimplicialComplex
+	Labels => List
+            of monomials in a polynomial ring, one for each vertex of $\Delta$
+    Outputs 
+	: Matrix
+	    that determines a map from $i$-faces to $i-1$-faces of $\Delta$
+    Description
+    	Text
+    	    The boundary maps, up to sign, form the differential in the chain
+    	    complex associated to an abstract simplicial complex. If the {\tt
+    	    Labels} option is used, then the output is the ({\tt i}+1)^{st}
+    	    differential map of the complex of free {\tt S}-modules obtained
+    	    from homogenizing {\tt D}, with respect to the given labelling
+    	    (see @TO([(chainComplex, SimplicialComplex),Labels])@ for more
+    	    details.
+        Text
+            The columns of the output matrix are indexed by the $i$-faces of
+     	    the abstract simplicial complex $D$ and the rows are indexed by
+     	    the $(i-1)$-faces, in the order given by 
+	    @TO2((faces, ZZ, SimplicialComplex), "faces")@ method.  The
+	    entries in this matrix are $-1$, $0$, $1$ depending on whether the
+	    row index is an oriented face of the column index, but the
+	    underlying ring of this matrix is the @TO2((coefficientRing,
+	    SimplicialComplex), "coefficient ring")@ of $D$.
+	Text
+	    The boundary maps for the standard 3-simplex, defined over 
+	    @TO ZZ@, are:
+    	Example
+	    R = ZZ[a..d];
+	    D = simplicialComplex {a*b*c*d}
+	    boundaryMap (0, D)
+	    boundaryMap (1, D)
+	    boundaryMap (2, D)
+	    boundaryMap (3, D)	    
+    	    fVector D	    	    	    
+    	    C = chainComplex D	    
+	    assert (C.dd_0 == - boundaryMap (0, D) and
+	    	C.dd_1 == - boundaryMap (1, D) and
+	    	C.dd_2 == - boundaryMap (2, D) and	   
+		C.dd_3 == - boundaryMap (3, D)) 
+	Text
+	    If we have a monomial ideal {\tt M} with 4 generators in a polynomial
+	    ring {\tt S}, then the homogenization of {\tt D} by {\tt M} will give 
+	    the Taylor resolution of {\tt R/M}. The differential maps for this 
+	    resolution can be constructed using the {\tt Labels} option.
+	Example
+	    S = ZZ/101[x_0,x_1];
+	    M = monomialIdeal(x_0^3,x_0^2*x_1,x_0*x_1^2,x_1^3);
+    	    T = chainComplex(D, Labels => first entries mingens M);
+	    T.dd
+	    all(1..length T, i -> T.dd_i == boundaryMap(i-1,D,Labels => first entries mingens M))
+	    boundaryMap(2,D,Labels=>first entries mingens M)
+    	Text
+            The boundary maps may depend on the coefficient ring as the
+            following examples illustrate.
+    	Example     
+	    S = QQ[a..f];
+	    D = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
+	    boundaryMap (1, D)
+	    S' = ZZ/2[a..f];
+	    D' = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
+	    boundaryMap (1, D')
+    SeeAlso
+        "Working with associated chain complexes"
+        (chainComplex, SimplicialComplex)
+///
+
+
+doc ///
+    Key
         (chainComplex, SimplicialComplex)
 	[(chainComplex, SimplicialComplex), Labels]
     	Labels
     Headline
         create the chain complex associated to a simplicial complex.
     Usage
-    	chainComplex D
+    	chainComplex Delta
+	chainComplex(Delta, Labels => L)
     Inputs
-    	D : SimplicialComplex
+    	Delta : SimplicialComplex
 	Labels => List	  
-	    L of monomials in a polynomial ring, one for each vertex of D.
+	    L of monomials in a polynomial ring, one for each vertex of $\Delta$
     Outputs
-    	C : ChainComplex	 
+    	C : ChainComplex
+	    of free modules
     Description
     	Text
-	    When no labels are given, this function returns C, the reduced simplicial
-	    chain complex associated to D with coefficents in k, where k is the 
-	    coefficient ring of D (see @TO (coefficientRing,SimplicialComplex)@). The
-	    i-th term in the complex is indexed by the i-faces in the simplicial
-	    complex, and the maps describe the incidences between the faces.
-	Text
-	    When labels are given, this function returns the homogenization of C we get by 
-	    labelling the i^{th} vertex of D by the i^{th} monomial in L. More 
-	    information about homogenization of chain complexes by monomial ideals can be
-	    found in Irena Peeva, @HREF("https://www.springer.com/gp/book/9780857291769", 
-	    "Graded Syzygies")@, Algebra and Application 14, Springer-Verlag, London, 2011.
+	    Each abstract simplicial complex $\Delta$ determines a chain
+	    complex of free modules over its @TO2((coefficientRing,
+	    SimplicialComplex), "coefficient ring")@.  For all integers $i$,
+	    the $i$-th term in this chain complex has a basis corresponding to
+	    the $i$-th faces in the simplicial complex $\Delta$. 
+    	Text	    
+	    When the optional argument {\tt Labels} has the default value,
+	    this methods constructs this chain complexes.  The {\em reduced
+	    homology} of an abstract simplicial complex $\Delta$ is, by
+	    definition, the homology of this chain complex.  We illustrate
+	    this method with a triangulation of the torus and Klein bottle.
+    	Example
+	    S = QQ[a..g];
+	    torus = smallManifold(2, 7, 6, S)
+	    C = chainComplex torus
+	    fVector torus	
+	    prune HH C
+	    assert(prune HH_1 C == QQ^2)
+	    assert(prune HH_2 C == QQ^1)
+	    prune HH torus
 	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_3,A_2*A_3}
-	    C = chainComplex D
-	    prune homology C
+	    R = ZZ[a..h];
+	    Δ = kleinBottleComplex R
+	    C' = chainComplex Δ
+	    C'.dd
+	    fVector Δ
+	    prune HH C'
+	    prune HH Δ
+	    assert(prune HH_1 C' == ZZ^1/ideal(2) ++ ZZ^1)
 	Text
-	    We can view the attaching maps for C. Notice that the sign changes when we use 
-	    @TO(boundaryMap,ZZ,SimplicialComplex)@ to compute the attaching map. This will 
-	    always be the case for unlabelled simplicial comlexes, while the sign will 
-	    agree when we use a labelling.
+	    When the optional argument {\tt Labels} is given a list of
+	    monomials, corresponding to the vertices of $\Delta$, this method
+	    returns a chain complex of free modules over the ring containing
+	    the labelling monomials.  Each face, or basis vector, is labelled
+	    by the least common multiple of the labels on its vertices.
+	    In other words, the chain complex associated to a labelled
+	    simplicial complex is the {\em homogenization} of the canonical
+	    chain complex associated to $\Delta$; see Chapter 4 in
+	    Miller-Sturmfels' {\em Combinatorial Commutative Algebra} or
+	    Section 55 in Irena Peeva's {\em Graded Syzygies}.	
+	Text
+	    As the next example establishes, this approach can sometimes
+	    produced a minimal free resolution of a monomial ideal.
 	Example
+	    S = QQ[a..d];
+	    Γ = simplicialComplex{a*b*c, b*c*d};
+	    C = chainComplex Γ
 	    C.dd
-    	    all(0..2,i -> C.dd_i == -boundaryMap(i,D))
-        Text
-	    Using the Labels option, we can homogenize a simplicial chain complex to 
-	    construct a resolutions of the monomial ideal (x_0x_1,x_1x_2,x_0x_2,x_3).
-	Example
-	    A = QQ[x_0..x_3];
-	    D = simplicialComplex{A_0*A_1*A_2,A_1*A_2*A_3};
-	    S = QQ[x_0..x_3];
-	    F = chainComplex(D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2})
-	    prune homology F
+	    R = QQ[x_0..x_3];
+	    hC = chainComplex(Γ, Labels => {x_0*x_1, x_3, x_1*x_2, x_0*x_2})
+	    hC.dd
+	    prune homology hC
     	Text
-	    Observe that C begins in homological degree -1, while F Begins in homological degree 0.
-	    Similar to the first example, we can also also view the differential for F.
-	Example
-	   F.dd
-	   all(0..2, i -> F.dd_(i+1) == boundaryMap(i,D,Labels => {S_0*S_1,S_3,S_1*S_2,S_0*S_2}))
+	    By convention, the smallest nonzero term in the homogenized chain
+	    complex appears in homological degree $0$, rather than homological
+	    degree $-1$.  This shift in homological degree changes the signs
+	    in the differentials.
 	Text
-    	    The order of the monomial labels will have an effect on what the output is.
-	    For example, after swapping the first two labels in the example above, we 
-	    will no longer get a resolution.	
+	    The homogenization of the chain complex associated to an abstract
+	    simplicial complex does not always produce a free resolution.
+	    Reordering the labels in the previous example demonstrates this
+    	    phenomenon.
 	Example
-	    G = chainComplex(D,Labels => {S_3,S_0*S_1,S_1*S_2,S_0*S_2})
-	    G.dd
-    	    prune HH G
+	    hC' = chainComplex(Γ, Labels => {x_3, x_0*x_1, x_1*x_2, x_0*x_2})
+	    hC'.dd
+	    prune HH hC'
     SeeAlso
     	"Working with associated chain complexes"
 	(coefficientRing, SimplicialComplex)
-	(ChainComplexMap)
 	(boundaryMap, ZZ, SimplicialComplex)
 	(resolution, Ideal)
 	(homology, ChainComplex)
@@ -3211,85 +3317,6 @@ doc ///
 	    link(star(hexagon, g), a*b)	
 ///
 
-doc ///
-    Key
-	(boundaryMap, ZZ, SimplicialComplex)        
-	boundaryMap	
-	[boundaryMap, Labels]
-    Headline
-        make a boundary map between oriented faces
-    Usage 
-        boundaryMap(i, D)
-    Inputs
-        i : ZZ
-	    which gives the dimension of faces in the source of the map
-	D : SimplicialComplex
-	Labels => List
-	          of monomials in a polynomial ring {\tt S}.
-    Outputs 
-	: Matrix
-	    that represents the boundary map from {\tt i}-faces to {\tt
-	    (i-1)}-faces of {\tt D}
-    Description
-    	Text
-    	    The boundary maps, up to sign, form the differential in the
-    	    augmented oriented chain complex associated to an abstract
-    	    simplicial complex. If the {\tt Labels} option is used, then
-	    the output is the ({\tt i}+1)^{st} differential map of the
-	    complex of free {\tt S}-modules obtained from homogenizing {\tt D},
-	    with respect to the given labelling (see @TO([(chainComplex,
-	    SimplicialComplex),Labels])@ for more details.
-        Text
-            The columns of the output matrix are indexed by the $i$-faces of
-     	    the abstract simplicial complex $D$ and the rows are indexed by
-     	    the $(i-1)$-faces, in the order given by 
-	    @TO2((faces, ZZ, SimplicialComplex), "faces")@ method.  The
-	    entries in this matrix are $-1$, $0$, $1$ depending on whether the
-	    row index is an oriented face of the column index, but the
-	    underlying ring of this matrix is the @TO2((coefficientRing,
-	    SimplicialComplex), "coefficient ring")@ of $D$.
-	Text
-	    The boundary maps for the standard 3-simplex, defined over 
-	    @TO ZZ@, are:
-    	Example
-	    R = ZZ[a..d];
-	    D = simplicialComplex {a*b*c*d}
-	    boundaryMap (0, D)
-	    boundaryMap (1, D)
-	    boundaryMap (2, D)
-	    boundaryMap (3, D)	    
-    	    fVector D	    	    	    
-    	    C = chainComplex D	    
-	    assert (C.dd_0 == - boundaryMap (0, D) and
-	    	C.dd_1 == - boundaryMap (1, D) and
-	    	C.dd_2 == - boundaryMap (2, D) and	   
-		C.dd_3 == - boundaryMap (3, D)) 
-	Text
-	    If we have a monomial ideal {\tt M} with 4 generators in a polynomial
-	    ring {\tt S}, then the homogenization of {\tt D} by {\tt M} will give 
-	    the Taylor resolution of {\tt R/M}. The differential maps for this 
-	    resolution can be constructed using the {\tt Labels} option.
-	Example
-	    S = ZZ/101[x_0,x_1];
-	    M = monomialIdeal(x_0^3,x_0^2*x_1,x_0*x_1^2,x_1^3);
-    	    T = chainComplex(D, Labels => first entries mingens M);
-	    T.dd
-	    all(1..length T, i -> T.dd_i == boundaryMap(i-1,D,Labels => first entries mingens M))
-	    boundaryMap(2,D,Labels=>first entries mingens M)
-    	Text
-            The boundary maps may depend on the coefficient ring as the
-            following examples illustrate.
-    	Example     
-	    S = QQ[a..f];
-	    D = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
-	    boundaryMap (1, D)
-	    S' = ZZ/2[a..f];
-	    D' = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
-	    boundaryMap (1, D')
-    SeeAlso
-        "Working with associated chain complexes"
-        (chainComplex, SimplicialComplex)
-///
 
 
 doc ///

@@ -503,61 +503,48 @@ isProper SimplicialComplex := Boolean => D -> (
 ------------------------------------------------------------------------------
 -- Associated chain complexes
 ------------------------------------------------------------------------------
-
-
-
-lcmMonomials = (L) -> (
-     R := ring L#0;
-     x := max \ transpose apply(L, i -> first exponents i);
-     R_x)
-
-lcmM = (L) -> (
--- lcmM finds the lcm of a list of monomials; the quickest method Sorin knows
+-- local function
+lcmM = L -> (
+    -- lcmM finds the lcm of a list of monomials; the quickest method Sorin knows
     m := intersect toList (L/(i -> monomialIdeal(i)));
     m_0)
-
-
-
-
 
 --- kludge to access parts of the 'Core'
 raw = value Core#"private dictionary"#"raw";
 rawIndices = value Core#"private dictionary"#"rawIndices";
 rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
 
-makeLabels = (D,L,i,Sext) -> (
+-- local function
+makeLabels = (D, L, i, S) -> (
     -- D is a simplicial complex
-    -- L is a list of monomials 
+    -- L is a list of monomials in S
     -- i is an integer
-    -- Sext is a ring
+    -- S is a ring
     Vertices := vertices D;
     F := faces(i,D);
-    if #F == 0 
-    then matrix{{1_Sext}} 
-    else
-    matrix {apply(F, m -> (
+    if #F === 0 then matrix{{1_S}} 
+    else matrix {apply(F, m -> (
 		s := rawIndices raw m;
-		lcmM L_(apply(s,i -> position(Vertices, j -> index j == i)))
+		lcmM L_(apply(s, i -> position(Vertices, j -> index j == i)))
 		))}
     )
 
 boundaryMap = method(Options => {Labels => {}})
-boundaryMap (ZZ,SimplicialComplex) := opts -> (r,D) -> (
+boundaryMap (ZZ, SimplicialComplex) := opts -> (r, D) -> (
     L := opts.Labels;
-    if not L == {} then (
-	Vertices := vertices D;
-	if not #L == #Vertices 
-	then error "-- expected number of labels to equal the number of vertices.";
-	if not all(L, m -> size m === 1)
-	then error "-- expected Labels to be a list of monomials";
+    if L =!= {} then (
+	if #L =!= # vertices D then 
+	    error "-- expected labels to correspond to vertices";
+	if any(L, m -> size m > 1) then 
+	    error "-- expected Labels to be a list of monomials";
 	S := ring L#0;
 	M := monoid [Variables=>#L];
 	Sext := S M;
 	L = apply(#L, i -> L_i*Sext_i);
 	ones := map(S, Sext, toList(#L:1_S));
-	m1 := makeLabels(D,L,r,Sext);
-	m2 := matrix{{1_Sext}};
-	if not r == 0  then m2 = makeLabels(D,L,r-1,Sext);
+	m1 := makeLabels(D, L, r, Sext);
+	m2 := if r =!= 0 then makeLabels(D, L, r-1, Sext)
+	      else matrix{{1_Sext}};
 	F := source map(S^1,, ones m2);
 	bd := ones map(Sext, rawKoszulMonomials(numgens Sext, raw m2,raw m1));
 	bd = map(F,,bd);
@@ -565,27 +552,21 @@ boundaryMap (ZZ,SimplicialComplex) := opts -> (r,D) -> (
 	)
     else (
     	R := ring D;	
-	b1 := sub(matrix{faces(r,D)}, R);
-	b2 := sub(matrix{faces(r-1,D)}, R);
-	ones = map(coefficientRing R,R, toList(numgens R:1));
-	ones map(R, rawKoszulMonomials(numgens R,raw b2,raw b1))
+	b1 := sub(matrix{faces(r, D)}, R);
+	b2 := sub(matrix{faces(r-1, D)}, R);
+	ones = map(coefficientRing R, R, toList(numgens R:1));
+	ones map(R, rawKoszulMonomials(numgens R, raw b2, raw b1))
 	)
     )
 
 chainComplex SimplicialComplex := ChainComplex => {Labels => {}} >> opts -> (
     cacheValue(symbol chainComplex => opts)) (D -> (
-    	Vertices := vertices D;
-    	if not opts.Labels == {} then(
-    	    if not #opts.Labels == #Vertices 
-	    then error "-- expected number of labels to equal the number of vertices.";
-	    if not all(opts.Labels, m -> size m === 1)
-	    then error "-- expected Labels to be a list of monomials"
-	    );
     	d := dim D;
-    	C := if d < -1 then (coefficientRing(ring D))^0[-1]
-    	else if d === -1 then (coefficientRing(ring D))^1
-    	else chainComplex apply(0..d, r -> boundaryMap(r,D,Labels => opts.Labels));
-    	if opts.Labels == {} then C[1] else C[0]
+    	C := if d < -1 then (coefficientRing D)^0[-1]
+    	     else if d === -1 then (coefficientRing D)^1
+    	     else chainComplex apply(0..d, r -> boundaryMap(r, D, Labels => opts.Labels));
+    	if opts.Labels === {} then C[1] 
+	else C
     	)
     )
 

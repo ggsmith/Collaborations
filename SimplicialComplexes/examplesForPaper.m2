@@ -265,6 +265,12 @@ for F in faceList do(
     print(F, link(Δ,F), totalHomologyRankForLink(Δ,F))
     )
 
+----------------- Computing the Poincare Series of P1 x P1 -----------------
+
+-- We can obtain P1 x P1 by considering the corresponding toric variety
+-- to a square with vertices (0,0), (1,0), (0,1), and (1,1).
+-- TODO
+
 ----------- HOMONGENIZATION AND RESOLUTIONS OF MONOMIAL IDEALS -------------
 restart
 needsPackage"SimplicialComplexes"
@@ -355,7 +361,7 @@ T = taylorResolution I
 T == chainComplex(simplexComplex(numgens I - 1, S), Labels => M)
 prune homology T
 
-------------------------- The Scarf Compex ---------------------------------
+------------------------- The Scarf Complex --------------------------------
 
 -- We define a 1-dimensional simplicial complex homeomorphic to a
 -- "figure 8"
@@ -408,7 +414,7 @@ prune homology scarfChainComplex(nearlyScarfΔ)
 (scarfChainComplex(nearlyScarfΔ)
     == chainComplex(scarfSimplicialComplex(nearlyScarfΔ, S), Labels => M))
 
------------------------- Buchberber Complex -------------------------------
+------------------------ Buchberger Complex -------------------------------
 
 -- If I is a square-free monomial ideal, then the Buchberger resolution is
 -- the taylor resolution.
@@ -479,7 +485,7 @@ needsPackage "SimplicialComplexes"
 R = ZZ[a..i];
 S = ZZ[x_0..x_6];
 Γ = smallManifold(2,7,1,S);
-maplist = for j in subsets(toList(R_0..R_8),7) list (
+maplist = for j in subsets(toList(a..i),7) list (
     phi := map(smallManifold(3,9,1,R),Γ,j);
     if isWellDefined phi then phi else continue
     );
@@ -507,13 +513,13 @@ T = ZZ[y_0..y_2];
 Circle = skeleton(1, simplexComplex(2,T));
 
 -- Corresponds to one of the generators of H^1
-f1 = map(Torus,Circle,matrix{{R_3,R_6,R_5}});
+f1 = map(Torus,Circle,matrix{{d,g,f}});
 prune homology(1, f1)
 -- prune homology(1, Torus, image f1)
 -- faces(1,Circle),(chainComplex f1)_1,transpose faces(1,Torus)
 
 -- Corresponds to the Other generator of H^1
-f2 = map(Torus,Circle,matrix{{R_3,R_0,R_2}});
+f2 = map(Torus,Circle,matrix{{d,a,c}});
 prune homology(1, f2)
 -- prune homology(1, Torus, image f2)
 -- faces(1,Circle),(chainComplex f2)_1,transpose faces(1,Torus)
