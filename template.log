@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.11.6)  11 JUN 2021 15:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.11.6)  18 JUN 2021 15:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -892,14 +892,7 @@ File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count313
 \l__pdf_internal_box=\box61
 )
-(./template.aux
-
-LaTeX Warning: Label `example of using database' multiply defined.
-
-
-LaTeX Warning: Label `example of using database' multiply defined.
-
-)
+(./template.aux)
 \openout1 = `template.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 72.
@@ -1147,55 +1140,51 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 124.
- [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+ [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
 
 Package amsrefs Warning: Use of \cites is recommended instead of \cite 
-(amsrefs)                for multiple cites 'BH, Stanley, MS' on input line 217
+(amsrefs)                for multiple cites 'BH, Stanley, MS' on input line 285
 .
 
 
 Package amsrefs Warning: The form \cite{...}*{...} is recommended
-(amsrefs)                instead of \cite[...]{...} on input line 219.
+(amsrefs)                instead of \cite[...]{...} on input line 287.
 
-[3]
-Overfull \hbox (6.18053pt too wide) in paragraph at lines 252--254
+
+Overfull \hbox (6.18053pt too wide) in paragraph at lines 320--322
 [][] 
  []
 
 
-Overfull \hbox (6.18053pt too wide) in paragraph at lines 277--279
+Overfull \hbox (6.18053pt too wide) in paragraph at lines 345--347
 [][] 
  []
 
-[4] [5] [6] [7]
-Underfull \hbox (badness 2181) in paragraph at lines 659--659
+[4] [5] [6] [7] [8]
+Underfull \hbox (badness 2181) in paragraph at lines 741--741
 []\T1/stix/m/n/10 (+20) David Cook II, \T1/stix/m/it/10 (+20) Sim-pli-cial de-c
 om-pos-abil-ity\T1/stix/m/n/10 (+20) , J. Softw. Al-ge-bra Geom. \T1/stix/b/n/1
 0 2 \T1/stix/m/n/10 (+20) (2010), 20--23, DOI
  []
 
-[8]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 666.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 666.
+[9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 777.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 777.
  (./template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 666.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 666.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 777.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 777.
 Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: F68CC60F058819137E0F0FCD64025149;388.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 666.
+(rerunfilecheck)             Checksum: FED1252AB68E7F898DAA1E26300C04CA;388.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 777.
  ) 
 Here is how much of TeX's memory you used:
- 28150 strings out of 481239
- 502954 string characters out of 5920377
- 762442 words of memory out of 5000000
- 42512 multiletter control sequences out of 15000+600000
- 629560 words of font info for 197 fonts, out of 8000000 for 9000
+ 28194 strings out of 481239
+ 503675 string characters out of 5920377
+ 762682 words of memory out of 5000000
+ 42526 multiletter control sequences out of 15000+600000
+ 630126 words of font info for 200 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 60i,11n,80p,1037b,1954s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,11n,80p,1037b,1943s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
 e/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</usr/share/texlive/texmf-dist/fo
 nts/type1/public/stix/STIXGeneral-Bold.pfb></usr/share/texlive/texmf-dist/fonts
@@ -1211,10 +1200,10 @@ ic/stix/stix-mathit.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/
 stix-mathrm-bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/sti
 x-mathrm.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathsc
 r.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathtt.pfb>
-Output written on template.pdf (8 pages, 310149 bytes).
+Output written on template.pdf (9 pages, 314621 bytes).
 PDF statistics:
- 341 PDF objects out of 1000 (max. 8388607)
- 312 compressed objects within 4 object streams
- 158 named destinations out of 1000 (max. 500000)
+ 379 PDF objects out of 1000 (max. 8388607)
+ 349 compressed objects within 4 object streams
+ 182 named destinations out of 1000 (max. 500000)
  27205 words of extra memory for PDF output out of 29859 (max. 10000000)
 

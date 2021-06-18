@@ -278,18 +278,21 @@ needsPackage"SimplicialComplexes"
 
 -- All simplicial complexes are defined over S and all monomial ideals 
 -- are defined over R.
-S = ZZ/101[x_0..x_13]
-R = QQ[y_0..y_3]
+R = ZZ/101[y_0..y_13]
+S = QQ[x_0..x_3]
 
 -- Give a simplicial complex Δ and a monomial ideal I where the number of
 -- minimial generators of I is the same as the number of vertices of
 -- Δ, we can construct construct a chain complex of R-modules, by
 -- I-homogenization of C(Δ,F).
 
-Δ = simplicialComplex{S_0*S_1*S_2, S_2*S_3}
-I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
+Δ = simplicialComplex{R_0*R_1*R_2, R_2*R_3}
+I = monomialIdeal(x_0*x_1, x_0*x_2, x_0*x_3, x_1*x_2*x_3)
 M = first entries mingens I
-chainComplex(Δ, Labels => M)
+C = chainComplex Δ
+C.dd
+G = chainComplex(Δ, Labels => M_{2,1,0,3})
+G.dd
 
 -- In this example, Δ supports the minimal free resolution of I. We can
 -- verify computationally,
