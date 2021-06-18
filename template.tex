@@ -123,12 +123,12 @@ and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = 
     i2 : S = ZZ[x_0,x_1,x_2];
     i3 : $Δ$ = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2}
     o3 = simplicialComplex {x x , x x , x x }
-    1 2   0 2   0 1
+                             1 2   0 2   0 1
     o3 : SimplicialComplex
     i4 : I$Δ$ = monomialIdeal {x_0*x_1*x_2};
     i5 : $Δ$' = simplicialComplex I$Δ$
     o5 = simplicialComplex {x x , x x , x x }
-    1 2   0 2   0 1
+                             1 2   0 2   0 1
     o5 : SimplicialComplex
   \end{lstlisting}
   %
@@ -143,7 +143,8 @@ Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the vari
 \label{S:Combinatorial Topology}
 
 Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 or less vertices. We have implemented these databases into the package---however we have excluded the database of 3-manifolds with 10 vertices, due to the large number of examples causing long loading times.
-\begin{example}\label{example of using database}
+
+\begin{example}\label{E:using manifold database}
   These databases can be used to find nice testbeds of examples: for instance, we can search for simplicial maps
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
@@ -169,8 +170,61 @@ Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 
   \end{lstlisting}
   %
 \end{example}
-The database also contains many triangulations of various interesting surfaces, such as the torus, Klein bottle, and real projective plane. Here are the smallest indices (and hence minimal triangulations of) these surfaces in the database
-\begin{example}\label{example of using database}
+\begin{figure}[t]
+  \begin{center}
+  \begin{tikzpicture}[scale = .25]
+    \draw[-,very thick] (0,0) -- (15,0) -- (15,15) -- (0,15) -- cycle;
+    \draw[-,very thick] (0,5) -- (5,0);
+    \draw[-,very thick] (0,5) -- (10,0);
+    \draw[-,very thick] (0,5) -- (5,10);
+    \draw[-,very thick] (0,10) -- (5,10);
+    \draw[-,very thick] (0,15) -- (5,10);
+    \draw[-,very thick] (5,10) -- (10,0);
+    \draw[-,very thick] (5,10) -- (5,15);
+    \draw[-,very thick] (5,10) -- (10,5);
+    \draw[-,very thick] (5,15) -- (10,5);
+    \draw[-,very thick] (5,15) -- (15,10);
+    \draw[-,very thick] (10,0) -- (10,5);
+    \draw[-,very thick] (10,5) -- (15,0);
+    \draw[-,very thick] (10,5) -- (15,5);
+    \draw[-,very thick] (10,5) -- (15,10);
+    \draw[-,very thick] (10,15) -- (15,10);
+    \filldraw (0,0) circle (5pt);
+    \filldraw (5,0) circle (5pt);
+    \filldraw (10,0) circle (5pt);
+    \filldraw (15,0) circle (5pt);
+    \filldraw (15,5) circle (5pt);
+    \filldraw (15,10) circle (5pt);
+    \filldraw (15,15) circle (5pt);
+    \filldraw (10,15) circle (5pt);
+    \filldraw (5,15) circle (5pt);
+    \filldraw (0,15) circle (5pt);
+    \filldraw (0,10) circle (5pt);
+    \filldraw (0,5) circle (5pt);
+    \filldraw (5,10) circle (5pt);
+    \filldraw (10,5) circle (5pt);
+    \node at (-.5,-.5) {d};
+    \node at (5,-.75) {g};
+    \node at (10,-.75) {f};
+    \node at (15.5,-.5) {d};
+    \node at (15.75,5) {c};
+    \node at (15.75,10) {a};
+    \node at (15.5,15.5) {d};
+    \node at (10,15.75) {f};
+    \node at (5,15.75) {g};
+    \node at (-.5,15.5) {d};
+    \node at (-.75,10) {a};
+    \node at (-.75,5) {c};
+    \node at (5.5,10.5) {b};
+    \node at (9.5,4.5) {e};
+  \end{tikzpicture}\\
+  \end{center}
+  \caption{The minimal triangulation of the torus. Image credit: Frank Lutz TODO}\label{F: torus triangulation}
+\end{figure}
+
+The database also contains many triangulations of various interesting surfaces, such as the torus, Klein bottle, and real projective plane. Below are the smallest indices (and hence minimal triangulations of) these surfaces in the database, and see Figure \ref{F: torus triangulation} for a visual representation of the torus triangulation.
+
+\begin{example}\label{E: common surfaces and homology}
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i8 : Torus = smallManifold(2, 7, 6, R);
@@ -194,9 +248,23 @@ The database also contains many triangulations of various interesting surfaces, 
     o13 : List
 \end{lstlisting}
   %
-  We can explicitly identify the generators of the homology for the torus.
+  We can explicitly identify the generators of the homology by mapping circles onto the torus.
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i0 : TODO. Ben's code
+    i6 : Circle = skeleton(1, simplexComplex(2,T));
+    i7 : f1 = map(Torus,Circle,matrix{{R_3,R_6,R_5}});
+    o7 : prints are being ugly
+    i8 : prune homology(1, f1)
+    o8 = | 1 |
+         | 0 |
+                  2        1
+    o8 : Matrix ZZ  <--- ZZ
+    i9 : f2 = map(Torus,Circle,matrix{{R_3,R_0,R_2}});
+    o9 : prints are being ugly
+    i10 : prune homology(1, f2)
+    o10 = | 0 |
+          | 1 |
+                   2        1
+    o10 : Matrix ZZ  <--- ZZ
   \end{lstlisting}
   %
 \end{example}
@@ -229,9 +297,9 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
 % \end{theorem}
 %
 \begin{example}\label{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex}
-  Consider the simplicial complex $\bowtie$, depicted in Figure \ref{the figure-8 and its dual}
+  Consider the simplicial complex $\bowtie$, depicted in Figure \ref{the figure-8 and its dual}.
   %
-  \begin{figure}[h]
+  \begin{figure}[t]
     \begin{subfigure}{0.3\textwidth}
       \begin{tikzpicture}[scale = .5]
         % \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
@@ -301,16 +369,16 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
     o133 : SimplicialComplex
 \end{lstlisting}
   %
-  which is the simplicial complex
+  which is the simplicial complex $⋈^*$.
     % 
-  By the definition of the Alexander dual, we know that $(I_{\bowtie})^* = I_{\bowtie^*}$. We can verify this directly.
+  By the definition of the Alexander dual, we also know that $(I_{\bowtie})^* = I_{\bowtie^*}$, which we can verify directly.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i134 : dual(monomialIdeal $⋈$) == monomialIdeal dual $⋈$
     o134 = true
 \end{lstlisting}
   % 
-  We can also verify the combinatorial description of $\bowtie^*$ by showing that the minimal generators of $I_{\bowtie}$ correspond the complements of the facets of $\bowtie^*$,
+  Moreover, we can verify the combinatorial description of $\bowtie^*$ by showing that the minimal generators of $I_{\bowtie}$ correspond the complements of the facets of $\bowtie^*$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i140 : dualFacets = first entries facets dual $⋈$
@@ -339,7 +407,7 @@ For a simplicial complex $\Delta$ and a face $F \in \Delta$, we define the \text
   \mathrm{link}_\Delta(F) := \{ G \in \Delta \ | \ F \cup G \in \Delta \ \text{ and } \ F \cap G = \varnothing \}.
 \end{displaymath}
 %
-We can now exhibit a more substantive result of Stanley-Reisner theory, which is the ``dual version'' of Hochster's formula, see \cite[Corollary 1.40]{MS}. This formula allows us to compute the multigraded Betti numbers of $I_\Delta$, which are defined to be $\beta_{i,m}(I_\Delta) = \big( \mathrm{Tor}_i^S(I_\Delta, k) \big)_m$. For a subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the betti number in homological degree $i$ and multidegree $(a_1,...,a_n) \in \mathbb Z^n$, where $a_i = 1$ if $v_i \in F$ and $a_i = 0$ otherwise.
+We can now exhibit a more substantive result of Stanley-Reisner theory, which is the ``dual version'' of Hochster's formula, see \cite[Corollary 1.40]{MS}. This formula allows us to compute the multigraded Betti numbers of $I_\Delta$, which are defined to be $\beta_{i,m}(I_\Delta) = \big( \mathrm{Tor}_i^S(I_\Delta, k) \big)_m$. For a subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the Betti number in homological degree $i$ and multidegree $(a_1,...,a_n) \in \mathbb Z^n$, where $a_i = 1$ if $v_i \in F$ and $a_i = 0$ otherwise.
 %
 \begin{theorem}[Hochster's Formula, dual version]
   Let $\Delta$ be a simplicial complex with vertex set $V = \{v_0,v_1,...,v_n\}$ and $S = k[x_0,x_1,...,x_n]$, where $k$ is a field. The nonzero multigraded Betti numbers of $I_\Delta$ and $S/I_\Delta$ lie in squarefree degrees. Moreover, if $F \subset V$, then
@@ -382,14 +450,14 @@ We can now exhibit a more substantive result of Stanley-Reisner theory, which is
     o96 : Matrix ZZ  <--- ZZ
 \end{lstlisting}
   % 
-  where the row are indexed by the homological degree (starting at $0$), and the columns are indexed by the squarefree multidegrees.
+  where the rows are indexed by the homological degree (starting at $0$), and the columns are indexed by the squarefree multidegrees.
 \end{example}
 % 
-We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure, codimension $1$, simplicial complex. We say that a $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}.
+We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure codimension one simplicial complex. We say that a complex $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}.
 
 % The figure-8 complex from example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
 
-For Stanley-Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if an only if $\widetilde H_i(\mathrm{link}_\Delta(F);k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{Link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
+For Stanley-Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if and only if $\widetilde H_i(\mathrm{link}_\Delta(F)\; ;\;k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{Link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
 %
 \begin{displaymath}
   \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t + \cdots h_k t^k}{(1-t)^d}
@@ -409,8 +477,31 @@ for $i = 0,1,...,d+1$. We can also compute the $h$-vector using the combinatoric
 %
 for $j = 0,1,...,d+1$.
 %
+
+%
+\begin{figure}[t]
+  \begin{tikzpicture}[scale = .5]
+    \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+    \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
+    \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+    \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
+    \filldraw (0,0) circle (5pt);
+    \filldraw (0,5) circle (5pt);
+    \filldraw (4,2.5) circle (5pt);
+    \filldraw (8,0) circle (5pt);
+    \filldraw (8,5) circle (5pt);
+    \node at (-.5,-.5) {$v_0$};
+    \node at (-.5,5.5) {$v_1$};
+    \node at (4,1.75) {$v_2$};
+    \node at (8.5,-.5) {$v_3$};
+    \node at (8.5,5.5) {$v_4$};
+    % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
+  \end{tikzpicture}
+  \caption{The bowtie complex}\label{Figure: the bowtie complex}
+\end{figure}
+%
 \begin{example}\label{Example: Shellability, the Cohen-Macaulay property, and the h-vector}
-  The simplicial complex $\bowtie$ introduced in example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is Shellable and Cohen-Macaulay. We can verify the Cohen-Macaulay property using \cite[Corollary 5.3.9]{BH}.
+  The simplicial complex $\bowtie$ introduced in example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is shellable and Cohen-Macaulay. We can verify the Cohen-Macaulay property using \cite[Corollary 5.3.9]{BH}.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i43 : faceList = flatten for i from -1 to dim $⋈$ list (faces $⋈$)#i
@@ -421,9 +512,9 @@ for $j = 0,1,...,d+1$.
     o44 = true
 \end{lstlisting}
   % 
-  This simplicial complex is also shellable, but this package does not provide a method for determining this quality. However, such a method is available in the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, see \cite{Cook}.
+  However, this package does not provide a method for checking that $\Delta$ is shellable. Such a method is available in the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, see \cite{Cook}.
 
-  Let's also consider the ``bowtie'' simplicial complex $\fbowtie$, which is obtained by filling in the loops of the simplicial complex $\bowtie$, see Figure \ref{Figure: the bowtie complex}. Since the intersection of the two facets of $\fbowtie$ is a single point, which has codimension 2, the bowtie complex is not shellable. The simplicial complex $\fbowtie$ is not Cohen-Macaulay either, which we can verify by computing the $h$-vector of $\fbowtie$.
+  Let's also consider the ``bowtie'' simplicial complex $\fbowtie$, which is obtained by filling in the loops of the simplicial complex $\bowtie$, see Figure \ref{Figure: the bowtie complex}. Since the intersection of the two facets of $\fbowtie$ is a single point, which has codimension two, the bowtie complex is not shellable. The simplicial complex $\fbowtie$ is not Cohen-Macaulay either, which we can verify by computing the $h$-vector of $\fbowtie$.
   %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i3 : I$⧓$ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
@@ -445,28 +536,7 @@ for $j = 0,1,...,d+1$.
 
   Some notable examples of simplicial complexes that are Cohen-Macaulay, but not shellable, are the Rudin ball and the Ziegler ball. Both of these complexes are included in the \texttt{SimplicialComplexes} and can be constructed using the methods \texttt{rudinBallComplex} and \texttt{zieglerBallComplex} respectively.
 \end{example}
-%
-\begin{figure}[h]
-  \begin{tikzpicture}[scale = .5]
-    \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-    \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
-    \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-    \draw[-,very thick] (8,0) -- (8,5) -- (4,2.5) -- cycle;
-    \filldraw (0,0) circle (5pt);
-    \filldraw (0,5) circle (5pt);
-    \filldraw (4,2.5) circle (5pt);
-    \filldraw (8,0) circle (5pt);
-    \filldraw (8,5) circle (5pt);
-    \node at (-.5,-.5) {$v_0$};
-    \node at (-.5,5.5) {$v_1$};
-    \node at (4,1.75) {$v_2$};
-    \node at (8.5,-.5) {$v_3$};
-    \node at (8.5,5.5) {$v_4$};
-    % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
-  \end{tikzpicture}
-  \caption{The bowtie complex}\label{Figure: the bowtie complex}
-\end{figure}
-%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Resolutions of Monomial Ideals}
 \label{S:Resolutions of Monomial Ideals}
@@ -491,58 +561,6 @@ We thank todo .
                
 partially supported by
 the Natural Sciences and Engineering Research Council of Canada (NSERC).
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{center}
-  \begin{tikzpicture}[scale = .3]
-    \draw[-,very thick] (0,0) -- (15,0) -- (15,15) -- (0,15) -- cycle;
-    \draw[-,very thick] (0,5) -- (5,0);
-    \draw[-,very thick] (0,5) -- (10,0);
-    \draw[-,very thick] (0,5) -- (5,10);
-    \draw[-,very thick] (0,10) -- (5,10);
-    \draw[-,very thick] (0,15) -- (5,10);
-    \draw[-,very thick] (5,10) -- (10,0);
-    \draw[-,very thick] (5,10) -- (5,15);
-    \draw[-,very thick] (5,10) -- (10,5);
-    \draw[-,very thick] (5,15) -- (10,5);
-    \draw[-,very thick] (5,15) -- (15,10);
-    \draw[-,very thick] (10,0) -- (10,5);
-    \draw[-,very thick] (10,5) -- (15,0);
-    \draw[-,very thick] (10,5) -- (15,5);
-    \draw[-,very thick] (10,5) -- (15,10);
-    \draw[-,very thick] (10,15) -- (15,10);
-    \filldraw (0,0) circle (5pt);
-    \filldraw (5,0) circle (5pt);
-    \filldraw (10,0) circle (5pt);
-    \filldraw (15,0) circle (5pt);
-    \filldraw (15,5) circle (5pt);
-    \filldraw (15,10) circle (5pt);
-    \filldraw (15,15) circle (5pt);
-    \filldraw (10,15) circle (5pt);
-    \filldraw (5,15) circle (5pt);
-    \filldraw (0,15) circle (5pt);
-    \filldraw (0,10) circle (5pt);
-    \filldraw (0,5) circle (5pt);
-    \filldraw (5,10) circle (5pt);
-    \filldraw (10,5) circle (5pt);
-    \node at (-.5,-.5) {d};
-    \node at (5,-.75) {g};
-    \node at (10,-.75) {f};
-    \node at (15.5,-.5) {d};
-    \node at (15.75,5) {c};
-    \node at (15.75,10) {a};
-    \node at (15.5,15.5) {d};
-    \node at (10,15.75) {f};
-    \node at (5,15.75) {g};
-    \node at (-.5,15.5) {d};
-    \node at (-.75,10) {a};
-    \node at (-.75,5) {c};
-    \node at (5.5,10.5) {b};
-    \node at (9.5,4.5) {e};
-  \end{tikzpicture}\\
-\end{center}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{bibdiv}
