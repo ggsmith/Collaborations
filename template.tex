@@ -606,16 +606,57 @@ We say that $I$ has a \textbf{resolution supported on} $\Delta$ if the $I$-homog
   \caption{The homogenization of a simplicial complex}\label{Figure: Example of a labelled simplicial complex}
 \end{figure}
 % 
-We can use \texttt{Macaulay2} to compute both $\widetilde C(\Delta; \mathbb Q)$ and the $I$-homogenization of $\Delta$. 
+We can use \texttt{Macaulay2} to compute both $\widetilde C(\Delta; \mathbb Q)$ and the $I$-homogenization of $\Delta$ relative to this labelling, which is the minimal free resolution of $S/I$. 
 %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i3 : I = monomialIdeal(x_0*x_1, x_0*x_2, x_0*x_3, x_1*x_2*x_3 );
+    i9 : R = ZZ/101[y_0..y_13];
+    i10 : S = QQ[x_0..x_3];
+    i11 : $Δ$ = simplicialComplex{R_0*R_1*R_2, R_2*R_3};
+    i12 : I = ideal(x_0*x_1,x_0*x_2,x_0*x_3,x_1*x_2*x_3);
+    o12 : Ideal of S
+    i13 : C = chainComplex $Δ$
+            ZZ 1       ZZ 4       ZZ 4       ZZ 1
+    o13 = (---)  <-- (---)  <-- (---)  <-- (---)
+           101        101        101        101
+          -1         0          1          2
+    o13 : ChainComplex
+    i24 : G = chainComplex($Δ$, Labels => {x_0*x_1,x_0*x_2,x_0*x_3,x_1*x_2*x_3});
+    i25 : G.dd
+               1                                          4
+    o25 = 0 : S  <-------------------------------------- S  : 1
+                    | x_0x_1 x_0x_2 x_0x_3 x_1x_2x_3 |
+               4                                      4
+          1 : S  <---------------------------------- S  : 2
+                    {2} | -x_2 -x_3 0    0       |
+                    {2} | x_1  0    -x_3 0       |
+                    {2} | 0    x_1  x_2  -x_1x_2 |
+                    {3} | 0    0    0    x_0     |
+               4                    1
+          2 : S  <---------------- S  : 3
+                    {3} | x_3  |
+                    {3} | -x_2 |
+                    {3} | x_1  |
+                    {4} | 0    |
+    o25 : ChainComplexMap
+    i15 : (res (S^1/I)) == G
+    o15 = true
 \end{lstlisting}
 %
-
-
+The $I$-homogenization of $\Delta$ is dependent on how you label the vertices, and that is reflected by the ordering of the monomials in the \texttt{Labels} argument. Indeed, if we swap the labels of $v_1$ and $v_4$, then the $I$-homogenization is no longer a resolution of $S/I$.
+%
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i22 : G' = chainComplex($Δ$, Labels => {x_1*x_2*x_3,x_0*x_2,x_0*x_3,x_0*x_1});
+    i23 : prune homology G'
+    o23 = 0 : cokernel | x_0x_3 x_0x_2 x_0x_1 x_1x_2x_3 |
+          1 : cokernel {3} | x_3 |                       
+          2 : 0                                          
+          3 : 0                                          
+    o23 : GradedModule
+\end{lstlisting}
+%
 \end{example}
-
+%
+Given an monomial ideal $I$, there are several algorithms that will produce a simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimial generators of $I$ such that the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often non-minimally.
 
 
 

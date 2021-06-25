@@ -277,33 +277,21 @@ needsPackage"SimplicialComplexes"
 
 ----------------Homogenization Of A Simplicial Complex ---------------------
 
--- In the paper, swap the roles of R and S for all the examples.
-
--- We homogenize a simplicial complex Δ by labelling the vertices
--- with monomials.
-
--- All simplicial complexes are defined over S and all monomial ideals 
--- are defined over R.
-R = ZZ/101[y_0..y_13]
-S = QQ[x_0..x_3]
-
--- Give a simplicial complex Δ and a monomial ideal I where the number of
--- minimial generators of I is the same as the number of vertices of
--- Δ, we can construct construct a chain complex of R-modules, by
--- I-homogenization of C(Δ,F).
-
-Δ = simplicialComplex{R_0*R_1*R_2, R_2*R_3}
-I = monomialIdeal(x_0*x_1, x_0*x_2, x_0*x_3, x_1*x_2*x_3)
-M = first entries mingens I
+R = ZZ/101[y_0..y_13];
+S = QQ[x_0..x_3];
+Δ = simplicialComplex{R_0*R_1*R_2, R_2*R_3};
+I = ideal(x_0*x_1,x_0*x_2,x_0*x_3,x_1*x_2*x_3);
 C = chainComplex Δ
-C.dd
-G = chainComplex(Δ, Labels => M_{2,1,0,3})
+G = chainComplex(Δ, Labels => {x_0*x_1,x_0*x_2,x_0*x_3,x_1*x_2*x_3});
 G.dd
+(res (S^1/I)) == G
 
--- In this example, Δ supports the minimal free resolution of I. We can
--- verify computationally,
 
-(res I) == (chainComplex(Δ, Labels => M_{2,1,0,3}))
+G' = chainComplex(Δ, Labels => {x_1*x_2*x_3,x_0*x_2,x_0*x_3,x_0*x_1});
+prune homology G'
+
+
+
 
 -- However, the fact that the res method choose the same basis when
 -- it constructs the minimal free resolution is a stroke of luck.
@@ -636,3 +624,4 @@ for F in L list(
     )
 
 viewHelp
+
