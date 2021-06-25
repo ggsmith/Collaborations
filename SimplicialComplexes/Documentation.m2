@@ -27,25 +27,34 @@ doc ///
      	    textbooks:	    
     	Text
 	    @UL {
-	    	{"Winfried Bruns and Jürgen Herzog, ",
+	    	{HREF("https://www.home.uni-osnabrueck.de/wbruns/","Winfried Bruns"), 
+		 " and ",
+		 HREF("https://en.wikipedia.org/wiki/Jürgen_Herzog", "Jürgen Herzog"),
+		 ", ", 
 		HREF("https://www.cambridge.org/core/books/cohenmacaulay-rings/938BC2204D8A7C99E2CEBA1695A692A4",
 		    "Cohen-Macaulay rings"), 
 		", Cambridge Studies in Advanced Mathematics 39,", 
 		"Cambridge University Press, Cambridge, 1993. ",
 		"ISBN: 0-521-41068-1" },
-	    	{"Ezra Miller and Bernd Sturmfels, ",
+	    	{
+		HREF("https://services.math.duke.edu/~ezra/", "Ezra Miller"),
+		" and ",
+		HREF("https://math.berkeley.edu/~bernd/", "Bernd Sturmfels"),
+		", ", 
 		HREF("https://www.springer.com/gp/book/9780387223568",
 		    "Combinatorial commutative algebra"),
 		", Graduate Texts in Mathematics 227, ",
 		"Springer-Verlag, New York, 2005. ",
 		"ISBN: 0-387-22356-8" }, 
-	    	{"Irena Peeva, ",
+	    	{HREF("http://pi.math.cornell.edu/~irena/", "Irena Peeva"),
+		 ", ", 
 		 HREF("https://doi.org/10.1007/978-0-85729-177-6", 
 		     "Graded Syzygies"),
 	    	 ", Algebra and Applications 14, ",
 		 "Springer-Verlag, London, 2011. ",
 		 "ISBN: 978-0-85729-176-9" },
-		{"Richard Stanley, ",
+		{HREF("http://www-math.mit.edu/~rstan/", "Richard Stanley"), 
+		", ",
 		HREF("https://www.springer.com/gp/book/9780817643690", 
 		    "Combinatorics and commutative algebra"),
 		", Progress in Mathematics 41, ",
@@ -2657,7 +2666,7 @@ doc ///
         boundaryMap(i, Delta)
     Inputs
         i : ZZ
-	    which gives the dimension of faces in the source of the map
+	    specifying the dimension of faces in the source of the map
 	Delta : SimplicialComplex
 	Labels => List
             of monomials in a polynomial ring, one for each vertex of $\Delta$
@@ -2666,39 +2675,51 @@ doc ///
 	    that determines a map from $i$-faces to $i-1$-faces of $\Delta$
     Description
     	Text
-    	    The boundary maps, up to sign, form the differential in the chain
-    	    complex associated to an abstract simplicial complex. If the {\tt
+	    Up to sign, the boundary maps form the differential in the chain
+    	    complex associated to an abstract simplicial complex.  The columns
+    	    of the output matrix are indexed by the $i$-faces of the abstract
+    	    simplicial complex $\Delta$ and the rows are indexed by the
+    	    $(i-1)$-faces.  The order of these indices is obtained from the
+    	    @TO2((faces, ZZ, SimplicialComplex), "faces")@ method which is
+    	    implicitly determined by the monomial order on the 
+	    @TO2((ring, SimplicialComplex), "underlying ring")@.  The
+     	    matrix is defined over the
+	    @TO2((coefficientRing, SimplicialComplex), "coefficient ring")@ of
+     	    $\Delta$ and its entries in this matrix are $-1$, $0$,or $1$
+     	    depending on whether the row index is an oriented face of the
+     	    column index.  The orientation of $\Delta$ is induced by the
+     	    ordering of the variables in its underlying ring.
+	Text
+	    Working over the integers, we have the boundary maps
+	    for the standard $3$-simplex.
+    	Example
+	    S = ZZ[a..d];
+	    Δ = simplicialComplex {a*b*c*d}
+	    boundaryMap(0, Δ)
+	    boundaryMap(1, Δ)
+	    boundaryMap(2, Δ)
+	    boundaryMap(3, Δ)	    
+    	    fVector Δ	    	    	    
+    	    C = chainComplex Δ
+	    assert all(4, i -> C.dd_i == - boundaryMap(i, Δ))
+    	Text
+            The boundary maps may depend on the coefficient ring.
+    	Example     
+	    R = ZZ/2[a..d];
+	    Δ' = sub(Δ, R)
+	    boundaryMap(0, Δ')
+	    boundaryMap(1, Δ')
+	    boundaryMap(2, Δ')
+	    boundaryMap(3, Δ')	    
+	Text
+	
+	    If the {\tt
     	    Labels} option is used, then the output is the ({\tt i}+1)^{st}
     	    differential map of the complex of free {\tt S}-modules obtained
     	    from homogenizing {\tt D}, with respect to the given labelling
     	    (see @TO([(chainComplex, SimplicialComplex),Labels])@ for more
     	    details.
-        Text
-            The columns of the output matrix are indexed by the $i$-faces of
-     	    the abstract simplicial complex $D$ and the rows are indexed by
-     	    the $(i-1)$-faces, in the order given by 
-	    @TO2((faces, ZZ, SimplicialComplex), "faces")@ method.  The
-	    entries in this matrix are $-1$, $0$, $1$ depending on whether the
-	    row index is an oriented face of the column index, but the
-	    underlying ring of this matrix is the @TO2((coefficientRing,
-	    SimplicialComplex), "coefficient ring")@ of $D$.
-	Text
-	    The boundary maps for the standard 3-simplex, defined over 
-	    @TO ZZ@, are:
-    	Example
-	    R = ZZ[a..d];
-	    D = simplicialComplex {a*b*c*d}
-	    boundaryMap (0, D)
-	    boundaryMap (1, D)
-	    boundaryMap (2, D)
-	    boundaryMap (3, D)	    
-    	    fVector D	    	    	    
-    	    C = chainComplex D	    
-	    assert (C.dd_0 == - boundaryMap (0, D) and
-	    	C.dd_1 == - boundaryMap (1, D) and
-	    	C.dd_2 == - boundaryMap (2, D) and	   
-		C.dd_3 == - boundaryMap (3, D)) 
-	Text
+	
 	    If we have a monomial ideal {\tt M} with 4 generators in a polynomial
 	    ring {\tt S}, then the homogenization of {\tt D} by {\tt M} will give 
 	    the Taylor resolution of {\tt R/M}. The differential maps for this 
@@ -2706,20 +2727,10 @@ doc ///
 	Example
 	    S = ZZ/101[x_0,x_1];
 	    M = monomialIdeal(x_0^3,x_0^2*x_1,x_0*x_1^2,x_1^3);
-    	    T = chainComplex(D, Labels => first entries mingens M);
+    	    T = chainComplex(Δ, Labels => first entries mingens M);
 	    T.dd
-	    all(1..length T, i -> T.dd_i == boundaryMap(i-1,D,Labels => first entries mingens M))
-	    boundaryMap(2,D,Labels=>first entries mingens M)
-    	Text
-            The boundary maps may depend on the coefficient ring as the
-            following examples illustrate.
-    	Example     
-	    S = QQ[a..f];
-	    D = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
-	    boundaryMap (1, D)
-	    S' = ZZ/2[a..f];
-	    D' = simplicialComplex monomialIdeal(a*b*c, a*b*f, a*c*e, a*d*e, a*d*f, b*c*d, b*d*e, b*e*f, c*d*f, c*e*f);
-	    boundaryMap (1, D')
+	    all(1..length T, i -> T.dd_i == boundaryMap(i-1, Δ, Labels => first entries mingens M))
+	    boundaryMap(2, Δ, Labels => first entries mingens M)
     SeeAlso
         "Working with associated chain complexes"
         (chainComplex, SimplicialComplex)
