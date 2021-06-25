@@ -747,12 +747,14 @@ doc ///
 doc ///
     Key 
         (simplicialComplex, MonomialIdeal)   	
+	(simplicialComplex, Ideal)
     Headline
         make a simplicial complex from its Stanley–Reisner ideal
     Usage
         simplicialComplex I
     Inputs
         I : MonomialIdeal
+	    or an @TO Ideal@ with monomial entries
     Outputs
         : SimplicialComplex
 	    whose minimal nonfaces correspond to the generators of $I$
@@ -835,6 +837,11 @@ doc ///
     	    chainComplex Δ
 	    chainComplex Γ
 	    chainComplex Δ'
+	Text
+	    The input ideal can be of type @TO Ideal@, in which case we check if it
+	    is a squarefree monomial ideal.
+	Example
+	    Bowtie = simplicialComplex ideal {a*d, b*d, a*e, b*e}	    
     SeeAlso
         "Making an abstract simplicial complex"    
         (simplicialComplex, List)

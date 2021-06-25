@@ -29,10 +29,8 @@ simplicialComplex = method()
 simplicialComplex List := SimplicialComplex => L -> (
     facetsList := select(L, r -> r =!= 0);
     -- need at least one facet to determine the ring   
-    if # facetsList === 0 then 
-        error "-- expected at least one facet";
-    if not same apply(facetsList, class) then 
-	error "-- expect all elements in the list to have same type";
+    if # facetsList === 0 then error "-- expected at least one facet";
+    if not same apply(facetsList, class) then error "-- expect all elements in the list to have same type";
     if class L#0 === Face then 
 	facetsList = apply(facetsList, j -> product vertices j);
     S := ring (facetsList#0);
@@ -40,12 +38,13 @@ simplicialComplex List := SimplicialComplex => L -> (
     -- the monomialIdeal constructor verifies that the elements all lie in the
     -- same commutative polynomial ring
     I := monomialIdeal contract (matrix{facetsList}, G);
+    -- we need this ideal to be squarefree
+    if not isSquareFree I then error "-- expected squarefree inputs";
     -- remove any non-maximal faces from 'facetsList'
     I = monomialIdeal mingens I;
     -- contracting with G complements the support of the monomials
     F := first entries sort contract (gens I, G);
     -- Alexander duality for monomial ideals in part of the 'Core'
-    --   the dual method checks that I is squarefree
     I = dual I;
     new SimplicialComplex from {
 	symbol ring           => S,
@@ -61,8 +60,9 @@ simplicialComplex Matrix := SimplicialComplex => f -> (
 
 simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
     S := ring I;
+    -- we need a squarefree ideal
+    if not isSquareFree I then error "-- expected a squarefree ideal";
     -- Alexander duality for monomial ideals in part of the 'Core'
-    --   the dual method checks that I is squarefree    
     J := dual I;
     -- the void complex is the special case that has no facets
     if J == 0 then (
@@ -82,6 +82,11 @@ simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
 	symbol facets         => F,
 	symbol cache          => new CacheTable
 	}       
+    )
+
+simplicialComplex Ideal := SimplicialComplex => I -> (
+    if not isMonomialIdeal I then error "-- expected a monomial ideal";
+    simplicialComplex monomialIdeal I
     )
 
 isWellDefined SimplicialComplex := Boolean => D -> (
