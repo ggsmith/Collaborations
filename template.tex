@@ -656,7 +656,68 @@ The $I$-homogenization of $\Delta$ is dependent on how you label the vertices, a
 %
 \end{example}
 %
-Given an monomial ideal $I$, there are several algorithms that will produce a simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimial generators of $I$ such that the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often non-minimally.
+Given a monomial ideal $I$, there are several algorithms that will produce a simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimial generators of $I$ such that the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often non-minimally. Examples of such constructions are the Taylor resolution, Lyubeznik Resolution, and the Buchberger resolution, all of which are implemented in \texttt{SimplicialComplexes}. We have also implemented a constructor for the Scarf complex, which is a complex that is not always a free resolution of $S/I$, but when it is a free resolution it is minimal. We will not describe these constructions here, but a concise description of the Taylor resolution, Lyubeznik Resolution, and Scarf complex is given in \cite{Mermin}, and a description of the Buchberger resolution is given in \cite{OW}. 
+% 
+\begin{example}
+  Consider the monomial ideal $I = (x_1x_3, x_2^2, x_0x_2, x_1^2, x_0^2) \subset \mathbb C[x_0,...,x_3]$. The Taylor resolution of $I$ is the $I$-homogenization of the $4$-simplex. 
+%  
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i2 : R = QQ[a,b,c,d,e];
+    i3 : S = QQ[x_0..x_3];
+    i4 : I = monomialIdeal(x_1*x_3, x_2^2,  x_0*x_2, x_1^2, x_0^2);
+    o4 : MonomialIdeal of S
+    i5 : T = taylorResolution J
+          1      5      10      10      5      1
+    o5 = S  <-- S  <-- S   <-- S   <-- S  <-- S
+         0      1      2       3       4      5
+    o5 : ChainComplex
+    i6 : T == chainComplex(simplexComplex(4,R),Labels => first entries mingens I)
+    o6 = true
+\end{lstlisting}
+  %
+  The Buchberger simplicial complex is a subcomplex of the $4$-simplex, and the Buchberger resolution is an $I$-homogenization of the Buchberger simplicial complex. For this example, the Buchberger resolution is the minimal free resolution of $S/I$, but this is not always the case.
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i7 : buchbergerSimplicialComplex(J,R)
+    o7 = simplicialComplex | acde abcd |
+    o7 : SimplicialComplex
+    i8 : B = buchbergerResolution J
+          1      5      9      7      2
+    o8 = S  <-- S  <-- S  <-- S  <-- S
+         0      1      2      3      4
+    o8 : ChainComplex
+    i10 : betti B === betti(res J)
+    o10 = true
+\end{lstlisting}
+  %
+Lyubeznik simplicial complexes and resolutions are constructed relative to an total order on the minimal generators of $I$. Every ordering will produce a resolution, but these resolutions need not be isomorphic. When no ordering is given, the methods \texttt{lyubeznikSimplicialComplex} and \texttt{lyubeznikResolution} will order the generators relative to the monomial order on $S$ which, in Macaulay2, is graded revlex by default. The option \texttt{MonomialOrder} reorders the minimal generators of $I$ relative to the monomial ordering on $S$, That is \texttt{MonomialOrder => \{2,1,0,3,4\}} refers to the total ordering $x_0x_2 <  x_2^2 < x_1x_3 < x_1^2 < x_0^2$ on the minimal generators of $I$. We see that by changing the ordering we can produce the worst case (Taylor resolution) and best case (minimal free resolution) scenarios.
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i11 : lyubeznikSimplicialComplex(J,R)
+    o11 = simplicialComplex | abcde |
+    o11 : SimplicialComplex
+    i12 : lyubeznikResolution(J) == taylorResolution(J)
+    o12 = true
+    i13 : lyubeznikSimplicialComplex(J, R, MonomialOrder => {2,1,0,3,4})
+    o13 = simplicialComplex | acde abcd |
+    o13 : SimplicialComplex
+    i14 : L = lyubeznikResolution(J,MonomialOrder => {2,1,0,3,4})
+           1      5      9      7      2
+    o14 = S  <-- S  <-- S  <-- S  <-- S
+          0      1      2      3      4
+    o14 : ChainComplex
+\end{lstlisting}
+  %
+The Scarf simplicial complex of $I$ starts with the labelled $4$-simplex and removes any faces $F,F'$ such that $m_F = m_{F'}$. The homogenization of the Scarf simplicial complex is the Scarf chain complex. It is often the case that the Scarf Chain Complex is not a free resolution of $S/I$, but when the Scarf chain complex is a resolution, it is minimal, see \cite[Lemma 3.1]{BPS}.
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i16 : scarfSimplicialComplex(J,R)
+    o16 = simplicialComplex | acde abcd |
+    o16 : SimplicialComplex
+    i17 : scarfChainComplex J == buchbergerResolution J
+    o17 = true
+\end{lstlisting}
+\end{example}
 
 
 
@@ -808,6 +869,30 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
       issn={1073-2780},
       review={\MR{1618363}},
       doi={10.4310/MRL.1998.v5.n1.a3},
+    }
+
+    \bib{Mermin}{article}{
+      author={Mermin, Jeff},
+      title={Three simplicial resolutions},
+      conference={title={Progress in commutative algebra 1},},
+      book={publisher={de Gruyter, Berlin},},
+      date={2012},
+      pages={127--141},
+      review={\MR{2932583}},
+    }
+
+    \bib{OW}{article}{
+      author={Olteanu, Anda},
+      author={Welker, Volkmar},
+      title={The Buchberger resolution},
+      journal={J. Commut. Algebra},
+      volume={8},
+      date={2016},
+      number={4},
+      pages={571--587},
+      issn={1939-0807},
+      review={\MR{3566531}},
+      doi={10.1216/JCA-2016-8-4-571},
     }
     
   \end{biblist}

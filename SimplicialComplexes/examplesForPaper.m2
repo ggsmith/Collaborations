@@ -404,26 +404,43 @@ prune homology scarfChainComplex(nearlyScarfΔ)
 
 ------------------------ Buchberger Complex -------------------------------
 
+restart
+needsPackage"SimplicialComplexes"
+
 -- If I is a square-free monomial ideal, then the Buchberger resolution is
 -- the taylor resolution.
-R = QQ[y_0..y_3]
-I = monomialIdeal(R_0*R_1, R_0*R_2, R_0*R_3, R_1*R_2*R_3)
-taylorResolution I == buchbergerResolution I
-
--- Otherwise, the buchberger produces a subcomplex of the Taylor resolution
--- where you only keep faces in which no monomial generator "properly"
--- divides the label of that face.
-
-J = monomialIdeal(R_0^2, R_1^2, R_2^2, R_0*R_2, R_1*R_3)
-buchbergerSimplicialComplex(J,S)
-buchbergerResolution J
-prune homology buchbergerResolution J
-
--- When the BuchbergerResolution is a minimal free resolution, then
--- the scarf simplicial complex and buchberger simplicial complex coincide
-
-facets scarfSimplicialComplex(J,S) == facets buchbergerSimplicialComplex(J, S)
+R = QQ[a,b,c,d,e];
+S = QQ[x_0..x_3];
+J = monomialIdeal(S_1*S_3, S_2^2,  S_0*S_2, S_1^2, S_0^2);
+T = taylorResolution J
+T == chainComplex(simplexComplex(4,R),Labels => first entries mingens J)
+buchbergerSimplicialComplex(J,R)
+B = buchbergerResolution J
+prune homology B
+betti B === betti(res J)
+lyubeznikSimplicialComplex(J,R)
+lyubeznikResolution(J) == taylorResolution(J)
+lyubeznikSimplicialComplex(J, R, MonomialOrder => {2,1,0,3,4})
+L = lyubeznikResolution(J,MonomialOrder => {2,1,0,3,4})
+betti L == betti B
+scarfSimplicialComplex(J,R)
 scarfChainComplex J == buchbergerResolution J
+
+
+
+
+
+
+
+buchbergerSimplicialComplex(J,R) === lyubeznikSimplicialComplex(J, R, MonomialOrder => {2,1,0,3,4})
+
+for P in permutations 5 do(
+    print "------------------";
+    print P;
+    print "--";
+    print(lyubeznikSimplicialComplex(J, R, MonomialOrder => P))
+    )
+
 
 ----------------------- Lyubeznik Resolution ------------------------------
 
