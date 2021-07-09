@@ -85,11 +85,12 @@
 \address{Alexandre Zotine: Department of Mathematics and Statistics, Queen's University, Kingston, Ontario, K7L 3N6;
   {\normalfont \texttt{18az45@queensu.ca}}}
 
-\thanks{todo grant stuff \emph{Mathematics Subject Classification}. todo}
+\thanks{\emph{MSC2010:} 05E45, 13F55, 55U10. \\ \texttt{SimplicialComplexes} version 2.0.
+}
 \date{\today}
 
 \begin{abstract}
-  This article demonstrates some of the updated features of the \texttt{SimplicialComplexes} package in \emph{Macaulay2}. todo
+  This article demonstrates some of the updated features of the \texttt{SimplicialComplexes} package in \emph{Macaulay2}.
 \end{abstract}
 
 \maketitle
@@ -134,7 +135,7 @@ and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = 
   %
 \end{example}
 
-In Section \ref{S:Combinatorial Topology}, we demonstrate some of the topological features of the package. Namely, the use of the small manifolds database provided by Frank Lutz (cite), and some homological computations. In Section \ref{S:Stanley-Reisner Theory} we review some Stanley-Reisner theory and describe how to work with simplicial complexes using their corresponding Stanley-Reisner ideal. We also cover $f$- and $h$-vectors, shellability, and being Cohen-Macaulay. We give examples on how to check if a simplicial complex is Cohen-Macaulay using the package.
+In Section \ref{S:Combinatorial Topology}, we demonstrate some of the topological features of the package. Namely, the use of the small manifolds database provided by Lutz \cite{LutzM}, and some homological computations. In Section \ref{S:Stanley-Reisner Theory} we review some Stanley-Reisner theory and describe how to work with simplicial complexes using their corresponding Stanley-Reisner ideal. We also cover $f$- and $h$-vectors, shellability, and being Cohen-Macaulay. We give examples on how to check if a simplicial complex is Cohen-Macaulay using the package.
 
 Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the various complex constructions we obtain by resolving the corresponding Stanley-Reisner ideals. We demonstrate how to find the minimal free resolution of the irrelevant ideal of $\PP^1 \times \PP^1$, as well as giving examples of Scarf resolutions, and a Taylor resolution which is not minimal.
 
@@ -142,7 +143,7 @@ Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the vari
 \section{Combinatorial Topology}
 \label{S:Combinatorial Topology}
 
-Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 or less vertices. We have implemented these databases into the package---however we have excluded the database of 3-manifolds with 10 vertices, due to the large number of examples causing long loading times.
+Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 or less vertices \cite{LutzM}. We have implemented these databases into the package---however we have excluded the database of 3-manifolds with 10 vertices, due to the large number of examples causing long loading times.
 
 \begin{example}\label{E:using manifold database}
   These databases can be used to find nice testbeds of examples: for instance, we can search for simplicial maps
@@ -219,7 +220,7 @@ Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 
     \node at (9.5,4.5) {e};
   \end{tikzpicture}\\
   \end{center}
-  \caption{The minimal triangulation of the torus. Image credit: Frank Lutz TODO}\label{F: torus triangulation}
+  \caption{The minimal triangulation of the torus. Image credit: \cite{Lutz}}\label{F: torus triangulation}
 \end{figure}
 
 The database also contains many triangulations of various interesting surfaces, such as the torus, Klein bottle, and real projective plane. Below are the smallest indices (and hence minimal triangulations of) these surfaces in the database, and see Figure \ref{F: torus triangulation} for a visual representation of the torus triangulation.
@@ -453,17 +454,17 @@ We can now exhibit a more substantive result of Stanley-Reisner theory, which is
   where the rows are indexed by the homological degree (starting at $0$), and the columns are indexed by the squarefree multidegrees.
 \end{example}
 % 
-We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure codimension one simplicial complex. We say that a complex $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}.
+We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that $\Delta$ is \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure codimension one simplicial complex. We say that a simplicial complex $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}.
 
 % The figure-8 complex from example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
 
-For Stanley-Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if and only if $\widetilde H_i(\mathrm{link}_\Delta(F)\; ;\;k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{Link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
+For Stanley-Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if and only if $\widetilde H_i(\mathrm{link}_\Delta(F)\; ;\;k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
 %
 \begin{displaymath}
-  \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t + \cdots h_k t^k}{(1-t)^d}
+  \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t + \cdots h_k t^k}{(1-t)^{d+1}}
 \end{displaymath}
 %
-where $d = \dim \Delta + 1$, and $0 \leq k \leq d$ is such that $h_k \not = 0$. If $\Delta$ is a $d$-dimensional Cohen-Macaulay complex with $n$ vertices, then \cite[Lemma 5.1.10]{BH} proves that
+where $d = \dim \Delta$, and $0 \leq k \leq d+1$ is such that $h_k \not = 0$. If $\Delta$ is a $d$-dimensional Cohen-Macaulay complex with $n$ vertices, then \cite[Lemma 5.1.10]{BH} proves that
 %
 \begin{displaymath}
   0 \leq h_i \leq \binom{n-d+i}{i}
@@ -514,7 +515,7 @@ for $j = 0,1,...,d+1$.
   % 
   However, this package does not provide a method for checking that $\Delta$ is shellable. Such a method is available in the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, see \cite{Cook}.
 
-  Let's also consider the ``bowtie'' simplicial complex $\fbowtie$, which is obtained by filling in the loops of the simplicial complex $\bowtie$, see Figure \ref{Figure: the bowtie complex}. Since the intersection of the two facets of $\fbowtie$ is a single point, which has codimension two, the bowtie complex is not shellable. The simplicial complex $\fbowtie$ is not Cohen-Macaulay either, which we can verify by computing the $h$-vector of $\fbowtie$.
+  Let us also consider the ``bowtie'' simplicial complex $\fbowtie$, which is obtained by filling in the loops of the simplicial complex $\bowtie$, see Figure \ref{Figure: the bowtie complex}. Since the intersection of the two facets of $\fbowtie$ is a single point, which has codimension two, the bowtie complex is not shellable. The simplicial complex $\fbowtie$ is not Cohen-Macaulay either, which we can verify by computing the $h$-vector of $\fbowtie$.
   %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i3 : I$⧓$ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
@@ -533,9 +534,9 @@ for $j = 0,1,...,d+1$.
 \end{lstlisting}
   %
   Since the $h$-vector of $\fbowtie$ has a negative entry, this simplicial complex cannot be Cohen-Macaulay, by \cite[Lemma 5.1.10]{BH}.
-
-  Some notable examples of simplicial complexes that are Cohen-Macaulay, but not shellable, are the Rudin ball and the Ziegler ball. Both of these complexes are included in the \texttt{SimplicialComplexes} and can be constructed using the methods \texttt{rudinBallComplex} and \texttt{zieglerBallComplex} respectively.
 \end{example}
+
+Some other notable examples of simplicial complexes that are Cohen-Macaulay, but not shellable, are the Rudin ball and the Ziegler ball. Both of these complexes are included in the package and can be constructed using the methods \texttt{rudinBallComplex} and \texttt{zieglerBallComplex} respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Resolutions of Monomial Ideals}
@@ -603,7 +604,7 @@ We say that $I$ has a \textbf{resolution supported on} $\Delta$ if the $I$-homog
       % \draw[blue] node at (10,7){\scalebox{.8}{$x_1x_2x_4$}};
       % \draw[blue] node at (5,2.5){\scalebox{.8}{$x_1x_2x_3x_4$}};
     \end{tikzpicture}
-  \caption{The homogenization of a simplicial complex}\label{Figure: Example of a labelled simplicial complex}
+  \caption{The homogenization of $\Gamma$}\label{Figure: Example of a labelled simplicial complex}
 \end{figure}
 % 
 We can use \texttt{Macaulay2} to compute both $\widetilde C(\Delta; \mathbb Q)$ and the $I$-homogenization of $\Delta$ relative to this labelling, which is the minimal free resolution of $S/I$. 
@@ -656,16 +657,73 @@ The $I$-homogenization of $\Delta$ is dependent on how you label the vertices, a
 %
 \end{example}
 %
-Given an monomial ideal $I$, there are several algorithms that will produce a simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimial generators of $I$ such that the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often non-minimally.
-
-
-
+Given a monomial ideal $I$, there are several algorithms that will produce a simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimial generators of $I$ such that the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often non-minimally. Examples of such constructions are the Taylor resolution, Lyubeznik Resolution, and the Buchberger resolution, all of which are implemented in \texttt{SimplicialComplexes}. We have also implemented a constructor for the Scarf complex, which is a complex that is not always a free resolution of $S/I$, but when it is a free resolution it is minimal. We will not describe these constructions here, but a concise description of the Taylor resolution, Lyubeznik Resolution, and Scarf complex is given in \cite{Mermin}, and a description of the Buchberger resolution is given in \cite{OW}. 
+% 
+\begin{example}
+  Consider the monomial ideal $I = (x_1x_3, x_2^2, x_0x_2, x_1^2, x_0^2) \subset \mathbb C[x_0,...,x_3]$. The Taylor resolution of $I$ is the $I$-homogenization of the $4$-simplex. 
+%  
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i2 : R = QQ[a,b,c,d,e];
+    i3 : S = QQ[x_0..x_3];
+    i4 : I = monomialIdeal(x_1*x_3, x_2^2,  x_0*x_2, x_1^2, x_0^2);
+    o4 : MonomialIdeal of S
+    i5 : T = taylorResolution J
+          1      5      10      10      5      1
+    o5 = S  <-- S  <-- S   <-- S   <-- S  <-- S
+         0      1      2       3       4      5
+    o5 : ChainComplex
+    i6 : T == chainComplex(simplexComplex(4,R),Labels => first entries mingens I)
+    o6 = true
+\end{lstlisting}
+  %
+  The Buchberger simplicial complex is a subcomplex of the $4$-simplex, and the Buchberger resolution is an $I$-homogenization of the Buchberger simplicial complex. For this example, the Buchberger resolution is the minimal free resolution of $S/I$, but this is not always the case.
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i7 : buchbergerSimplicialComplex(J,R)
+    o7 = simplicialComplex | acde abcd |
+    o7 : SimplicialComplex
+    i8 : B = buchbergerResolution J
+          1      5      9      7      2
+    o8 = S  <-- S  <-- S  <-- S  <-- S
+         0      1      2      3      4
+    o8 : ChainComplex
+    i10 : betti B === betti(res J)
+    o10 = true
+\end{lstlisting}
+  %
+Lyubeznik simplicial complexes and resolutions are constructed relative to an total order on the minimal generators of $I$. Every ordering will produce a resolution, but these resolutions need not be isomorphic. When no ordering is given, the methods \texttt{lyubeznikSimplicialComplex} and \texttt{lyubeznikResolution} will order the generators relative to the monomial order on $S$ which, in Macaulay2, is graded revlex by default. The option \texttt{MonomialOrder} reorders the minimal generators of $I$ relative to the monomial ordering on $S$, That is \texttt{MonomialOrder => \{2,1,0,3,4\}} refers to the total ordering $x_0x_2 <  x_2^2 < x_1x_3 < x_1^2 < x_0^2$ on the minimal generators of $I$. We see that by changing the ordering we can produce the worst case (Taylor resolution) and best case (minimal free resolution) scenarios.
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i11 : lyubeznikSimplicialComplex(J,R)
+    o11 = simplicialComplex | abcde |
+    o11 : SimplicialComplex
+    i12 : lyubeznikResolution(J) == taylorResolution(J)
+    o12 = true
+    i13 : lyubeznikSimplicialComplex(J, R, MonomialOrder => {2,1,0,3,4})
+    o13 = simplicialComplex | acde abcd |
+    o13 : SimplicialComplex
+    i14 : L = lyubeznikResolution(J,MonomialOrder => {2,1,0,3,4})
+           1      5      9      7      2
+    o14 = S  <-- S  <-- S  <-- S  <-- S
+          0      1      2      3      4
+    o14 : ChainComplex
+\end{lstlisting}
+  %
+The Scarf simplicial complex of $I$ starts with the labelled $4$-simplex and removes any faces $F,F'$ such that $m_F = m_{F'}$. The homogenization of the Scarf simplicial complex is the Scarf chain complex. It is often the case that the Scarf Chain Complex is not a free resolution of $S/I$, but when the Scarf chain complex is a resolution, it is minimal, see \cite[Lemma 3.1]{BPS}.
+  %
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i16 : scarfSimplicialComplex(J,R)
+    o16 = simplicialComplex | acde abcd |
+    o16 : SimplicialComplex
+    i17 : scarfChainComplex J == buchbergerResolution J
+    o17 = true
+\end{lstlisting}
+\end{example}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection*{Acknowledgements}
-We thank todo .
+We thank TODO.
                
-partially supported by
-the Natural Sciences and Engineering Research Council of Canada (NSERC).
+B.~Hersey was TODO. G.G.~Smith was TODO. A.~Zotine was partially supported by the Natural Sciences and Engineering Research Council of Canada (NSERC).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{bibdiv}
@@ -808,6 +866,52 @@ the Natural Sciences and Engineering Research Council of Canada (NSERC).
       issn={1073-2780},
       review={\MR{1618363}},
       doi={10.4310/MRL.1998.v5.n1.a3},
+    }
+
+    \bib{Mermin}{article}{
+      author={Mermin, Jeff},
+      title={Three simplicial resolutions},
+      conference={title={Progress in commutative algebra 1},},
+      book={publisher={de Gruyter, Berlin},},
+      date={2012},
+      pages={127--141},
+      review={\MR{2932583}},
+    }
+
+    \bib{OW}{article}{
+      author={Olteanu, Anda},
+      author={Welker, Volkmar},
+      title={The Buchberger resolution},
+      journal={J. Commut. Algebra},
+      volume={8},
+      date={2016},
+      number={4},
+      pages={571--587},
+      issn={1939-0807},
+      review={\MR{3566531}},
+      doi={10.1216/JCA-2016-8-4-571},
+=======
+    \bib{Lutz}{article}{
+      author={Lutz, Frank H.},
+      editor={Bobenko, Alexander I.
+      and Sullivan, John M.
+      and Schr{\"o}der, Peter
+      and Ziegler, G{\"u}nter M.},
+      title={Enumeration and Random Realization of Triangulated Surfaces},
+      bookTitle={Discrete Differential Geometry},
+      year={2008},
+      publisher={Birkh{\"a}user Basel},
+      address={Basel},
+      pages={235--253},
+      %isbn={978-3-7643-8621-4},
+      %doi={10.1007/978-3-7643-8621-4_12},
+    }
+    
+    \bib{LutzM}{webpage}{
+      author={Lutz, Frank~H.},
+      title={The Manifold Page},
+      url={http://page.math.tu-berlin.de/~lutz/stellar/},
+      date={2017},
     }
     
   \end{biblist}
