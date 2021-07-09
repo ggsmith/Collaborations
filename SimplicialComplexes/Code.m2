@@ -508,16 +508,16 @@ isProper SimplicialComplex := Boolean => D -> (
 ------------------------------------------------------------------------------
 -- Associated chain complexes
 ------------------------------------------------------------------------------
+--- kludge to access parts of the 'Core'
+raw = value Core#"private dictionary"#"raw";
+rawIndices = value Core#"private dictionary"#"rawIndices";
+rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
+
 -- local function
 lcmM = L -> (
     -- lcmM finds the lcm of a list of monomials; the quickest method Sorin knows
     m := intersect toList (L/(i -> monomialIdeal(i)));
     m_0)
-
---- kludge to access parts of the 'Core'
-raw = value Core#"private dictionary"#"raw";
-rawIndices = value Core#"private dictionary"#"rawIndices";
-rawKoszulMonomials = value Core#"private dictionary"#"rawKoszulMonomials";
 
 -- local function
 makeLabels = (D, L, i, S) -> (
@@ -543,16 +543,15 @@ boundaryMap (ZZ, SimplicialComplex) := opts -> (r, D) -> (
 	if any(L, m -> size m > 1) then 
 	    error "-- expected Labels to be a list of monomials";
 	S := ring L#0;
-	M := monoid [Variables=>#L];
-	Sext := S M;
+	Sext := S(monoid [Variables => #L]);
 	L = apply(#L, i -> L_i*Sext_i);
 	ones := map(S, Sext, toList(#L:1_S));
 	m1 := makeLabels(D, L, r, Sext);
 	m2 := if r =!= 0 then makeLabels(D, L, r-1, Sext)
 	      else matrix{{1_Sext}};
-	F := source map(S^1,, ones m2);
+	F := source map(S^1, , ones m2);
 	bd := ones map(Sext, rawKoszulMonomials(numgens Sext, raw m2,raw m1));
-	bd = map(F,,bd);
+	bd = map(F, , bd);
 	bd
 	)
     else (
@@ -575,16 +574,16 @@ chainComplex SimplicialComplex := ChainComplex => {Labels => {}} >> opts -> (
     	)
     )
 
-homology(ZZ, SimplicialComplex, Ring) := Module => opts -> (i,Delta,R) -> (
+homology(ZZ, SimplicialComplex, Ring) := Module => opts -> (i, Delta, R) -> (
     homology(i, chainComplex Delta ** R)
     )
  
-homology(ZZ, SimplicialComplex) := Module => opts -> (i,Delta) -> (
+homology(ZZ, SimplicialComplex) := Module => opts -> (i, Delta) -> (
     homology(i, chainComplex Delta)
     )
  
 homology(Nothing, SimplicialComplex, Ring) :=
-homology(SimplicialComplex, Ring) := GradedModule => opts -> (Delta,R) -> (
+homology(SimplicialComplex, Ring) := GradedModule => opts -> (Delta, R) -> (
     homology(chainComplex Delta ** R)
     )
 
@@ -593,7 +592,7 @@ homology SimplicialComplex := GradedModule => opts -> Delta -> (
     homology(chainComplex Delta)
     )
 
-cohomology(ZZ, SimplicialComplex, Ring) := Module => opts -> (i,Delta,R) -> (
+cohomology(ZZ, SimplicialComplex, Ring) := Module => opts -> (i, Delta, R) -> (
     cohomology(i, Hom(chainComplex Delta ** R, module R))
     )
 

@@ -2627,18 +2627,20 @@ doc ///
         	TO (homology, ZZ, SimplicialComplex),
         	TO (cohomology, ZZ, SimplicialComplex)
     	    }@
+    	Text
+    	    @SUBSECTION "Constructing abstract simplicial complexes from monomial ideals"@
 	Text
 	    Monomial ideals produce a few different abstract simplicial
 	    complexes, where the vertices are in bijection with the unique
-	    minimial set of monomial generators.
-    	Text
-    	    @SUBSECTION "Constructing abstract simplicial complexes from monomial ideals"@
+	    minimial set of monomial generators.	    
 	Text
     	    @UL {
 		TO (buchbergerSimplicialComplex, MonomialIdeal, Ring),		
 		TO (lyubeznikSimplicialComplex, MonomialIdeal, Ring),
 		TO (scarfSimplicialComplex, MonomialIdeal, Ring)
     	    }@
+    	Text
+    	    @SUBSECTION "Free chain complexes arising from abstract simplicial complexes"@	
 	Text
             By labelling or identifying the vertices in an abstract simplicial
 	    complex with distinct monomials (and each face with the least
@@ -2646,8 +2648,6 @@ doc ///
 	    of vector spaces into chain complex of free modules over a
 	    polynomial ring.  This approach allows one to understand the
 	    minimal resolutions of some monomial ideals.
-    	Text
-    	    @SUBSECTION "Free chain complexes arising from abstract simplicial complexes"@
 	Text
     	    @UL {
 		TO [(chainComplex, SimplicialComplex), Labels],		
@@ -2700,7 +2700,7 @@ doc ///
 	    Working over the integers, we have the boundary maps
 	    for the standard $3$-simplex.
     	Example
-	    S = ZZ[a..d];
+	    R = ZZ[a..d];
 	    Δ = simplicialComplex {a*b*c*d}
 	    boundaryMap(0, Δ)
 	    boundaryMap(1, Δ)
@@ -2712,35 +2712,41 @@ doc ///
     	Text
             The boundary maps may depend on the coefficient ring.
     	Example     
-	    R = ZZ/2[a..d];
-	    Δ' = sub(Δ, R)
+	    R' = ZZ/2[a..d];
+	    Δ' = sub(Δ, R');
 	    boundaryMap(0, Δ')
 	    boundaryMap(1, Δ')
 	    boundaryMap(2, Δ')
 	    boundaryMap(3, Δ')	    
 	Text
-	
-	    If the {\tt
-    	    Labels} option is used, then the output is the ({\tt i}+1)^{st}
-    	    differential map of the complex of free {\tt S}-modules obtained
-    	    from homogenizing {\tt D}, with respect to the given labelling
-    	    (see @TO([(chainComplex, SimplicialComplex),Labels])@ for more
-    	    details.
-	
-	    If we have a monomial ideal {\tt M} with 4 generators in a polynomial
-	    ring {\tt S}, then the homogenization of {\tt D} by {\tt M} will give 
-	    the Taylor resolution of {\tt R/M}. The differential maps for this 
-	    resolution can be constructed using the {\tt Labels} option.
+    	    When the optional argument {\tt Labels} is given a list of
+    	    monomials, corresponding to the vertices of $\Delta$, this method
+    	    returns the differential in a chain complex of free modules.  Each
+    	    face, or basis vector, is labelled by the least common multiple of
+    	    the labels on its vertices.  In other words, the chain complex
+    	    associated to a labelled simplicial complex is the {\em
+    	    homogenization} of the canonical chain complex associated to
+    	    $\Delta$; see Chapter 4 in Miller-Sturmfels' {\em Combinatorial
+    	    Commutative Algebra} or Section 55 in Irena Peeva's {\em Graded
+    	    Syzygies}.
+    	Text
+	    Labelling the vertices in the standard $3$-simplex by its unique
+	    monomial generators, we obtain the differential in the Taylor
+	    resolution of a monomial ideal.
 	Example
-	    S = ZZ/101[x_0,x_1];
-	    M = monomialIdeal(x_0^3,x_0^2*x_1,x_0*x_1^2,x_1^3);
-    	    T = chainComplex(Δ, Labels => first entries mingens M);
-	    T.dd
-	    all(1..length T, i -> T.dd_i == boundaryMap(i-1, Δ, Labels => first entries mingens M))
-	    boundaryMap(2, Δ, Labels => first entries mingens M)
+	    S = ZZ/101[x_0, x_1];
+	    M = monomialIdeal(x_1^3, x_0*x_1^2, x_0^2*x_1, x_0^3);
+	    boundaryMap(0, Δ,  Labels => sort M_*)
+	    boundaryMap(1, Δ,  Labels => sort M_*)
+	    boundaryMap(2, Δ,  Labels => sort M_*)
+	    boundaryMap(3, Δ,  Labels => sort M_*)  
+	    T = taylorResolution M
+    	    T.dd
+	    assert all(4, i -> T.dd_(i+1) == boundaryMap(i, Δ,  Labels => sort M_*))
     SeeAlso
         "Working with associated chain complexes"
         (chainComplex, SimplicialComplex)
+	(taylorResolution, MonomialIdeal)
 ///
 
 
@@ -2839,43 +2845,8 @@ doc ///
 
 doc ///
     Key
+        (homology, ZZ, SimplicialComplex, Ring)
         (homology, ZZ, SimplicialComplex)
-    Headline
-        compute the reduced homology of an abstract simplicial complex
-    Usage
-        homology(k, Delta)
-    Inputs
-        k : ZZ
-        Delta : SimplicialComplex
-    Outputs
-        : Module
-            that is the $k$-th reduced homology group of $\Delta$
-    Description
-        Text
-            Compute the $k$-th reduced homology of $\Delta$ with coefficients in 
-            @TO (coefficientRing,SimplicialComplex)@ $\Delta$.
-        Text
-            The 2-sphere has vanishing first homology, but non-trivial second homology.
-        Example
-            S = ZZ[x_0..x_4];
-            Δ = skeleton(2, simplexComplex(3,S));
-            prune homology(1, Δ)
-            prune homology(2, Δ)
-        Text
-            A figure eight has rank two first homology.
-        Example
-            figureEight = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2, x_2*x_3, x_2*x_4, x_3*x_4}
-            prune homology(1, figureEight)
-    SeeAlso
-        (homology, ZZ, SimplicialComplex, Ring)
-        boundaryMap
-        (chainComplex, SimplicialComplex)
-        (homology, SimplicialComplex, SimplicialComplex)
-///
-
-doc ///
-    Key    
-        (homology, ZZ, SimplicialComplex, Ring)
     Headline
         compute the reduced homology of an abstract simplicial complex
     Usage
@@ -2883,32 +2854,79 @@ doc ///
     Inputs
         k : ZZ
         Delta : SimplicialComplex
-        R : Ring
+	R : Ring
     Outputs
         : Module
-	    which is the $k$-th homology group of $\Delta$ over the ring $R$
+            that is the $k$-th reduced homology group of $\Delta$ with coefficients in $R$
     Description
         Text
-            Compute the $k$-th reduced homology of $\Delta$ with coefficients in R.
-            The Klein bottle has torsion in its first homology, but this is not
-	    detected when we take coefficients in $\mathbb{Q}$.
+	    Each abstract simplicial complex $\Delta$ determines a chain
+	    complex of free modules over its coefficient ring.  For all
+	    integers $i$, the $i$-th term in this chain complex has a basis
+	    corresponding to the $i$-th faces in the simplicial complex
+	    $\Delta$.  When the optional argument $R$ is include, the chain
+	    complex is tensored with the given ring.  The {\em reduced
+	    homology} of $\Delta$ with coefficients in $R$ is, by definition,
+	    the homology of this chain complex.	
+        Text
+            The $2$-sphere has vanishing first homology, but non-trivial
+            second homology.  We obtain a triangulation of the $2$-sphere by
+            taking the $2$-skeleton of the $3$-simplex.  Since homology groups
+            are typically expressed as a @TO subquotient@, we 
+	    @TO2((prune, Module), "prune")@ the output to obtain a minimal
+            presentation.	    
         Example
-            S = ZZ[x_0..x_7];
-	    kleinBottle = kleinBottleComplex S;
-	    prune homology(1, kleinBottle, ZZ)
-	    prune homology(1, kleinBottle, QQ)
-	    prune homology(1, kleinBottle, ZZ/2)
+            S = ZZ[a..h];
+            Δ = skeleton(2, simplexComplex(3, S))
+	    prune homology(0, Δ)
+            prune homology(1, Δ)
+            prune homology(2, Δ)
+	    assert(homology(2, Δ) === HH_2 Δ)
+	    prune homology(2, Δ, QQ)
+	    prune homology(2, Δ, ZZ/2)
+	    assert(prune homology(0, Δ) === ZZ^0)	    
+	    assert(prune homology(1, Δ) === ZZ^0)
+	    assert(prune homology(2, Δ) === ZZ^1)
+        Text
+	    The reduced homology of the 
+	    @TO2(kleinBottleComplex, "Klein bottle")@ has torsion.	    
+	Example
+	    Γ = kleinBottleComplex S
+	    prune homology(0, Γ)
+            prune homology(1, Γ)
+	    prune homology(1, Γ, QQ)	    
+	    prune homology(1, Γ, ZZ/2)
+	    assert(homology(1, Γ, ZZ/2) === HH_1(Γ, ZZ/2))	    	    
+            prune homology(2, Γ)
+	    assert(prune homology(0, Γ) === ZZ^0)	    
+	    assert(prune homology(1, Γ, QQ) === QQ^1)
+	    assert(prune homology(1, Γ, ZZ/2) === (ZZ/2)^2)	    
+	    assert(prune homology(2, Γ) === ZZ^0)	    
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no faces.  Every abstract simplicial complex other than the void
+	    complex has a unique face of dimension $-1$.
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    homology(-1, irrelevant)
+    	    assert(homology(-1, irrelevant) === ZZ^1)
+	    void = simplicialComplex monomialIdeal 1_S
+	    homology(-1, void)
+    	    assert(homology(-1, void) === ZZ^0)	    
     SeeAlso
-        (homology, ZZ, SimplicialComplex)
-        boundaryMap
+    	"Working with associated chain complexes"    
+        (homology, SimplicialComplex, Ring)
         (chainComplex, SimplicialComplex)
-    	(homology, SimplicialComplex, SimplicialComplex)
+        (homology, SimplicialComplex, SimplicialComplex)
 ///
 
 doc ///
     Key    
         (homology, SimplicialComplex, Ring)
         (homology, Nothing, SimplicialComplex, Ring)
+	(homology, SimplicialComplex)
+        (homology, Nothing, SimplicialComplex)
     Headline
         compute the reduced homology of an abstract simplicial complex
     Usage
@@ -2918,65 +2936,113 @@ doc ///
         R : Ring
     Outputs
         : GradedModule
-	    which is the homology of Delta
+            that is reduced homology group of $\Delta$ with coefficients in $R$
     Description
         Text
-            Computes the graded module of reduced homologies of $\Delta$ with coefficients in $R$.
-	    The Klein bottle has torsion in its first homology, but this is not
-	    detected when we take coefficients in $\mathbb{Q}$.
+	    Each abstract simplicial complex $\Delta$ determines a chain
+	    complex of free modules over its coefficient ring.  For all
+	    integers $i$, the $i$-th term in this chain complex has a basis
+	    corresponding to the $i$-th faces in the simplicial complex
+	    $\Delta$.  When the optional argument $R$ is include, the chain
+	    complex is tensored with the given ring.  The {\em reduced
+	    homology} of $\Delta$ with coefficients in $R$ is, by definition,
+	    the homology of this chain complex.
+        Text
+            The $2$-sphere has vanishing first homology, but non-trivial
+            second homology.  We obtain a triangulation of the $2$-sphere by
+            taking the $2$-skeleton of the $3$-simplex.  Since homology groups
+            are typically expressed as a @TO subquotient@, we 
+	    @TO2((prune, Module), "prune")@ the output to obtain a minimal
+            presentation.	    
         Example
-            S = ZZ[x_0..x_7];
-	    kleinBottle = kleinBottleComplex S;
-	    prune homology(kleinBottle, ZZ)
-	    prune homology(kleinBottle, QQ)
-	    prune homology(kleinBottle, ZZ/2)
+            S = ZZ[a..h];
+            Δ = skeleton(2, simplexComplex(3, S))
+	    prune homology Δ
+	    prune homology(Δ, QQ)
+	    prune homology(Δ, ZZ/2)
+	    assert(homology Δ == HH Δ)
+    	    assert(prune homology Δ == gradedModule ZZ^1[-2])
+        Text
+	    The reduced homology of the 
+	    @TO2(kleinBottleComplex, "Klein bottle")@ has torsion.	    
+	Example
+	    Γ = kleinBottleComplex S
+	    prune homology Γ
+	    prune homology(Γ, QQ)
+	    prune homology(Γ, ZZ/2)
+	    assert(prune homology(Γ, ZZ/2) == gradedModule((ZZ/2)^2[-1] ++ (ZZ/2)^1[-2]))
+	Text
+	    There are two "trivial" simplicial complexes: the irrelevant
+	    complex has the empty set as a facet whereas the void complex has
+	    no faces.  Every abstract simplicial complex other than the void
+	    complex has a unique face of dimension $-1$.
+	Example
+	    irrelevant = simplicialComplex monomialIdeal gens S
+	    homology irrelevant
+    	    assert(homology irrelevant == gradedModule ZZ^1[1])
+	    void = simplicialComplex monomialIdeal 1_S
+	    homology void
+    	    assert(homology void == gradedModule ZZ^0[0])	    
     SeeAlso
-        (homology,SimplicialComplex)
-        (homology,ZZ,SimplicialComplex)
-        (homology,ZZ,SimplicialComplex,Ring)
-        (homology,SimplicialComplex,SimplicialComplex)
+    	"Working with associated chain complexes"    
+        (homology, ZZ, SimplicialComplex, Ring)
+        (chainComplex, SimplicialComplex)
+        (homology, SimplicialComplex, SimplicialComplex)
 ///
 
 doc ///
     Key    
-        (homology,SimplicialComplex)
-        (homology,Nothing,SimplicialComplex)
+        (cohomology, ZZ, SimplicialComplex, Ring)
+        (cohomology, ZZ, SimplicialComplex)
+	[(cohomology, ZZ, SimplicialComplex), Degree]
+	[(cohomology, ZZ, SimplicialComplex, Ring), Degree]    	
     Headline
-        Compute the homology of a simplicial complex.
+        compute the reduced cohomology of an abstract simplicial complex
     Usage
-        homology Delta
+        cohomology(k, Delta, R)
     Inputs
+        k : ZZ
         Delta : SimplicialComplex
+	R : Ring
+	    that when omitted is equal to the 
+	    @TO2((ring, SimplicialComplex), "underlying ring")@ of $\Delta$	    
+	Degree => ZZ
+	    is ignored
     Outputs
-        : GradedModule
-	    which is the homology of Delta
+        : Module
+	    that is reduced cohomology group of $\Delta$ with coefficients in $R$
     Description
         Text
-            Compute the graded module of reduced homologies of $\Delta$ with coefficients in 
-            @TO (coefficientRing,SimplicialComplex)@ $\Delta$.
-        Text
-            The 2-sphere has vanishing first homology, but non-trivial second homology.
+	    Each abstract simplicial complex $\Delta$ determines a chain
+	    complex $C$ of free modules over its coefficient ring.  For all
+	    integers $i$, the $i$-th term $C_i$ in this chain complex has a
+	    basis corresponding to the $i$-th faces in the simplicial complex
+	    $\Delta$.  The {\em reduced cohomology} of $\Delta$ with
+	    coefficients in $R$ is, by definition, the homology of the chain
+	    complex $\operatorname{Hom}(C \otimes R, R)$.
+	Text
+	    The 2-sphere has vanishing first cohomology, but non-trivial second cohomology.
         Example
             S = ZZ[x_0..x_4];
             Δ = skeleton(2, simplexComplex(3,S));
-            prune homology Δ
-            prune homology Δ
-        Text
-            A figure eight has rank two first homology.
-        Example
+	    prune cohomology(1, Δ)
+            prune cohomology(2, Δ)
+	Text
+	    A figure eight has rank two first cohomology.
+	Example
             figureEight = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2, x_2*x_3, x_2*x_4, x_3*x_4}
-            prune homology figureEight
+            prune cohomology(1, figureEight)
     SeeAlso
-        (homology,SimplicialComplex,Ring)
-        (homology,ZZ,SimplicialComplex)
-        (homology,ZZ,SimplicialComplex,Ring)
-        (homology,SimplicialComplex,SimplicialComplex)
+        (cohomology,ZZ,SimplicialComplex,Ring)
+        boundaryMap
+        (chainComplex,SimplicialComplex)
+        (cohomology,ZZ,SimplicialComplex,SimplicialComplex)
 ///
-
+	    
 doc ///
     Key    
-        (homology,SimplicialMap)
-        (homology,Nothing,SimplicialMap)
+        (homology, SimplicialMap)
+        (homology, Nothing, SimplicialMap)
     Headline
         Compute the induced map on homology of a simplicial map.
     Usage
@@ -3012,7 +3078,7 @@ doc ///
 
 doc ///
     Key    
-        (homology,ZZ,SimplicialMap)
+        (homology, ZZ, SimplicialMap)
     Headline
         Compute the induced map on homology of a simplicial map.
     Usage
@@ -3047,79 +3113,7 @@ doc ///
         (homology,SimplicialComplex,SimplicialComplex)
 ///
 
-doc ///
-    Key    
-        (cohomology, ZZ, SimplicialComplex)
-	[(cohomology, ZZ, SimplicialComplex), Degree]
-    Headline
-        compute the cohomology of an abstract simplicial complex
-    Usage
-        cohomology(k, Delta)
-    Inputs
-        k : ZZ
-        Delta : SimplicialComplex
-	Degree => ZZ
-	    this option is ignored
-    Outputs
-        : Module
-	    which is the k-th cohomology group of Delta
-    Description
-        Text
-            Compute the $k$-th reduced cohomology of $\Delta$ with coefficients in 
-	    @TO (coefficientRing,SimplicialComplex)@ $\Delta$.
-	Text
-	    The 2-sphere has vanishing first cohomology, but non-trivial second cohomology.
-        Example
-            S = ZZ[x_0..x_4];
-            Δ = skeleton(2, simplexComplex(3,S));
-	    prune cohomology(1, Δ)
-            prune cohomology(2, Δ)
-	Text
-	    A figure eight has rank two first cohomology.
-	Example
-            figureEight = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2, x_2*x_3, x_2*x_4, x_3*x_4}
-            prune cohomology(1, figureEight)
-    SeeAlso
-        (cohomology,ZZ,SimplicialComplex,Ring)
-        boundaryMap
-        (chainComplex,SimplicialComplex)
-        (cohomology,ZZ,SimplicialComplex,SimplicialComplex)
-///
 
-doc ///
-    Key    
-        (cohomology, ZZ, SimplicialComplex, Ring)
-	[(cohomology, ZZ, SimplicialComplex, Ring), Degree]
-    Headline
-        compute the cohomology of an abstract simplicial complex
-    Usage
-        cohomology(k, Delta, R)
-    Inputs
-        k : ZZ
-        Delta : SimplicialComplex
-        R : Ring
-	Degree => ZZ
-	    this option is ignored
-    Outputs
-        : Module
-	    which is the k-th cohomology group of Delta over R
-    Description
-        Text
-            Compute the $k$-th reduced cohomology of $\Delta$ with coefficients in R.
-            The Klein bottle has torsion in its first cohomology, but this is not
-	    detected when we take coefficients in $\mathbb{Q}$.
-        Example
-            S = ZZ[x_0..x_7];
-	    kleinBottle = kleinBottleComplex S;
-	    prune cohomology(1, kleinBottle, ZZ)
-	    prune cohomology(1, kleinBottle, QQ)
-	    prune cohomology(1, kleinBottle, ZZ/2)
-    SeeAlso
-        (cohomology, ZZ, SimplicialComplex)
-        boundaryMap
-        (chainComplex, SimplicialComplex)
-    	(cohomology,ZZ,SimplicialComplex,SimplicialComplex)
-///
 
 doc ///
     Key    
