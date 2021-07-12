@@ -137,7 +137,7 @@ and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = 
 
 In Section \ref{S:Combinatorial Topology}, we demonstrate some of the topological features of the package. Namely, the use of the small manifolds database provided by Lutz \cite{LutzM}, and some homological computations. In Section \ref{S:Stanley-Reisner Theory} we review some Stanley-Reisner theory and describe how to work with simplicial complexes using their corresponding Stanley-Reisner ideal. We also cover $f$- and $h$-vectors, shellability, and being Cohen-Macaulay. We give examples on how to check if a simplicial complex is Cohen-Macaulay using the package.
 
-Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the various complex constructions we obtain by resolving the corresponding Stanley-Reisner ideals. We demonstrate how to find the minimal free resolution of the irrelevant ideal of $\PP^1 \times \PP^1$, as well as giving examples of Scarf resolutions, and a Taylor resolution which is not minimal.
+Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the some chain complex constructions arising from simplicial complexes. We give an example of ideal homogenization and resolutions supported on a simplicial complex, and we provide examples of Taylor, Lyubeznik, and Buchberger resolutions; as well as Scarf complexes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Combinatorial Topology}
@@ -253,7 +253,7 @@ The database also contains many triangulations of various interesting surfaces, 
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i6 : Circle = skeleton(1, simplexComplex(2,T));
     i7 : f1 = map(Torus,Circle,matrix{{R_3,R_6,R_5}});
-    o7 : TODO prints are being ugly
+    o7 : prints are being ugly
     i8 : prune homology(1, f1)
     o8 = | 1 |
          | 0 |
@@ -657,10 +657,10 @@ The $I$-homogenization of $\Delta$ is dependent on how you label the vertices, a
 %
 \end{example}
 %
-Given a monomial ideal $I$, there are several algorithms that will produce a simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimial generators of $I$ such that the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often non-minimally. Examples of such constructions are the Taylor resolution, Lyubeznik Resolution, and the Buchberger resolution, all of which are implemented in \texttt{SimplicialComplexes}. We have also implemented a constructor for the Scarf complex, which is a complex that is not always a free resolution of $S/I$, but when it is a free resolution it is minimal. We will not describe these constructions here, but a concise description of the Taylor resolution, Lyubeznik Resolution, and Scarf complex is given in \cite{Mermin}, and a description of the Buchberger resolution is given in \cite{OW}. 
+Given a monomial ideal $I$, there are several algorithms that will produce a simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimal generators of $I$ such that the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often non-minimally. Examples of such constructions are the Taylor resolution, Lyubeznik resolution, and the Buchberger resolution, all of which are implemented in \texttt{SimplicialComplexes}. We have also implemented a constructor for the Scarf complex, which is a complex that is not always a free resolution of $S/I$, but when it is a free resolution it is minimal. We will not describe these constructions here, but a concise description of the Taylor resolution, Lyubeznik resolution, and Scarf complex is given in \cite{Mermin}, and a description of the Buchberger resolution is given in \cite{OW}. 
 % 
 \begin{example}
-  Consider the monomial ideal $I = (x_1x_3, x_2^2, x_0x_2, x_1^2, x_0^2) \subset \mathbb C[x_0,...,x_3]$. The Taylor resolution of $I$ is the $I$-homogenization of the $4$-simplex. 
+  Consider the monomial ideal $I = (x_1x_3, x_2^2, x_0x_2, x_1^2, x_0^2) \subset \mathbb C[x_0,...,x_3]$. The Taylor resolution of $I$ can be realized as an $I$-homogenization of the $4$-simplex. 
 %  
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i2 : R = QQ[a,b,c,d,e];
@@ -691,7 +691,7 @@ Given a monomial ideal $I$, there are several algorithms that will produce a sim
     o10 = true
 \end{lstlisting}
   %
-Lyubeznik simplicial complexes and resolutions are constructed relative to an total order on the minimal generators of $I$. Every ordering will produce a resolution, but these resolutions need not be isomorphic. When no ordering is given, the methods \texttt{lyubeznikSimplicialComplex} and \texttt{lyubeznikResolution} will order the generators relative to the monomial order on $S$ which, in Macaulay2, is graded revlex by default. The option \texttt{MonomialOrder} reorders the minimal generators of $I$ relative to the monomial ordering on $S$, That is \texttt{MonomialOrder => \{2,1,0,3,4\}} refers to the total ordering $x_0x_2 <  x_2^2 < x_1x_3 < x_1^2 < x_0^2$ on the minimal generators of $I$. We see that by changing the ordering we can produce the worst case (Taylor resolution) and best case (minimal free resolution) scenarios.
+Lyubeznik simplicial complexes and resolutions are constructed relative to a total order on the minimal generators of $I$. Every ordering will produce a resolution, but these resolutions need not be isomorphic. When no ordering is given, the methods \texttt{lyubeznikSimplicialComplex} and \texttt{lyubeznikResolution} will order the generators relative to the monomial order on $S$ which, in Macaulay2, is graded revlex by default. The option \texttt{MonomialOrder} reorders the minimal generators of $I$ relative to the monomial ordering on $S$. For example, \texttt{MonomialOrder => \{2,1,0,3,4\}} refers to the total ordering $x_0x_2 <  x_2^2 < x_1x_3 < x_1^2 < x_0^2$ on the minimal generators of $I$. We see that by changing the ordering we can both produce the worst case (Taylor resolution) and best case (minimal free resolution).
   %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i11 : lyubeznikSimplicialComplex(J,R)
@@ -709,7 +709,7 @@ Lyubeznik simplicial complexes and resolutions are constructed relative to an to
     o14 : ChainComplex
 \end{lstlisting}
   %
-The Scarf simplicial complex of $I$ starts with the labelled $4$-simplex and removes any faces $F,F'$ such that $m_F = m_{F'}$. The homogenization of the Scarf simplicial complex is the Scarf chain complex. It is often the case that the Scarf Chain Complex is not a free resolution of $S/I$, but when the Scarf chain complex is a resolution, it is minimal, see \cite[Lemma 3.1]{BPS}.
+The Scarf simplicial complex of $I$ starts with the labelled $4$-simplex and removes any faces $F,F'$ such that $m_F = m_{F'}$. The $I$-homogenization of the Scarf simplicial complex is the Scarf chain complex. It is often the case that the Scarf chain complex is not a free resolution of $S/I$, but when it is a resolution, it is minimal, see \cite[Lemma 3.1]{BPS}.
   %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i16 : scarfSimplicialComplex(J,R)
@@ -891,7 +891,7 @@ B.~Hersey was TODO. G.G.~Smith was TODO. A.~Zotine was partially supported by th
       review={\MR{3566531}},
       doi={10.1216/JCA-2016-8-4-571},
     }
-
+      
     \bib{Lutz}{article}{
       author={Lutz, Frank H.},
       editor={Bobenko, Alexander I.
