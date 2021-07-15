@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.11.6)  9 JUL 2021 14:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.11.6)  9 JUL 2021 14:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1113,7 +1113,7 @@ Package caption Info: End \AtBeginDocument code.
 
 \c@lstlisting=\count321
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 9
-2.
+3.
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
@@ -1129,62 +1129,66 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
 
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 124.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 125.
  [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
 
 Package amsrefs Warning: Use of \cites is recommended instead of \cite 
-(amsrefs)                for multiple cites 'BH, Stanley, MS' on input line 285
+(amsrefs)                for multiple cites 'BH, Stanley, MS' on input line 286
 .
 
 
 Package amsrefs Warning: The form \cite{...}*{...} is recommended
-(amsrefs)                instead of \cite[...]{...} on input line 287.
+(amsrefs)                instead of \cite[...]{...} on input line 288.
 
 
-Overfull \hbox (6.18053pt too wide) in paragraph at lines 320--322
+Overfull \hbox (6.18053pt too wide) in paragraph at lines 321--323
 [][] 
  []
 
 
-Overfull \hbox (6.18053pt too wide) in paragraph at lines 345--347
+Overfull \hbox (6.18053pt too wide) in paragraph at lines 346--348
 [][] 
  []
 
-[4] [5] [6] [7] [8] [9] [10]
-Underfull \hbox (badness 2181) in paragraph at lines 843--843
+[4] [5] [6] [7]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[8] [9] [10] [11]
+Underfull \hbox (badness 2181) in paragraph at lines 840--840
 []\T1/stix/m/n/10 (+20) David Cook II, \T1/stix/m/it/10 (+20) Sim-pli-cial de-c
 om-pos-abil-ity\T1/stix/m/n/10 (+20) , J. Softw. Al-ge-bra Geom. \T1/stix/b/n/1
 0 2 \T1/stix/m/n/10 (+20) (2010), 20--23, DOI
  []
 
-[11] [12]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 903.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 903.
+[12]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 923.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 923.
  (./template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 903.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 903.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 923.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 923.
 Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: FED1252AB68E7F898DAA1E26300C04CA;388.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 903.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 923.
  ) 
 Here is how much of TeX's memory you used:
- 28305 strings out of 481239
- 505323 string characters out of 5920377
- 773713 words of memory out of 5000000
- 42532 multiletter control sequences out of 15000+600000
- 631592 words of font info for 208 fonts, out of 8000000 for 9000
+ 28317 strings out of 481239
+ 505466 string characters out of 5920377
+ 772720 words of memory out of 5000000
+ 42538 multiletter control sequences out of 15000+600000
+ 631772 words of font info for 209 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 60i,11n,80p,1037b,1943s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,11n,80p,1037b,1946s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
 e/texmf-dist/fonts/enc/dvips/stix/stix-t1.enc}</usr/share/texlive/texmf-dist/fo
 nts/type1/public/stix/STIXGeneral-Bold.pfb></usr/share/texlive/texmf-dist/fonts
@@ -1200,10 +1204,10 @@ ic/stix/stix-mathit.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/
 stix-mathrm-bold.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/sti
 x-mathrm.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathsc
 r.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stix/stix-mathtt.pfb>
-Output written on template.pdf (12 pages, 335232 bytes).
+Output written on template.pdf (12 pages, 336570 bytes).
 PDF statistics:
- 500 PDF objects out of 1000 (max. 8388607)
- 466 compressed objects within 5 object streams
- 271 named destinations out of 1000 (max. 500000)
+ 509 PDF objects out of 1000 (max. 8388607)
+ 474 compressed objects within 5 object streams
+ 275 named destinations out of 1000 (max. 500000)
  27205 words of extra memory for PDF output out of 29859 (max. 10000000)
 
