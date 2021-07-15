@@ -4,7 +4,7 @@
    (TeX-add-to-alist 'LaTeX-provided-class-options
                      '(("amsart" "12pt" "leqno")))
    (TeX-add-to-alist 'LaTeX-provided-package-options
-                     '(("xcolor" "svgnames") ("paralist" "alwaysadjust") ("amsrefs" "alphabetic") ("fontenc" "T1") ("hyperref" "colorlinks=true" "linkcolor=DarkBlue" "urlcolor=DarkRed" "citecolor=DarkGreen") ("geometry" "centering" "includeheadfoot" "hmargin=1.0in" "tmargin=1.0in" "bmargin=1in" "headheight=6pt")))
+                     '(("xcolor" "svgnames") ("amsrefs" "alphabetic") ("fontenc" "T1") ("hyperref" "colorlinks=true" "linkcolor=DarkBlue" "urlcolor=DarkRed" "citecolor=DarkGreen") ("geometry" "centering" "includeheadfoot" "hmargin=1.0in" "tmargin=1.0in" "bmargin=1in" "headheight=6pt")))
    (add-to-list 'LaTeX-verbatim-environments-local "lstlisting")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "href")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperref")
@@ -26,7 +26,6 @@
     "xcolor"
     "tikz"
     "mathtools"
-    "paralist"
     "amsrefs"
     "fontenc"
     "mathptmx"
@@ -40,22 +39,18 @@
    (TeX-add-symbols
     "PP")
    (LaTeX-add-labels
-    "S:Introduction"
     "example of using database"
     "S:Combinatorial Topology"
     "E:using manifold database"
     "F: torus triangulation"
     "E: common surfaces and homology"
-    "S:Stanley-Reisner Theory"
-    "Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex"
+    "S:Stanley--Reisner Theory"
     "the figure-8 and its dual"
     "Figure: the bowtie complex"
     "Example: Shellability, the Cohen-Macaulay property, and the h-vector"
     "S:Resolutions of Monomial Ideals"
     "Example: First example of a homogenized chain complex"
     "Figure: Example of a labelled simplicial complex")
-   (LaTeX-add-environments
-    "example")
    (LaTeX-add-amsthm-newtheorems
     "lemma"
     "theorem"
@@ -64,7 +59,7 @@
     "proposition"
     "definition"
     "remark"
-    "examplex"
+    "example"
     "question"))
  :latex)
 
