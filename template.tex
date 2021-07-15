@@ -10,7 +10,7 @@
 \usetikzlibrary{arrows,cd}
 \tikzset{>=latex}
 \usepackage{mathtools}
-\usepackage[alwaysadjust]{paralist}
+%\usepackage[alwaysadjust]{paralist}
 \usepackage[alphabetic]{amsrefs}
 \usepackage[T1]{fontenc}
 \usepackage{mathptmx}
@@ -46,14 +46,14 @@
 \theoremstyle{definition}
 \newtheorem{definition}[lemma]{Definition}
 \newtheorem{remark}[lemma]{Remark}
-\newtheorem{examplex}[lemma]{Example}
-\newenvironment{example}
-{\pushQED{\qed}\renewcommand{\qedsymbol}{$\diamond$}\examplex}
-{\popQED\endexamplex}
+\newtheorem{example}[lemma]{Example}
+% \newenvironment{example}
+% {\pushQED{\qed}\renewcommand{\qedsymbol}{$\diamond$}\examplex}
+% {\popQED\endexamplex}
 \newtheorem{question}[lemma]{Question}
 \renewcommand{\theequation}{\arabic{section}.\arabic{lemma}.\arabic{equation}}
 \renewcommand{\thetable}{\arabic{section}.\arabic{lemma}.\arabic{equation}}
-\renewcommand{\themaintheorem}{\Alph{maintheorem}}
+\renewcommand{\thesubsection}{\arabic{section}}
 
 %% --MATH---------------------------------------------------------------------
 \newcommand{\PP}{\ensuremath{\mathbb{P}}}
@@ -73,52 +73,73 @@
 
 \title[Simplicial Complexes]{The simplicial complexes package for Macaulay2}
 \author[B.~Hersey]{Ben Hersey}
-\address{Ben Hersey: Department of Mathematics and Statistics, Queen's University, Kingston, Ontario, K7L 3N6;
-  {\normalfont \texttt{b.hersey@queensu.ca}}}
+\address{Ben Hersey: Department of Mathematics and Statistics, Queen's
+  University, Kingston, Ontario, K7L 3N6;
+  {\normalfont\texttt{b.hersey@queensu.ca}}}
 
 \author[G.G.~Smith]{Gregory G.{} Smith}
 \address{Gregory G.{} Smith: Department of Mathematics and Statistics, Queen's
-  University, Kingston, Ontario, K7L 3N6, Canada; {\normalfont
-    \texttt{ggsmith@mast.queensu.ca}}}
+  University, Kingston, Ontario, K7L 3N6, Canada;
+  {\normalfont\texttt{ggsmith@mast.queensu.ca}}}
 
 \author[A.~Zotine]{Alexandre Zotine}
-\address{Alexandre Zotine: Department of Mathematics and Statistics, Queen's University, Kingston, Ontario, K7L 3N6;
-  {\normalfont \texttt{18az45@queensu.ca}}}
+\address{Alexandre Zotine: Department of Mathematics and Statistics, Queen's
+  University, Kingston, Ontario, K7L 3N6;
+  {\normalfont\texttt{18az45@queensu.ca}}}
 
-\thanks{\emph{MSC2010:} 05E45, 13F55, 55U10. \\ \texttt{SimplicialComplexes} version 2.0.
+\thanks{2020 \emph{Mathematics Subject Classification}. 05E45, 13F55,
+  55U10% \\ \texttt{SimplicialComplexes} version 2.0
 }
-\date{\today}
+\date{2021--07--15}
 
 \begin{abstract}
-  This article demonstrates some of the updated features of the \texttt{SimplicialComplexes} package in \emph{Macaulay2}.
+  This article demonstrates some of the updated features of the
+  \texttt{SimplicialComplexes} package in \emph{Macaulay2}.
 \end{abstract}
 
 \maketitle
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Introduction}
+% \label{S:Introduction}
 \addcontentsline{toc}{section}{Overview}
-%\addtocounter{section}{1}
+\addtocounter{section}{0}
 \addtocounter{lemma}{-1}
 
 \noindent
+This paper gives an overview of the features of the
+\texttt{SimplicialComplexes} package in \emph{Macaulay2} \cite{M2}. The
+previous version of this package was developed by Sorin Popescu, Mike
+Stillman, and Gregory G. Smith in 2010. We have taken the opportunity to clean
+up the package and perform some maintenance to ensure that it stays
+computationally relevant and viable. We have also implemented a new data type
+in \texttt{SimplicialMap} in order to work with simplicial maps, and several
+constructors for well-known complexes.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
-\label{S:Introduction}
-
-This paper gives an overview of the features of the \texttt{SimplicialComplexes} package in \emph{Macaulay2} \cite{M2}. The previous version of this package was developed by Sorin Popescu, Mike Stillman, and Gregory G. Smith in 2010. We have taken the opportunity to clean up the package and perform some maintenance to ensure that it stays computationally relevant and viable. We have also implemented a new data type in \texttt{SimplicialMap} in order to work with simplicial maps, and several constructors for well-known complexes.
-
-In this package, simplicial complexes are represented algebraically through Stanley-Reisner ideals: Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_n\}$, $k$ be any commutative ring, and set $S = k[x_0,...,x_n]$. Then the \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
+In this package, simplicial complexes are represented algebraically through
+Stanley--Reisner ideals: Let $\Delta$ be an abstract simplicial complex with
+vertex set $V = \{v_0,v_1,\dotsc,v_n\}$, $k$ be any commutative ring, and set
+$S = k[x_0,\dotsc,x_n]$. Then the \textbf{Stanley--Reisner ideal}, or
+\textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
 %
-\begin{displaymath}
-  I_\Delta := \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{ v_{i_1},v_{i_2},...,v_{i_k} \} \not \subset \Delta \right) \subset S,
-\end{displaymath}
+\[
+  I_\Delta \coloneq \left( \prod_{j=1}^k x_{i_j} \ \middle| \ \{
+    v_{i_1},v_{i_2},\dotsc,v_{i_k} \} \not \subset \Delta \right) \subset S,
+\]
 %
-and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = S/I_\Delta$. In other words, $I_\Delta$ consists of generators corresponding to the \textit{non-faces} of $\Delta$. This produces a one-to-one correspondence between simplicial complexes and square-free monomial ideals, which makes it useful for computation in \textit{Macaulay2}.
+and the \textbf{Stanley--Reisner ring} corresponding to $\Delta$ is
+$k[\Delta] = S/I_\Delta$. In other words, $I_\Delta$ consists of generators
+corresponding to the \textit{non-faces} of $\Delta$. This produces a
+one-to-one correspondence between simplicial complexes and square-free
+monomial ideals, which makes it useful for computation in \textit{Macaulay2}.
 
 \begin{example}\label{example of using database}
-  There are two ways of constructing a simplicial complex, one by listing the products of the variables forming faces, or by constructing the Stanley-Reisner ideal (which has generators given by the \textit{non-faces}). For instance, we can construct the 1-skeleton of a 2-simplex using both methods:
+  There are two ways of constructing a simplicial complex, one by listing the
+  products of the variables forming faces, or by constructing the
+  Stanley--Reisner ideal (which has generators given by the
+  \textit{non-faces}). For instance, we can construct the 1-skeleton of a
+  2-simplex using both methods:
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i2 : S = ZZ[x_0,x_1,x_2];
@@ -135,18 +156,35 @@ and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = 
   %
 \end{example}
 
-In Section \ref{S:Combinatorial Topology}, we demonstrate some of the topological features of the package. Namely, the use of the small manifolds database provided by Lutz \cite{LutzM}, and some homological computations. In Section \ref{S:Stanley-Reisner Theory} we review some Stanley-Reisner theory and describe how to work with simplicial complexes using their corresponding Stanley-Reisner ideal. We also cover $f$- and $h$-vectors, shellability, and being Cohen-Macaulay. We give examples on how to check if a simplicial complex is Cohen-Macaulay using the package.
+In Section \ref{S:Combinatorial Topology}, we demonstrate some of the
+topological features of the package. Namely, the use of the small manifolds
+database provided by Lutz \cite{LutzM}, and some homological computations. In
+Section \ref{S:Stanley--Reisner Theory} we review some Stanley--Reisner theory
+and describe how to work with simplicial complexes using their corresponding
+Stanley--Reisner ideal. We also cover $f$- and $h$-vectors, shellability, and
+being Cohen-Macaulay. We give examples on how to check if a simplicial complex
+is Cohen-Macaulay using the package.
 
-Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the some chain complex constructions arising from simplicial complexes. We give an example of ideal homogenization and resolutions supported on a simplicial complex, and we provide examples of Taylor, Lyubeznik, and Buchberger resolutions; as well as Scarf complexes.
+Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the
+some chain complex constructions arising from simplicial complexes. We give an
+example of ideal homogenization and resolutions supported on a simplicial
+complex, and we provide examples of Taylor, Lyubeznik, and Buchberger
+resolutions; as well as Scarf complexes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Combinatorial Topology}
+\addtocounter{section}{1}
+\subsection{Combinatorial Topology}
 \label{S:Combinatorial Topology}
 
-Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 or less vertices \cite{LutzM}. We have implemented these databases into the package---however we have excluded the database of 3-manifolds with 10 vertices, due to the large number of examples causing long loading times.
+Lutz has provided a database enumerating all of the 2 and 3-manifolds having
+10 or less vertices \cite{LutzM}. We have implemented these databases into the
+package---however we have excluded the database of 3-manifolds with 10
+vertices, due to the large number of examples causing long loading times.
 
-\begin{example}\label{E:using manifold database}
-  These databases can be used to find nice testbeds of examples: for instance, we can search for simplicial maps
+\begin{example}
+  \label{E:using manifold database}
+  These databases can be used to find nice testbeds of examples: for instance,
+  we can search for simplicial maps
   %
   \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i2 : R = ZZ[a..i];
@@ -173,7 +211,7 @@ Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 
 \end{example}
 \begin{figure}[t]
   \begin{center}
-  \begin{tikzpicture}[scale = .25]
+  \begin{tikzpicture}[scale = .15]
     \draw[-,very thick] (0,0) -- (15,0) -- (15,15) -- (0,15) -- cycle;
     \draw[-,very thick] (0,5) -- (5,0);
     \draw[-,very thick] (0,5) -- (10,0);
@@ -204,38 +242,45 @@ Lutz has provided a database enumerating all of the 2 and 3-manifolds having 10 
     \filldraw (0,5) circle (5pt);
     \filldraw (5,10) circle (5pt);
     \filldraw (10,5) circle (5pt);
-    \node at (-.5,-.5) {d};
-    \node at (5,-.75) {g};
-    \node at (10,-.75) {f};
-    \node at (15.5,-.5) {d};
-    \node at (15.75,5) {c};
-    \node at (15.75,10) {a};
-    \node at (15.5,15.5) {d};
-    \node at (10,15.75) {f};
-    \node at (5,15.75) {g};
-    \node at (-.5,15.5) {d};
-    \node at (-.75,10) {a};
-    \node at (-.75,5) {c};
-    \node at (5.5,10.5) {b};
-    \node at (9.5,4.5) {e};
-  \end{tikzpicture}\\
+    \node at (-.5,-.5) {\scriptsize $d$};
+    \node at (5,-.75) {\scriptsize $g$};
+    \node at (10,-.75) {\scriptsize $f$};
+    \node at (15.5,-.5) {\scriptsize $d$};
+    \node at (15.75,5) {\scriptsize $c$};
+    \node at (15.75,10) {\scriptsize $a$};
+    \node at (15.5,15.5) {\scriptsize $d$};
+    \node at (10,15.75) {\scriptsize $f$};
+    \node at (5,15.75) {\scriptsize $g$};
+    \node at (-.5,15.5) {\scriptsize $d$};
+    \node at (-.75,10) {\scriptsize $a$};
+    \node at (-.75,5) {\scriptsize $c$};
+    \node at (5.5,10.5) {\scriptsize $b$};
+    \node at (9.5,4.5) {\scriptsize $e$};
+  \end{tikzpicture}
   \end{center}
-  \caption{The minimal triangulation of the torus. Image credit: \cite{Lutz}}\label{F: torus triangulation}
+  \caption{The minimal triangulation of the torus. Image credit: \cite{Lutz}}
+  \label{F: torus triangulation}
 \end{figure}
 
-The database also contains many triangulations of various interesting surfaces, such as the torus, Klein bottle, and real projective plane. Below are the smallest indices (and hence minimal triangulations of) these surfaces in the database, and see Figure \ref{F: torus triangulation} for a visual representation of the torus triangulation.
+The database also contains many triangulations of various interesting
+surfaces, such as the torus, Klein bottle, and real projective plane. Below
+are the smallest indices (and hence minimal triangulations of) these surfaces
+in the database, and see Figure \ref{F: torus triangulation} for a visual
+representation of the torus triangulation.
 
-\begin{example}\label{E: common surfaces and homology}
-  %
-  \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+\begin{example}
+  \label{E: common surfaces and homology}
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i8 : Torus = smallManifold(2, 7, 6, R);
     i9 : KleinBottle = smallManifold(2, 8, 12, R);
     i10 : RP2 = smallManifold(2, 6, 1, R);
-  \end{lstlisting}
+\end{lstlisting}
+  % 
+  We can check that these are the right surfaces by computing their
+  homology. Theorems~6.2--6.4 from Munkres confirm that they match
+  \cite{Munkres}.
   %
-  We can check that these are the right surfaces by computing their homology. Theorems 6.2, 6.3, and 6.4 from Munkres confirm that they match \cite{Munkres}.
-  %
-  \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i11 : for i to 2 list prune HH_i Torus
                 2    1
     o11 = {0, ZZ , ZZ }
@@ -248,9 +293,10 @@ The database also contains many triangulations of various interesting surfaces, 
     o13 = {0, cokernel | 2 |, 0}
     o13 : List
 \end{lstlisting}
-  %
-  We can explicitly identify the generators of the homology by mapping circles onto the torus.
-  \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+  % 
+  We can explicitly identify the generators of the homology by mapping circles
+  onto the torus.
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i6 : Circle = skeleton(1, simplexComplex(2,T));
     i7 : f1 = map(Torus,Circle,matrix{{R_3,R_6,R_5}});
     o7 : prints are being ugly
@@ -271,21 +317,51 @@ The database also contains many triangulations of various interesting surfaces, 
 \end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Stanley-Reisner Theory}
-\label{S:Stanley-Reisner Theory}
+\subsection{Stanley--Reisner Theory}
+\addtocounter{section}{1}
+\label{S:Stanley--Reisner Theory}
 
 \noindent
-Stanley-Reisner theory connects homological properties of $k[\Delta]$ to combinatorial and topological properties of $\Delta$. We will discuss some of the connections here, but a survey of results can be found in \cites{BH, Stanley, MS}.
+Stanley--Reisner theory connects homological properties of $k[\Delta]$ to
+combinatorial and topological properties of $\Delta$. We will discuss some of
+the connections here, but a survey of results can be found in
+\cites{BH, Stanley, MS}.
 
-Let $\Delta$ be an abstract simplicial complex with vertex set $V = \{v_0,v_1,...,v_n\}$, let $k$ be a commutative ring, and let $S = k[x_0,x_1,...,x_n]$. The \textbf{Stanley-Reisner ideal}, or \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
-%
-\begin{displaymath}
-  I_\Delta := \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{ v_{i_1},v_{i_2},...,v_{i_k} \} \not \subset \Delta \right) \subset S,
-\end{displaymath}
-%
-and the \textbf{Stanley-Reisner ring} corresponding to $\Delta$ is $k[\Delta] = S/I_\Delta$. This correspondence between simplicial complexes and square-free monomial ideals is one-to-one. Stanley-Reisner theory connects homological properties of $k[\Delta]$ to combinatorial and topological properties of $\Delta$. A survey of results can be found in \cite{BH, Stanley, MS}.
+Let $\Delta$ be an abstract simplicial complex with vertex set
+$V = \{v_0,v_1,\dotsc,v_n\}$, let $k$ be a commutative ring, and let
+$S = k[x_0,x_1,\dotsc,x_n]$. The \textbf{Stanley--Reisner ideal} of $\Delta$
+is defined to be square-free monomial ideal
 
-If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m_i = \displaystyle \prod x_j^{a_{i_j}}$, then the \textbf{Alexander dual} of $I$ is defined to be $\displaystyle I^* := \bigcap_{i=1}^q\hspace{2pt} (x_0^{a_{i_1}},\ x_1^{a_{i_2}},...,\ x_{n-1}^{a_{i_{n-1}}})$. If $I = I_\Delta$ for some simplicial complex $\Delta$, then $I^*$ is also a square-free monomial ideal and is the Stanley-Reisner ideal of a simplicial complex $\Delta^*$, which we call the \textbf{Alexander dual} complex to $\Delta$. There is also a combinatorial description of $\Delta^*$, given by $\Delta^* = \{ F \subset V \ | \ V \setminus F \not \in \Delta \}$. One of the attractive features of Alexander duality is the relationship between the cohomology of $\Delta$ and the homology of $\Delta^*$. More specifically, if $\Delta$ is a simplicial complex on $n$ vertices, then $    \widetilde{H}_{i-1}(\Delta^*) = \widetilde{H}^{n-2-i}(\Delta)$ for all $i \in \mathbb Z$, see \cite[Theorem 5.6]{MS}.
+$I_\Delta \coloneq \bigl( \prod_{j=1}^k x_{i_j} \mathrel{\big|} \{
+v_{i_1},v_{i_2},\dotsc,v_{i_k} \} \not \subset \Delta \bigr) \subset S$
+%
+\[
+  I_\Delta \coloneq \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{
+    v_{i_1},v_{i_2},\dotsc,v_{i_k} \} \not \subset \Delta \right) \subset S,
+\]
+%
+and the \textbf{Stanley--Reisner ring} corresponding to $\Delta$ is
+$k[\Delta] = S/I_\Delta$. This correspondence between simplicial complexes and
+square-free monomial ideals is one-to-one. Stanley--Reisner theory connects
+homological properties of $k[\Delta]$ to combinatorial and topological
+properties of $\Delta$. A survey of results can be found in
+\cite{BH, Stanley, MS}.
+
+If $I = (m_1, m_2, \dotsc, m_q) \subset S$ is a monomial ideal, with minimal
+generators $m_i = \prod x_j^{a_{i_j}}$, then the \textbf{Alexander dual} of
+$I$ is defined to be
+$I^* \coloneq \bigcap_{i=1}^q (x_0^{a_{i_1}},\ x_1^{a_{i_2}},\dotsc,\
+x_{n-1}^{a_{i_{n-1}}})$. If $I = I_\Delta$ for some simplicial complex
+$\Delta$, then $I^*$ is also a square-free monomial ideal and is the
+Stanley--Reisner ideal of a simplicial complex $\Delta^*$, which we call the
+\textbf{Alexander dual} complex to $\Delta$. There is also a combinatorial
+description of $\Delta^*$, given by
+$\Delta^* = \{ F \subset V \ | \ V \setminus F \not \in \Delta \}$. One of the
+attractive features of Alexander duality is the relationship between the
+cohomology of $\Delta$ and the homology of $\Delta^*$. More specifically, if
+$\Delta$ is a simplicial complex on $n$ vertices, then
+$ \widetilde{H}_{i-1}(\Delta^*) = \widetilde{H}^{n-2-i}(\Delta)$ for all
+$i \in \mathbb Z$, see \cite[Theorem~5.6]{MS}.
 %
 % \begin{theorem}[Alexander duality for simplicial complexes]\label{Combinatorial Alexander duality}
 %   Let $\Delta$ be a simplicial complex with vertex set $V = \{v_1,v_2,..,v_n \}$. Then
@@ -297,12 +373,15 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
 %   for all $i \in \mathbb Z$.
 % \end{theorem}
 %
-\begin{example}\label{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex}
-  Consider the simplicial complex $\bowtie$, depicted in Figure \ref{the figure-8 and its dual}.
+\begin{example}
+  \label{Example: Stanley--Reisner ideal and Alexander duality for the bowtie
+    complex}
+  Consider the simplicial complex $\bowtie$, depicted in
+  Figure~\ref{the figure-8 and its dual}.
   %
   \begin{figure}[t]
     \begin{subfigure}{0.3\textwidth}
-      \begin{tikzpicture}[scale = .5]
+      \begin{tikzpicture}[scale = .3]
         % \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
         \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
         % \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
@@ -312,18 +391,18 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
         \filldraw (4,2.5) circle (5pt);
         \filldraw (8,0) circle (5pt);
         \filldraw (8,5) circle (5pt);
-        \node at (-.5,-.5) {$v_0$};
-        \node at (-.5,5.5) {$v_1$};
-        \node at (4,1.75) {$v_2$};
-        \node at (8.5,-.5) {$v_3$};
-        \node at (8.5,5.5) {$v_4$};
+        \node at (-.5,-.5) {\scriptsize $v_0$};
+        \node at (-.5,5.5) {\scriptsize $v_1$};
+        \node at (4,1.75) {\scriptsize $v_2$};
+        \node at (8.5,-.5) {\scriptsize $v_3$};
+        \node at (8.5,5.5) {\scriptsize $v_4$};
         % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
       \end{tikzpicture}
 %      \caption{The simplicial complex $\Delta$}\label{figure-8 complex}
     \end{subfigure}
     \hspace{50pt}
     \begin{subfigure}{0.3\textwidth}
-      \begin{tikzpicture}[scale = .5]
+      \begin{tikzpicture}[scale = .3]
         \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
         \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
         \filldraw[gray!10] (0,0) -- (8,0) -- (4,2.5) -- cycle;
@@ -337,21 +416,23 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
         \filldraw (4,2.5) circle (5pt);
         \filldraw (8,0) circle (5pt);
         \filldraw (8,5) circle (5pt);
-        \node at (-.5,-.5) {$v_3$};
-        \node at (-.5,5.5) {$v_1$};
-        \node at (4,1.75) {$v_2$};
-        \node at (8.5,-.5) {$v_0$};
-        \node at (8.5,5.5) {$v_4$};
+        \node at (-.5,-.5) {\scriptsize $v_3$};
+        \node at (-.5,5.5) {\scriptsize $v_1$};
+        \node at (4,1.75) {\scriptsize $v_2$};
+        \node at (8.5,-.5) {\scriptsize $v_0$};
+        \node at (8.5,5.5) {\scriptsize $v_4$};
         % \node at (-2.5,2.5) {\huge $\Delta^* = $};
       \end{tikzpicture}
 %      \caption{The Alexandual Dual of $\Delta$}
     \end{subfigure}
     \caption{The simplicial complex $\bowtie$ (left) and its Alexander dual $\bowtie^*$ (right).}\label{the figure-8 and its dual}
   \end{figure}
-  %
-  The Stanley-Reisner ideal of $\bowtie$ is $I_{\bowtie} = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\ x_2x_3x_4)$. We can exhibit the correspondence between $\bowtie$ and $I_{\bowtie}$ using the methods \texttt{simplicialComplex} and \texttt{ideal}.
-  %
-  \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+  The Stanley--Reisner ideal of $\bowtie$ is
+  $I_{\bowtie} = (x_0x_1x_2,\ x_0x_3,\ x_1x_3,\ x_0x_4,\ x_1x_4,\
+  x_2x_3x_4)$. We can exhibit the correspondence between $\bowtie$ and
+  $I_{\bowtie}$ using the methods \texttt{simplicialComplex} and
+  \texttt{ideal}.
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i28 : S = QQ[x_0..x_4];
     i29 : I$⋈$ = monomialIdeal(x_0*x_1*x_2,x_0*x_3,x_1*x_3,x_0*x_4,x_1*x_4,x_2*x_3*x_4);
     o29 : MonomialIdeal of S
@@ -360,26 +441,20 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
     o30 : SimplicialComplex
     i31 : I$⋈$ == ideal $⋈$
     o31 = true
-  \end{lstlisting}
-  %
-  We can use the \texttt{dual} method to compute the Alexander dual of $\bowtie$.
-  % 
+\end{lstlisting}
+  We can use the \texttt{dual} method to compute the Alexander dual of
+  $\bowtie$.
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i133 : dual $⋈$
     o133 = simplicialComplex | x_1x_2x_4 x_0x_2x_4 x_1x_2x_3 x_0x_2x_3 |
     o133 : SimplicialComplex
-\end{lstlisting}
-  %
-  which is the simplicial complex $⋈^*$.
-    % 
-  By the definition of the Alexander dual, we also know that $(I_{\bowtie})^* = I_{\bowtie^*}$, which we can verify directly.
-  % 
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i134 : dual(monomialIdeal $⋈$) == monomialIdeal dual $⋈$
     o134 = true
 \end{lstlisting}
   % 
-  Moreover, we can verify the combinatorial description of $\bowtie^*$ by showing that the minimal generators of $I_{\bowtie}$ correspond the complements of the facets of $\bowtie^*$.
+  Moreover, we can verify the combinatorial description of $\bowtie^*$ by
+  showing that the minimal generators of $I_{\bowtie}$ correspond the
+  complements of the facets of $\bowtie^*$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i140 : dualFacets = first entries facets dual $⋈$
@@ -394,7 +469,8 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
     o141 = true
 \end{lstlisting}
   % 
-  Finally, we exhibit the isomorphisms between the cohomology of $\bowtie$ and the homology of $\bowtie^*$.
+  Finally, we exhibit the isomorphisms between the cohomology of $\bowtie$ and
+  the homology of $\bowtie^*$.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i94 : all(-1..5, i -> all(-1..5, i -> prune HH^(3-i) $⋈$ == prune HH_(i-1) dual $⋈$)
@@ -402,24 +478,35 @@ If $I = (m_1,...,m_q) \subset S$ is a monomial ideal, with minimal generators $m
 \end{lstlisting}  
 \end{example}
 %
-For a simplicial complex $\Delta$ and a face $F \in \Delta$, we define the \textbf{link} of $F$ to be the subcomplex of $\Delta$ defined by
-%
-\begin{displaymath}
-  \mathrm{link}_\Delta(F) := \{ G \in \Delta \ | \ F \cup G \in \Delta \ \text{ and } \ F \cap G = \varnothing \}.
-\end{displaymath}
-%
-We can now exhibit a more substantive result of Stanley-Reisner theory, which is the ``dual version'' of Hochster's formula, see \cite[Corollary 1.40]{MS}. This formula allows us to compute the multigraded Betti numbers of $I_\Delta$, which are defined to be $\beta_{i,m}(I_\Delta) = \big( \mathrm{Tor}_i^S(I_\Delta, k) \big)_m$. For a subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the Betti number in homological degree $i$ and multidegree $(a_1,...,a_n) \in \mathbb Z^n$, where $a_i = 1$ if $v_i \in F$ and $a_i = 0$ otherwise.
+For a simplicial complex $\Delta$ and a face $F \in \Delta$, we define the
+\textbf{link} of $F$ to be the subcomplex of $\Delta$ defined by
+$\operatorname{link}_\Delta(F) \coloneq \{ G \in \Delta \ | \ F \cup G \in
+\Delta \ \text{ and } \ F \cap G = \varnothing \}$. We can now exhibit a more
+substantive result of Stanley--Reisner theory, which is the ``dual version''
+of Hochster's formula, see \cite[Corollary~1.40]{MS}. This formula allows us
+to compute the multigraded Betti numbers of $I_\Delta$, which are defined to
+be $\beta_{i,m}(I_\Delta) = \operatorname{Tor}_i^S(I_\Delta, k)_m$. For a
+subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the
+Betti number in homological degree $i$ and multidegree
+$(a_1, a_2, \dotsc, a_n) \in \mathbb{Z}^n$, where $a_i = 1$ if $v_i \in F$ and
+$a_i = 0$ otherwise.
 %
 \begin{theorem}[Hochster's Formula, dual version]
-  Let $\Delta$ be a simplicial complex with vertex set $V = \{v_0,v_1,...,v_n\}$ and $S = k[x_0,x_1,...,x_n]$, where $k$ is a field. The nonzero multigraded Betti numbers of $I_\Delta$ and $S/I_\Delta$ lie in squarefree degrees. Moreover, if $F \subset V$, then
-  %
-  \begin{displaymath}
-    \beta_{i,F} (I_\Delta) = \beta_{i+1,F} (S/I_\Delta) = \dim_k\Big(\widetilde H_{i-1} \big( \mathrm{link}_{\Delta^*}(V \setminus F)\; ; \; k \big) \Big).
-  \end{displaymath}
+  Let $\Delta$ be a simplicial complex with vertex set
+  $V = \{v_0,v_1,\dotsc,v_n\}$ and $S = k[x_0,x_1,\dotsc,x_n]$, where $k$ is a
+  field. The nonzero multigraded Betti numbers of $I_\Delta$ and $S/I_\Delta$
+  lie in squarefree degrees. Moreover, if $F \subset V$, then
+  \[
+    \beta_{i,F} (I_\Delta) = \beta_{i+1,F} (S/I_\Delta) = \dim_k \widetilde
+    H_{i-1} \big( \operatorname{link}_{\Delta^*}(V \setminus F); k \big) \, .
+  \]
 \end{theorem}
 %
 \begin{example}
-  In Example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex}, we computed the Alexander dual of the complex $\bowtie$. We can use the \texttt{link} method to compute the links of various faces. For example, we compute the link of the central vertex $v_2$, whose link is a square.
+  In Example \ref{Example: Stanley--Reisner ideal and Alexander duality for
+    the bowtie complex}, we computed the Alexander dual of the complex
+  $\bowtie$. We can use the \texttt{link} method to compute the links of
+  various faces. The link of the central vertex $v_2$ is a square.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i27 : link(dual $⋈$, x_2)
@@ -454,11 +541,11 @@ We can now exhibit a more substantive result of Stanley-Reisner theory, which is
   where the rows are indexed by the homological degree (starting at $0$), and the columns are indexed by the squarefree multidegrees.
 \end{example}
 % 
-We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that $\Delta$ is \textbf{shellable} if we can order the facets $F_1,...,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,...,F_{i-1} \rangle$ is a pure codimension one simplicial complex. We say that a simplicial complex $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}.
+We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that $\Delta$ is \textbf{shellable} if we can order the facets $F_1,\dotsc,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,\dotsc,F_{i-1} \rangle$ is a pure codimension one simplicial complex. We say that a simplicial complex $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}.
 
-% The figure-8 complex from example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
+% The figure-8 complex from example \ref{Example: Stanley--Reisner ideal and Alexander duality for the bowtie complex} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
 
-For Stanley-Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if and only if $\widetilde H_i(\mathrm{link}_\Delta(F)\; ;\;k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
+For Stanley--Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if and only if $\widetilde H_i(\mathrm{link}_\Delta(F)\; ;\;k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
 %
 \begin{displaymath}
   \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t + \cdots h_k t^k}{(1-t)^{d+1}}
@@ -470,13 +557,13 @@ where $d = \dim \Delta$, and $0 \leq k \leq d+1$ is such that $h_k \not = 0$. If
   0 \leq h_i \leq \binom{n-d+i}{i}
 \end{displaymath}
 %
-for $i = 0,1,...,d+1$. We can also compute the $h$-vector using the combinatorics of $\Delta$. Specifically, if $\Delta$ is a $d$-dimensional simplicial complex, then \cite[Lemma 5.1.8]{BH} tells us that
+for $i = 0,1,\dotsc,d+1$. We can also compute the $h$-vector using the combinatorics of $\Delta$. Specifically, if $\Delta$ is a $d$-dimensional simplicial complex, then \cite[Lemma 5.1.8]{BH} tells us that
 %
 \begin{displaymath}
   h_j = \sum_{i=0}^j (-1)^{j-i} \binom{d+1-i}{j-i}f_{i-1}
 \end{displaymath}
 %
-for $j = 0,1,...,d+1$.
+for $j = 0,1,\dotsc,d+1$.
 %
 
 %
@@ -501,8 +588,12 @@ for $j = 0,1,...,d+1$.
   \caption{The bowtie complex}\label{Figure: the bowtie complex}
 \end{figure}
 %
-\begin{example}\label{Example: Shellability, the Cohen-Macaulay property, and the h-vector}
-  The simplicial complex $\bowtie$ introduced in example \ref{Example: Stanley-Reisner ideal and Alexander duality for the bowtie complex} is shellable and Cohen-Macaulay. We can verify the Cohen-Macaulay property using \cite[Corollary 5.3.9]{BH}.
+\begin{example}
+  \label{Example: Shellability, the Cohen-Macaulay property, and the h-vector}
+  The simplicial complex $\bowtie$ introduced in example
+  \ref{Example: Stanley--Reisner ideal and Alexander duality for the bowtie complex}
+  is shellable and Cohen-Macaulay. We can verify the Cohen-Macaulay property
+  using \cite[Corollary 5.3.9]{BH}.
   % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i43 : faceList = flatten for i from -1 to dim $⋈$ list (faces $⋈$)#i
@@ -513,9 +604,18 @@ for $j = 0,1,...,d+1$.
     o44 = true
 \end{lstlisting}
   % 
-  However, this package does not provide a method for checking that $\Delta$ is shellable. Such a method is available in the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, see \cite{Cook}.
+  However, this package does not provide a method for checking that $\Delta$
+  is shellable. Such a method is available in the
+  \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, see
+  \cite{Cook}.
 
-  Let us also consider the ``bowtie'' simplicial complex $\fbowtie$, which is obtained by filling in the loops of the simplicial complex $\bowtie$, see Figure \ref{Figure: the bowtie complex}. Since the intersection of the two facets of $\fbowtie$ is a single point, which has codimension two, the bowtie complex is not shellable. The simplicial complex $\fbowtie$ is not Cohen-Macaulay either, which we can verify by computing the $h$-vector of $\fbowtie$.
+  Let us also consider the ``bowtie'' simplicial complex $\fbowtie$, which is
+  obtained by filling in the loops of the simplicial complex $\bowtie$, see
+  Figure \ref{Figure: the bowtie complex}. Since the intersection of the two
+  facets of $\fbowtie$ is a single point, which has codimension two, the
+  bowtie complex is not shellable. The simplicial complex $\fbowtie$ is not
+  Cohen-Macaulay either, which we can verify by computing the $h$-vector of
+  $\fbowtie$.
   %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i3 : I$⧓$ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
@@ -533,20 +633,36 @@ for $j = 0,1,...,d+1$.
     o8 : List
 \end{lstlisting}
   %
-  Since the $h$-vector of $\fbowtie$ has a negative entry, this simplicial complex cannot be Cohen-Macaulay, by \cite[Lemma 5.1.10]{BH}.
+  Since the $h$-vector of $\fbowtie$ has a negative entry, this simplicial
+  complex cannot be Cohen-Macaulay, by \cite[Lemma~5.1.10]{BH}.
 \end{example}
 
-Some other notable examples of simplicial complexes that are Cohen-Macaulay, but not shellable, are the Rudin ball and the Ziegler ball. Both of these complexes are included in the package and can be constructed using the methods \texttt{rudinBallComplex} and \texttt{zieglerBallComplex} respectively.
+Some other notable examples of simplicial complexes that are Cohen-Macaulay,
+but not shellable, are the Rudin ball and the Ziegler ball. Both of these
+complexes are included in the package and can be constructed using the methods
+\texttt{rudinBallComplex} and \texttt{zieglerBallComplex} respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Resolutions of Monomial Ideals}
+\subsection{Resolutions of Monomial Ideals}
+\addtocounter{section}{1}
 \label{S:Resolutions of Monomial Ideals}
 %
 
 %
-Let $\Delta$ be a simplicial complex with $q$ vertices and let $\widetilde C(\Delta;k)$ be the augmented chain complex of $\Delta$ with incidence function $\varepsilon$. We will let $S = k[x_0,...,x_n]$ be a polynomial ring over the commutative ring $k$, which is typically a field. We assume that the ring $S$ has the fine $\mathbb N^{n+1}$ grading.
+Let $\Delta$ be a simplicial complex with $q$ vertices and let
+$\widetilde C(\Delta;k)$ be the augmented chain complex of $\Delta$ with
+incidence function $\varepsilon$. We will let $S = k[x_0,\dotsc,x_n]$ be a
+polynomial ring over the commutative ring $k$, which is typically a field. We
+assume that the ring $S$ has the fine $\mathbb N^{n+1}$ grading.
 
-For a monomial ideal $I \subset S$, minimally generated by $m_1,m_2,...,m_q$, a \textbf{labelling} of $\Delta$ by $I$ is a bijection which assigns a minimal generator of $I$ to each vertex of $\Delta$. Without loss of generality, we will assume this assignment is $v_i \longmapsto m_i$ for $i = 1,2,...,q$. For each face $F \in \Delta$ we can construct the monomial $m_F = \mathrm{lcm}(m_i \ | \ i \in F )$. The $I$-\textbf{homogenization} of $\widetilde{C} (\Delta;k)$ is the chain complex $(\mathbf G, d)$ such that
+For a monomial ideal $I \subset S$, minimally generated by
+$m_1,m_2,\dotsc,m_q$, a \textbf{labelling} of $\Delta$ by $I$ is a bijection
+which assigns a minimal generator of $I$ to each vertex of $\Delta$. Without
+loss of generality, we will assume this assignment is $v_i \longmapsto m_i$
+for $i = 1,2,\dotsc,q$. For each face $F \in \Delta$ we can construct the
+monomial $m_F = \mathrm{lcm}(m_i \ | \ i \in F )$. The
+$I$-\textbf{homogenization} of $\widetilde{C} (\Delta;k)$ is the chain complex
+$(\mathbf G, d)$ such that
 %
 \begin{displaymath}
   G_0 = S \ \text{ and } \ G_i = \bigoplus_{\dim(F) = i-1}S(m_F).
@@ -558,10 +674,17 @@ We will use $\{f_F \ | \ F \in \Delta \}$ to denote the canonical basis of $G$ a
   d(f_F) \hspace{4pt} = \hspace{-8pt} \sum_{\dim(F) = i-1} \frac{m_F}{m_{F'}} \cdot \varepsilon(F,F') f_{F'}.
 \end{displaymath}
 %
-We say that $I$ has a \textbf{resolution supported on} $\Delta$ if the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution for some labelling of the vertices of $\Delta$. For further details on $I$-homogenization, we refer the reader to any one of \cite{BPS, MS, Peeva, PV}.
+We say that $I$ has a \textbf{resolution supported on} $\Delta$ if the
+$I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution for some
+labelling of the vertices of $\Delta$. For further details on
+$I$-homogenization, we refer the reader to any one of \cite{BPS, MS, Peeva,
+  PV}.
 %
-\begin{example}\label{Example: First example of a homogenized chain complex}
-    Let $S = \mathbb Q[x_0,x_1,x_2,x_3]$, let $I = (x_0x_1,x_0x_2,x_0x_3,x_1x_2x_3)$, and let $\Gamma$ be the simplicial complex with facets $\{ v_1,v_2,v_3 \}$ and $\{ v_2, v_4 \}$.
+\begin{example}
+  \label{Example: First example of a homogenized chain complex}
+  Let $S = \mathbb Q[x_0,x_1,x_2,x_3]$, let
+  $I = (x_0x_1,x_0x_2,x_0x_3,x_1x_2x_3)$, and let $\Gamma$ be the simplicial
+  complex with facets $\{ v_1,v_2,v_3 \}$ and $\{ v_2, v_4 \}$.
   % \begin{displaymath}
   %   \begin{tikzpicture}[scale=.35]
   %     \filldraw[gray!15] (0,0) -- (10,0) -- (5,7) -- cycle;
@@ -583,10 +706,13 @@ We say that $I$ has a \textbf{resolution supported on} $\Delta$ if the $I$-homog
   %   \end{tikzpicture}
   % \end{displaymath}
   % 
-  If we use the labelling $v_1 \longmapsto x_0x_1$, $v_2 \longmapsto x_0x_2$, $v_3 \longmapsto x_0x_3$, and $v_4 \longmapsto x_1x_2x_3$, we get the labelled simplicial complex shown in Figure \ref{Figure: Example of a labelled simplicial complex}.
+  If we use the labelling $v_1 \longmapsto x_0x_1$, $v_2 \longmapsto x_0x_2$,
+  $v_3 \longmapsto x_0x_3$, and $v_4 \longmapsto x_1x_2x_3$, we get the
+  labelled simplicial complex shown in Figure \ref{Figure: Example of a
+    labelled simplicial complex}.
   % 
   \begin{figure}[h]\centering
-    \begin{tikzpicture}[scale=.3]
+    \begin{tikzpicture}[scale=.2]
       \filldraw[gray!15] (0,0) -- (10,0) -- (5,7) -- cycle;
       \draw[thick] (0,0) -- (10,0) -- (5,7) -- cycle;
       \draw[thick] (5,7) -- (14,6);
@@ -594,10 +720,10 @@ We say that $I$ has a \textbf{resolution supported on} $\Delta$ if the $I$-homog
       \filldraw (10,0) circle (4pt);
       \filldraw (5,7) circle (4pt);
       \filldraw (14,6) circle (4pt);
-      \draw node at (-1.3,0){\scalebox{.8}{$x_0x_1$}};
-      \draw node at (11.3,0){\scalebox{.8}{$x_0x_3$}};
-      \draw node at (5,7.5){\scalebox{.8}{$x_0x_2$}};
-      \draw node at (15.9,6){\scalebox{.8}{$x_1x_2x_3$}};
+      \draw node at (-1.3,0){\scriptsize $x_0x_1$};
+      \draw node at (11.3,0){\scriptsize $x_0x_3$};
+      \draw node at (5,7.5){\scriptsize $x_0x_2$};
+      \draw node at (15.9,6){\scriptsize $x_1x_2x_3$};
       % \draw[blue] node at (5,-.7){\scalebox{.8}{$x_1x_3x_4$}};
       % \draw[blue] node at (0.6,3.5){\scalebox{.8}{$x_1x_2x_4$}};
       % \draw[blue] node at (9.3,3.5){\scalebox{.8}{$x_2x_3x_4$}};
@@ -660,7 +786,7 @@ The $I$-homogenization of $\Delta$ is dependent on how you label the vertices, a
 Given a monomial ideal $I$, there are several algorithms that will produce a simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimal generators of $I$ such that the $I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often non-minimally. Examples of such constructions are the Taylor resolution, Lyubeznik resolution, and the Buchberger resolution, all of which are implemented in \texttt{SimplicialComplexes}. We have also implemented a constructor for the Scarf complex, which is a complex that is not always a free resolution of $S/I$, but when it is a free resolution it is minimal. We will not describe these constructions here, but a concise description of the Taylor resolution, Lyubeznik resolution, and Scarf complex is given in \cite{Mermin}, and a description of the Buchberger resolution is given in \cite{OW}. 
 % 
 \begin{example}
-  Consider the monomial ideal $I = (x_1x_3, x_2^2, x_0x_2, x_1^2, x_0^2) \subset \mathbb C[x_0,...,x_3]$. The Taylor resolution of $I$ can be realized as an $I$-homogenization of the $4$-simplex. 
+  Consider the monomial ideal $I = (x_1x_3, x_2^2, x_0x_2, x_1^2, x_0^2) \subset \mathbb C[x_0,\dotsc,x_3]$. The Taylor resolution of $I$ can be realized as an $I$-homogenization of the $4$-simplex. 
 %  
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i2 : R = QQ[a,b,c,d,e];
