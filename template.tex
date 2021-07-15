@@ -72,20 +72,17 @@
 \begin{document}
 
 \title[Simplicial Complexes]{The simplicial complexes package for Macaulay2}
+
 \author[B.~Hersey]{Ben Hersey}
-\address{Ben Hersey: Department of Mathematics and Statistics, Queen's
-  University, Kingston, Ontario, K7L 3N6;
-  {\normalfont\texttt{b.hersey@queensu.ca}}}
-
-\author[G.G.~Smith]{Gregory G.{} Smith}
-\address{Gregory G.{} Smith: Department of Mathematics and Statistics, Queen's
-  University, Kingston, Ontario, K7L 3N6, Canada;
-  {\normalfont\texttt{ggsmith@mast.queensu.ca}}}
-
+\author[G.G.~Smith]{Gregory G.{} Smith} 
 \author[A.~Zotine]{Alexandre Zotine}
-\address{Alexandre Zotine: Department of Mathematics and Statistics, Queen's
+
+\address{Department of Mathematics and Statistics, Queen's
   University, Kingston, Ontario, K7L 3N6;
-  {\normalfont\texttt{18az45@queensu.ca}}}
+  {\normalfont\texttt{hersey.b@queensu.ca}},
+  {\normalfont\texttt{ggsmith@mast.queensu.ca}},
+  {\normalfont\texttt{18az45@queensu.ca}}.
+}
 
 \thanks{2020 \emph{Mathematics Subject Classification}. 05E45, 13F55,
   55U10% \\ \texttt{SimplicialComplexes} version 2.0
@@ -101,8 +98,6 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \section{Introduction}
-% \label{S:Introduction}
 \addcontentsline{toc}{section}{Overview}
 \addtocounter{section}{0}
 \addtocounter{lemma}{-1}
@@ -269,6 +264,8 @@ representation of the torus triangulation.
 
 \begin{example}
   \label{E: common surfaces and homology}
+  $\;$ \\
+  
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i8 : Torus = smallManifold(2, 7, 6, R);
     i9 : KleinBottle = smallManifold(2, 8, 12, R);
@@ -327,17 +324,16 @@ the connections here, but a survey of results can be found in
 \cites{BH, Stanley, MS}.
 
 Let $\Delta$ be an abstract simplicial complex with vertex set
-$V = \{v_0,v_1,\dotsc,v_n\}$, let $k$ be a commutative ring, and let
-$S = k[x_0,x_1,\dotsc,x_n]$. The \textbf{Stanley--Reisner ideal} of $\Delta$
-is defined to be square-free monomial ideal
-
-$I_\Delta \coloneq \bigl( \prod_{j=1}^k x_{i_j} \mathrel{\big|} \{
+$V = \{v_0, v_1, \dotsc, v_n\}$, let $k$ be a commutative ring, and let
+$S = k[x_0, x_1, \dotsc, x_n]$. The \textbf{Stanley--Reisner ideal} of
+$\Delta$ is defined to be square-free monomial ideal
+$I_\Delta \coloneq \bigl( \prod_{j=1}^k x_{i_j} \mathrel{\mid} \{
 v_{i_1},v_{i_2},\dotsc,v_{i_k} \} \not \subset \Delta \bigr) \subset S$
 %
-\[
-  I_\Delta \coloneq \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{
-    v_{i_1},v_{i_2},\dotsc,v_{i_k} \} \not \subset \Delta \right) \subset S,
-\]
+% \[
+%   I_\Delta \coloneq \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{
+%     v_{i_1},v_{i_2},\dotsc,v_{i_k} \} \not \subset \Delta \right) \subset S,
+% \]
 %
 and the \textbf{Stanley--Reisner ring} corresponding to $\Delta$ is
 $k[\Delta] = S/I_\Delta$. This correspondence between simplicial complexes and
@@ -479,14 +475,15 @@ $i \in \mathbb Z$, see \cite[Theorem~5.6]{MS}.
 %
 For a simplicial complex $\Delta$ and a face $F \in \Delta$, we define the
 \textbf{link} of $F$ to be the subcomplex of $\Delta$ defined by
-$\operatorname{link}_\Delta(F) \coloneq \{ G \in \Delta \ | \ F \cup G \in
-\Delta \ \text{ and } \ F \cap G = \varnothing \}$. We can now exhibit a more
-substantive result of Stanley--Reisner theory, which is the ``dual version''
-of Hochster's formula, see \cite[Corollary~1.40]{MS}. This formula allows us
-to compute the multigraded Betti numbers of $I_\Delta$, which are defined to
-be $\beta_{i,m}(I_\Delta) = \operatorname{Tor}_i^S(I_\Delta, k)_m$. For a
-subset $F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the
-Betti number in homological degree $i$ and multidegree
+$\operatorname{link}_\Delta(F) \coloneq \{ G \in \Delta \mathrel{|}
+\text{$F \cup G \in \Delta$ and $F \cap G = \varnothing$} \}$. We can now
+exhibit a more substantive result of Stanley--Reisner theory, which is the
+``dual version'' of Hochster's formula, see \cite[Corollary~1.40]{MS}. This
+formula allows us to compute the multigraded Betti numbers of $I_\Delta$,
+which are defined to be
+$\beta_{i,m}(I_\Delta) = \operatorname{Tor}_i^S(I_\Delta, k)_m$. For a subset
+$F \subset V$, we will use the notation $\beta_{i,F}$ to refer to the Betti
+number in homological degree $i$ and multidegree
 $(a_1, a_2, \dotsc, a_n) \in \mathbb{Z}^n$, where $a_i = 1$ if $v_i \in F$ and
 $a_i = 0$ otherwise.
 %
@@ -864,11 +861,11 @@ The Scarf simplicial complex of $I$ starts with the labelled $4$-simplex and rem
     o17 = true
 \end{lstlisting}
 \end{example}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \subsection*{Acknowledgements}
-We thank TODO.
-               
-B.~Hersey was TODO. G.G.~Smith was TODO. A.~Zotine was partially supported by the Natural Sciences and Engineering Research Council of Canada (NSERC).
+All three authors were partially supported by the Natural Sciences and
+Engineering Research Council of Canada (NSERC).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{bibdiv}
