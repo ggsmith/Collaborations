@@ -540,27 +540,47 @@ $a_i = 0$ otherwise.
   where the rows are indexed by the homological degree (starting at $0$), and the columns are indexed by the squarefree multidegrees.
 \end{example}
 % 
-We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the facets of $\Delta$ have the same dimension. We say that $\Delta$ is \textbf{shellable} if we can order the facets $F_1,\dotsc,F_m$ of $\Delta$ so that $\langle F_i \rangle \cap \langle F_1,F_2,\dotsc,F_{i-1} \rangle$ is a pure codimension one simplicial complex. We say that a simplicial complex $\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay ring. It is known that every shellable simplicial complex is Cohen-Macaulay \cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure \cite[Corollary 5.1.5]{BH}.
+We say that a simplicial complex $\Delta$ is \textbf{pure} if all of the
+facets of $\Delta$ have the same dimension. We say that $\Delta$ is
+\textbf{shellable} if we can order the facets $F_1,\dotsc,F_m$ of $\Delta$ so
+that $\langle F_i \rangle \cap \langle F_1,F_2,\dotsc,F_{i-1} \rangle$ is a
+pure codimension one simplicial complex. We say that a simplicial complex
+$\Delta$ is \textbf{Cohen-Macaulay} if $k[\Delta]$ is a Cohen-Macaulay
+ring. It is known that every shellable simplicial complex is Cohen-Macaulay
+\cite[Theorem 5.1.13]{BH} and every Cohen-Macaulay simplicial complex is pure
+\cite[Corollary 5.1.5]{BH}.
 
 % The figure-8 complex from example \ref{Example: Stanley--Reisner ideal and Alexander duality for the bowtie complex} is pure, shellable, and Cohen-Macaulay. Verifying shellability of a simplicial complex can be done using the \texttt{SimplicialDecomposability} package in \texttt{Macaulay2}, \cite{Cook}.
 
-For Stanley--Reisner rings, we can use the combinatorics of $\Delta$ to determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$ is Cohen-Macaulay if and only if $\widetilde H_i(\mathrm{link}_\Delta(F)\; ;\;k) = 0$ for all $F \in \Delta$ and $i < \dim \hspace{2pt} \mathrm{link}_\Delta(F)$, see \cite[Corollary 5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational function
+For Stanley--Reisner rings, we can use the combinatorics of $\Delta$ to
+determine if $k[\Delta]$ is a Cohen-Macaulay ring. Specifically, $k[\Delta]$
+is Cohen-Macaulay if and only if
+$\widetilde H_i(\mathrm{link}_\Delta(F)\; ;\;k) = 0$ for all $F \in \Delta$
+and $i < \dim \hspace{2pt} \mathrm{link}_\Delta(F)$, see \cite[Corollary
+5.3.9]{BH}. We can also relate the Cohen-Macaulay property to the $h$-vector
+of $\Delta$. We can write the Hilbert series of $k[\Delta]$ as a rational
+function
 %
-\begin{displaymath}
-  \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t + \cdots h_k t^k}{(1-t)^{d+1}}
-\end{displaymath}
+\[
+  \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t +
+    \cdots h_k t^k}{(1-t)^{d+1}}
+\]
 %
-where $d = \dim \Delta$, and $0 \leq k \leq d+1$ is such that $h_k \not = 0$. If $\Delta$ is a $d$-dimensional Cohen-Macaulay complex with $n$ vertices, then \cite[Lemma 5.1.10]{BH} proves that
+where $d = \dim \Delta$, and $0 \leq k \leq d+1$ is such that $h_k \not =
+0$. If $\Delta$ is a $d$-dimensional Cohen-Macaulay complex with $n$ vertices,
+then \cite[Lemma 5.1.10]{BH} proves that
 %
-\begin{displaymath}
+\[
   0 \leq h_i \leq \binom{n-d+i}{i}
-\end{displaymath}
+\]
 %
-for $i = 0,1,\dotsc,d+1$. We can also compute the $h$-vector using the combinatorics of $\Delta$. Specifically, if $\Delta$ is a $d$-dimensional simplicial complex, then \cite[Lemma 5.1.8]{BH} tells us that
+for $i = 0,1,\dotsc,d+1$. We can also compute the $h$-vector using the
+combinatorics of $\Delta$. Specifically, if $\Delta$ is a $d$-dimensional
+simplicial complex, then \cite[Lemma 5.1.8]{BH} tells us that
 %
-\begin{displaymath}
+\[
   h_j = \sum_{i=0}^j (-1)^{j-i} \binom{d+1-i}{j-i}f_{i-1}
-\end{displaymath}
+\]
 %
 for $j = 0,1,\dotsc,d+1$.
 %
