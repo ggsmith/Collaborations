@@ -108,14 +108,13 @@
 \addtocounter{lemma}{-1}
 
 \noindent
-This paper gives an overview of the features of the
-\texttt{SimplicialComplexes} package in \emph{Macaulay2} \cite{M2}. The
-previous version of this package was developed by Sorin Popescu, Mike
-Stillman, and Gregory G. Smith in 2010. We have taken the opportunity to clean
-up the package and perform some maintenance to ensure that it stays
-computationally relevant and viable. We have also implemented a new data type
-in \texttt{SimplicialMap} in order to work with simplicial maps, and several
-constructors for well-known complexes.
+This paper gives an overview of the \texttt{SimplicialComplexes} package in
+\emph{Macaulay2} \cite{M2}. The previous version of this package was developed
+by Sorin Popescu, Mike Stillman, and Gregory G. Smith in 2010. We have taken
+the opportunity to clean up the package and perform some maintenance to ensure
+that it stays computationally relevant and viable. We have also implemented a
+new data type in \texttt{SimplicialMap} in order to work with simplicial maps,
+and several constructors for well-known complexes.
 
 In this package, simplicial complexes are represented algebraically through
 Stanley--Reisner ideals: Let $\Delta$ be an abstract simplicial complex with
@@ -317,8 +316,8 @@ representation of the torus triangulation.
 \end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Stanley--Reisner Theory}
 \addtocounter{section}{1}
+\subsection{Stanley--Reisner Theory}
 \label{S:Stanley--Reisner Theory}
 
 \noindent
@@ -568,7 +567,7 @@ for $j = 0,1,\dotsc,d+1$.
 
 %
 \begin{figure}[t]
-  \begin{tikzpicture}[scale = .5]
+  \begin{tikzpicture}[scale = .3]
     \filldraw[gray!10] (0,0) -- (0,5) -- (4,2.5) -- cycle;
     \draw[-,very thick] (0,0) -- (0,5) -- (4,2.5) -- cycle;
     \filldraw[gray!10] (8,0) -- (8,5) -- (4,2.5) -- cycle;
@@ -578,11 +577,11 @@ for $j = 0,1,\dotsc,d+1$.
     \filldraw (4,2.5) circle (5pt);
     \filldraw (8,0) circle (5pt);
     \filldraw (8,5) circle (5pt);
-    \node at (-.5,-.5) {$v_0$};
-    \node at (-.5,5.5) {$v_1$};
-    \node at (4,1.75) {$v_2$};
-    \node at (8.5,-.5) {$v_3$};
-    \node at (8.5,5.5) {$v_4$};
+    \node at (-.5,-.5) {\scriptsize $v_0$};
+    \node at (-.5,5.5) {\scriptsize $v_1$};
+    \node at (4,1.75) {\scriptsize $v_2$};
+    \node at (8.5,-.5) {\scriptsize $v_3$};
+    \node at (8.5,5.5) {\scriptsize $v_4$};
     % \node at (-2.5,2.5) {\huge $\Delta \hspace{5pt} = $};
   \end{tikzpicture}
   \caption{The bowtie complex}\label{Figure: the bowtie complex}
@@ -643,8 +642,8 @@ complexes are included in the package and can be constructed using the methods
 \texttt{rudinBallComplex} and \texttt{zieglerBallComplex} respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Resolutions of Monomial Ideals}
 \addtocounter{section}{1}
+\subsection{Resolutions of Monomial Ideals}
 \label{S:Resolutions of Monomial Ideals}
 %
 
