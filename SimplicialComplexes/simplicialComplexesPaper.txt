@@ -1,4 +1,43 @@
-simplicial complexes paper:
+---------------------------------------------
+PAPER EDITS
+
+section changes:
+
+- intro should be shorter
+- do we need the overview paragraphs? maybe put them at the intro of each section instead
+
+- change section 1 to "constructors" or "making simplicial complexes" or "working with simplicial complexes" (?) and change emphasis
+- pull a bunch of section 2 stuff into this
+- combine the examples in intro + section 2, i.e. example 0.0 should be merged with 2.3
+- start with stanley reisner ideal definition etc. give the constructor example
+- then give examples of the database (example 1.3)
+- end with the maps (example 1.2)
+- edit example 1.2 to start with a sentence
+
+- change section 2 to "homological algebra," or "___ combinatorics" (__ could be algebraic, polyhedral, etc.?)
+- give the link, Hochster's formula, shellability and CM stuff
+
+- section 3 renamed to "commutative algebra" (too broad?), or "free resolutions"
+
+remove:
+
+- bounds on h vector don't seem necessary
+
+other things:
+
+- tighten up exposition everywhere
+- we don't define an abstract simplicial complex which is a mistake
+- point out that our package isn't well suited for huge numbers of vertices, i.e. bad for topological data analysis
+- need a better title: "simplicial complexes in Macaulay2" or "Some simplicial complexes in Macaulay2"
+- homogenize pictures, i.e. the placement of vertices is done in an absolute way as opposed to, e.g. "above right, above left," etc.
+- we reuse k for a field and index which is slightly taboo. pick another letter in some way--maybe use A for comm. ring?
+- use \dotsc or \dotsb instead of ... or \cdots
+- sub/superscript hell in some places, e.g. alexander dual
+
+- we could just take out the example environments entirely, any references to examples can be finessed--e.g. we can refer to <insert Ben's silly ascii symbol here> to refer to an example (and more generally we can label everything uniquely)
+
+---------------------------------------------
+FIRST WEEK PLANNING
 
 - find examples from other places in math that we can reproduce in macaulay2
 - showcase functionality, specifically on simplicial maps which are new
@@ -9,11 +48,8 @@ simplicial complexes paper:
 - showcase lybenziunk complexes and general homogenization feature
 - database could be used to give examples of relative homology
 
-next week should brainstorm more ideas for this
-
-
-----------------
-rough section planning
+---------------------------------------------
+MORE DETAILED SECTION PLANNING
 
 - Section 2 (combinatorics)
 - f-vectors, h-vectors, cohen-macaulay + shellability are the themes for this section.
