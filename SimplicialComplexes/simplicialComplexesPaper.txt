@@ -6,9 +6,12 @@ section changes:
 - intro should be shorter
 - do we need the overview paragraphs? maybe put them at the intro of each section instead
 
-- change section 1 to "constructors" or "making simplicial complexes" or "working with simplicial complexes" (?) and change emphasis
-- pull a bunch of section 2 stuff into this
-- combine the examples in intro + section 2, i.e. example 0.0 should be merged with 2.3
+- change section 1 to "constructors" or "making simplicial complexes" or "working with simplicial complexes" (?) and change emphasis (Ben began making this change)
+
+- pull a bunch of section 2 stuff into this (Ben began making this change)
+
+- combine the examples in intro + section 2, i.e. example 0.0 should be merged with 2.3 (Ben began making this change)
+
 - start with stanley reisner ideal definition etc. give the constructor example
 - then give examples of the database (example 1.3)
 - end with the maps (example 1.2)
@@ -34,7 +37,7 @@ other things:
 - use \dotsc or \dotsb instead of ... or \cdots
 - sub/superscript hell in some places, e.g. alexander dual
 
-- we could just take out the example environments entirely, any references to examples can be finessed--e.g. we can refer to <insert Ben's silly ascii symbol here> to refer to an example (and more generally we can label everything uniquely)
+- we could just take out the example environments entirely, any references to examples can be finessed--e.g. we can refer to <insert Ben's silly ascii symbol here> to refer to an example (and more generally we can label everything uniquely) (Ben began making this change)
 
 ---------------------------------------------
 FIRST WEEK PLANNING

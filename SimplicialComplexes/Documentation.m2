@@ -3182,7 +3182,7 @@ doc ///
 	    A free face of a simplicial complex is a face that is a proper maximal
 	    subface of exactly one facet. The elementary collapse is the simplicial
 	    collapse obtained by removing the free face, and the facet containing it,
-	    from the simplicial complex. A simplicial Complex that and be collapsed
+	    from the simplicial complex. A simplicial Complex that can be collapsed
 	    to a single vertex is called collapsible. Every collapsible simplicial
 	    complex is contractible, but the converse is not true.
         Example

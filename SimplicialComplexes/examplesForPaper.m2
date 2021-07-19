@@ -12,14 +12,45 @@ restart
 needsPackage"SimplicialComplexes"
 options SimplicialComplexes
 
-S = QQ[x_0..x_4];
-IΔ = monomialIdeal(x_0*x_1*x_2, x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 , x_2*x_3*x_4 );
 --IΔ = monomialIdeal(x_0*x_3, x_1*x_3, x_0*x_4, x_1*x_4 );
-Δ = simplicialComplex IΔ
-IΔ == ideal Δ
---kΔ = S/IΔ;
+
+R = QQ[x_0..x_4];
+⧓ = simplicialComplex{x_0*x_1*x_2, x_2*x_3*x_4}
+I⧓ = ideal ⧓
+⧓' = simplicialComplex I⧓;
+⧓ === ⧓'
+I⧓ == ideal ⧓
+dual ⧓
+dual(monomialIdeal ⧓) == monomialIdeal dual ⧓
+link(dual ⧓, x_2)
+link(dual ⧓, x_2) === inducedSubcomplex(dual ⧓, {x_0,x_1,x_3,x_4})
+
+R = QQ[a..j];
+zieglerBallComplex R
 
 
+
+S = QQ[x_0..x_4];
+⋈ = simplicialComplex{x_3*x_4, x_2*x_4, x_2*x_3, x_1*x_2, x_0*x_2, x_0*x_1}
+I⋈ = ideal ⋈
+⋈' = simplicialComplex I⋈;
+⋈ === ⋈'
+I⋈ == ideal ⋈
+
+dual ⋈
+dual(monomialIdeal ⋈) == monomialIdeal dual ⋈
+
+facets dual ⋈
+
+link(dual ⋈, x_2)
+inducedSubcomplex(dual ⋈, {x_0,x_1,x_3,x_4})
+dual ⋈
+
+dual simplicialComplex{x_0*x_2*x_3, x_0*x_2*x_4, x_1*x_2*x_3, x_1*x_2*x_4}
+
+
+
+ideal ⋈
 -- Exhibiting the relation bewtween the Alexander dual of the 
 -- Stanley-Reisner and the Alexander dual of the corresponding
 -- simplicial complex.

@@ -40,12 +40,10 @@
     "PP")
    (LaTeX-add-labels
     "example of using database"
-    "S:Combinatorial Topology"
-    "E:using manifold database"
+    "S:Constructors"
+    "Figure: The figure-8 and its dual"
     "F: torus triangulation"
-    "E: common surfaces and homology"
     "S:Stanley--Reisner Theory"
-    "the figure-8 and its dual"
     "Figure: the bowtie complex"
     "Example: Shellability, the Cohen-Macaulay property, and the h-vector"
     "S:Resolutions of Monomial Ideals"
