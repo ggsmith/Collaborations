@@ -71,7 +71,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\title[Simplicial Complexes]{The simplicial complexes package for Macaulay2}
+\title[Simplicial Complexes]{Simplicial complexes in Macaulay2}
 
 \author[B.~Hersey]{Ben Hersey}
 \author[G.G.~Smith]{Gregory G.{} Smith} 
@@ -111,9 +111,16 @@ that it stays computationally relevant and viable. We have also implemented a
 new data type in \texttt{SimplicialMap} in order to work with simplicial maps,
 and several constructors for well-known complexes.
 
-In this package, simplicial complexes are represented algebraically through
-Stanley--Reisner ideals: Let $\Delta$ be an abstract simplicial complex with
-vertex set $V = \{v_0,v_1,\dotsc,v_n\}$, $k$ be any commutative ring, and set
+An \textbf{abstract simplicial complex} $\Delta$ is a family of sets closed under taking subsets. Finite sets belonging to the family are referred to as \textbf{faces} of $\Delta$. Faces which are not subsets of another face are referred to as \textbf{facets}. The \textbf{vertex set} of $\Delta$ is the union of all of the sets in $\Delta$, and elements of the vertex set are the \textbf{vertices} of $\Delta$. The \textbf{dimension} of a face $X \in \Delta$ is given by $\dim X = |X| - 1$, and the dimension of $\Delta$ is the maximum dimension of its faces---or infinity if they are unbounded in dimension.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addtocounter{section}{1}
+\subsection{Constructors}
+\label{S:Constructors}
+%
+
+One way to represent simplicial complexes algebraically is via Stanley--Reisner ideals: Let $\Delta$ be an abstract simplicial complex with
+vertex set $V = \{v_0,v_1,\dotsc,v_n\}$, $k$ be any commutative ring (typically $\mathbb{Z}$ or a field), and set
 $S = k[x_0,\dotsc,x_n]$. Then the \textbf{Stanley--Reisner ideal}, or
 \textbf{facet ideal} of $\Delta$ is defined to be square-free monomial ideal
 %
@@ -126,50 +133,8 @@ and the \textbf{Stanley--Reisner ring} corresponding to $\Delta$ is
 $k[\Delta] = S/I_\Delta$. In other words, $I_\Delta$ consists of generators
 corresponding to the \textit{non-faces} of $\Delta$. This produces a
 one-to-one correspondence between simplicial complexes and square-free
-monomial ideals, which makes it useful for computation in \textit{Macaulay2}.
+monomial ideals, which makes it useful for computation in \textit{Macaulay2}. However, we should note that ideal computations with large numbers of variables can be very slow---in particular, this means that our package is not well-suited to deal with large vertex set simplicial complexes, such as those arising from topological data analysis.
 
-\begin{example}\label{example of using database}
-  There are two ways of constructing a simplicial complex, one by listing the
-  products of the variables forming faces, or by constructing the
-  Stanley--Reisner ideal (which has generators given by the
-  \textit{non-faces}). For instance, we can construct the 1-skeleton of a
-  2-simplex using both methods:
-  %
-  \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i2 : S = ZZ[x_0,x_1,x_2];
-    i3 : $Δ$ = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2}
-    o3 = simplicialComplex {x x , x x , x x }
-                             1 2   0 2   0 1
-    o3 : SimplicialComplex
-    i4 : I$Δ$ = monomialIdeal {x_0*x_1*x_2};
-    i5 : $Δ$' = simplicialComplex I$Δ$
-    o5 = simplicialComplex {x x , x x , x x }
-                             1 2   0 2   0 1
-    o5 : SimplicialComplex
-  \end{lstlisting}
-  %
-\end{example}
-
-In Section \ref{S:Constructors}, we demonstrate some of the
-topological features of the package. Namely, the use of the small manifolds
-database provided by Lutz \cite{LutzM}, and some homological computations. In
-Section \ref{S:Stanley--Reisner Theory} we review some Stanley--Reisner theory
-and describe how to work with simplicial complexes using their corresponding
-Stanley--Reisner ideal. We also cover $f$- and $h$-vectors, shellability, and
-being Cohen-Macaulay. We give examples on how to check if a simplicial complex
-is Cohen-Macaulay using the package. 
-
-Finally, in Section \ref{S:Resolutions of Monomial Ideals}, we overview the
-some chain complex constructions arising from simplicial complexes. We give an
-example of ideal homogenization and resolutions supported on a simplicial
-complex, and we provide examples of Taylor, Lyubeznik, and Buchberger
-resolutions; as well as Scarf complexes.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\addtocounter{section}{1}
-\subsection{Constructors}
-\label{S:Constructors}
-%
 In this package, every simplicial complex $\Delta$ is defined relative to a
 polynomial ring, and the vertices of $\Delta$ will correspond variables of this
 ring. The most basic constructor for simplicial complexes is the
@@ -299,12 +264,60 @@ There are also constructors for the star of a face in a simplicial complex (\tex
 \end{lstlisting}
 
 Lutz has provided a database enumerating all of the 2 and 3-manifolds having
-10 or less vertices \cite{LutzM}. We have implemented these databases into the
-package---however we have excluded the database of 3-manifolds with 10
-vertices, due to the large number of examples causing long loading times.
+10 or less vertices \cite{LutzM}. We have implemented these into the
+package---however we chose to exclude the database of 3-manifolds with 10
+vertices, due to the large number of examples causing long loading times. The database contains many triangulations of various interesting
+surfaces, such as the torus, Klein bottle, and real projective plane. Below
+are the smallest indices (and hence minimal triangulations of) these surfaces
+in the database, and see Figure \ref{F: torus triangulation} for a visual
+representation of the torus triangulation.
+%
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i8 : Torus = smallManifold(2, 7, 6, R);
+    i9 : KleinBottle = smallManifold(2, 8, 12, R);
+    i10 : RP2 = smallManifold(2, 6, 1, R);
+\end{lstlisting}
+% 
+We can check that these are the right surfaces by computing their
+homology. Theorems~6.2--6.4 from Munkres confirm that they match
+\cite{Munkres}.
+% 
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i11 : for i to 2 list prune HH_i Torus
+                2    1
+    o11 = {0, ZZ , ZZ }
+    o11 : List
+    i12 : for i to 2 list prune HH_i KleinBottle
+    o12 = {0, cokernel | 2 |, 0}
+                       | 0 |
+    o12 : List
+    i13 : for i to 2 list prune HH_i RP2
+    o13 = {0, cokernel | 2 |, 0}
+    o13 : List
+\end{lstlisting}
+% 
+We can explicitly identify the generators of the homology by mapping circles
+onto the torus.
+\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
+    i6 : Circle = skeleton(1, simplexComplex(2,T));
+    i7 : f1 = map(Torus,Circle,matrix{{R_3,R_6,R_5}});
+    o7 : prints are being ugly
+    i8 : prune homology(1, f1)
+    o8 = | 1 |
+         | 0 |
+                  2        1
+    o8 : Matrix ZZ  <--- ZZ
+    i9 : f2 = map(Torus,Circle,matrix{{R_3,R_0,R_2}});
+    o9 : prints are being ugly
+    i10 : prune homology(1, f2)
+    o10 = | 0 |
+          | 1 |
+                   2        1
+    o10 : Matrix ZZ  <--- ZZ
+\end{lstlisting}
 
-These databases can be used to find nice testbeds of examples: for instance,
-we can search for simplicial maps
+Such databases can be used to find nice testbeds of examples: For instance,
+we can search for simplicial maps.
 % 
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i2 : R = ZZ[a..i];
@@ -381,85 +394,13 @@ By construction, all of these maps should be inclusions.
   \label{F: torus triangulation}
 \end{figure}
 
-The database also contains many triangulations of various interesting
-surfaces, such as the torus, Klein bottle, and real projective plane. Below
-are the smallest indices (and hence minimal triangulations of) these surfaces
-in the database, and see Figure \ref{F: torus triangulation} for a visual
-representation of the torus triangulation.
-%
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i8 : Torus = smallManifold(2, 7, 6, R);
-    i9 : KleinBottle = smallManifold(2, 8, 12, R);
-    i10 : RP2 = smallManifold(2, 6, 1, R);
-\end{lstlisting}
-% 
-We can check that these are the right surfaces by computing their
-homology. Theorems~6.2--6.4 from Munkres confirm that they match
-\cite{Munkres}.
-% 
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i11 : for i to 2 list prune HH_i Torus
-                2    1
-    o11 = {0, ZZ , ZZ }
-    o11 : List
-    i12 : for i to 2 list prune HH_i KleinBottle
-    o12 = {0, cokernel | 2 |, 0}
-                       | 0 |
-    o12 : List
-    i13 : for i to 2 list prune HH_i RP2
-    o13 = {0, cokernel | 2 |, 0}
-    o13 : List
-\end{lstlisting}
-% 
-We can explicitly identify the generators of the homology by mapping circles
-onto the torus.
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i6 : Circle = skeleton(1, simplexComplex(2,T));
-    i7 : f1 = map(Torus,Circle,matrix{{R_3,R_6,R_5}});
-    o7 : prints are being ugly
-    i8 : prune homology(1, f1)
-    o8 = | 1 |
-         | 0 |
-                  2        1
-    o8 : Matrix ZZ  <--- ZZ
-    i9 : f2 = map(Torus,Circle,matrix{{R_3,R_0,R_2}});
-    o9 : prints are being ugly
-    i10 : prune homology(1, f2)
-    o10 = | 0 |
-          | 1 |
-                   2        1
-    o10 : Matrix ZZ  <--- ZZ
-\end{lstlisting}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \addtocounter{section}{1}
 \subsection{Stanley--Reisner Theory}
 \label{S:Stanley--Reisner Theory}
 
 \noindent
-Stanley--Reisner theory connects homological properties of $k[\Delta]$ to
-combinatorial and topological properties of $\Delta$. We will discuss some of
-the connections here, but a survey of results can be found in
-\cites{BH, Stanley, MS}.
-
-Let $\Delta$ be an abstract simplicial complex with vertex set
-$V = \{v_0, v_1, \dotsc, v_n\}$, let $k$ be a commutative ring, and let
-$S = k[x_0, x_1, \dotsc, x_n]$. The \textbf{Stanley--Reisner ideal} of
-$\Delta$ is defined to be square-free monomial ideal
-$I_\Delta \coloneq \bigl( \prod_{j=1}^k x_{i_j} \mathrel{\mid} \{
-v_{i_1},v_{i_2},\dotsc,v_{i_k} \} \not \subset \Delta \bigr) \subset S$
-%
-% \[
-%   I_\Delta \coloneq \left( \prod_{j=1}^k x_{i_j} \ \bigg\vert \ \{
-%     v_{i_1},v_{i_2},\dotsc,v_{i_k} \} \not \subset \Delta \right) \subset S,
-% \]
-%
-and the \textbf{Stanley--Reisner ring} corresponding to $\Delta$ is
-$k[\Delta] = S/I_\Delta$. This correspondence between simplicial complexes and
-square-free monomial ideals is one-to-one. Stanley--Reisner theory connects
-homological properties of $k[\Delta]$ to combinatorial and topological
-properties of $\Delta$. A survey of results can be found in
-\cite{BH, Stanley, MS}.
+Stanley--Reisner theory connects homological properties of $k[\Delta]$ to combinatorial and topological properties of $\Delta$. In this section will discuss some of these connections and how they interface with the package. Namely we will cover $f$- and $h$-vectors, shellability, and being Cohen-Macaulay---but a more detailed survey of results can be found in \cites{BH, Stanley, MS}.
 
 If $I = (m_1, m_2, \dotsc, m_q) \subset S$ is a monomial ideal, with minimal
 generators $m_i = \prod x_j^{a_{i_j}}$, then the \textbf{Alexander dual} of
@@ -595,7 +536,7 @@ $i \in \mathbb Z$, see \cite[Theorem~5.6]{MS}.
 For a simplicial complex $\Delta$ and a face $F \in \Delta$, we define the
 \textbf{link} of $F$ to be the subcomplex of $\Delta$ defined by
 $\operatorname{link}_\Delta(F) \coloneq \{ G \in \Delta \mathrel{|}
-\text{$F \cup G \in \Delta$ and $F \cap G = \varnothing$} \}$. We can now
+\text{$F \cup G \in \Delta$ and $F \cap G = \varnothing$} \}$. For the remainder of this section, assume that $k$ is a field. We can now
 exhibit a more substantive result of Stanley--Reisner theory, which is the
 ``dual version'' of Hochster's formula, see \cite[Corollary~1.40]{MS}. This
 formula allows us to compute the multigraded Betti numbers of $I_\Delta$,
@@ -612,7 +553,7 @@ $a_i = 0$ otherwise.
   field. The nonzero multigraded Betti numbers of $I_\Delta$ and $S/I_\Delta$
   lie in squarefree degrees. Moreover, if $F \subset V$, then
   \[
-    \beta_{i,F} (I_\Delta) = \beta_{i+1,F} (S/I_\Delta) = \dim_k \widetilde
+    \beta_{i,F} (I_\Delta) = \beta_{i+1,F} (S/I_\Delta) = \dim_\mathbb{K} \widetilde
     H_{i-1} \big( \operatorname{link}_{\Delta^*}(V \setminus F); k \big) \, .
   \]
 \end{theorem}
@@ -679,18 +620,20 @@ function
 %
 \[
   \sum \dim \hspace{2pt} k[\Delta]_i \hspace{2pt} t^i = \frac {h_0 + h_1t +
-    \cdots h_k t^k}{(1-t)^{d+1}}
+    \cdots h_\ell t^\ell}{(1-t)^{d+1}}
 \]
 %
-where $d = \dim \Delta$, and $0 \leq k \leq d+1$ is such that $h_k \not =
-0$. If $\Delta$ is a $d$-dimensional Cohen-Macaulay complex with $n$ vertices,
-then \cite[Lemma 5.1.10]{BH} proves that
+where $d = \dim \Delta$, and $0 \leq \ell \leq d+1$ is such that $h_\ell \not =
+0$. 
+%If $\Delta$ is a $d$-dimensional Cohen-Macaulay complex with $n$ vertices,
+%then \cite[Lemma 5.1.10]{BH} proves that
 %
-\[
-  0 \leq h_i \leq \binom{n-d+i}{i}
-\]
+%\[
+%  0 \leq h_i \leq \binom{n-d+i}{i}
+%\]
 %
-for $i = 0,1,\dotsc,d+1$. We can also compute the $h$-vector using the
+%for $i = 0,1,\dotsc,d+1$. 
+We can also compute the $h$-vector using the
 combinatorics of $\Delta$. Specifically, if $\Delta$ is a $d$-dimensional
 simplicial complex, then \cite[Lemma 5.1.8]{BH} tells us that
 %
@@ -784,6 +727,12 @@ complexes are included in the package and can be constructed using the methods
 %
 
 %
+In this section, we will overview
+some chain complex constructions arising from simplicial complexes. We give an
+example of ideal homogenization and resolutions supported on a simplicial
+complex, and we provide examples of Taylor, Lyubeznik, and Buchberger
+resolutions; as well as Scarf complexes.
+
 Let $\Delta$ be a simplicial complex with $q$ vertices and let
 $\widetilde C(\Delta;k)$ be the augmented chain complex of $\Delta$ with
 incidence function $\varepsilon$. We will let $S = k[x_0,\dotsc,x_n]$ be a
