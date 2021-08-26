@@ -1028,8 +1028,8 @@ doc ///
 		    c*d*g, a*e*g, b*f*g, b*d*h, c*e*h, a*f*h, g*h))
 	    assert(fVector Δ === {1,8,27,38,19})
 	Text
-	    The vertices in the Bartnette sphere are the first 8 variables in
-	    the given polynomial ring.
+	    The vertices in the Bartnette sphere will correspond to the first 8 variables of
+	    the input polynomial ring.
 	Example
 	    R = QQ[x_0..x_10];
 	    Γ = bartnetteSphereComplex R;
@@ -1337,7 +1337,7 @@ doc ///
     	Text
 	    Attributed to
 	    @HREF("https://en.wikipedia.org/wiki/Anders_Björner", "Anders
-	    Björner")@, this method return a
+	    Björner")@, this method returns a
 	    @HREF("https://en.wikipedia.org/wiki/Shelling_(topology)",
 	    "shellable")@ abstract simplicial complex which has non-zero
 	    homology.
@@ -1354,7 +1354,7 @@ doc ///
 	Text
 	    A shellable abstract simplicial complex $\Delta$ is {\em extendably
 	    shellable} if any shelling of a subcomplex can be extended to a
-	    shelling of $\Delta$.  The bjorner complex is not extendably shellable.
+	    shelling of $\Delta$. The Björner complex is not extendably shellable.
 	Text
 	    Our enumeration of the vertices follows the {\tt bjorner}
 	    example in Masahiro Hachimori's
@@ -1502,7 +1502,7 @@ doc ///
 	    Δ = realProjectiveSpaceComplex(3, S)
     Caveat
     	Since no minimal or small triangulations of real projective space have been constructed
-	for n > 4, we haven't implemented the triangulations for higher projective space yet.
+	for $n > 4$, we haven't implemented the triangulations for higher projective space yet.
 	Due to the exponential growth of the number of vertices, computations quickly become
 	intractable.            	
     SeeAlso
@@ -1525,7 +1525,7 @@ doc ///
     Inputs
         Delta : SimplicialComplex  
 	Exclude => List
-	    the optional input is ignored
+	    the optional input is ignored in this package
     Outputs 
         : SimplicialComplex
 	    where vertices are precisely the generators in its polynomial ring
@@ -1568,7 +1568,7 @@ doc ///
 	    assert(ring Δ2 =!= ring prune Δ2)
 	    assert(gens R  === apply(vertices Δ2, x -> sub(x, R)))
         Text
-	    There are two distinct abstract simplicial complexes has have no
+	    There are two distinct abstract simplicial complexes that have no
 	    vertices.
 	Example
 	    void = simplicialComplex monomialIdeal(1_S)
@@ -1660,9 +1660,9 @@ doc ///
      	    assert (dual Δ' === simplicialComplex {b*d*e, a*c*e, a*b*c*d}) 
 	    assert (dual dual Δ' === Δ')
 	Text
-	    The projective dimension of the Stanley–Reisner ring of $\Gamma$
+	    The projective dimension of the Stanley–Reisner ring of $\Delta$
      	    equals the regularity of the Stanley–Reisner ideal of the
-     	    Alexander dual of $\Gamma$; see Theorem 5.59 in Miller-Sturmfels'
+     	    Alexander dual of $\Delta$; see Theorem 5.59 in Miller-Sturmfels'
      	    {\em Combinatorial Commutative Algebra}.
     	Example     
      	    R = QQ[a..h];
@@ -1719,7 +1719,7 @@ doc ///
 	Text
 	    Following Example 1.39 in Miller-Sturmfels' {\em Combinatorial
 	    Commutative Algebra}, we consider a simplicial complex with 6
-	    facet.  The link of the vertex $a$ consists of the vertex $e$
+	    facets.  The link of the vertex $a$ consists of the vertex $e$
 	    along with the proper faces of the triangle $b*c*d$.  The link of
 	    the vertex $c$ is pure of dimension $1$; its four facets being the
 	    three edges of the triangle $a*b*d$ plus the extra edge $b*e$.
@@ -2349,7 +2349,7 @@ doc ///
     Outputs
         f : List
 	    where the $i$-th entry is the number of faces in $\Delta$ of
-	    dimension $i-1$ and $0 \leqslant i \leqslant \text{dim} \Delta$	    
+	    dimension $i-1$ and $0 \leqslant i \leqslant \operatorname{dim} \Delta$	    
     Description
     	Text
 	    The {\em f-vector} of an abstract simplicial complex is the vector
@@ -2420,7 +2420,7 @@ doc ///
 	    simplicial complex is determined by a multigrading of its
 	    @TO2((ring, SimplicialComplex), "ambient ring")@.
     	Text
-    	    Giving the three vertices is the $2$-simplex distinct colors, each
+    	    If we color the $2$-simplex with distinct colors, each
     	    color set corresponds to a unique face.
 	Example	    
 	    S = QQ[a,b,c, DegreeRank => 3];
@@ -2495,7 +2495,7 @@ doc ///
 	    multidegrees) and whose values are the corresponding flag
 	    $f$-number.
     	Text
-    	    Giving the three vertices is the $2$-simplex distinct colors, each
+    	    If we color the $2$-simplex with distinct colors, each
     	    color set corresponds to a unique face.
 	Example	    
 	    S = QQ[a,b,c, DegreeRank => 3];
@@ -2668,7 +2668,7 @@ doc ///
 	boundaryMap	
 	[boundaryMap, Labels]
     Headline
-        make a boundary map between the oriented faces of an abstract simplicial complexes
+        make a boundary map between the oriented faces of an abstract simplicial complex
     Usage 
         boundaryMap(i, Delta)
     Inputs
@@ -2811,7 +2811,7 @@ doc ///
 	    Section 55 in Irena Peeva's {\em Graded Syzygies}.	
 	Text
 	    As the next example establishes, this approach can sometimes
-	    produced a minimal free resolution of a monomial ideal.
+	    produce a minimal free resolution of a monomial ideal.
 	Example
 	    S = QQ[a..d];
 	    Γ = simplicialComplex{a*b*c, b*c*d};
@@ -3007,7 +3007,7 @@ doc ///
 	    that when omitted is equal to the 
 	    @TO2((ring, SimplicialComplex), "underlying ring")@ of $\Delta$	    
 	Degree => ZZ
-	    is ignored
+	    is ignored in this package
     Outputs
         : Module
 	    that is reduced cohomology group of $\Delta$ with coefficients in $R$
@@ -3120,14 +3120,14 @@ doc ///
         (cohomology, ZZ, SimplicialMap)
 	[(cohomology, ZZ, SimplicialMap), Degree]
     Headline
-        C=compute the induced map on cohomology of a simplicial map.
+        Compute the induced map on cohomology of a simplicial map.
     Usage
         cohomology(i,f)
     Inputs
 	i : ZZ
 	f : SimplicialMap
 	Degree => ZZ
-	    this option is ignored	
+	    which is ignored in this package	
     Outputs
         : Matrix
 	    which is the induced map on cohomology
@@ -3166,29 +3166,29 @@ doc ///
         (elementaryCollapse, SimplicialComplex, RingElement)
 	elementaryCollapse
     Headline 
-        construct the elementary collapse of a free frace in a simplicial complex
+        construct the elementary collapse of a free face in a simplicial complex
     Usage 
-        elementaryCollapse(D,F)
+        elementaryCollapse(Delta, F)
     Inputs
-        D : SimplicialComplex  
+        Delta : SimplicialComplex  
 	F : RingElement
-	    Corresponding to a free face of {\tt D}
+	    Corresponding to a free face of $\Delta$
     Outputs 
         : SimplicialComplex
-	    the simplicial complex where the face {\tt F} and the unique facet
-	    containing F are removed
+	    the simplicial complex where the face $F$ and the unique facet
+	    containing $F$ are removed
     Description
         Text
-	    A free face of a simplicial complex is a face that is a proper maximal
+	    A free face of a simplicial complex $\Delta$ is a face that is a proper maximal
 	    subface of exactly one facet. The elementary collapse is the simplicial
-	    collapse obtained by removing the free face, and the facet containing it,
-	    from the simplicial complex. A simplicial Complex that can be collapsed
+	    complex obtained by removing the free face, and the facet containing it,
+	    from $\Delta$. A simplicial complex that can be collapsed
 	    to a single vertex is called collapsible. Every collapsible simplicial
 	    complex is contractible, but the converse is not true.
         Example
        	    R = ZZ/103[x_0..x_3];
-       	    D = simplicialComplex{R_0*R_1*R_2,R_0*R_2*R_3,R_0*R_1*R_3}
-       	    C1 = elementaryCollapse(D,R_1*R_2)
+       	    Δ = simplicialComplex{R_0*R_1*R_2,R_0*R_2*R_3,R_0*R_1*R_3}
+       	    C1 = elementaryCollapse(Δ,R_1*R_2)
 	    C2 = elementaryCollapse(C1,R_2*R_3)
 	    C3 = elementaryCollapse(C2,R_1*R_3)
 	    C4 = elementaryCollapse(C3,R_1)	   
@@ -3213,14 +3213,14 @@ doc ///
 	    the ambient ring for the barycentric subdivision of {\tt D}
     Outputs 
         : SimplicialComplex
-	    the barycentric subdivision of D
+	    the barycentric subdivision of {\tt D}
     Description
         Text
-    	    If {\tt D} is an abstract simplicial complex, the barycentric subdivision
-	    of {\tt D} is the abstact simplicial complex whose ground set is the
-	    set of faces of {\tt D} and whose faces correspond to sequences
-	    {\tt (F_0, F_1, ..., F_k)} where {\tt F_i} is an {\tt i}-dimensional
-	    face containing {\tt F_{i-1}}. In order to understand how the data of the
+    	    If $D$ is an abstract simplicial complex, the barycentric subdivision
+	    of $D$ is the abstact simplicial complex whose ground set (vertices) is the
+	    set of faces of $D$ and whose faces correspond to sequences
+	    $\{(F_0, F_1, ..., F_k)\}$ where $F_i$ is an $i$-dimensional
+	    face containing $F_{i-1}$. In order to understand how the data of the
 	    barycentric subdivision is organized, we work through a simple example.
         Example
 	    R = QQ[x_0..x_2];
@@ -3248,27 +3248,27 @@ doc ///
     Key 
         (barycentricSubdivision, SimplicialMap, Ring, Ring)
     Headline 
-        create the barycentric subdivision of a simplicial complex
+        create the map between barycentric subdivisions corresponding to a simplicial map
     Usage 
         barycentricSubdivision(f,R,S)
     Inputs
         f : SimplicialMap
-	    from the simplicial complex {\tt D} to the simplicial complex {\tt E}
+	    from the simplicial complex $D$ to the simplicial complex $E$
 	R : Ring
-	    the ambient ring for the barycentric subdivision of {\tt E}
+	    the ambient ring for the barycentric subdivision of $E$
 	S : Ring
-	    the ambient ring for the barycentric subdivision of {\tt D}
+	    the ambient ring for the barycentric subdivision of $D$
     Outputs 
         : SimplicialMap
-	    from the barycentric subdivision of {\tt D} to the barycentric
-	    subdivision of {\tt E}.
+	    from the barycentric subdivision of $D$ to the barycentric
+	    subdivision of $E$.
     Description
         Text
-            The vertices of the {\tt barycentricSubdivision(D,R)} correspond to
-	    faces of {\tt D}. For every face {\tt F} in {\tt D},
-	    {\tt barycentricSubdivision(f,R,S)} maps the vertex correspoding to
-	    {\tt F} in {\tt barycentricSubdivision(D,R)} to the vertex
-	    corresponding to the image of {\tt F} under {\tt f} in
+            The vertices of the barycentric subdivision of $D$ correspond to
+	    faces of $D$. For every face $F$ in $D$,
+	    {\tt barycentricSubdivision(f,R,S)} maps the vertex corresponding to
+	    $F$ in {\tt barycentricSubdivision(D,R)} to the vertex
+	    corresponding to the image of $F$ under the map {\tt f} in
 	    {\tt barycentricSubdivision(E,S)}. We work out these correspondences, 
 	    and the resulting simplicial map between barycentric subdivisions in
 	    the example below.
@@ -3344,7 +3344,7 @@ doc ///
     Inputs
     	I : MonomialIdeal
         L : List
-	    a minimial set of generators for a monomial ideal
+	    a minimal set of generators for a monomial ideal
 	R : Ring
 	    the ambient ring for the Buchberger complex
     Outputs
@@ -3352,18 +3352,18 @@ doc ///
     Description
     	Text
 	    If a monomial ideal is minimally generated by a list of monomials
-	    {\tt L}, then the Buchberger complex is the simpicial complex whose
-	    vertices correspond to the monomials in {\tt L} and whose faces 
-	    faces correspond subsets {\tt F} of {\tt L} for which no monomial in
-	    {\tt L} properly divides {\tt lcm F}. When we say a monomial {\tt m} 
-	    properly divides {\tt lcm F}, we mean {\tt m} divides {\tt lcm F} and 
-	    {\tt (lcm F)/m} has the same support as {\tt lcm F}.
+	    $L$, then the Buchberger complex is the simpicial complex whose
+	    vertices correspond to the monomials in $L$ and whose faces 
+	    faces correspond subsets $F$ of $L$ for which no monomial in
+	    $L$ properly divides $\text{lcm} F$. When we say a monomial $m$ 
+	    properly divides $\text{lcm} F$, we mean $m$ divides $\text{lcm} F$ and 
+	    $(\text{lcm} F)/m$ has the same support as $\text{lcm} F$.
 	Text
 	    The Buchberger complex is a generalization of the
 	    Buchberger graph, first introduced in Miller-Sturmfels 
 	    @HREF("https://link.springer.com/chapter/10.1007/3-540-46796-3_3",
 	    "Monomial Ideals and Planar Graphs")@ as an important
-	    object of study for Groebner bases. Oltaneau and Welker
+	    object of study for Gröbner bases. Oltaneau and Welker
 	    introduce the complex in their paper @HREF("https://arxiv.org/pdf/1409.2041.pdf",
 	    "The Buchberger Resolution")@. 
     	Example
@@ -3372,8 +3372,8 @@ doc ///
 	    I = monomialIdeal(x_1^2, x_2^2, x_3^2, x_1*x_3, x_2*x_4);
 	    B1 = buchbergerSimplicialComplex(I,S)
 	Text
-	    The Buchberger complex supports a free resolution of {\tt I}, called the
-	    @TO2(buchbergerResolution,"Buchberger resolution")@ of I.
+	    The Buchberger complex supports a free resolution of $I$, called the
+	    @TO2(buchbergerResolution,"Buchberger resolution")@ of $I$.
 	Example
     	    BRes = chainComplex(B1, Labels => first entries mingens I)
 	    HH_0(BRes)
@@ -3381,7 +3381,7 @@ doc ///
 	    BRes == buchbergerResolution(I) 
 	Text
 	    If the monomial ideal is square free, then the Buchberger complex is the simplex
-	    on {\tt #L} vertices.
+	    on $#L$ vertices.
 	Example
 	    L = {x_1*x_2, x_1*x_3*x_4, x_0*x_2*x_4};
 	    B2 = buchbergerSimplicialComplex(L,S)
@@ -3399,22 +3399,22 @@ doc ///
         (buchbergerResolution, List)
 	(buchbergerResolution, MonomialIdeal)
     Headline
-        make a Buchberger complex of a monomial ideal 
+        make a Buchberger resolution of a monomial ideal 
     Usage
 	buchbergerResolution(L)
 	buchbergerResolution(I)
     Inputs
     	I : MonomialIdeal
         L : List
-	    a minimial set of generators for a monomial ideal {\tt I}
+	    a minimal set of generators for a monomial ideal $I$
     Outputs
         : ChainComplex
-	    the free resolution of the monomial ideal {\tt I} we get by homogenizing
-	    buchberger complex of {\tt I}.
+	    the free resolution of the monomial ideal $I$ we get by homogenizing
+	    the Buchberger complex of $I$.
     Description
     	Text
 	    The Buchberger resolution of a monomial ideal is obtained by homogenizing
-	    the Buchber complex. 
+	    the Buchberger complex of the ideal. 
     	Example
 	    R = ZZ/101[x_0..x_4];
 	    L = {x_1^2, x_2^2, x_3^2, x_1*x_3, x_2*x_4};
@@ -3423,7 +3423,7 @@ doc ///
 	    BRes == chainComplex(buchbergerSimplicialComplex(L,R), Labels => L)
 	Text
 	    When the Buchberger resolution is a minimal free resolution, it agrees
-	    with the scarf complex.
+	    with the Scarf complex.
 	Example
 	    Scarf = scarfChainComplex L
             BRes == Scarf	    
@@ -3454,17 +3454,17 @@ doc ///
          : ChainComplex
      Description
         Text
-	    If {\tt M} is a monomial ideal, minimally generated by {\tt L}, then
-	    the Taylor resolution of {\tt M} is the resolution of {\tt M} obtained
-	    by homogenizing the ({\tt #L - 1})-simplex.
+	    If $M$ is a monomial ideal, minimally generated by $L$, then
+	    the Taylor resolution of $M$ is the resolution of $M$ obtained
+	    by homogenizing the $(#L - 1)$-simplex.
 	Example
 	    S = QQ[vars(0..3)]
 	    M = monomialIdeal(a*b,c^3,c*d,b^2*c)
 	    T = taylorResolution M
 	    T.dd
 	Text
-	    If {\tt M} is generated by a regular sequence {\tt L}, then the Taylor
-	    resolution is the Koszul complex on {\tt L}.
+	    If $M$ is generated by a regular sequence $L$, then the Taylor
+	    resolution is the Koszul complex on $L$.
 	Example
 	    L = gens S
 	    T = taylorResolution L;
@@ -3495,7 +3495,7 @@ doc ///
 	     ideal.
 	 M : MonomialIdeal
 	 R : PolynomialRing
-	     the ambient ring used in constructing the lyubeznik simplicial complex.
+	     the ambient ring used in constructing the Lyubeznik simplicial complex.
 	 MonomialOrder => List
      Outputs
          D : SimplicialComplex
@@ -3504,8 +3504,8 @@ doc ///
 	    The Lyubeznik simplicial complex is the simplicial complex that
 	    supports the @TO2(lyubeznikResolution, "Lyubeznik resolution")@ of 
 	    an ordered set of monomials. This function is sensitive to the 
-	    order in which the monomials in {\tt L} appear. If you are using a 
-	    monomial ideal {\tt M} as your input, then the order of the
+	    order in which the monomials in $L$ appear. If you are using a 
+	    monomial ideal $M$ as your input, then the order of the
 	    monomials is given by {\tt first entries mingens M}.
 	Example
 	    S = QQ[x,y];
@@ -3513,8 +3513,8 @@ doc ///
 	    M = monomialIdeal{x*y,x^2,y^3};
 	    D = lyubeznikSimplicialComplex(M,R)
 	Text
-	    The lyubeznik resolution of {\tt M} is the homogenization of
-	    {\tt D} by {\tt M} (See @TO([(chainComplex, SimplicialComplex),Labels])@).
+	    The lyubeznik resolution of $M$ is the homogenization of
+	    $D$ by $M$ (See @TO([(chainComplex, SimplicialComplex),Labels])@).
         Example
 	    L = lyubeznikResolution(M);
 	    L.dd
@@ -3543,7 +3543,7 @@ doc ///
 	(lyubeznikResolution, MonomialIdeal)
 	[lyubeznikResolution, MonomialOrder]
     Headline
-        create the lyubeznik resolution of an ordered set of monomials.
+        create the Lyubeznik resolution of an ordered set of monomials.
     Usage
         lyubeznikResolution L
 	lyubeznikResolution M
@@ -3555,15 +3555,15 @@ doc ///
 	MonomialOrder => List
     Outputs
         : ChainComplex
-	  the Lyubeznik resolution of {\tt S/M}.
+	  the Lyubeznik resolution of $S/M$.
     Description
         Text
-            For a monomial ideal {\tt M} in a polynomial ring {\tt S}, minimally
-	    generated by {\tt L}, the Lyubeznik resolution is a resolution of
-	    {\tt S/M} determined by a total ordering of the minimal generators
-	    of {\tt M}. It is the subcomplex of the Taylor resolution of {\tt M}
-	    induced on the rooted faces. If {\tt L} is used as input, the ordering is the
-	    order in which the monomials appear in {\tt L}. If {\tt M} is used as
+            For a monomial ideal $M$ in a polynomial ring $S$, minimally
+	    generated by $L$, the Lyubeznik resolution is a resolution of
+	    $S/M$ determined by a total ordering of the minimal generators
+	    of $M$. It is the subcomplex of the Taylor resolution of $M$
+	    induced on the rooted faces. If $L$ is used as input, the ordering is the
+	    order in which the monomials appear in $L$. If $M$ is used as
 	    the input, the ordering is obtained from {\tt first mingens entries M}.
 	    For more details on Lyubeznik resolutions and their construction, see
 	    Jeff Mermin 
@@ -3598,7 +3598,7 @@ doc///
 	(scarfSimplicialComplex, List, Ring)    
 	(scarfSimplicialComplex, MonomialIdeal, Ring)
     Headline
-        create the scarf simplicial complex for a list of monomials
+        create the Scarf simplicial complex for a list of monomials
     Usage
         scarfSimplicialComplex(L, R)
 	scarfSimplicialComplex(M, R)
@@ -3613,8 +3613,8 @@ doc///
         D : SimplicialComplex
     Description
         Text
-	    The scarf simplicial complex is the simplicial complex that supports
-	    the scarf complex of a monomial ideal. The scarf complex does not need
+	    The Scarf simplicial complex is the simplicial complex that supports
+	    the Scarf complex of a monomial ideal. The Scarf complex does not need
 	    to be an acyclic simplicial complex. In fact, every simplicial complex
 	    that is not the boundary of a simplex is the scarf complex for some
 	    monomial ideal. For more information
@@ -3647,7 +3647,7 @@ doc///
 	(scarfChainComplex, List)    
 	(scarfChainComplex, MonomialIdeal)
     Headline
-        create the scarf chain complex for a list of monomials.
+        create the Scarf chain complex for a list of monomials.
     Usage
         scarfChainComplex L
 	scarfChainComplex M
@@ -3660,12 +3660,12 @@ doc///
         C : ChainComplex
     Description
         Text
-	    For a monomial ideal {\tt M}, minimall generated by {\tt L},
-	    in a polynomial ring {\tt S}, the Scarf complex is the 
-	    subcomplex of the Taylor resolution of {\tt S/M} that is
+	    For a monomial ideal $M$, minimally generated by $L$,
+	    in a polynomial ring $S$, the Scarf complex is the 
+	    subcomplex of the Taylor resolution of $S/M$ that is
 	    induced on the multihomogeneous basis elements with unique
 	    multidegrees. If the Scarf Complex is a resolution, then it 
-	    is the minimal free resolution of {\tt S/M}. For more information
+	    is the minimal free resolution of $S/M$. For more information
 	    on the Scarf complex and its construction, see Bayer, Dave; Peeva, 
 	    Irena; Sturmfels, Bernd 
 	    @HREF("https://www.intlpress.com/site/pub/files/_fulltext/journals/mrl/1998/0005/0001/MRL-1998-0005-0001-a003.pdf","Monomial Resolutions")@.
@@ -3714,7 +3714,7 @@ doc ///
         D : SimplicialComplex
 	Multigrading : Boolean
 	    which, if true, returns the colored algebraic shifting
-	    w.r.t. the multigrading of the underlying ring.
+	    with respect to the multigrading of the underlying ring.
     Outputs
         A : SimplicialComplex
 	    which is the algebraic shifting of {\tt D}. If Multigrading
@@ -4163,7 +4163,7 @@ doc ///
 	    complexes need to be specified as well as a matrix which
 	    determines a map between the complexes' corresponding rings.
 	Text
-	    The primary constructor of a toric map is
+	    The primary constructor of a simplicial map is
 	    @TO (map, SimplicialComplex, SimplicialComplex, Matrix)@.
     SeeAlso
     	"Working with simplicial maps"
@@ -4465,7 +4465,7 @@ doc ///
     Key
         (id, SimplicialComplex)
     Headline
-    	make the identity map from a SimplicialVariety to itself
+    	make the identity map from a SimplicialComplex to itself
     Usage 
         id_Delta
     Inputs 
@@ -4522,7 +4522,7 @@ doc ///
 	    f = map(fish,fishface,{a,b,c})
 	    isInjective f
 	Text
-	    The identity should always be injective.
+	    The identity map should always be injective.
 	Example
 	    isInjective id_fish
         Text
@@ -4559,7 +4559,7 @@ doc ///
 	    f = map(edge,triangle,{x_0,x_0,x_1})
 	    isSurjective f
 	Text
-	    The identity should always be surjective.
+	    The identity map should always be surjective.
 	Example
 	    isSurjective id_triangle
         Text
@@ -4631,7 +4631,8 @@ doc ///
 	    defines a simplicial map. In particular, it checks if variables
 	    are sent to variables, and that the image of each monomial 
 	    corresponding to a face in the source divides some monomial
-	    corresponding to a face in the target (i.e. is contained in).
+	    corresponding to a face in the target (i.e. the image of a face 
+	    is contained in a face).
     	Example
 	    R = ZZ/229[a,b,c,d];
 	    D = simplicialComplex{a*b*c, b*c*d}
@@ -4695,8 +4696,8 @@ doc ///
     	: ChainComplex
     Description
     	Text
-	    This method computes the relative homology of a simplicial complex {\tt D}
-	    contracted along a subcomplex {\tt E}.
+	    This method computes the relative homology of a simplicial complex $D$
+	    contracted along a subcomplex $E$.
 	Text
 	    Contracting an edge of a hexagon will not change the homology.
 	Example
@@ -4715,7 +4716,7 @@ doc ///
 	    Poles = simplicialComplex {y_3, y_4}
 	    prune homology(Sphere, Poles)
 	Text
-	    This method assumes that {\tt E} is a subcomplex {\tt D}, and may still run
+	    This method assumes that $E$ is a subcomplex of $D$, and may still run
 	    nonsensically. Note also that the complexes need not be defined over the same
 	    ring.
 	Example
@@ -4726,7 +4727,7 @@ doc ///
 	    inclusion = map(Hexagon, Fish, gens ring Hexagon);
 	    isWellDefined inclusion
     Caveat
-        This method does not check if {\tt E} is contained in {\tt D}.
+        This method does not check if $E$ is contained in $D$.
     SeeAlso
         (homology,SimplicialComplex)
 	(homology,SimplicialComplex,Ring)
@@ -4748,13 +4749,13 @@ doc ///
         D : SimplicialComplex
 	E : SimplicialComplex
 	symbol Degree => ZZ
-	    this option is ignored
+	    this option is ignored in this package
     Outputs
     	: Module
     Description
     	Text
-	    This method computes the relative cohomology of a simplicial complex {\tt D}
-	    contracted along a subcomplex {\tt E}.
+	    This method computes the relative cohomology of a simplicial complex $D$
+	    contracted along a subcomplex $E$.
 	Text
 	    Contracting an edge of a hexagon will not change the cohomology.
 	Example
@@ -4773,7 +4774,7 @@ doc ///
 	    Poles = simplicialComplex {y_3, y_4}
 	    prune cohomology(1, Sphere, Poles)
 	Text
-	    This method assumes that {\tt E} is a subcomplex {\tt D}, and may still run
+	    This method assumes that $E$ is a subcomplex $D$, and may still run
 	    nonsensically. Note also that the complexes need not be defined over the same
 	    ring.
 	Example
@@ -4784,7 +4785,7 @@ doc ///
 	    inclusion = map(Hexagon, Fish, gens ring Hexagon);
 	    isWellDefined inclusion
     Caveat
-        This method does not check if {\tt E} is contained in {\tt D}.
+        This method does not check if $E$ is contained in $D$.
     SeeAlso
         (cohomology, ZZ, SimplicialComplex)
     	(cohomology, ZZ, SimplicialComplex, Ring)
