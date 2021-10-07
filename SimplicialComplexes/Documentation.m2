@@ -196,14 +196,14 @@ doc ///
 	    in $\Delta$
     Description
         Text
-	    In this package, an abstract simplicial complex is constructed as
-            squarefree monomial ideal in a 
-	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
-	    in the abstract simplicial complex are identified with a subset of
-	    the variables in the polynomial ring and each face is identified
-	    with the product of the corresponding variables.  This method
+            In this package, an abstract simplicial complex $\Delta$ is
+            identified with a squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@. The vertices
+            of $\Delta$ correspond to a subset of the variables in the polynomial 
+	    ring, and each face is identified as the product of the variables
+	    corresponding to the vertices of that face. This method function
 	    returns a list whose entries are the squarefree monomials
-	    representing the maximal faces in the abstract simplicial complex.
+	    representing the maximal faces of $\Delta$.
 	Text
 	    The order of the facets is determined
 	    by the @TO2(MonomialOrder, "monomial order")@ on the underlying
@@ -238,7 +238,8 @@ doc ///
 	    assert (facets irrelevant == {1_S} and facets void == {})
     	Text
 	    The list of facets is part of the defining data of an abstract
-	    simplicial complex, so this method does no computation.
+	    simplicial complex. While this method function does no computation, 
+	    it allows us access to this data.
 	Example
 	    peek Δ
     SeeAlso 
@@ -2152,12 +2153,12 @@ doc ///
     Description
         Text
 	    In this package, an abstract simplicial complex $\Delta$ is
-            constructed as squarefree monomial ideal in a 
-	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
-            in the abstract simplicial complex are identified with a subset of
-            the variables in the polynomial ring and each face is identified
-            with the product of the corresponding variables.  This method
-            returns a @TO HashTable@ whose keys are the integers from $-1$ to
+            identified with a squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@. The vertices
+            of $\Delta$ correspond to a subset of the variables in the polynomial 
+	    ring, and each face is identified as the product of the variables
+	    corresponding to the vertices of that face.  This method function 
+	    returns a @TO HashTable@ whose keys are the integers from $-1$ to
             $\operatorname{dim} \Delta$ and the value of the key $i$ is the list containing
             the monomials corresponding to the $i$-dimensional faces of $\Delta$.  
     	Text
@@ -2220,11 +2221,11 @@ doc ///
     Description
         Text	    
 	    In this package, an abstract simplicial complex $\Delta$ is
-            constructed as squarefree monomial ideal in a 
-	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
-            in the abstract simplicial complex are identified with a subset of
-            the variables in the polynomial ring and each face is identified
-            with the product of the corresponding variables.  This method
+            identified with a squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@. The vertices
+            of $\Delta$ correspond to a subset of the variables in the polynomial 
+	    ring, and each face is identified as the product of the variables
+	    corresponding to the vertices of that face. This method function
             returns a @TO List@ whose entries are the monomials
             corresponding to the $i$-faces of $\Delta$.
     	Text
@@ -2352,8 +2353,8 @@ doc ///
     	Text
 	    Since the $i$-dimensional faces of the 
 	    @TO2(simplexComplex, "simplex")@ correspond to all subsets of
-	    vertices have cardinality $i+1$, the entries in its f-vector are
-	    binomial coefficients.	    
+	    vertices that have cardinality $i+1$, the entries in the f-vector of
+	    the simplex are all binomial coefficients.	    
 	Example	    
 	    S = ZZ[x_0..x_6];
 	    netList for n from -1 to 6 list fVector simplexComplex(n, S)	    
@@ -2444,8 +2445,9 @@ doc ///
 	    flagfVector({1,1,0}, Γ) 	    
 	    flagfVector({1,1,1}, Γ) 	    
 	Text
-            This method does not check whether the multigrading on ambient
-	    ring determines a proper coloring.  	    
+            The method function $\operatorname{flagfVector}$ does not 
+	    check whether the multigrading on ambient ring determines 
+	    a proper coloring.  	    
 	Text
 	    The flag $f$-vector is computed as the multigraded Hilbert
 	    function of the quotient of an exterior algebra by the
@@ -2483,7 +2485,7 @@ doc ///
 	    {\em flag $f$-number} $f_L(\Delta)$ is the number of faces with
 	    color set $L$.  In this package, a coloring of an abstract
 	    simplicial complex is determined by a multigrading of its
-	    @TO2((ring, SimplicialComplex), "ambient ring")@.  This methods
+	    @TO2((ring, SimplicialComplex), "ambient ring")@.  This method function
 	    returns a hashtable whose keys are color sets (or more generally
 	    multidegrees) and whose values are the corresponding flag
 	    $f$-number.
@@ -2514,8 +2516,9 @@ doc ///
 		sum for L in keys F list if sum L == i+1 then F#L else 0))
 	    assert(oo === fVector Γ)
 	Text
-            This method does not check whether the multigrading on ambient
-	    ring determines a proper coloring.  	    
+            The method function $\operatorname{flagfVector} does not check
+	    whether the multigrading on ambient ring determines a proper 
+	    coloring.
 	Text
 	    The flag $f$-vector is computed as the multigraded Hilbert
 	    function of the quotient of an exterior algebra by the
@@ -2855,7 +2858,7 @@ doc ///
         Text
 	    Each abstract simplicial complex $\Delta$ determines a chain
 	    complex $\widetilde C(\Delta, k)$ of free modules over its coefficient 
-	    ring $k$. For all integers $i$, the $i$-th term of $\widetilde C(\Delta, k)
+	    ring $k$. For all integers $i$, the $i$-th term of $\widetilde C(\Delta, k)$
 	    has a basis corresponding to the $i$-dimensional faces of $\Delta$. 
  	    When the optional argument $R$ is included, the chain complex is tensored 
 	    with $R$.  The {\em reduced homology} of $\Delta$ with coefficients in $R$ 
@@ -3083,8 +3086,8 @@ doc ///
 	    which is the induced map on homology
     Description
         Text
-            The map from the $i$-th homology of $\operatorname{source} f$
-	    to the $i$-th homology of $\operatorname{target} f$. As an example, we map a
+            The map from the $i$-th homology of the source of $f$
+	    to the $i$-th homology of the target of $f$. As an example, we map a
 	    circle into the torus in two ways, and we get two distinct
 	    maps in homology.
         Example
@@ -3125,8 +3128,8 @@ doc ///
 	    which is the induced map on cohomology
     Description
         Text
-            The map from the $i$-th cohomology of {\tt source f}
-	    to the $i$-th cohomology of {\tt target f}. As an example, we map a
+            The map from the $i$-th cohomology of the source of $f$
+	    to the $i$-th cohomology of the target of $f$. As an example, we map a
 	    circle into the torus in two ways, and we get two distinct
 	    maps in cohomology.
         Example
