@@ -196,23 +196,19 @@ doc ///
 	    in $\Delta$
     Description
         Text
-	    In this package, an abstract simplicial complex is constructed as
-            squarefree monomial ideal in a 
-	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
-	    in the abstract simplicial complex are identified with a subset of
-	    the variables in the polynomial ring and each face is identified
-	    with the product of the corresponding variables.  This method
+            In this package, an abstract simplicial complex $\Delta$ is
+            identified with a squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@. The vertices
+            of $\Delta$ correspond to a subset of the variables in the polynomial 
+	    ring, and each face is identified as the product of the variables
+	    corresponding to the vertices of that face. This method function
 	    returns a list whose entries are the squarefree monomials
-	    representing the maximal faces in the abstract simplicial complex.
+	    representing the maximal faces of $\Delta$.
 	Text
 	    The order of the facets is determined
 	    by the @TO2(MonomialOrder, "monomial order")@ on the underlying
 	    polynomial ring.  The facets of an abstract simplicial complex are
 	    used when outputing or printing; see @TO (net, SimplicialComplex)@.
-	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@
-     	    is a simplicial sphere with 5 vertices, 5 tetrahedral facets, and 
-	    a minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
 	    Δ = simplicialComplex monomialIdeal (a*b*c*d*e)
@@ -242,7 +238,8 @@ doc ///
 	    assert (facets irrelevant == {1_S} and facets void == {})
     	Text
 	    The list of facets is part of the defining data of an abstract
-	    simplicial complex, so this method does no computation.
+	    simplicial complex. While this method function does no computation, 
+	    it allows us access to this data.
 	Example
 	    peek Δ
     SeeAlso 
@@ -310,9 +307,10 @@ doc ///
             In this package, an abstract simplicial complex is represented as
             squarefree monomial ideal in a 
 	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  This method
-            returns the defining ideal.
+            function returns the defining ideal.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    The boundary of the 
+	    @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
      	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
      	    minimal nonface that corresponds to the interior of the sphere.
     	Example
@@ -526,10 +524,7 @@ doc ///
             @TO2(coefficientRing, "coefficient ring")@ of this polynomial
             ring.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
-     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
-     	    minimal nonface that corresponds to the interior of the sphere.
-     	    We construct this abstract simplicial complex using three
+     	    We construct the boundary of the $4$-sphere using three
      	    different polynomial rings.
     	Example
 	    S = ZZ[a..e];
@@ -556,7 +551,7 @@ doc ///
 	    assert (ring Δ' === S' and coefficientRing Δ' === ZZ/101 and
 		numgens ideal Δ' === 2)
     	Text
-	    The Stanley–Reisner ideal is part the defining data of an
+	    The Stanley–Reisner ideal is part of the defining data of an
 	    abstract simplicial complex, so this method does no computation.	
     	Text
 	    Although an abstract simplicial complex can be represented by a
@@ -564,8 +559,8 @@ doc ///
 	    large number of variables, some operations in this package do
 	    depend of the choice of the polynomial ring (or its coefficient ring).
 	    For example, the @TO2((chainComplex, SimplicialComplex), "chain
-	    complex")@ of an abstract simplicial complex is typically
-	    constructed over the coefficient ring of this polynomial ring.
+	    complex")@ of an abstract simplicial complex is, by default,
+	    constructed over the coefficient ring of its polynomial ring.
 	Example
     	    C = chainComplex Δ
 	    D = chainComplex Γ
@@ -595,10 +590,6 @@ doc ///
 	    cardinality $|F| = i + 1$ has {\em dimension} $i$.  The dimension
 	    of $\Delta$ is the maximum of the dimensions of its faces or it is
 	    $-\infty$ if $\Delta$ is the void complex (which has no faces).
-	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
-     	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
-     	    minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
 	    Δ = simplicialComplex {b*c*d*e, a*c*d*e, a*b*d*e, a*b*c*e, a*b*c*d}
@@ -880,8 +871,9 @@ doc ///
 	    "squarefee")@ and that the matrix of facets are the maximal faces
 	    in the abstract simplicial complex.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
-     	    a simplicial 3-sphere with 5 vertices, 5 facets, and a
+     	    The boundary of the 
+	    @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    a simplicial sphere with 5 vertices, 5 facets, and a
      	    minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
@@ -1217,8 +1209,9 @@ doc ///
 	Text
 	    This abstract simplicial complex is Cohen-Macaulay but not shellable.	    
 	Text
-	    Our enumeration of the vertices follows the {\tt gruenbaum}
-	    example in Masahiro Hachimori's
+	    Our enumeration of the vertices follows the 
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/gruenbaum_eng.html",
+	    "gruenbaum")@ example in Masahiro Hachimori's
 	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
 	    "simplicial complex libary")@.
     SeeAlso
@@ -1309,8 +1302,9 @@ doc ///
 	    assert(dim Δ === 2 and isPure Δ)
 	    assert(fVector Δ === {1,8,24,17})
 	Text
-	    Our enumeration of the vertices follows the {\tt dunce hat}
-	    example in Masahiro Hachimori's
+	    Our enumeration of the vertices follows the 
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/dunce_hat_eng.html",
+	    "dunce hat")@ example in Masahiro Hachimori's
 	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
 	    "simplicial complex libary")@.
     SeeAlso
@@ -1356,8 +1350,9 @@ doc ///
 	    shellable} if any shelling of a subcomplex can be extended to a
 	    shelling of $\Delta$. The Björner complex is not extendably shellable.
 	Text
-	    Our enumeration of the vertices follows the {\tt bjorner}
-	    example in Masahiro Hachimori's
+	    Our enumeration of the vertices follows the 
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/bjorner_eng.html",
+	    "bjorner")@ example in Masahiro Hachimori's
 	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
 	    "simplicial complex libary")@.
     SeeAlso
@@ -1525,7 +1520,7 @@ doc ///
     Inputs
         Delta : SimplicialComplex  
 	Exclude => List
-	    the optional input is ignored in this package
+	    the optional input is ignored by this particular function
     Outputs 
         : SimplicialComplex
 	    where vertices are precisely the generators in its polynomial ring
@@ -1639,7 +1634,7 @@ doc ///
         Text
             The Alexander dual of an abstract simplicial complex $\Delta$ is
             the abstract simplicial complex whose faces are the complements of
-            the nonfaces in $\Delta$.
+            the nonfaces of $\Delta$.
 	Text
 	    The Alexander dual of a square is the disjoint union of two edges.
     	Example
@@ -1650,9 +1645,12 @@ doc ///
 	    assert (dual dual Δ === Δ)
     	Text
             The Alexander dual is homotopy equivalent to the complement of
-     	    $\Delta$ in the sphere generated by all of the variables in the
+     	    $\Delta$ in the simplex generated by all of the variables in the
      	    @TO2((ring, SimplicialComplex), "polynomial ring")@ of $\Delta$.
-     	    In particular, it depends on the number of variables.
+	    This is known as 
+	    @HREF("https://en.wikipedia.org/wiki/Alexander_duality",
+	    "Alexander Duality")@. In particular, it depends on the number of 
+	    variables.
      	Example
 	    S' = ZZ[a..e];
 	    Δ' = simplicialComplex {a*b, b*c, c*d, a*d}
@@ -2158,15 +2156,14 @@ doc ///
     Description
         Text
 	    In this package, an abstract simplicial complex $\Delta$ is
-            constructed as squarefree monomial ideal in a 
-	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
-            in the abstract simplicial complex are identified with a subset of
-            the variables in the polynomial ring and each face is identified
-            with the product of the corresponding variables.  This method
-            returns a @TO HashTable@ whose keys are the integers from $-1$ to
-            $\operatorname{dim} \Delta$ and whose values are matrices listing
-            the monomials corresponding to the faces of $\Delta$.  The matrix
-            associated to $i$ enumerates the faces having dimension $i$.
+            identified with a squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@. The vertices
+            of $\Delta$ correspond to a subset of the variables in the polynomial 
+	    ring, and each face is identified as the product of the variables
+	    corresponding to the vertices of that face.  This method function 
+	    returns a @TO HashTable@ whose keys are the integers from $-1$ to
+            $\operatorname{dim} \Delta$ and the value of the key $i$ is the list containing
+            the monomials corresponding to the $i$-dimensional faces of $\Delta$.  
     	Text
     	    The faces of the @TO2(simplexComplex, "simplex")@ correspond to
     	    all subsets of the underlying vertex set.
@@ -2227,11 +2224,11 @@ doc ///
     Description
         Text	    
 	    In this package, an abstract simplicial complex $\Delta$ is
-            constructed as squarefree monomial ideal in a 
-	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  The vertices
-            in the abstract simplicial complex are identified with a subset of
-            the variables in the polynomial ring and each face is identified
-            with the product of the corresponding variables.  This method
+            identified with a squarefree monomial ideal in a 
+	    @TO2((ring, SimplicialComplex), "polynomial ring")@. The vertices
+            of $\Delta$ correspond to a subset of the variables in the polynomial 
+	    ring, and each face is identified as the product of the variables
+	    corresponding to the vertices of that face. This method function
             returns a @TO List@ whose entries are the monomials
             corresponding to the $i$-faces of $\Delta$.
     	Text
@@ -2297,7 +2294,7 @@ doc ///
     	Text	
 	    An abstract simplicial complex is {\em pure} of dimension $d$ if
 	    every face of dimension less that $d$ lies in a facet of dimension
-	    exactly $d$.  In other words, all the facets of a pure simplicial
+	    exactly $d$. In other words, all the facets of a pure simplicial
 	    complex have the same dimension.
         Text
 	    Most classic examples of abstract simplicial complexes are pure.
@@ -2359,8 +2356,8 @@ doc ///
     	Text
 	    Since the $i$-dimensional faces of the 
 	    @TO2(simplexComplex, "simplex")@ correspond to all subsets of
-	    vertices have cardinality $i+1$, the entries in its f-vector are
-	    binomial coefficients.	    
+	    vertices that have cardinality $i+1$, the entries in the f-vector of
+	    the simplex are all binomial coefficients.	    
 	Example	    
 	    S = ZZ[x_0..x_6];
 	    netList for n from -1 to 6 list fVector simplexComplex(n, S)	    
@@ -2451,8 +2448,9 @@ doc ///
 	    flagfVector({1,1,0}, Γ) 	    
 	    flagfVector({1,1,1}, Γ) 	    
 	Text
-            This method does not check whether the multigrading on ambient
-	    ring determines a proper coloring.  	    
+            The method function $\operatorname{flagfVector}$ does not 
+	    check whether the multigrading on ambient ring determines 
+	    a proper coloring.  	    
 	Text
 	    The flag $f$-vector is computed as the multigraded Hilbert
 	    function of the quotient of an exterior algebra by the
@@ -2490,7 +2488,7 @@ doc ///
 	    {\em flag $f$-number} $f_L(\Delta)$ is the number of faces with
 	    color set $L$.  In this package, a coloring of an abstract
 	    simplicial complex is determined by a multigrading of its
-	    @TO2((ring, SimplicialComplex), "ambient ring")@.  This methods
+	    @TO2((ring, SimplicialComplex), "ambient ring")@.  This method function
 	    returns a hashtable whose keys are color sets (or more generally
 	    multidegrees) and whose values are the corresponding flag
 	    $f$-number.
@@ -2521,8 +2519,9 @@ doc ///
 		sum for L in keys F list if sum L == i+1 then F#L else 0))
 	    assert(oo === fVector Γ)
 	Text
-            This method does not check whether the multigrading on ambient
-	    ring determines a proper coloring.  	    
+            The method function $\operatorname{flagfVector}$ does not check
+	    whether the multigrading on ambient ring determines a proper 
+	    coloring.
 	Text
 	    The flag $f$-vector is computed as the multigraded Hilbert
 	    function of the quotient of an exterior algebra by the
@@ -2772,14 +2771,15 @@ doc ///
 	    Each abstract simplicial complex $\Delta$ determines a chain
 	    complex of free modules over its @TO2((coefficientRing,
 	    SimplicialComplex), "coefficient ring")@.  For all integers $i$,
-	    the $i$-th term in this chain complex has a basis corresponding to
-	    the $i$-th faces in the simplicial complex $\Delta$. 
+	    the $i$-th module in this chain complex has a basis corresponding to
+	    the $i$-dimensional faces in the simplicial complex $\Delta$.
     	Text	    
-	    When the optional argument {\tt Labels} has the default value,
-	    this methods constructs this chain complexes.  The {\em reduced
-	    homology} of an abstract simplicial complex $\Delta$ is, by
-	    definition, the homology of this chain complex.  We illustrate
-	    this method with a triangulation of the torus and Klein bottle.
+	    When the argument $\mathrm{Lables}$ has the default value,
+	    this method function constructs $\widetilde C(D;k)$, where $k$ is the
+	    @TO2((coefficientRing, SimplicialComplex), "coefficient ring")@ of 
+	    $\Delta$. The {\em reduced homology} of an abstract simplicial complex 
+	    $\Delta$ is, by definition, the homology of this chain complex.  We 
+	    illustrate this method with a triangulation of the torus and Klein bottle.
     	Example
 	    S = QQ[a..g];
 	    torus = smallManifold(2, 7, 6, S)
@@ -2799,10 +2799,10 @@ doc ///
 	    prune HH Δ
 	    assert(prune HH_1 C' == ZZ^1/ideal(2) ++ ZZ^1)
 	Text
-	    When the optional argument {\tt Labels} is given a list of
+	    When the optional argument $\mathrm{Labels}$ is a list of
 	    monomials, corresponding to the vertices of $\Delta$, this method
 	    returns a chain complex of free modules over the ring containing
-	    the labelling monomials.  Each face, or basis vector, is labelled
+	    monomial labels.  Each face, or basis vector, is labelled
 	    by the least common multiple of the labels on its vertices.
 	    In other words, the chain complex associated to a labelled
 	    simplicial complex is the {\em homogenization} of the canonical
@@ -2829,8 +2829,7 @@ doc ///
 	Text
 	    The homogenization of the chain complex associated to an abstract
 	    simplicial complex does not always produce a free resolution.
-	    Reordering the labels in the previous example demonstrates this
-    	    phenomenon.
+	    Reordering the labels in the previous example demonstrates this.
 	Example
 	    hC' = chainComplex(Γ, Labels => {x_3, x_0*x_1, x_1*x_2, x_0*x_2})
 	    hC'.dd
@@ -2850,24 +2849,23 @@ doc ///
     Headline
         compute the reduced homology of an abstract simplicial complex
     Usage
-        homology(k, Delta, R)
+        homology(i, Delta, R)
     Inputs
-        k : ZZ
+        i : ZZ
         Delta : SimplicialComplex
 	R : Ring
     Outputs
         : Module
-            that is the $k$-th reduced homology group of $\Delta$ with coefficients in $R$
+            that is the $i$-th reduced homology group of $\Delta$ with coefficients in $R$
     Description
         Text
 	    Each abstract simplicial complex $\Delta$ determines a chain
-	    complex of free modules over its coefficient ring.  For all
-	    integers $i$, the $i$-th term in this chain complex has a basis
-	    corresponding to the $i$-th faces in the simplicial complex
-	    $\Delta$.  When the optional argument $R$ is include, the chain
-	    complex is tensored with the given ring.  The {\em reduced
-	    homology} of $\Delta$ with coefficients in $R$ is, by definition,
-	    the homology of this chain complex.	
+	    complex $\widetilde C(\Delta, k)$ of free modules over its coefficient 
+	    ring $k$. For all integers $i$, the $i$-th term of $\widetilde C(\Delta, k)$
+	    has a basis corresponding to the $i$-dimensional faces of $\Delta$. 
+ 	    When the optional argument $R$ is included, the chain complex is tensored 
+	    with $R$.  The {\em reduced homology} of $\Delta$ with coefficients in $R$ 
+	    is, by definition, the homology of $\widetilde C(\Delta, k) \otimes R$.	
         Text
             The $2$-sphere has vanishing first homology, but non-trivial
             second homology.  We obtain a triangulation of the $2$-sphere by
@@ -3007,19 +3005,19 @@ doc ///
 	    that when omitted is equal to the 
 	    @TO2((ring, SimplicialComplex), "underlying ring")@ of $\Delta$	    
 	Degree => ZZ
-	    is ignored in this package
+	    is ignored by this particular function
     Outputs
         : Module
 	    that is reduced cohomology group of $\Delta$ with coefficients in $R$
     Description
         Text
 	    Each abstract simplicial complex $\Delta$ determines a chain
-	    complex $C$ of free modules over its coefficient ring.  For all
-	    integers $i$, the $i$-th term $C_i$ in this chain complex has a
-	    basis corresponding to the $i$-th faces in the simplicial complex
-	    $\Delta$.  The {\em reduced cohomology} of $\Delta$ with
-	    coefficients in $R$ is, by definition, the homology of the chain
-	    complex $\operatorname{Hom}(C \otimes R, R)$.
+	    complex $\widetilde C(\Delta, k)$ of free modules over its coefficient
+	    ring $k$. For all integers $i$, the $i$-th term of $\widetilde C(\Delta, 
+	    k)$ has a basis corresponding to the $i$-dimensional faces of $\Delta$.  
+	    The {\em reduced cohomology} of $\Delta$ with coefficients in $R$ is, by 
+	    definition, the cohomology of the chain complex $\operatorname{Hom}(
+	    \widetilde C(\Delta, k) \otimes R, R)$.
 	Text
 	    The 2-sphere has vanishing first cohomology, but non-trivial second cohomology.
         Example
@@ -3051,11 +3049,11 @@ doc ///
         f : SimplicialMap
     Outputs
         : GradedModuleMap
-	    which is the induced map on homology
+	    which is the map on homology induced by $f$
     Description
         Text
-            The graded module map from the homology of {\tt source f}
-	    to the homology of {\tt target f}. As an example, we map a
+            The graded module map from the homology of the source of $f$
+	    to the homology of the target of $f$. As an example, we map a
 	    circle into the torus in two ways, and we get two distinct
 	    maps in homology.
         Example
@@ -3091,8 +3089,8 @@ doc ///
 	    which is the induced map on homology
     Description
         Text
-            The map from the $i$-th homology of {\tt source f}
-	    to the $i$-th homology of {\tt target f}. As an example, we map a
+            The map from the $i$-th homology of the source of $f$
+	    to the $i$-th homology of the target of $f$. As an example, we map a
 	    circle into the torus in two ways, and we get two distinct
 	    maps in homology.
         Example
@@ -3127,14 +3125,14 @@ doc ///
 	i : ZZ
 	f : SimplicialMap
 	Degree => ZZ
-	    which is ignored in this package	
+	    which is ignored by this particual function	
     Outputs
         : Matrix
 	    which is the induced map on cohomology
     Description
         Text
-            The map from the $i$-th cohomology of {\tt source f}
-	    to the $i$-th cohomology of {\tt target f}. As an example, we map a
+            The map from the $i$-th cohomology of the source of $f$
+	    to the $i$-th cohomology of the target of $f$. As an example, we map a
 	    circle into the torus in two ways, and we get two distinct
 	    maps in cohomology.
         Example
@@ -3210,10 +3208,10 @@ doc ///
     Inputs
         D : SimplicialComplex
 	R : Ring
-	    the ambient ring for the barycentric subdivision of {\tt D}
+	    the ambient ring for the barycentric subdivision of $D$
     Outputs 
         : SimplicialComplex
-	    the barycentric subdivision of {\tt D}
+	    the barycentric subdivision of $D$
     Description
         Text
     	    If $D$ is an abstract simplicial complex, the barycentric subdivision
@@ -3230,13 +3228,13 @@ doc ///
 	    BFacets = facets B
 	Text
 	    To make sense of the facets of the barycentric subdivision, we order
-	    the faces of {\tt D} as follows.
+	    the faces of $D$ as follows.
         Example
 	    DFaces = flatten for i to dim D + 1 list faces(i, D)
         Text
-	    The indices of the variables appearing in each monomial (Facet) {\tt F}
-	    in {\tt facets B} determines a sequence of monomials (faces) in
-	    {\tt DFaces}. More concretely, the correspondence is:
+	    The indices of the variables appearing in each monomial (Facet) $F$
+	    in the facets of $\mathrm{B}$ determines a sequence of monomials (faces) in
+	    $D$. More concretely, the correspondence is:
 	Example
 	    netList for F in BFacets list(F => DFaces_(indices F))
     SeeAlso
@@ -3265,20 +3263,18 @@ doc ///
     Description
         Text
             The vertices of the barycentric subdivision of $D$ correspond to
-	    faces of $D$. For every face $F$ in $D$,
-	    {\tt barycentricSubdivision(f,R,S)} maps the vertex corresponding to
-	    $F$ in {\tt barycentricSubdivision(D,R)} to the vertex
-	    corresponding to the image of $F$ under the map {\tt f} in
-	    {\tt barycentricSubdivision(E,S)}. We work out these correspondences, 
-	    and the resulting simplicial map between barycentric subdivisions in
-	    the example below.
+	    faces of $D$. For every face $F$ in $D$, $\operatorname{barycentricSubdivision}
+	    (f,R,S)$ maps the vertex corresponding to $F$ in the barycentric subdivision of
+	    $D$ to the vertex corresponding to $f(F)$ in the barycentric subdivision of $E$.
+	    We work out these correspondences, and the resulting simplicial map between 
+	    barycentric subdivisions in the example below.
         Example
 	    T = ZZ/2[x_0,x_1,x_2];
 	    D = simplicialComplex{T_1*T_2}
 	    E = simplicialComplex{T_0*T_1}
 	    f = map(E, D, reverse gens T)
         Text
-	    The barycentric subdivisions of {\tt D}, {\tt E}, and {\tt f} are:	    
+	    The barycentric subdivisions of $D$, $E$, and $f$ are:	    
 	Example
 	    R = ZZ/2[y_0..y_2];
 	    S = ZZ/2[z_0..z_2];
@@ -3286,17 +3282,17 @@ doc ///
     	    BE = barycentricSubdivision(E,S)
 	    Bf = barycentricSubdivision(f,S,R)
         Text
-	    In order to understand the data of {\tt Bf}, we first look at 
-	    the corresponce between the faces of {\tt D}, {\tt E} and
-	    the vertices of {\tt BD}, {\tt BE}, respectively.
+	    In order to understand the data of $Bf$, we first look at 
+	    the corresponce between the faces of $D$, $E$ and
+	    the vertices of $BD$, $BE$, respectively.
         Example
 	    DFaces = flatten for i to dim D + 1 list faces(i,D)
 	    EFaces = flatten for i to dim E + 1 list faces(i,E)
 	    (netList for y in vertices BD list(y => DFaces_(index y)),
 	     netList for z in vertices BE list(z => EFaces_(index z)))
         Text
-	    These correspondences, together the images of each face of {\tt D}
-	    under {\tt f}, will completely determine the map {\tt Bf}.
+	    These correspondences, together the images of each face of $D$
+	    under $f$, will completely determine the map $Bf$.
 	Example
     	    (netList for F in DFaces list(F => (map f)(F)),
 	     netList for v in vertices BD list(v => (map Bf)(v)))
@@ -3337,7 +3333,7 @@ doc ///
         (buchbergerSimplicialComplex, List, Ring)
 	(buchbergerSimplicialComplex, MonomialIdeal, Ring)
     Headline
-        make a Buchberger complex of a monomial ideal 
+        make the Buchberger complex of a monomial ideal 
     Usage
 	buchbergerSimplicialComplex(L,R)
 	buchbergerSimplicialComplex(I,R)
@@ -3355,16 +3351,16 @@ doc ///
 	    $L$, then the Buchberger complex is the simpicial complex whose
 	    vertices correspond to the monomials in $L$ and whose faces 
 	    faces correspond subsets $F$ of $L$ for which no monomial in
-	    $L$ properly divides $\text{lcm} F$. When we say a monomial $m$ 
-	    properly divides $\text{lcm} F$, we mean $m$ divides $\text{lcm} F$ and 
-	    $(\text{lcm} F)/m$ has the same support as $\text{lcm} F$.
+	    $L$ properly divides $\text{lcm} (F)$. When we say a monomial $m$ 
+	    properly divides $\text{lcm} (F)$, we mean $m$ divides $\text{lcm} (F)$ and 
+	    $(\text{lcm} (F))/m$ has the same support as $\text{lcm} (F)$.
 	Text
 	    The Buchberger complex is a generalization of the
 	    Buchberger graph, first introduced in Miller-Sturmfels 
 	    @HREF("https://link.springer.com/chapter/10.1007/3-540-46796-3_3",
 	    "Monomial Ideals and Planar Graphs")@ as an important
 	    object of study for Gröbner bases. Oltaneau and Welker
-	    introduce the complex in their paper @HREF("https://arxiv.org/pdf/1409.2041.pdf",
+	    introduce the Buchberger complex in their paper @HREF("https://arxiv.org/pdf/1409.2041.pdf",
 	    "The Buchberger Resolution")@. 
     	Example
 	    R = ZZ/101[x_0..x_4];
@@ -3381,7 +3377,7 @@ doc ///
 	    BRes == buchbergerResolution(I) 
 	Text
 	    If the monomial ideal is square free, then the Buchberger complex is the simplex
-	    on $#L$ vertices.
+	    on $\#L$ vertices.
 	Example
 	    L = {x_1*x_2, x_1*x_3*x_4, x_0*x_2*x_4};
 	    B2 = buchbergerSimplicialComplex(L,S)
@@ -3506,7 +3502,8 @@ doc ///
 	    an ordered set of monomials. This function is sensitive to the 
 	    order in which the monomials in $L$ appear. If you are using a 
 	    monomial ideal $M$ as your input, then the order of the
-	    monomials is given by {\tt first entries mingens M}.
+	    monomials is given by $\operatorname{first} \operatorname{entries} 
+	    \operatorname{mingens} M$.
 	Example
 	    S = QQ[x,y];
 	    R = QQ[a,b,c];
@@ -3523,7 +3520,7 @@ doc ///
 	Text
 	    Changing the order of the generators may change the output.
 	    We can do this by manually entering the permuted list of generators,
-	    or by using the optional {\tt MonomialOrder} argument.
+	    or by using the optional $\operatorname{MonomialOrder}$ argument.
 	Example
 	    first entries mingens M
 	    D' = lyubeznikSimplicialComplex(M,R,MonomialOrder=>{1,2,0})
@@ -3564,12 +3561,13 @@ doc ///
 	    of $M$. It is the subcomplex of the Taylor resolution of $M$
 	    induced on the rooted faces. If $L$ is used as input, the ordering is the
 	    order in which the monomials appear in $L$. If $M$ is used as
-	    the input, the ordering is obtained from {\tt first mingens entries M}.
+	    the input, the ordering is obtained from $\operatorname{first} 
+	    \operatorname{mingens} \operatorname{entries} M$.
 	    For more details on Lyubeznik resolutions and their construction, see
 	    Jeff Mermin 
 	    @HREF("https://www.degruyter.com/view/book/9783110250404/10.1515/9783110250404.127.xml", 
-		"Three Simplicial Resolutions")@, (English summary) Progress in
-	     commutative algebra 1, 127–141, de Gruyter, Berlin, 2012.
+	    "Three Simplicial Resolutions")@, (English summary) Progress in
+	    commutative algebra 1, 127–141, de Gruyter, Berlin, 2012.
         Example
 	    S = QQ[x,y];
 	    M = monomialIdeal{x*y,x^2,y^3};
@@ -3578,7 +3576,7 @@ doc ///
         Text
 	    Changing the order of the generators may change the output.
 	    We can do this by manually entering the permuted list of generators,
-	    or by using the optional {\tt MonomialOrder} argument.
+	    or by using the optional $\mathrm{MonomialOrder}$ argument.
         Example
 	    first entries mingens M
 	    F' = lyubeznikResolution({x^2,y^3,x*y});
@@ -4252,12 +4250,14 @@ doc ///
 	    ignored
     Outputs
         phi : RingMap
-	    a map from {\tt ring source f} to {\tt ring target f}.
+	    a map from the ring of the source of $f$ to the 
+	    ring of the target of $f$.
     Description
         Text
-            Every simplicial map sends the vertices of {\tt source f} to 
-	    the vertices {\tt target f}. Consequently, this determines a
-	    ring map between {\tt ring source f} and {\tt ring target f}.
+            Every simplicial map sends the vertices of the source of $f$
+	    to the vertices of the target of $f$. Consequently, this 
+	    determines a ring map between the ring of the source of $f$ 
+	    and the ring of the target of $f$.
         Example
             S = ZZ/101[a,b,c,d];
 	    Δ = simplexComplex(3,S)
@@ -4583,12 +4583,12 @@ doc ///
         f : SimplicialMap
     Outputs
         : SimplicialComplex
-	    the image of {\tt source f} in {\tt target f}
+	    the image of the source of $f$ in the target of $f$
     Description
         Text
-	    The image of {\tt f} is the subcomplex of {\tt target f} whose
-	    faces are of the form {\tt f(F)} for some face {\tt F} in 
-	    {\tt source f}.
+	    The image of $f$ is the subcomplex of the target of $f$
+	    whose faces are of the form $f(F)$ for some face $F$ in 
+	    the source of $f$.
 	Example
 	    R = ZZ/229[a,b,c];
 	    D = simplicialComplex{a*b*c}
@@ -4749,7 +4749,7 @@ doc ///
         D : SimplicialComplex
 	E : SimplicialComplex
 	symbol Degree => ZZ
-	    this option is ignored in this package
+	    this option is ignored by this particular function
     Outputs
     	: Module
     Description
