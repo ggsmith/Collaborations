@@ -35,7 +35,6 @@ L = link(⧓, x_2)
 prune HH_0 L
 --
 dim L
-facets L
 --
 assert(HH_0 L != 0)
 assert(dim(S^1/monomialIdeal ⧓) =!= n - pdim(S^1/monomialIdeal ⧓))
@@ -54,7 +53,7 @@ hilbertSeries(S^1/monomialIdeal ⧓, Reduce => true)
 S = ZZ[x_0..x_3];
 Δ = simplicialComplex{x_0*x_1*x_2, x_2*x_3}
 chainComplex Δ
-R = QQ[y_0..y_3];
+R = QQ[y_0..y_3, DegreeRank => 4];
 J = ideal(y_0*y_1, y_0*y_2, y_0*y_3, y_1*y_2*y_3)
 C = chainComplex(Δ, Labels => J_*)
 C.dd
@@ -63,8 +62,19 @@ assert(res (R^1/J) == C)
 C' = chainComplex(Δ, Labels => reverse J_*)
 prune homology C'
 --
-restart
-needsPackage "SimplicialComplexes";
-J' = monomialIdeal(y_1*y_2, y_2^2, y_0*y_2, y_1^2, y_0^2)
+R = QQ[y_0..y_3, DegreeRank => 4];
+J' = monomialIdeal(y_1*y_3, y_2^2, y_0*y_2, y_1^2, y_0^2);
 T = taylorResolution J'
-T == chainComplex(simplexComplex(4, S), Labels => J'_*)
+gensJ' = first entries mingens J'
+S = ZZ[x_0..x_4];
+assert(T == chainComplex(simplexComplex(4, S), Labels => first entries mingens J'))
+assert(lyubeznikSimplicialComplex(J', S) === simplexComplex(4, S))
+
+Γ = buchbergerSimplicialComplex(J',S)
+B = buchbergerResolution J'
+assert all(3, i -> HH_(i+1) B == 0) 
+assert(betti B == betti res J')
+assert(B == chainComplex(Γ, Labels => first entries mingens J'))
+assert(Γ === lyubeznikSimplicialComplex(J', S, MonomialOrder => {2,1,0,3,4}))
+assert(Γ === scarfSimplicialComplex(J', S))
+

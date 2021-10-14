@@ -632,7 +632,7 @@ o40 = ZZ  <-- ZZ  <-- ZZ  <-- ZZ
 o40 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i41 : R = QQ[y_0..y_3];
+i41 : R = QQ[y_0..y_3, DegreeRank => 4];
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
 i42 : J = ideal(y_0*y_1, y_0*y_2, y_0*y_3, y_1*y_2*y_3)
@@ -666,20 +666,20 @@ o44 = 0 : R  <-------------------------------------- R  : 1
                | y_0y_1 y_0y_2 y_0y_3 y_1y_2y_3 |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=3.0pt]
-           4                                      4
-      1 : R  <---------------------------------- R  : 2
-                {2} | -y_2 -y_3 0    0       |
-                {2} | y_1  0    -y_3 0       |
-                {2} | 0    y_1  y_2  -y_1y_2 |
-                {3} | 0    0    0    y_0     |
+           4                                               4
+      1 : R  <------------------------------------------- R  : 2
+                {1, 1, 0, 0} | -y_2 -y_3 0    0       |
+                {1, 0, 1, 0} | y_1  0    -y_3 0       |
+                {1, 0, 0, 1} | 0    y_1  y_2  -y_1y_2 |
+                {0, 1, 1, 1} | 0    0    0    y_0     |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
-           4                    1
-      2 : R  <---------------- R  : 3
-                {3} | y_3  |
-                {3} | -y_2 |
-                {3} | y_1  |
-                {4} | 0    |
+           4                             1
+      2 : R  <------------------------- R  : 3
+                {1, 1, 1, 0} | y_3  |
+                {1, 1, 0, 1} | -y_2 |
+                {1, 0, 1, 1} | y_1  |
+                {1, 1, 1, 1} | 0    |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
 o44 : ChainComplexMap
@@ -700,108 +700,107 @@ o46 = R  <-- R  <-- R  <-- R
       0      1      2      3
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
-o12 : ChainComplex
+o46 : ChainComplex
 \end{lstlisting}
 \vfill
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
-i13 : prune homology C'
+i47 : prune homology C'
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o13 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
+o47 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
 
-      1 : cokernel {3} | y_2 |                       
+      1 : cokernel {1, 1, 0, 1} | y_2 |              
 
       2 : 0                                          
 
-      3 : 0                                          
+      3 : 0   
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-o13 : GradedModule
+o47 : GradedModule
 \end{lstlisting}
 
-Given a monomial ideal $J$, there are several algorithms that produce a
-labelled simplicial complex $\Delta$ such that chain complex $C(\Delta)$ is a
-free resolution of the quotient $R/J$.  We exhibit a few.
-
-the $I$-homogenization of
-$\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often
-non-minimally. Examples of such constructions are the Taylor resolution,
-Lyubeznik resolution, and the Buchberger resolution, all of which are
-implemented in \texttt{SimplicialComplexes}. We have also implemented a
-constructor for the Scarf complex, which is a complex that is not always a
-free resolution of $S/I$, but when it is a free resolution it is minimal. We
-will not describe these constructions here, but a concise description of the
-Taylor resolution, Lyubeznik resolution, and Scarf complex is given in
-\cite{Mermin}, and a description of the Buchberger resolution is given in
-\cite{OW}.
-
-Consider the monomial ideal
-$I = (x_1x_3, x_2^2, x_0x_2, x_1^2, x_0^2) \subset \mathbb
-C[x_0,\dotsc,x_3]$. The Taylor resolution of $I$ can be realized as an
-$I$-homogenization of the $4$-simplex.
-%  
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i2 : R = QQ[a,b,c,d,e];
-    i3 : S = QQ[x_0..x_3];
-    i4 : I = monomialIdeal(x_1*x_3, x_2^2,  x_0*x_2, x_1^2, x_0^2);
-    o4 : MonomialIdeal of S
-    i5 : T = taylorResolution J
-          1      5      10      10      5      1
-    o5 = S  <-- S  <-- S   <-- S   <-- S  <-- S
-         0      1      2       3       4      5
-    o5 : ChainComplex
-    i6 : T == chainComplex(simplexComplex(4,R),Labels => first entries mingens I)
-    o6 = true
+Given a monomial ideal $J$, there are several algorithms that yield a labelled
+simplicial complex $\Delta$ such that complex $C(\Delta)$ is a free (not
+necessarily minimal) resolution of $R/J$.  We exhibit a few.
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
+i48 : J' = monomialIdeal(y_1*y_3, y_2^2, y_0*y_2, y_1^2, y_0^2);
 \end{lstlisting}
-  %
-  The Buchberger simplicial complex is a subcomplex of the $4$-simplex, and the Buchberger resolution is an $I$-homogenization of the Buchberger simplicial complex. For this example, the Buchberger resolution is the minimal free resolution of $S/I$, but this is not always the case.
-  %
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i7 : buchbergerSimplicialComplex(J,R)
-    o7 = simplicialComplex | acde abcd |
-    o7 : SimplicialComplex
-    i8 : B = buchbergerResolution J
-          1      5      9      7      2
-    o8 = S  <-- S  <-- S  <-- S  <-- S
-         0      1      2      3      4
-    o8 : ChainComplex
-    i10 : betti B === betti(res J)
-    o10 = true
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o48 : MonomialIdeal of R
 \end{lstlisting}
-  %
-Lyubeznik simplicial complexes and resolutions are constructed relative to a total order on the minimal generators of $I$. Every ordering will produce a resolution, but these resolutions need not be isomorphic. When no ordering is given, the methods \texttt{lyubeznikSimplicialComplex} and \texttt{lyubeznikResolution} will order the generators relative to the monomial order on $S$ which, in Macaulay2, is graded revlex by default. The option \texttt{MonomialOrder} reorders the minimal generators of $I$ relative to the monomial ordering on $S$. For example, \texttt{MonomialOrder => \{2,1,0,3,4\}} refers to the total ordering $x_0x_2 <  x_2^2 < x_1x_3 < x_1^2 < x_0^2$ on the minimal generators of $I$. We see that by changing the ordering we can both produce the worst case (Taylor resolution) and best case (minimal free resolution).
-  %
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i11 : lyubeznikSimplicialComplex(J,R)
-    o11 = simplicialComplex | abcde |
-    o11 : SimplicialComplex
-    i12 : lyubeznikResolution(J) == taylorResolution(J)
-    o12 = true
-    i13 : lyubeznikSimplicialComplex(J, R, MonomialOrder => {2,1,0,3,4})
-    o13 = simplicialComplex | acde abcd |
-    o13 : SimplicialComplex
-    i14 : L = lyubeznikResolution(J,MonomialOrder => {2,1,0,3,4})
-           1      5      9      7      2
-    o14 = S  <-- S  <-- S  <-- S  <-- S
-          0      1      2      3      4
-    o14 : ChainComplex
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i49 : T = taylorResolution J'
 \end{lstlisting}
-  %
-The Scarf simplicial complex of $I$ starts with the labelled $4$-simplex and
-removes any faces $F,F'$ such that $m_F = m_{F'}$. The $I$-homogenization of
-the Scarf simplicial complex is the Scarf chain complex. It is often the case
-that the Scarf chain complex is not a free resolution of $S/I$, but when it is
-a resolution, it is minimal, see Lemma~3.1 in \cite{BPS}.
-  %
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i16 : scarfSimplicialComplex(J,R)
-    o16 = simplicialComplex | acde abcd |
-    o16 : SimplicialComplex
-    i17 : scarfChainComplex J == buchbergerResolution J
-    o17 = true
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+       1      5      10      10      5      1
+o49 = R  <-- R  <-- R   <-- R   <-- R  <-- R
 \end{lstlisting}
-
-
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
+      0      1      2       3       4      5
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o49 : ChainComplex
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i50 : gensJ' = first entries mingens J'
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+              2         2   2
+o50 = {y y , y , y y , y , y }
+        1 3   2   0 2   1   0
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o50 : List
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i51 : S = ZZ[x_0..x_4];
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i52 : assert(T == chainComplex(simplexComplex(4, S), Labels => gensJ'))
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i53 : assert(lyubeznikSimplicialComplex(J', S) === simplexComplex(4, S))
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i54 : $Γ$ = buchbergerSimplicialComplex(J',S)
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o54 = simplicialComplex | x_0x_2x_3x_4 x_0x_1x_2x_3 |
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o54 : SimplicialComplex
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i55 : B = buchbergerResolution J'
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+       1      5      9      7      2
+o55 = R  <-- R  <-- R  <-- R  <-- R
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+      0      1      2      3      4
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o55 : ChainComplex
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i56 : assert all(3, i -> HH_(i+1) B == 0) 
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i57 : assert(betti B == betti res J')
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i58 : assert(B == chainComplex($Γ$, Labels => first entries mingens J'))
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i59 : assert($Γ$ === lyubeznikSimplicialComplex(J', S, MonomialOrder => {2,1,0,3,4}))
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
+i60 : assert($Γ$ === scarfSimplicialComplex(J', S))
+\end{lstlisting}
+For more information about the Taylor resolution, the Lyubeznik resolution,
+and the Scarf complex, see \cite{Mermin}.  The Buchberger resolution is
+described in \cite{OW}.  \vfill
 
 %% ---------------------------------------------------------------------------
 \subsection*{\scshape\mdseries Acknowledgements}
@@ -814,20 +813,20 @@ Engineering Research Council of Canada (NSERC).
 \begin{bibdiv}
   \begin{biblist}%[\normalsize]
 
-    \bib{MFRG}{article}{
-      label={\`AFG},
-      author={\`Alvarez Montaner, Josep},
-      author={Fern\'{a}ndez-Ramos, Oscar},
-      author={Gimenez, Philippe},
-      title={Pruned cellular free resolutions of monomial ideals},
-      journal={J. Algebra},
-      volume={541},
-      date={2020},
-      pages={126--145},
-      % issn={0021-8693},
-      % review={\MR{4014733}},
-      % doi={10.1016/j.jalgebra.2019.09.013},
-    }    
+    % \bib{MFRG}{article}{
+    %   label={\`AFG},
+    %   author={\`Alvarez Montaner, Josep},
+    %   author={Fern\'{a}ndez-Ramos, Oscar},
+    %   author={Gimenez, Philippe},
+    %   title={Pruned cellular free resolutions of monomial ideals},
+    %   journal={J. Algebra},
+    %   volume={541},
+    %   date={2020},
+    %   pages={126--145},
+    %   % issn={0021-8693},
+    %   % review={\MR{4014733}},
+    %   % doi={10.1016/j.jalgebra.2019.09.013},
+    % }    
     
     \bib{BH}{book}{
       author={Bruns, Winfried},
@@ -960,9 +959,9 @@ Engineering Research Council of Canada (NSERC).
       date={1998},
       number={1-2},
       pages={31--46},
-      issn={1073-2780},
-      review={\MR{1618363}},
-      doi={10.4310/MRL.1998.v5.n1.a3},
+      % issn={1073-2780},
+      % review={\MR{1618363}},
+      % doi={10.4310/MRL.1998.v5.n1.a3},
     }
 
     \bib{OW}{article}{
