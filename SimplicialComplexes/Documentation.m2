@@ -307,9 +307,10 @@ doc ///
             In this package, an abstract simplicial complex is represented as
             squarefree monomial ideal in a 
 	    @TO2((ring, SimplicialComplex), "polynomial ring")@.  This method
-            returns the defining ideal.
+            function returns the defining ideal.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    The boundary of the 
+	    @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
      	    a simplicial sphere with 5 vertices, 5 tetrahedral facets, and a
      	    minimal nonface that corresponds to the interior of the sphere.
     	Example
@@ -870,8 +871,9 @@ doc ///
 	    "squarefee")@ and that the matrix of facets are the maximal faces
 	    in the abstract simplicial complex.
 	Text
-     	    The @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
-     	    a simplicial 3-sphere with 5 vertices, 5 facets, and a
+     	    The boundary of the 
+	    @HREF("https://en.wikipedia.org/wiki/5-cell", "4-simplex")@ is
+     	    a simplicial sphere with 5 vertices, 5 facets, and a
      	    minimal nonface that corresponds to the interior of the sphere.
     	Example
 	    S = ZZ[a..e];
@@ -1207,8 +1209,9 @@ doc ///
 	Text
 	    This abstract simplicial complex is Cohen-Macaulay but not shellable.	    
 	Text
-	    Our enumeration of the vertices follows the {\tt gruenbaum}
-	    example in Masahiro Hachimori's
+	    Our enumeration of the vertices follows the 
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/gruenbaum_eng.html",
+	    "gruenbaum")@ example in Masahiro Hachimori's
 	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
 	    "simplicial complex libary")@.
     SeeAlso
@@ -2291,7 +2294,7 @@ doc ///
     	Text	
 	    An abstract simplicial complex is {\em pure} of dimension $d$ if
 	    every face of dimension less that $d$ lies in a facet of dimension
-	    exactly $d$.  In other words, all the facets of a pure simplicial
+	    exactly $d$. In other words, all the facets of a pure simplicial
 	    complex have the same dimension.
         Text
 	    Most classic examples of abstract simplicial complexes are pure.
@@ -2516,7 +2519,7 @@ doc ///
 		sum for L in keys F list if sum L == i+1 then F#L else 0))
 	    assert(oo === fVector Γ)
 	Text
-            The method function $\operatorname{flagfVector} does not check
+            The method function $\operatorname{flagfVector}$ does not check
 	    whether the multigrading on ambient ring determines a proper 
 	    coloring.
 	Text
@@ -3049,8 +3052,8 @@ doc ///
 	    which is the map on homology induced by $f$
     Description
         Text
-            The graded module map from the homology of $\operatorname{source} f$
-	    to the homology of $\operatorname{target} f$. As an example, we map a
+            The graded module map from the homology of the source of $f$
+	    to the homology of the target of $f$. As an example, we map a
 	    circle into the torus in two ways, and we get two distinct
 	    maps in homology.
         Example
@@ -3499,7 +3502,8 @@ doc ///
 	    an ordered set of monomials. This function is sensitive to the 
 	    order in which the monomials in $L$ appear. If you are using a 
 	    monomial ideal $M$ as your input, then the order of the
-	    monomials is given by {\tt first entries mingens M}.
+	    monomials is given by $\operatorname{first} \operatorname{entries} 
+	    \operatorname{mingens} M$.
 	Example
 	    S = QQ[x,y];
 	    R = QQ[a,b,c];
@@ -3516,7 +3520,7 @@ doc ///
 	Text
 	    Changing the order of the generators may change the output.
 	    We can do this by manually entering the permuted list of generators,
-	    or by using the optional {\tt MonomialOrder} argument.
+	    or by using the optional $\operatorname{MonomialOrder}$ argument.
 	Example
 	    first entries mingens M
 	    D' = lyubeznikSimplicialComplex(M,R,MonomialOrder=>{1,2,0})
@@ -3557,12 +3561,13 @@ doc ///
 	    of $M$. It is the subcomplex of the Taylor resolution of $M$
 	    induced on the rooted faces. If $L$ is used as input, the ordering is the
 	    order in which the monomials appear in $L$. If $M$ is used as
-	    the input, the ordering is obtained from {\tt first mingens entries M}.
+	    the input, the ordering is obtained from $\operatorname{first} 
+	    \operatorname{mingens} \operatorname{entries} M$.
 	    For more details on Lyubeznik resolutions and their construction, see
 	    Jeff Mermin 
 	    @HREF("https://www.degruyter.com/view/book/9783110250404/10.1515/9783110250404.127.xml", 
-		"Three Simplicial Resolutions")@, (English summary) Progress in
-	     commutative algebra 1, 127–141, de Gruyter, Berlin, 2012.
+	    "Three Simplicial Resolutions")@, (English summary) Progress in
+	    commutative algebra 1, 127–141, de Gruyter, Berlin, 2012.
         Example
 	    S = QQ[x,y];
 	    M = monomialIdeal{x*y,x^2,y^3};
@@ -3571,7 +3576,7 @@ doc ///
         Text
 	    Changing the order of the generators may change the output.
 	    We can do this by manually entering the permuted list of generators,
-	    or by using the optional {\tt MonomialOrder} argument.
+	    or by using the optional $\mathrm{MonomialOrder}$ argument.
         Example
 	    first entries mingens M
 	    F' = lyubeznikResolution({x^2,y^3,x*y});
@@ -4245,12 +4250,14 @@ doc ///
 	    ignored
     Outputs
         phi : RingMap
-	    a map from {\tt ring source f} to {\tt ring target f}.
+	    a map from the ring of the source of $f$ to the 
+	    ring of the target of $f$.
     Description
         Text
-            Every simplicial map sends the vertices of {\tt source f} to 
-	    the vertices {\tt target f}. Consequently, this determines a
-	    ring map between {\tt ring source f} and {\tt ring target f}.
+            Every simplicial map sends the vertices of the source of $f$
+	    to the vertices of the target of $f$. Consequently, this 
+	    determines a ring map between the ring of the source of $f$ 
+	    and the ring of the target of $f$.
         Example
             S = ZZ/101[a,b,c,d];
 	    Δ = simplexComplex(3,S)
@@ -4576,12 +4583,12 @@ doc ///
         f : SimplicialMap
     Outputs
         : SimplicialComplex
-	    the image of {\tt source f} in {\tt target f}
+	    the image of the source of $f$ in the target of $f$
     Description
         Text
-	    The image of {\tt f} is the subcomplex of {\tt target f} whose
-	    faces are of the form {\tt f(F)} for some face {\tt F} in 
-	    {\tt source f}.
+	    The image of $f$ is the subcomplex of the target of $f$
+	    whose faces are of the form $f(F)$ for some face $F$ in 
+	    the source of $f$.
 	Example
 	    R = ZZ/229[a,b,c];
 	    D = simplicialComplex{a*b*c}
