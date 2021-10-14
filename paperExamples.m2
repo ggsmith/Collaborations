@@ -50,4 +50,21 @@ fVec = fVector ⧓
 hVec = for j from 0 to d list 
     sum(j+1, k -> (-1)^(j-k) * binomial(d+1-k, j-k) * fVec#k)
 hilbertSeries(S^1/monomialIdeal ⧓, Reduce => true)
-
+--
+S = ZZ[x_0..x_3];
+Δ = simplicialComplex{x_0*x_1*x_2, x_2*x_3}
+chainComplex Δ
+R = QQ[y_0..y_3];
+J = ideal(y_0*y_1, y_0*y_2, y_0*y_3, y_1*y_2*y_3)
+C = chainComplex(Δ, Labels => J_*)
+C.dd
+assert(res (R^1/J) == C)
+--
+C' = chainComplex(Δ, Labels => reverse J_*)
+prune homology C'
+--
+restart
+needsPackage "SimplicialComplexes";
+J' = monomialIdeal(y_1*y_2, y_2^2, y_0*y_2, y_1^2, y_0^2)
+T = taylorResolution J'
+T == chainComplex(simplexComplex(4, S), Labels => J'_*)
