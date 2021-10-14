@@ -96,7 +96,7 @@
   \indent
   \texttt{SimplicialComplexes} version 2.0
 }
-% \date{2021--08--20}
+% \date{2021--09--23}
 
 \begin{abstract}
   We highlight some features of the \emph{SimplicialComplexes} package in
@@ -116,11 +116,11 @@ implements a new data type for simplicial maps, and incorporates many
 improvements to the methods and documentation.  Emphasizing combinatorial and
 algebraic applications, the primary data type encodes an abstract simplicial
 complex---a family of subsets that is closed under taking subsets.  These
-simplicial complexes should not be conflated with their geometric realizations
-formed from points, line segments, filled-in triangles, solid tetrahedra, and
-their higher-dimensional analogues in some Euclidean space.  The subsets in a
-simplicial complex are called its faces, the faces having cardinality~$1$ are
-its vertices, and the maximal faces (ordered by inclusion) are its facets.
+simplicial complexes are the counterpart to the geometric realizations formed
+from points, line segments, filled-in triangles, solid tetrahedra, and their
+higher-dimensional analogues in some Euclidean space.  The subsets in a
+simplicial complex are called faces. The faces having cardinality~$1$ are its
+vertices and the maximal faces (ordered by inclusion) are its facets.
 Following the combinatorial conventions, every nonempty simplicial complex has
 the empty set as a face.
 
@@ -143,7 +143,7 @@ The basic constructor for a simplicial complex accepts two different kinds of
 input.  Given a list of monomials, it returns the smallest simplicial complex
 containing the corresponding faces.  Given a radical monomial ideal, it
 returns the simplicial complex having the input as its Stanley--Reisner
-ideal. We illustrate both methods using the `bowtie' complex appearing in
+ideal. We illustrate both methods using the `bowtie' complex in
 Figure~\ref{bowtie}.
 
 \begin{figure}[t]
@@ -178,11 +178,12 @@ Figure~\ref{bowtie}.
       \filldraw (1.50,1.50) circle (2pt);
     \end{tikzpicture}
   \end{subfigure}
-  \caption{The left is the bowtie complex $⧓$ and the right its Alexander dual $⧓^*$}
+  \caption{The left is the bowtie complex $⧓$ and the right its Alexander dual
+    $⧓^*$}
   \label{bowtie}
 \end{figure}
 
-\begin{lstlisting}[xleftmargin=10pt, lineskip=-5pt, aboveskip=3.0pt, belowskip=1.5pt]
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-5pt, aboveskip=5.0pt, belowskip=1.5pt]
 Macaulay2, version 1.18
 with packages: ConwayPolynomials, Elimination, IntegralClosure, InverseSystems, 
                LLLBases, MinimalPrimes, PrimaryDecomposition, ReesAlgebra, 
@@ -343,7 +344,7 @@ duality theory. For any simplicial complex $\Delta$ whose vertices belong to a
 set $V$, the Alexander dual is the simplicial complex
 $\Delta^* \colequal \{ F \subseteq V \mathrel{|} V \setminus F \in \Delta \}$.
 Since each simplicial complex in this package has an underlying polynomial
-ring, the variables in this ring form the canonical superset of vertices.
+ring, the variables in this ring form a canonical superset of the vertices.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
 i17 : dual $⧓$
 \end{lstlisting}
@@ -359,8 +360,8 @@ i18 : assert(dual dual $⧓$ === $⧓$)
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3pt]
 i19 : assert(dual monomialIdeal $⧓$ === monomialIdeal dual $⧓$)
 \end{lstlisting}
-Algebraically, Alexander duality switches the roles of minimal generators and
-irreducible components in the Stanley--Reisner ideal.
+Algebraically, Alexander duality switches the roles of the minimal generators
+and the irreducible components in the Stanley--Reisner ideal.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3pt, belowskip=1.5pt]
 i20 : monomialIdeal dual $⧓$
 \end{lstlisting}
@@ -475,9 +476,10 @@ $h_j = \sum_{k=0}^{j} (-1)^{j-1}
 \smash{\tbinom{d+1-k}{\raisebox{3pt}{$\scriptstyle j-k$}}} f_{k-1}$.  The
 $h$-vector encodes the numerator of the Hilbert series for $S/I$.
 
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=5.0pt, belowskip=1.5pt]
 i33 : d = dim $⧓$
 \end{lstlisting}
+\vfill
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
 o33 = 2
 \end{lstlisting}
@@ -533,130 +535,195 @@ o37 : Expression of class Divide
 %% ---------------------------------------------------------------------------
 \subsection*{\scshape\mdseries Resolutions of Monomial Ideals}
 
-In this section, we will overview
-some chain complex constructions arising from simplicial complexes. We give an
-example of ideal homogenization and resolutions supported on a simplicial
-complex, and we provide examples of Taylor, Lyubeznik, and Buchberger
-resolutions; as well as Scarf complexes.
+As David Bayer, Irena Peeva, and Bernd Sturmfels~\cite{BPS} reveal, minimal
+free resolutions of monomial ideals are frequently encoded by a simplicial
+complex.  Consider a monomial ideal $J$ in the polynomial ring
+$R \colequal \mathbb{Q}[y_1, y_2, \dotsc, y_m]$.  Assume that $R$ is equipped
+with the $\mathbb{N}^{m}$-grading given, for all $1 \leqslant i \leqslant m$,
+by $\deg(y_i) = \textbf{e}_i$ where
+$\textbf{e}_1, \textbf{e}_2, \dotsc, \textbf{e}_m$ is the standard basis.  Let
+$\Delta$ be a simplicial complex whose vertices are labelled by the generators
+of $J$.  We label each face $F$ of $\Delta$ by the least common multiple
+$y^{\,\textbf{a}_{\!F}} \in R$ of its vertices; the empty face is labelled by
+the monomial $1 = y^{\,\textbf{a}_{\!\varnothing}}$.  The complex $C(\Delta)$
+supported on the labelled simplicial complex $\Delta$ is the complex of free
+$\mathbb{N}^m$-graded $R$-modules with basis corresponding to the faces of
+$\Delta$.  The differential $\partial \colon\! C(\Delta) \to C(\Delta)$ is
+given by
+\begin{align*}
+  C_i(\Delta)
+  &\colequal \bigoplus_{\dim(F) \,=\, i-1} R(-\textbf{a}_F) 
+  & & \text{and}
+  &\partial(F)
+  &= \sum_{\dim(G) \,=\, \dim(F)-1} \operatorname{sign}(G,F) \,
+    y^{\,\textbf{a}_{\!F} - \textbf{a}_{\!G}} \, G \, .
+\end{align*}
+The symbols $F$ and $G$ represent both faces in $\Delta$ and basis vectors in
+the underlying free module of $C(\Delta)$.  The sign of the pair $(G,F)$
+belongs to $\{-1,0,1\}$ and is part of the data in the boundary map of the
+chain complex of $\Delta$.  For more information, see Subsection~4.1 in
+\cite{MS} or Chapter~55 in \cite{Peeva}.
 
-Let $\Delta$ be a simplicial complex with $q$ vertices and let
-$\widetilde C(\Delta;k)$ be the augmented chain complex of $\Delta$ with
-incidence function $\varepsilon$. We will let $S = k[x_0,\dotsc,x_n]$ be a
-polynomial ring over the commutative ring $k$, which is typically a field. We
-assume that the ring $S$ has the fine $\mathbb N^{n+1}$ grading.
-
-For a monomial ideal $I \subset S$, minimally generated by
-$m_1,m_2,\dotsc,m_q$, a \textbf{labelling} of $\Delta$ by $I$ is a bijection
-which assigns a minimal generator of $I$ to each vertex of $\Delta$. Without
-loss of generality, we will assume this assignment is $v_i \longmapsto m_i$
-for $i = 1,2,\dotsc,q$. For each face $F \in \Delta$ we can construct the
-monomial $m_F = \mathrm{lcm}(m_i \ | \ i \in F )$. The
-$I$-\textbf{homogenization} of $\widetilde{C} (\Delta;k)$ is the chain complex
-$(\mathbf G, d)$ such that
-%
-\begin{displaymath}
-  G_0 = S \ \text{ and } \ G_i = \bigoplus_{\dim(F) = i-1}S(m_F).
-\end{displaymath}
-%
-We will use $\{f_F \ | \ F \in \Delta \}$ to denote the canonical basis of $G$ and we define the differential of $\mathbf G$ using
-%
-\begin{displaymath}
-  d(f_F) \hspace{4pt} = \hspace{-8pt} \sum_{\dim(F) = i-1} \frac{m_F}{m_{F'}} \cdot \varepsilon(F,F') f_{F'}.
-\end{displaymath}
-%
-We say that $I$ has a \textbf{resolution supported on} $\Delta$ if the
-$I$-homogenization of $\widetilde C(\Delta; k)$ is a free resolution for some
-labelling of the vertices of $\Delta$. For further details on
-$I$-homogenization, we refer the reader to any one of \cites{MS, Peeva}.
-
-
-Let $S = \mathbb Q[x_0,x_1,x_2,x_3]$, let
-$I = (x_0x_1,x_0x_2,x_0x_3,x_1x_2x_3)$, and let $\Gamma$ be the simplicial
-complex with facets $\{ v_1,v_2,v_3 \}$ and $\{ v_2, v_4 \}$.  If we use the
-labelling $v_1 \longmapsto x_0x_1$, $v_2 \longmapsto x_0x_2$,
-$v_3 \longmapsto x_0x_3$, and $v_4 \longmapsto x_1x_2x_3$, we get the labelled
-simplicial complex shown in Figure \ref{Figure: Example of a labelled
-  simplicial complex}.
-
-\begin{figure}[h]\centering
-  \begin{tikzpicture}[scale=.2]
-    \filldraw[gray!15] (0,0) -- (10,0) -- (5,7) -- cycle;
-    \draw[thick] (0,0) -- (10,0) -- (5,7) -- cycle;
-    \draw[thick] (5,7) -- (14,6);
-    \filldraw (0,0) circle (4pt);
-    \filldraw (10,0) circle (4pt);
-    \filldraw (5,7) circle (4pt);
-    \filldraw (14,6) circle (4pt);
-    \draw node at (-1.3,0){\scriptsize $x_0x_1$};
-    \draw node at (11.3,0){\scriptsize $x_0x_3$};
-    \draw node at (5,7.5){\scriptsize $x_0x_2$};
-    \draw node at (15.9,6){\scriptsize $x_1x_2x_3$};
-    % \draw[blue] node at (5,-.7){\scalebox{.8}{$x_1x_3x_4$}};
-    % \draw[blue] node at (0.6,3.5){\scalebox{.8}{$x_1x_2x_4$}};
-    % \draw[blue] node at (9.3,3.5){\scalebox{.8}{$x_2x_3x_4$}};
-    % \draw[blue] node at (10,7){\scalebox{.8}{$x_1x_2x_4$}};
-    % \draw[blue] node at (5,2.5){\scalebox{.8}{$x_1x_2x_3x_4$}};
-  \end{tikzpicture}
-  \caption{The homogenization of $\Gamma$}
-  \label{Figure: Example of a labelled simplicial complex}
+We illustrate this construction with an explicit example.  Consider the
+simplicial complex $\Gamma$ in Figure~\ref{Gamma} and the monomial ideal
+$J = (y_0 y_1, y_0 y_2, y_0 y_3, y_1 y_2 y_3)$ in
+$R = \mathbb{Q}[y_0,y_1, y_2, y_3]$.
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}{0.3\textwidth}
+    \begin{tikzpicture}
+      \filldraw[gray!50] (0,0) -- (0,-1) -- (0.866025,-0.5) -- cycle;
+      \draw[ultra thick] (0,0) node[left]{\scriptsize $x_0$} -- (0,-1)
+      node[left]{\scriptsize $x_1$} -- (0.866025,-0.5)
+      node[below]{\scriptsize $\,\,\,x_2$} -- cycle;
+      \draw[ultra thick] (0.866025,-0.5) -- (1.866025,-0.5)
+      node[right]{\scriptsize $x_3$};
+      \filldraw (0,0) circle (2pt);
+      \filldraw (0,-1) circle (2pt);
+      \filldraw (0.866025,-0.5) circle (2pt);
+      \filldraw (1.866025,-0.5) circle (2pt);
+    \end{tikzpicture}
+  \end{subfigure}
+  \hspace{50pt}
+  \begin{subfigure}{0.3\textwidth}
+    \begin{tikzpicture}
+      \filldraw[gray!50] (0,0) -- (0,-1) -- (0.866025,-0.5) -- cycle;
+      \draw[ultra thick] (0,0) node[left]{\scriptsize $y_0 y_1$} -- (0,-1)
+      node[left]{\scriptsize $y_0 y_2$} -- (0.866025,-0.5)
+      node[below]{\scriptsize $\,\,\,y_0 y_3$} -- cycle;
+      \draw[ultra thick] (0.866025,-0.5) -- (1.866025,-0.5)
+      node[right]{\scriptsize $y_1 y_2 y_3$};
+      \filldraw (0,0) circle (2pt);
+      \filldraw (0,-1) circle (2pt);
+      \filldraw (0.866025,-0.5) circle (2pt);
+      \filldraw (1.866025,-0.5) circle (2pt);
+    \end{tikzpicture}
+  \end{subfigure}
+  \caption{The left is simplicial complex $\Gamma$ and the right is the
+    labelling of its vertices}
+  \label{Gamma}
 \end{figure}
-
-We can use \texttt{Macaulay2} to compute both
-$\widetilde C(\Delta; \mathbb Q)$ and the $I$-homogenization of $\Delta$
-relative to this labelling, which is the minimal free resolution of $S/I$.
-%
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i9 : R = ZZ/101[y_0..y_13];
-    i10 : S = QQ[x_0..x_3];
-    i11 : $Δ$ = simplicialComplex{R_0*R_1*R_2, R_2*R_3};
-    i12 : I = ideal(x_0*x_1,x_0*x_2,x_0*x_3,x_1*x_2*x_3);
-    o12 : Ideal of S
-    i13 : C = chainComplex $Δ$
-            ZZ 1       ZZ 4       ZZ 4       ZZ 1
-    o13 = (---)  <-- (---)  <-- (---)  <-- (---)
-           101        101        101        101
-          -1         0          1          2
-    o13 : ChainComplex
-    i24 : G = chainComplex($Δ$, Labels => {x_0*x_1,x_0*x_2,x_0*x_3,x_1*x_2*x_3});
-    i25 : G.dd
-               1                                          4
-    o25 = 0 : S  <-------------------------------------- S  : 1
-                    | x_0x_1 x_0x_2 x_0x_3 x_1x_2x_3 |
-               4                                      4
-          1 : S  <---------------------------------- S  : 2
-                    {2} | -x_2 -x_3 0    0       |
-                    {2} | x_1  0    -x_3 0       |
-                    {2} | 0    x_1  x_2  -x_1x_2 |
-                    {3} | 0    0    0    x_0     |
-               4                    1
-          2 : S  <---------------- S  : 3
-                    {3} | x_3  |
-                    {3} | -x_2 |
-                    {3} | x_1  |
-                    {4} | 0    |
-    o25 : ChainComplexMap
-    i15 : (res (S^1/I)) == G
-    o15 = true
+Label the vertices of $\Gamma$ by the generators of $J$:
+$x_0 \mapsto y_0 y_1$, $x_1 \mapsto y_0 y_2$, $x_2 \mapsto y_0 y_3$, and
+$x_3 \mapsto y_1 y_2 y_3$.  
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
+i38 : S = ZZ[x_0..x_3];
 \end{lstlisting}
-%
-The $I$-homogenization of $\Delta$ is dependent on how you label the vertices,
-and that is reflected by the ordering of the monomials in the \texttt{Labels}
-argument. Indeed, if we swap the labels of $v_1$ and $v_4$, then the
-$I$-homogenization is no longer a resolution of $S/I$.
-%
-\begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
-    i22 : G' = chainComplex($Δ$, Labels => {x_1*x_2*x_3,x_0*x_2,x_0*x_3,x_0*x_1});
-    i23 : prune homology G'
-    o23 = 0 : cokernel | x_0x_3 x_0x_2 x_0x_1 x_1x_2x_3 |
-          1 : cokernel {3} | x_3 |                       
-          2 : 0                                          
-          3 : 0                                          
-    o23 : GradedModule
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i39 : $Δ$ = simplicialComplex{x_0*x_1*x_2, x_2*x_3}
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o39 = simplicialComplex | x_2x_3 x_0x_1x_2 |
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o39 : SimplicialComplex
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i40 : chainComplex $Δ$
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+        1       4       4       1
+o40 = ZZ  <-- ZZ  <-- ZZ  <-- ZZ
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+      -1      0       1       2
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o40 : ChainComplex
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i41 : R = QQ[y_0..y_3];
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i42 : J = ideal(y_0*y_1, y_0*y_2, y_0*y_3, y_1*y_2*y_3)
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o42 = ideal (y y , y y , y y , y y y )
+              0 1   0 2   0 3   1 2 3
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o42 : Ideal of R
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i43 : C = chainComplex($Δ$, Labels => J_*)
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+       1      4      4      1
+o43 = R  <-- R  <-- R  <-- R
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]                           
+      0      1      2      3
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o43 : ChainComplex
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i44 : C.dd
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=3.0pt]
+           1                                          4
+o44 = 0 : R  <-------------------------------------- R  : 1
+               | y_0y_1 y_0y_2 y_0y_3 y_1y_2y_3 |
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=3.0pt]
+           4                                      4
+      1 : R  <---------------------------------- R  : 2
+                {2} | -y_2 -y_3 0    0       |
+                {2} | y_1  0    -y_3 0       |
+                {2} | 0    y_1  y_2  -y_1y_2 |
+                {3} | 0    0    0    y_0     |
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+           4                    1
+      2 : R  <---------------- R  : 3
+                {3} | y_3  |
+                {3} | -y_2 |
+                {3} | y_1  |
+                {4} | 0    |
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o44 : ChainComplexMap
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
+i45 : assert(res (R^1/J) == C)
+\end{lstlisting}
+The chain complex $C(\Delta)$ 
+depends on the labelling and is not always a resolution.
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
+i46 : C' = chainComplex($Δ$, Labels => reverse J_*)
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+       1      4      4      1
+o46 = R  <-- R  <-- R  <-- R
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+      0      1      2      3
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
+o12 : ChainComplex
+\end{lstlisting}
+\vfill
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
+i13 : prune homology C'
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o13 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
+
+      1 : cokernel {3} | y_2 |                       
+
+      2 : 0                                          
+
+      3 : 0                                          
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
+o13 : GradedModule
 \end{lstlisting}
 
-Given a monomial ideal $I$, there are several algorithms that will produce a
-simplicial complex $\Delta$ and a labelling of $\Delta$ by the minimal
-generators of $I$ such that the $I$-homogenization of
+Given a monomial ideal $J$, there are several algorithms that produce a
+labelled simplicial complex $\Delta$ such that chain complex $C(\Delta)$ is a
+free resolution of the quotient $R/J$.  We exhibit a few.
+
+the $I$-homogenization of
 $\widetilde C(\Delta; k)$ is a free resolution of $S/I$, though often
 non-minimally. Examples of such constructions are the Taylor resolution,
 Lyubeznik resolution, and the Buchberger resolution, all of which are
@@ -720,7 +787,11 @@ Lyubeznik simplicial complexes and resolutions are constructed relative to a tot
     o14 : ChainComplex
 \end{lstlisting}
   %
-The Scarf simplicial complex of $I$ starts with the labelled $4$-simplex and removes any faces $F,F'$ such that $m_F = m_{F'}$. The $I$-homogenization of the Scarf simplicial complex is the Scarf chain complex. It is often the case that the Scarf chain complex is not a free resolution of $S/I$, but when it is a resolution, it is minimal, see \cite[Lemma 3.1]{BPS}.
+The Scarf simplicial complex of $I$ starts with the labelled $4$-simplex and
+removes any faces $F,F'$ such that $m_F = m_{F'}$. The $I$-homogenization of
+the Scarf simplicial complex is the Scarf chain complex. It is often the case
+that the Scarf chain complex is not a free resolution of $S/I$, but when it is
+a resolution, it is minimal, see Lemma~3.1 in \cite{BPS}.
   %
 \begin{lstlisting}[basicstyle={\ttfamily \scriptsize}, xleftmargin=-23pt]
     i16 : scarfSimplicialComplex(J,R)
@@ -879,22 +950,20 @@ Engineering Research Council of Canada (NSERC).
     %   doi={10.1090/S0002-9947-2010-04980-3},
     % }
 
-    % \bib{BPS}{article}{
-    %   author={Bayer, Dave},
-    %   author={Peeva, Irena},
-    %   author={Sturmfels, Bernd},
-    %   title={Monomial resolutions},
-    %   journal={Math. Res. Lett.},
-    %   volume={5},
-    %   date={1998},
-    %   number={1-2},
-    %   pages={31--46},
-    %   issn={1073-2780},
-    %   review={\MR{1618363}},
-    %   doi={10.4310/MRL.1998.v5.n1.a3},
-    % }
-
-
+    \bib{BPS}{article}{
+      author={Bayer, Dave},
+      author={Peeva, Irena},
+      author={Sturmfels, Bernd},
+      title={Monomial resolutions},
+      journal={Math. Res. Lett.},
+      volume={5},
+      date={1998},
+      number={1-2},
+      pages={31--46},
+      issn={1073-2780},
+      review={\MR{1618363}},
+      doi={10.4310/MRL.1998.v5.n1.a3},
+    }
 
     \bib{OW}{article}{
       author={Olteanu, Anda},
