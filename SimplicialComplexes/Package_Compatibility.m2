@@ -1,49 +1,54 @@
-
 Names = "
-AbstractToricVarieties.m2           DiffAlg.m2                 K3Carpets.m2                   NumericalCertification                    RandomMonomialIdeals.m2         SRdeformations.m2
-AdjointIdeal                        Divisor.m2                 Kronecker.m2                   NumericalCertification.m2                 RandomObjects.m2                StatePolytope
-AdjointIdeal.m2                     Dmodules                   KustinMiller.m2                NumericalHilbert                          RandomPlaneCurves.m2            StatePolytope.m2
-AlgebraicSplines.m2                 Dmodules.m2                LatticePolytopes.m2            NumericalHilbert.m2                       RandomSpaceCurves.m2            StronglyStableIdeals.m2
-AnalyzeSheafOnP1.m2                 EdgeIdeals.m2              LexIdeals.m2                   NumericalImplicitization.m2               RationalMaps.m2                 Style
-BeginningMacaulay2                  Elimination.m2             Licenses.m2                    NumericalSchubertCalculus                 RationalPoints.m2               Style.m2
-BeginningMacaulay2.m2               EliminationMatrices.m2     LieTypes.m2                    NumericalSchubertCalculus.m2              ReactionNetworks                SumsOfSquares
-Benchmark.m2                        EllipticCurves.m2          LLLBases.m2                    NumericSolutions.m2                       ReactionNetworks.m2             SumsOfSquares.m2
-Bertini                             EllipticIntegrals.m2       LocalRings                     OldPolyhedra.m2                           ReesAlgebra.m2                  SVDComplexes.m2
-Bertini.m2                          EngineTests                LocalRings.m2                  OldToricVectorBundles.m2                  ReflexivePolytopesDB            SymbolicPowers.m2
-BGG.m2                              EngineTests.m2             M0nbar.m2                      OpenMath                                  ReflexivePolytopesDB.m2         SymmetricPolynomials.m2
-BIBasis.m2                          EnumerationCurves.m2       Macaulay2Doc                   OpenMath.m2                               Regularity.m2                   TangentCone.m2
-BinomialEdgeIdeals.m2               EquivariantGB              Macaulay2Doc.m2                PackageCitations.m2                       RelativeCanonicalResolution.m2  TateOnProducts.m2
-Binomials.m2                        EquivariantGB.m2           MapleInterface                 PackageTemplate.m2                        ResidualIntersections.m2        TensorComplexes.m2
-BoijSoederberg.m2                   ExampleSystems             MapleInterface.m2              Parametrization                           Resultants.m2                   TestIdeals
-Book3264Examples.m2                 ExampleSystems.m2          Markov.m2                      Parametrization.m2                        RunExternalM2.m2                TestIdeals.m2
-BooleanGB.m2                        ExteriorIdeals.m2          Matroids                       Parsing.m2                                Schubert2                       Text.m2
-Browse.m2                           FastLinAlg.m2              Matroids.m2                    PencilsOfQuadrics.m2                      Schubert2.m2                    ThreadedGB.m2
-Bruns.m2                            FGLM.m2                    MCMApproximations.m2           Permanents.m2                             SchurComplexes.m2               Topcom.m2
-ChainComplexExtras.m2               FiniteFittingIdeals.m2     MinimalPrimes                  PHCpack                                   SchurFunctors                   TorAlgebra.m2
-ChainComplexOperations.m2           FirstPackage.m2            MinimalPrimes.m2               PHCpack.m2                                SchurFunctors.m2                ToricInvariants.m2
-CharacteristicClasses.m2            FormalGroupLaws.m2         Miura.m2                       PhylogeneticTrees.m2                      SchurRings.m2                   ToricTopology.m2
-Chordal                             FourierMotzkin.m2          MixedMultiplicity.m2           PieriMaps.m2                              SCSCP                           ToricVectorBundles.m2
-Chordal.m2                          FourTiTwo.m2               ModuleDeformations.m2          Points.m2                                 SCSCP.m2                        TriangularSets
-Classic.m2                          FrobeniusThresholds        MonodromySolver                Polyhedra                                 SectionRing.m2                  TriangularSets.m2
-CohomCalg.m2                        FrobeniusThresholds.m2     MonodromySolver.m2             Polyhedra.m2                              SegreClasses.m2                 Triplets.m2
-CoincidentRootLoci                  GenericInitialIdeal.m2     MonomialAlgebras               Polymake.m2                               SemidefiniteProgramming         Tropical
-CoincidentRootLoci.m2               gfanInterface.m2           MonomialAlgebras.m2            Posets.m2                                 SemidefiniteProgramming.m2      Tropical.m2
-CompleteIntersectionResolutions.m2  GradedLieAlgebras          MultiGradedRationalMap.m2      PositivityToricBundles.m2                 Seminormalization.m2            Truncations.m2
-Complexes.m2                        GradedLieAlgebras.m2       MultiplierIdealsDim2.m2        PrimaryDecomposition                      Serialization.m2                Units.m2
-ConformalBlocks.m2                  GraphicalModels.m2         MultiplierIdeals.m2            PrimaryDecomposition.m2                   SimpleDoc                       VectorFields.m2
-ConvexInterface                     Graphics.m2                NAGtypes                       PruneComplex                              SimpleDoc.m2                    VectorGraphics
-ConvexInterface.m2                  Graphs.m2                  NAGtypes.m2                    PruneComplex.m2                           SimplicialComplexes.m2          VectorGraphics.m2
-ConwayPolynomials.m2                GroebnerWalk.m2            NautyGraphs.m2                 Pullback.m2                               SimplicialDecomposability.m2    VersalDeformations.m2
-Core                                HigherCIOperators.m2       Nauty.m2                       PushForward.m2                            SimplicialPosets.m2             VirtualResolutions
-CorrespondenceScrolls.m2            HighestWeights             NCAlgebra                      QthPower.m2                               SlackIdeals.m2                  VirtualResolutions.m2
-Cremona                             HighestWeights.m2          NCAlgebra.m2                   Quasidegrees.m2                           SLnEquivariantMatrices.m2       Visualize
-Cremona.m2                          HodgeIntegrals.m2          NoetherNormalization.m2        QuillenSuslin.m2                          SLPexpressions                  Visualize.m2
-Cyclotomic.m2                       HyperplaneArrangements.m2  NonminimalComplexes.m2         RandomCanonicalCurves.m2                  SLPexpressions.m2               WeylGroups
-DecomposableSparseSystems           IntegralClosure            Normaliz.m2                    RandomComplexes.m2                        SpaceCurves.m2                  WeylGroups.m2
-DecomposableSparseSystems.m2        IntegralClosure.m2         NormalToricVarieties           RandomCurves.m2                           SparseResultants.m2             XML.m2
-Depth.m2                            InvariantRing.m2           NormalToricVarieties.m2        RandomCurvesOverVerySmallFiniteFields.m2  SpechtModule.m2
-DeterminantalRepresentations.m2     InverseSystems.m2          NumericalAlgebraicGeometry     RandomGenus14Curves.m2                    SpecialFanoFourfolds.m2
-DGAlgebras.m2                       InvolutiveBases.m2         NumericalAlgebraicGeometry.m2  RandomIdeals.m2                           SpectralSequences.m2"
+AInfinity.m2                        Divisor.m2                 InvolutiveBases.m2           Normaliz.m2                               RandomPlaneCurves.m2                 SpecialFanoFourfolds
+AbstractToricVarieties.m2           Dmodules                   K3Carpets.m2                 NumericSolutions.m2                       RandomRationalPoints.m2              SpecialFanoFourfolds.m2
+AdjointIdeal                        Dmodules.m2                Kronecker.m2                 NumericalAlgebraicGeometry                RandomSpaceCurves.m2                 SpectralSequences.m2
+AdjointIdeal.m2                     EagonResolution.m2         KustinMiller.m2              NumericalAlgebraicGeometry.m2             RationalMaps.m2                      StatGraphs.m2
+AlgebraicSplines.m2                 EdgeIdeals.m2              LLLBases.m2                  NumericalCertification                    RationalPoints.m2                    StatePolytope
+AnalyzeSheafOnP1.m2                 EigenSolver.m2             LatticePolytopes.m2          NumericalCertification.m2                 RationalPoints2.m2                   StatePolytope.m2
+AssociativeAlgebras                 Elimination.m2             LexIdeals.m2                 NumericalImplicitization                  ReactionNetworks                     StronglyStableIdeals.m2
+AssociativeAlgebras.m2              EliminationMatrices.m2     Licenses.m2                  NumericalImplicitization.m2               ReactionNetworks.m2                  Style
+BGG.m2                              EllipticCurves.m2          LieTypes.m2                  NumericalLinearAlgebra.m2                 ReesAlgebra.m2                       Style.m2
+BIBasis.m2                          EllipticIntegrals.m2       LinearTruncations.m2         NumericalSchubertCalculus                 ReflexivePolytopesDB                 SubalgebraBases
+BeginningMacaulay2                  EngineTests                LocalRings                   NumericalSchubertCalculus.m2              ReflexivePolytopesDB.m2              SubalgebraBases.m2
+BeginningMacaulay2.m2               EngineTests.m2             LocalRings.m2                OldPolyhedra.m2                           Regularity.m2                        SumsOfSquares
+Benchmark.m2                        EnumerationCurves          M0nbar.m2                    OldToricVectorBundles.m2                  RelativeCanonicalResolution.m2       SumsOfSquares.m2
+Bertini                             EnumerationCurves.m2       MCMApproximations.m2         OpenMath                                  ResLengthThree.m2                    SuperLinearAlgebra.m2
+Bertini.m2                          EquivariantGB              Macaulay2Doc                 OpenMath.m2                               ResidualIntersections.m2             SwitchingFields.m2
+BinomialEdgeIdeals.m2               EquivariantGB.m2           Macaulay2Doc.m2              PHCpack                                   ResolutionsOfStanleyReisnerRings.m2  SymbolicPowers.m2
+Binomials.m2                        ExampleSystems             MapleInterface               PHCpack.m2                                Resultants.m2                        SymmetricPolynomials.m2
+BoijSoederberg.m2                   ExampleSystems.m2          MapleInterface.m2            PackageCitations.m2                       RunExternalM2.m2                     TangentCone.m2
+Book3264Examples.m2                 ExteriorIdeals.m2          Markov.m2                    PackageTemplate.m2                        SCSCP                                TateOnProducts.m2
+BooleanGB.m2                        FGLM.m2                    Matroids                     Parametrization                           SCSCP.m2                             TensorComplexes.m2
+Browse.m2                           FastLinAlg                 Matroids.m2                  Parametrization.m2                        SLPexpressions                       TestIdeals
+Bruns.m2                            FastLinAlg.m2              MinimalPrimes                Parsing.m2                                SLPexpressions.m2                    TestIdeals.m2
+ChainComplexExtras.m2               FiniteFittingIdeals.m2     MinimalPrimes.m2             PencilsOfQuadrics.m2                      SLnEquivariantMatrices.m2            Text.m2
+ChainComplexOperations.m2           FirstPackage.m2            Miura.m2                     Permanents.m2                             SRdeformations.m2                    ThreadedGB
+CharacteristicClasses.m2            FormalGroupLaws.m2         MixedMultiplicity.m2         PhylogeneticTrees.m2                      SVDComplexes.m2                      ThreadedGB.m2
+Chordal                             FourTiTwo.m2               ModuleDeformations.m2        PieriMaps.m2                              Saturation                           Topcom
+Chordal.m2                          FourierMotzkin.m2          MonodromySolver              Points.m2                                 Saturation.m2                        Topcom.m2
+Classic.m2                          FrobeniusThresholds        MonodromySolver.m2           Polyhedra                                 Schubert2                            TorAlgebra.m2
+CohomCalg                           FrobeniusThresholds.m2     MonomialAlgebras             Polyhedra.m2                              Schubert2.m2                         ToricInvariants.m2
+CohomCalg.m2                        GKMVarieties               MonomialAlgebras.m2          Polymake.m2                               SchurComplexes.m2                    ToricTopology.m2
+CoincidentRootLoci                  GKMVarieties.m2            MonomialOrbits.m2            Posets.m2                                 SchurFunctors                        ToricVectorBundles.m2
+CoincidentRootLoci.m2               GenericInitialIdeal.m2     MultiGradedRationalMap.m2    PositivityToricBundles.m2                 SchurFunctors.m2                     TriangularSets
+CompleteIntersectionResolutions.m2  GradedLieAlgebras          MultiplicitySequence         PrimaryDecomposition                      SchurRings.m2                        TriangularSets.m2
+Complexes                           GradedLieAlgebras.m2       MultiplicitySequence.m2      PrimaryDecomposition.m2                   SectionRing.m2                       Triplets.m2
+Complexes.m2                        GraphicalModels.m2         MultiplierIdeals.m2          PruneComplex                              SegreClasses                         Tropical
+ConformalBlocks.m2                  GraphicalModelsMLE.m2      MultiplierIdealsDim2.m2      PruneComplex.m2                           SegreClasses.m2                      Tropical.m2
+ConvexInterface                     Graphics.m2                MultiprojectiveVarieties     Pullback.m2                               SemidefiniteProgramming              Truncations.m2
+ConvexInterface.m2                  Graphs.m2                  MultiprojectiveVarieties.m2  PushForward.m2                            SemidefiniteProgramming.m2           Units.m2
+ConwayPolynomials.m2                GroebnerWalk.m2            NAGtypes                     QthPower                                  Seminormalization.m2                 VectorFields.m2
+Core                                Hadamard.m2                NAGtypes.m2                  QthPower.m2                               Serialization.m2                     VectorGraphics
+CorrespondenceScrolls.m2            HigherCIOperators.m2       NCAlgebra                    Quasidegrees.m2                           SimpleDoc                            VectorGraphics.m2
+Cremona                             HighestWeights             NCAlgebra.m2                 QuillenSuslin.m2                          SimpleDoc.m2                         VersalDeformations.m2
+Cremona.m2                          HighestWeights.m2          Nauty.m2                     RandomCanonicalCurves.m2                  SimplicialComplexes.m2               VirtualResolutions
+Cyclotomic.m2                       HodgeIntegrals.m2          NautyGraphs.m2               RandomComplexes.m2                        SimplicialDecomposability            VirtualResolutions.m2
+DGAlgebras.m2                       HyperplaneArrangements.m2  NoetherNormalization.m2      RandomCurves.m2                           SimplicialDecomposability.m2         Visualize
+DecomposableSparseSystems           IntegralClosure            NoetherianOperators          RandomCurvesOverVerySmallFiniteFields.m2  SimplicialPosets.m2                  Visualize.m2
+DecomposableSparseSystems.m2        IntegralClosure.m2         NoetherianOperators.m2       RandomGenus14Curves.m2                    SlackIdeals.m2                       WeylGroups
+Depth.m2                            InvariantRing              NonminimalComplexes.m2       RandomIdeals.m2                           SpaceCurves.m2                       WeylGroups.m2
+DeterminantalRepresentations.m2     InvariantRing.m2           NormalToricVarieties         RandomMonomialIdeals.m2                   SparseResultants.m2                  XML.m2
+DiffAlg.m2                          InverseSystems.m2          NormalToricVarieties.m2      RandomObjects.m2                          SpechtModule.m2                      gfanInterface.m2"
 
 reg = ///.m2\>///
 Names = replace("\n",",",Names)
@@ -63,6 +68,7 @@ PackageList = for PackageName in PackageList list(
     replace(".m2","",PackageName)
     )    
 
+needsPackage"SimplicialComplexes";
 for PackageName in PackageList do(
     uninstallPackage PackageName;
     installPackage PackageName;
@@ -70,14 +76,34 @@ for PackageName in PackageList do(
     PackageList = remove(PackageList,0);
     restart;
     needsPackage"SimplicialComplexes";
-    print(options SimplicialComplexes)
     )
+
+-- got to stat graphs
+
+uninstallPackage PackageList#0;
+installPackage PackageList#0;
+check PackageList#0;
 
 PackageList#0
 PackageList = remove(PackageList,0)
 
+pname = PackageList#0
+while pname =!= "SpectralSequences" do (
+    PackageList = remove(PackageList,0);
+    pname = PackageList#0;
+    )
+
+
+
 -*
-Need to examine the following Pacages:
+Sasha's checks:
+
+SpectralSequences: Uses filteredComplex, which calls faces(i,D) and assumes its a matrix (it is now a list).
+
+
+
+Need to examine the following Packages:
+
   KustinMiller
     --/usr/share/Macaulay2/KustinMiller.m2:570:19:(2):[10]: error: 
       assignment to protected built-in global variable 'stellarSubdivision'
