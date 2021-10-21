@@ -96,7 +96,7 @@
   \indent
   \texttt{SimplicialComplexes} version 2.0
 }
-% \date{2021--09--23}
+% \date{2021--010--21}
 
 \begin{abstract}
   We highlight some features of the \emph{SimplicialComplexes} package in
@@ -116,13 +116,13 @@ implements a new data type for simplicial maps, and incorporates many
 improvements to the methods and documentation.  Emphasizing combinatorial and
 algebraic applications, the primary data type encodes an abstract simplicial
 complex---a family of subsets that is closed under taking subsets.  These
-simplicial complexes are the counterpart to the geometric realizations formed
-from points, line segments, filled-in triangles, solid tetrahedra, and their
-higher-dimensional analogues in some Euclidean space.  The subsets in a
-simplicial complex are called faces. The faces having cardinality~$1$ are its
-vertices and the maximal faces (ordered by inclusion) are its facets.
-Following the combinatorial conventions, every nonempty simplicial complex has
-the empty set as a face.
+simplicial complexes are the combinatorial counterpart to their geometric
+realizations formed from points, line segments, filled-in triangles, solid
+tetrahedra, and their higher-dimensional analogues in some Euclidean space.
+The subsets in a simplicial complex are called faces. The faces having
+cardinality~$1$ are its vertices and the maximal faces (ordered by inclusion)
+are its facets.  Following the combinatorial conventions, every nonempty
+simplicial complex has the empty set as a face.
 
 In this package, a simplicial complex is represented by its Stanley--Reisner
 ideal. The vertices are identified with a subset of the variables in a
@@ -545,11 +545,11 @@ $\textbf{e}_1, \textbf{e}_2, \dotsc, \textbf{e}_m$ is the standard basis.  Let
 $\Delta$ be a simplicial complex whose vertices are labelled by the generators
 of $J$.  We label each face $F$ of $\Delta$ by the least common multiple
 $y^{\,\textbf{a}_{\!F}} \in R$ of its vertices; the empty face is labelled by
-the monomial $1 = y^{\,\textbf{a}_{\!\varnothing}}$.  The complex $C(\Delta)$
-supported on the labelled simplicial complex $\Delta$ is the complex of free
-$\mathbb{N}^m$-graded $R$-modules with basis corresponding to the faces of
-$\Delta$.  The differential $\partial \colon\! C(\Delta) \to C(\Delta)$ is
-given by
+the monomial $1 = y^{\,\textbf{a}_{\!\varnothing}}$.  The chain complex
+$C(\Delta)$ supported on the labelled simplicial complex $\Delta$ is the chain
+complex of free $\mathbb{N}^m$-graded $R$-modules with basis corresponding to
+the faces of $\Delta$.  The differential
+$\partial \colon\! C(\Delta) \to C(\Delta)$ is given by
 \begin{align*}
   C_i(\Delta)
   &\colequal \bigoplus_{\dim(F) \,=\, i-1} R(-\textbf{a}_F) 
@@ -719,8 +719,8 @@ o47 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
 o47 : GradedModule
 \end{lstlisting}
 
-Given a monomial ideal $J$, there are several algorithms that yield a labelled
-simplicial complex $\Delta$ such that complex $C(\Delta)$ is a free (not
+Given a monomial ideal $J$, there are several algorithms return a labelled
+simplicial complex $\Delta$ such that chain complex $C(\Delta)$ is a free (not
 necessarily minimal) resolution of $R/J$.  We exhibit a few.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
 i48 : J' = monomialIdeal(y_1*y_3, y_2^2, y_0*y_2, y_1^2, y_0^2);
