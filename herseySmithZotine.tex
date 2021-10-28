@@ -227,10 +227,10 @@ o5 : SimplicialComplex
 i6 : assert($⧓$ === $⧓$')
 \end{lstlisting}
 
-The package also has convenience constructors for some archetypal simplicial
-complexes. For example, we recognize triangulations of the real projective
-plane and the Klein bottle from their reduced homology groups; see
-Theorems~6.3--6.4 in \cite{Munkres}.
+The package also has convenient constructors for some archetypal simplicial
+complexes. For example, we recognize the real projective plane
+and the Klein bottle from the reduced homology groups of some explicit
+traingulations; see Theorems~6.3--6.4 in \cite{Munkres}.
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-5pt, aboveskip=3.0pt, belowskip=1.5pt]
 i7 : $ℙ$ = realProjectiveSpaceComplex(2, R = ZZ[a..h])
 \end{lstlisting}
@@ -719,7 +719,7 @@ o47 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
 o47 : GradedModule
 \end{lstlisting}
 
-Given a monomial ideal $J$, there are several algorithms return a labelled
+Given a monomial ideal $J$, there are several algorithms that return a labelled
 simplicial complex $\Delta$ such that chain complex $C(\Delta)$ is a free (not
 necessarily minimal) resolution of $R/J$.  We exhibit a few.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
@@ -955,3 +955,8 @@ Engineering Research Council of Canada (NSERC).
 
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
