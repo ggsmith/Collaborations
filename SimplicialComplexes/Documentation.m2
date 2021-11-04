@@ -95,8 +95,10 @@ doc ///
 	    An {\em abstract simplicial complex} on a finite set is a family
 	    of subsets that is closed under taking subsets.  The elements in
 	    the abstract simplicial complex are called its {\em faces}.  The
-	    faces having cardinality 1 are its {\em vertices} and the
-	    maximal faces (order by inclusion) are its {\em facets}.
+	    faces having cardinality 1 are its {\em vertices} and the maximal
+	    faces (order by inclusion) are its {\em facets}.  Following the
+	    combinatorial conventions, every nonempty abstract simplicial
+	    complex has the empty set as a face.
 	Text 
 	    In this package, a simplicial complex is represented by its
 	    @HREF("https://en.wikipedia.org/wiki/Stanley–Reisner_ring",
@@ -161,8 +163,10 @@ doc ///
 	    An {\em abstract simplicial complex} on a finite set is a family
 	    of subsets that is closed under taking subsets.  The elements in
 	    the abstract simplicial complex are called its {\em faces}.  The
-	    faces having cardinality 1 are its {\em vertices} and the
-	    maximal faces (order by inclusion) are its {\em facets}.
+	    faces having cardinality 1 are its {\em vertices} and the maximal
+	    faces (order by inclusion) are its {\em facets}.  Following the
+	    combinatorial conventions, every nonempty abstract simplicial
+	    complex has the empty set as a face.
 	Text 
 	    In this package, a simplicial complex is represented by its 
 	    @HREF("https://en.wikipedia.org/wiki/Stanley–Reisner_ring",
@@ -659,9 +663,11 @@ doc ///
         Text
 	    An {\em abstract simplicial complex} on a finite set is a family
 	    of subsets that is closed under taking subsets. The elements in
-	    the abstract simplicial complex are called {\em faces}. The
-	    faces having cardinality 1 are called {\em vertices} and the
-	    maximal faces (order by inclusion) are called {\em facets}.
+	    the abstract simplicial complex are called {\em faces}. The faces
+	    having cardinality 1 are called {\em vertices} and the maximal
+	    faces (order by inclusion) are called {\em facets}.  Following the
+	    combinatorial conventions, every nonempty abstract simplicial
+	    complex has the empty set as a face.
 	Text 
 	    In this package, a simplicial complex is represented by its
 	    @HREF("https://en.wikipedia.org/wiki/Stanley–Reisner_ring",
@@ -760,8 +766,10 @@ doc ///
 	    An {\em abstract simplicial complex} on a finite set is a family
 	    of subsets that is closed under taking subsets.  The elements in
 	    the abstract simplicial complex are called its {\em faces}.  The
-	    faces having cardinality 1 are its {\em vertices} and the
-	    maximal faces (order by inclusion) are its {\em facets}.
+	    faces having cardinality 1 are its {\em vertices} and the maximal
+	    faces (order by inclusion) are its {\em facets}.  Following the
+	    combinatorial conventions, every nonempty abstract simplicial
+	    complex has the empty set as a face.
 	Text 
             In this package, a simplicial complex is represented by its
 	    @HREF("https://en.wikipedia.org/wiki/Stanley–Reisner_ring",
@@ -835,8 +843,8 @@ doc ///
 	    chainComplex Γ
 	    chainComplex Δ'
 	Text
-	    The input ideal can be of type @TO Ideal@, in which case we check if it
-	    is a squarefree monomial ideal.
+	    The input can be an @TO Ideal@, in which case the constructor
+	    verifies that it is a squarefree monomial ideal.
 	Example
 	    Bowtie = simplicialComplex ideal {a*d, b*d, a*e, b*e}	    
     SeeAlso
@@ -941,7 +949,8 @@ doc ///
 	    a point, a 1-simplex is a line segment, a 2-simplex is a triangle,
 	    and a 3-simplex is a tetrahedron.  The {\em $d$-simplex} is the
 	    unique $d$-dimensional abstract simplicial complex having one
-	    facet.
+	    facet.  Furthermore, in the $d$-simplex, there are
+	    $\binom{d+1}{k+1}$ faces having dimension $k$.
     	Example
 	    S = ZZ[a..e];
 	    irrelevant = simplexComplex (-1, S)
@@ -1261,8 +1270,9 @@ doc ///
 	Text
 	    This abstract simplicial complex is Cohen-Macaulay but not shellable.	    
 	Text
-	    Our enumeration of the vertices follows the {\tt ziegler}
-	    example in Masahiro Hachimori's
+	    Our enumeration of the vertices follows the 
+	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/ziegler_eng.html",
+	    "ziegler")@ example in Masahiro Hachimori's
 	    @HREF("http://infoshako.sk.tsukuba.ac.jp/~hachi/math/library/index_eng.html",
 	    "simplicial complex libary")@.
     SeeAlso
@@ -1418,7 +1428,7 @@ doc ///
 	    assert (simplicialComplex faces(3, simplexComplex(4, S)) === smallManifold(3,5,0,S))
 	Text
 	    Frank Lutz also includes some information of the topological type of
-	    the manifolds @HREF("http://page.math.tu-berlin.de/~lutz/stellar/2_manifolds_all.type", "on his webpage.")@. 
+	    the manifolds @HREF("http://page.math.tu-berlin.de/~lutz/", "on his webpage")@. 
 	    The 2-sphere, 2-torus, real projective plane and Klein Bottle can all
 	    be accessed from the database. Here are the smallest instances which appear
 	    in the database for real projective plane and the Klein Bottle (note that our 
@@ -1903,7 +1913,7 @@ doc ///
 	    subset $F$ is not face in $\Delta$, the star of $F$ is a void
 	    complex (having no facets).
     	Text
-	    In the "bowtie" complex, we see that a star may the entire
+	    The star of a subset $F$ may be the entire
 	    complex, a proper subcomplex, or the void complex.
 	Example
 	    S = ZZ[a..e];
@@ -2030,7 +2040,7 @@ doc ///
 	    vertices Δ∨Γ
 	    assert (# gens ring Δ∨Γ === # gens ring Δ + # gens ring Γ - 1)
 	Text
-	    When the optional argument {\tt Variables} is used, the wedge sum
+	    When the optional argument $\mathrm{Variables}$ is used, the wedge sum
 	    is represented by its Stanley–Reisner ideal in a new polynomial
 	    ring having this list as variables.  The variables in the ring of
 	    $\Delta$ corresponds to the first few variables in this new
@@ -2618,7 +2628,7 @@ doc ///
 	    free modules over its 	    
 	    @TO2((coefficientRing, SimplicialComplex), "coefficient ring")@.
 	    For all integers $i$, the $i$-th term in this chain complex has
-	    a basis corresponding to the $i$-th faces in the simplicial
+	    a basis corresponding to the $i$-dimensional faces in the simplicial
 	    complex $\Delta$.  The {\em reduced homology} of $\Delta$ is, by
 	    definition, the homology of this chain complex.  Similarily, the
 	    {\em reduced cohomology} of $\Delta$ is obtained by first using
@@ -3458,7 +3468,7 @@ doc ///
         Text
 	    If $M$ is a monomial ideal, minimally generated by $L$, then
 	    the Taylor resolution of $M$ is the resolution of $M$ obtained
-	    by homogenizing the $(#L - 1)$-simplex.
+	    by homogenizing the $(\#L - 1)$-simplex.
 	Example
 	    S = QQ[vars(0..3)]
 	    M = monomialIdeal(a*b,c^3,c*d,b^2*c)
@@ -4361,7 +4371,7 @@ doc ///
 	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
 	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
 	    assert isWellDefined f
-	    source f
+	    target f
 	    assert(target f === Γ)
 	    peek f
     SeeAlso
