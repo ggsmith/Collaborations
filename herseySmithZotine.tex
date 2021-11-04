@@ -1,3 +1,4 @@
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% AMS-LaTeX Paper
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -121,8 +122,10 @@ realizations formed from points, line segments, filled-in triangles, solid
 tetrahedra, and their higher-dimensional analogues in some Euclidean space.
 The subsets in a simplicial complex are called faces. The faces having
 cardinality~$1$ are its vertices and the maximal faces (ordered by inclusion)
-are its facets.  Following the combinatorial conventions, every nonempty
-simplicial complex has the empty set as a face.
+are its facets. The dimension of a face is one less than its cardinality, and
+the dimension of a simplicial complex is the dimension of one of its maximal
+faces. Following the combinatorial conventions, every nonempty simplicial
+complex has the empty set as a face.
 
 In this package, a simplicial complex is represented by its Stanley--Reisner
 ideal. The vertices are identified with a subset of the variables in a
@@ -419,14 +422,6 @@ o25 = QQ
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
 o25 : QQ-module, free
 \end{lstlisting}
-The dimension of a simplicial complex is one less than the maximal cardinality
-of its faces.
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i26 : dim L
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-o26 = 1
-\end{lstlisting}
 As discovered by Gerald Reisner, the simplicial complex $\Delta$ is
 Cohen--Macaulay if and only if, for all faces $F$ in $\Delta$ and all integers
 $j$ less than the dimension of $\operatorname{link}_\Delta(F)$, the $j$-th
@@ -435,36 +430,36 @@ Corollary~5.3.9 in \cite{BH}, Theorem~5.53 in \cite{MS}, or Corollary~II.4.2
 in \cite{Stanley}.  Using this criterion, the $0$-th reduced homology
 certifies that $⧓$ is not Cohen--Macaulay.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i27 : assert(HH_0 L != 0)
+i26 : assert(HH_0 L != 0)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-i28 : assert(dim(S^1/monomialIdeal $⧓$) =!= n - pdim(S^1/monomialIdeal $⧓$))
+i27 : assert(dim(S^1/monomialIdeal $⧓$) =!= n - pdim(S^1/monomialIdeal $⧓$))
 \end{lstlisting}
 However, the $1$-skeleton of $⧓$ is Cohen--Macaulay.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i29 : $⋈$ = skeleton(1, $⧓$)
+i28 : $⋈$ = skeleton(1, $⧓$)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o29 = simplicialComplex | x_3x_4 x_2x_4 x_2x_3 x_1x_2 x_0x_2 x_0x_1 |
+o28 = simplicialComplex | x_3x_4 x_2x_4 x_2x_3 x_1x_2 x_0x_2 x_0x_1 |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o29 : SimplicialComplex
+o28 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i30 : faceList = rsort flatten values faces $⋈$
+i29 : faceList = rsort flatten values faces $⋈$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-o30 = {x x , x x , x x , x x , x x , x x , x , x , x , x , x , 1}
+o29 = {x x , x x , x x , x x , x x , x x , x , x , x , x , x , 1}
         0 1   0 2   1 2   2 3   2 4   3 4   0   1   2   3   4
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o30 : List
+o29 : List
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i31 : assert all(faceList, F -> (L := link($⋈$, F); all(dim L, j -> HH_j L == 0)))
+i30 : assert all(faceList, F -> (L := link($⋈$, F); all(dim L, j -> HH_j L == 0)))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-i32 : assert(dim(S^1/monomialIdeal $⋈$) === n - pdim(S^1/monomialIdeal $⋈$))
+i31 : assert(dim(S^1/monomialIdeal $⋈$) === n - pdim(S^1/monomialIdeal $⋈$))
 \end{lstlisting}
 
 Alternatively, we verify that bowtie complex $⧓$ is not Cohen--Macaulay by
@@ -477,17 +472,17 @@ $h_j = \sum_{k=0}^{j} (-1)^{j-1}
 $h$-vector encodes the numerator of the Hilbert series for $S/I$.
 
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=5.0pt, belowskip=1.5pt]
-i33 : d = dim $⧓$
+i32 : d = dim $⧓$
 \end{lstlisting}
 \vfill
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o33 = 2
+o32 = 2
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i34 : faces $⧓$
+i33 : faces $⧓$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-o34 = HashTable{-1 => {1}                                }
+o33 = HashTable{-1 => {1}                                }
                 0 => {x , x , x , x , x }
                        0   1   2   3   4
                 1 => {x x , x x , x x , x x , x x , x x }
@@ -496,39 +491,39 @@ o34 = HashTable{-1 => {1}                                }
                        0 1 2   2 3 4
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o34 : HashTable
+o33 : HashTable
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i35 : fVec = fVector $⧓$
+i34 : fVec = fVector $⧓$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o35 = {1, 5, 6, 2}
+o34 = {1, 5, 6, 2}
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o34 : List
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
+i35 : hVec = for j from 0 to d list 
+          sum(j+1, k -> (-1)^(j-k) * binomial(d+1-k, j-k) * fVec#k)
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o35 = {1, 2, -1}
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
 o35 : List
 \end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-i36 : hVec = for j from 0 to d list 
-          sum(j+1, k -> (-1)^(j-k) * binomial(d+1-k, j-k) * fVec#k)
-\end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o36 = {1, 2, -1}
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o36 : List
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i37 : hilbertSeries(S^1/monomialIdeal $⧓$, Reduce => true)
+i36 : hilbertSeries(S^1/monomialIdeal $⧓$, Reduce => true)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
                 2
       1 + 2T - T
-o37 = -----------
+o36 = -----------
                3
         (1 - T)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=-5.0pt]
-o37 : Expression of class Divide
+o36 : Expression of class Divide
 \end{lstlisting}
 
 
@@ -607,62 +602,62 @@ Label the vertices of $\Gamma$ by the generators of $J$:
 $x_0 \mapsto y_0 y_1$, $x_1 \mapsto y_0 y_2$, $x_2 \mapsto y_0 y_3$, and
 $x_3 \mapsto y_1 y_2 y_3$.  
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i38 : S = ZZ[x_0..x_3];
+i37 : S = ZZ[x_0..x_3];
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i39 : $Δ$ = simplicialComplex{x_0*x_1*x_2, x_2*x_3}
+i38 : $Δ$ = simplicialComplex{x_0*x_1*x_2, x_2*x_3}
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o39 = simplicialComplex | x_2x_3 x_0x_1x_2 |
+o38 = simplicialComplex | x_2x_3 x_0x_1x_2 |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o39 : SimplicialComplex
+o38 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i40 : chainComplex $Δ$
+i39 : chainComplex $Δ$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
         1       4       4       1
-o40 = ZZ  <-- ZZ  <-- ZZ  <-- ZZ
+o39 = ZZ  <-- ZZ  <-- ZZ  <-- ZZ
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
       -1      0       1       2
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o40 : ChainComplex
+o39 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i41 : R = QQ[y_0..y_3, DegreeRank => 4];
+i40 : R = QQ[y_0..y_3, DegreeRank => 4];
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i42 : J = ideal(y_0*y_1, y_0*y_2, y_0*y_3, y_1*y_2*y_3)
+i41 : J = ideal(y_0*y_1, y_0*y_2, y_0*y_3, y_1*y_2*y_3)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o42 = ideal (y y , y y , y y , y y y )
+o41 = ideal (y y , y y , y y , y y y )
               0 1   0 2   0 3   1 2 3
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o42 : Ideal of R
+o41 : Ideal of R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i43 : C = chainComplex($Δ$, Labels => J_*)
+i42 : C = chainComplex($Δ$, Labels => J_*)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
        1      4      4      1
-o43 = R  <-- R  <-- R  <-- R
+o42 = R  <-- R  <-- R  <-- R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]                           
       0      1      2      3
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o43 : ChainComplex
+o42 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i44 : C.dd
+i43 : C.dd
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=3.0pt]
            1                                          4
-o44 = 0 : R  <-------------------------------------- R  : 1
+o43 = 0 : R  <-------------------------------------- R  : 1
                | y_0y_1 y_0y_2 y_0y_3 y_1y_2y_3 |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=3.0pt]
@@ -682,32 +677,32 @@ o44 = 0 : R  <-------------------------------------- R  : 1
                 {1, 1, 1, 1} | 0    |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o44 : ChainComplexMap
+o43 : ChainComplexMap
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-i45 : assert(res (R^1/J) == C)
+i44 : assert(res (R^1/J) == C)
 \end{lstlisting}
 The chain complex $C(\Delta)$ 
 depends on the labelling and is not always a resolution.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i46 : C' = chainComplex($Δ$, Labels => reverse J_*)
+i45 : C' = chainComplex($Δ$, Labels => reverse J_*)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
        1      4      4      1
-o46 = R  <-- R  <-- R  <-- R
+o45 = R  <-- R  <-- R  <-- R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
       0      1      2      3
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
-o46 : ChainComplex
+o45 : ChainComplex
 \end{lstlisting}
 \vfill
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
-i47 : prune homology C'
+i46 : prune homology C'
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o47 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
+o46 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
 
       1 : cokernel {1, 1, 0, 1} | y_2 |              
 
@@ -716,87 +711,87 @@ o47 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
       3 : 0   
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-o47 : GradedModule
+o46 : GradedModule
 \end{lstlisting}
 
 Given a monomial ideal $J$, there are several algorithms that return a labelled
 simplicial complex $\Delta$ such that chain complex $C(\Delta)$ is a free (not
 necessarily minimal) resolution of $R/J$.  We exhibit a few.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i48 : J' = monomialIdeal(y_1*y_3, y_2^2, y_0*y_2, y_1^2, y_0^2);
+i47 : J' = monomialIdeal(y_1*y_3, y_2^2, y_0*y_2, y_1^2, y_0^2);
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o48 : MonomialIdeal of R
+o47 : MonomialIdeal of R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i49 : T = taylorResolution J'
+i48 : T = taylorResolution J'
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
        1      5      10      10      5      1
-o49 = R  <-- R  <-- R   <-- R   <-- R  <-- R
+o48 = R  <-- R  <-- R   <-- R   <-- R  <-- R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
       0      1      2       3       4      5
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o49 : ChainComplex
+o48 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i50 : gensJ' = first entries mingens J'
+i49 : gensJ' = first entries mingens J'
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
               2         2   2
-o50 = {y y , y , y y , y , y }
+o49 = {y y , y , y y , y , y }
         1 3   2   0 2   1   0
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o50 : List
+o49 : List
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i51 : S = ZZ[x_0..x_4];
+i50 : S = ZZ[x_0..x_4];
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i52 : assert(T == chainComplex(simplexComplex(4, S), Labels => gensJ'))
+i51 : assert(T == chainComplex(simplexComplex(4, S), Labels => gensJ'))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i53 : assert(lyubeznikSimplicialComplex(J', S) === simplexComplex(4, S))
+i52 : assert(lyubeznikSimplicialComplex(J', S) === simplexComplex(4, S))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i54 : $Γ$ = buchbergerSimplicialComplex(J',S)
+i53 : $Γ$ = buchbergerSimplicialComplex(J',S)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o54 = simplicialComplex | x_0x_2x_3x_4 x_0x_1x_2x_3 |
+o53 = simplicialComplex | x_0x_2x_3x_4 x_0x_1x_2x_3 |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o54 : SimplicialComplex
+o53 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i55 : B = buchbergerResolution J'
+i54 : B = buchbergerResolution J'
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
        1      5      9      7      2
-o55 = R  <-- R  <-- R  <-- R  <-- R
+o54 = R  <-- R  <-- R  <-- R  <-- R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
       0      1      2      3      4
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o55 : ChainComplex
+o54 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i56 : assert all(3, i -> HH_(i+1) B == 0) 
+i55 : assert all(3, i -> HH_(i+1) B == 0) 
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i57 : assert(betti B == betti res J')
+i56 : assert(betti B == betti res J')
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i58 : assert(B == chainComplex($Γ$, Labels => first entries mingens J'))
+i57 : assert(B == chainComplex($Γ$, Labels => first entries mingens J'))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i59 : assert($Γ$ === lyubeznikSimplicialComplex(J', S, MonomialOrder => {2,1,0,3,4}))
+i58 : assert($Γ$ === lyubeznikSimplicialComplex(J', S, MonomialOrder => {2,1,0,3,4}))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-i60 : assert($Γ$ === scarfSimplicialComplex(J', S))
+i59 : assert($Γ$ === scarfSimplicialComplex(J', S))
 \end{lstlisting}
 For more information about the Taylor resolution, the Lyubeznik resolution,
 and the Scarf complex, see \cite{Mermin}.  The Buchberger resolution is
