@@ -51,3 +51,4 @@ hVec = for j from 0 to d list
     sum(j+1, k -> (-1)^(j-k) * binomial(d+1-k, j-k) * fVec#k)
 hilbertSeries(S^1/monomialIdeal ⧓, Reduce => true)
 
+
