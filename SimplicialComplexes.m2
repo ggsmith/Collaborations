@@ -1,6 +1,6 @@
 -- -*- coding: utf-8 -*-
 ------------------------------------------------------------------------------
--- Copyright 2006--2020 Sorin Popescu, Gregory G. Smith, and Mike Stillman
+-- Copyright 2021 Gregory G. Smith
 --
 -- This program is free software: you can redistribute it and/or modify it
 -- under the terms of the GNU General Public License as published by the Free
@@ -17,9 +17,8 @@
 ------------------------------------------------------------------------------
 newPackage(
     "SimplicialComplexes",
-    AuxiliaryFiles => true,
     Version => "2.0", 
-    Date => "4 June 2021",
+    Date => "4 November 2021",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
@@ -30,8 +29,10 @@ newPackage(
 	 Email => "18az45@queensu.ca"}
      },
     Headline => "exploring abstract simplicial complexes within commutative algebra",
-    DebuggingMode => true,
-    PackageExports => {"Polyhedra", "GenericInitialIdeal"}
+    Keywords => {"simplicial complex",},
+    PackageImports => { "Polyhedra" },
+    AuxiliaryFiles => true,
+    DebuggingMode => false
     )
 
 export {
@@ -80,6 +81,16 @@ export {
     "Labels"
     }
 
+exportFrom(Polyhedra, {
+    "faces",
+    "facets",
+    "fVector",
+    "isPure",
+    "skeleton",
+    "vertices"
+    })
+
+importFrom("GenericInitialIdeal", {"gin", "Multigraded"})
 
 ------------------------------------------------------------------------------
 -- CODE
