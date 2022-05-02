@@ -140,6 +140,7 @@ doc ///
     	    @UL {
 		TO (prune, SimplicialComplex),
 		TO (inducedSubcomplex, SimplicialComplex, List),
+		TO (connectedComponents, SimplicialComplex),
 		TO (dual, SimplicialComplex),
 		TO (link, SimplicialComplex, RingElement),
 		TO (skeleton, ZZ, SimplicialComplex),
@@ -2073,6 +2074,48 @@ doc ///
 ------------------------------------------------------------------------------
 -- basic properties and invariants
 ------------------------------------------------------------------------------
+
+doc ///
+    Key 
+        (connectedComponents, SimplicialComplex)
+	connectedComponents
+    Headline
+        find the connected components of an abstract simplicial complex
+    Usage 
+        connectedComponents Delta
+    Inputs
+        Delta : SimplicialComplex  
+    Outputs 
+        : List
+	    of induced subcomplexes of $\Delta$, each one a distinct connected
+	    component of $\Delta$.
+    Description
+        Text
+	    The verticies $v,w \in \Delta$ are connected if there is a sequence of 
+	    facets $F_0, F_1,..., F_k \in \Delta$ such that $v \in F_0$, $w \in F_k$ 
+	    and $F_i \cap F_{i+1} \neq \varnothing$ for each $i = 1,2,...,k-1$. A
+	    connected component of $\Delta$ is a maximal subcomplex of $\Delta$ for
+	    which all pairs of vertices are connected.
+	Text
+	    In the following example, we look at a simplicial complex with two
+	    connected components
+	Example
+	    R = QQ[x_0..x_6]
+	    D = simplicialComplex {x_0*x_1, x_1*x_2, x_3*x_4, x_4*x_5, x_5*x_6}
+	    connectedComponents D
+	Text
+	    The void complex, and the empty complex each have one connected
+	    component.
+	Example
+	    void = simplicialComplex monomialIdeal(1_R)
+	    connectedComponents void
+	    empty = simplicialComplex {1_R}
+	    connectedComponents empty
+    SeeAlso
+        (star, SimplicialComplex, RingElement)
+	(link, SimplicialComplex, RingElement)
+///
+
 doc ///
     Key 
         "Finding attributes and properties"

@@ -47,6 +47,7 @@ export {
     "boundaryMap",    
     "buchbergerSimplicialComplex",
     "buchbergerResolution",
+    "connectedComponents",
     "elementaryCollapse",
     "flagfVector",
 --    "face",  

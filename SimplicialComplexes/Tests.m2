@@ -701,6 +701,25 @@ D' = prune D
 assert (numgens ring D' == 3)
 ///
 
+------------------------------------------------------------------------------
+-- Testing Connected Components
+
+-- For the void and empty complex, we should return that complex
+R = QQ[x_0 .. x_11]
+void = simplicialComplex monomialIdeal(1_R)
+assert(#(connectedComponents void) == 1)
+assert((connectedComponents void)#0 === void)
+
+
+empty = simplicialComplex {1_R}
+assert(#(connectedComponents empty) == 1)
+assert((connectedComponents empty)#0 === empty)
+
+D = simplicialComplex {x_0*x_1, x_1*x_2, x_3*x_4, x_4*x_5*x_6, x_6*x_7, x_8*x_9*x_10, x_9*x_10*x_11}
+assert(#(connectedComponents D) == 3)
+P = positions(connectedComponents D, D -> D === simplicialComplex{x_6*x_7, x_4*x_5*x_6, x_3*x_4})
+assert(#P == 1)
+
 
 -*
 -- For later use?
