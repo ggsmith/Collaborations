@@ -358,7 +358,8 @@ prune SimplicialComplex := SimplicialComplex => opts -> D -> (
 inducedSubcomplex = method()
 inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D, V) -> (
     if any(V, v -> not member(v, vertices D)) then 
-	error "expected verticies of the simplicial complex";
+	error "expected vertices of the simplicial complex";
+    if dim D < -1 then return D;
     S := ring D;
     phi := map(S, S, for x in gens S list if member(x, V) then x else 1_S);
     -- although map(D, phi) is not a well-defined simplicial map, its image is

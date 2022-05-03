@@ -119,6 +119,7 @@ assert (cross =!= stdshifted)
 -- Cartwright-Sturmfels ideals associated to graphs and linear spaces 
 -- Aldo Conca, Emanuela De Negri, Elisa Gorla    Ex. 1.10
 TEST ///
+needsPackage "GenericInitialIdeal"
 row_grading = {{1,0},{1,0},{1,0},{0,1},{0,1},{0,1}}
 S=QQ[x_{1,1}..x_{2,3}, Degrees => row_grading];
 I = ideal(x_{1,1}*x_{2,1},x_{1,2}*x_{2,2},x_{1,3}*x_{2,2},x_{1,2}*x_{2,3},x_{1,3}*x_{2,3})

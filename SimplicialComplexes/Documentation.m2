@@ -1630,7 +1630,16 @@ doc///
 	    Γ = inducedSubcomplex(Δ, {x_1, x_2, x_3})
 	    vertices Γ
 	    assert (isWellDefined Γ and set vertices Γ === set {x_1, x_2, x_3})
-	    assert all (facets Γ, F -> member(F, faces(#support F - 1, Δ))) 
+	    assert all (facets Γ, F -> member(F, faces(#support F - 1, Δ)))
+	Text
+	    As a special case, we can consider induced subcomplexes of the
+	    empty and void comlexes.
+        Example
+	    void = simplicialComplex monomialIdeal(1_S);
+	    inducedSubcomplex(void, {})
+	    empty = simplicialComplex {1_S};
+	    inducedSubcomplex(empty, {})
+	     
     SeeAlso 
         "Making an abstract simplicial complex" 
 	(ring, SimplicialComplex)	
