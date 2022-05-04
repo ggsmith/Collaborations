@@ -358,7 +358,8 @@ prune SimplicialComplex := SimplicialComplex => opts -> D -> (
 inducedSubcomplex = method()
 inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D, V) -> (
     if any(V, v -> not member(v, vertices D)) then 
-	error "expected verticies of the simplicial complex";
+	error "expected vertices of the simplicial complex";
+    if dim D < -1 then return D;
     S := ring D;
     phi := map(S, S, for x in gens S list if member(x, V) then x else 1_S);
     -- although map(D, phi) is not a well-defined simplicial map, its image is
@@ -431,6 +432,25 @@ wedge (SimplicialComplex, SimplicialComplex, RingElement, RingElement) := Simpli
 ------------------------------------------------------------------------------
 -- basic properties and invariants
 ------------------------------------------------------------------------------
+
+connectedComponents = method()
+connectedComponents SimplicialComplex := D -> ( 
+    if dim D < 0 then return {D};
+    R := ring D;
+    H := new MutableHashTable;
+    for F in facets D do(
+    	if all(keys H, h -> gcd(F, H#h) == 1_R) then H#F = F
+    	else (
+	    L := {};
+	    for k in keys H do if not (gcd(F, H#k) == 1_R) then L = append(L, k);
+	    m := lcm(append(L,F));
+	    for l in L do remove(H,l);
+	    H#m = m;
+	    )
+	);
+    return for k in keys H list inducedSubcomplex(D, support H#k)
+    )
+
 
 -- 'vertices' method is defined in 'Polyhedra" package
 vertices SimplicialComplex := D -> (
