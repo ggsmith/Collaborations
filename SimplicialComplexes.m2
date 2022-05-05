@@ -18,7 +18,7 @@
 newPackage(
     "SimplicialComplexes",
     Version => "2.0", 
-    Date => "4 November 2021",
+    Date => "4 May 2022",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
@@ -32,7 +32,7 @@ newPackage(
     Keywords => {"simplicial complex",},
     PackageImports => { "Polyhedra" },
     AuxiliaryFiles => true,
-    DebuggingMode => false
+    DebuggingMode => true
     )
 
 export {
@@ -107,7 +107,7 @@ load "SimplicialComplexes/Documentation.m2"
 ------------------------------------------------------------------------------
 -- TESTS
 ------------------------------------------------------------------------------
-load "SimplicialComplexes/Tests.m2"
+--load "SimplicialComplexes/Tests.m2"
 
 end---------------------------------------------------------------------------     
 
@@ -122,4 +122,4 @@ installPackage "SimplicialComplexes"
 check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
-options SimplicialComplexes
+
