@@ -140,7 +140,6 @@ doc ///
     	    @UL {
 		TO (prune, SimplicialComplex),
 		TO (inducedSubcomplex, SimplicialComplex, List),
-		TO (connectedComponents, SimplicialComplex),
 		TO (dual, SimplicialComplex),
 		TO (link, SimplicialComplex, RingElement),
 		TO (skeleton, ZZ, SimplicialComplex),
@@ -1475,14 +1474,15 @@ doc ///
  	Text
 	    From Theorem 6.3 in Chapter one of Munkres' 
 	    @HREF("https://www.pearson.com/us/higher-education/product/Munkres-Topology-2nd-Edition/9780131816299.html", 
-	    "Algebraic Topology")@ states that the first homology of the Klein bottle should have
-	    rank one free part, and $\mathbb{Z}/2\mathbb{Z}$ torsion. The second homology should be zero.
+	    "Algebraic Topology")@ states that the first homology of the Klein
+	    bottle should have rank one free part, and
+	    $\mathbb{Z}/2\mathbb{Z}$ torsion. The second homology should be
+	    zero.	    
 	Example
 	    prune HH KleinBottle            	
     SeeAlso
         "Making an abstract simplicial complex"
 	(smallManifold, ZZ, ZZ, ZZ, PolynomialRing)
-	smallManifold
 ///
 
 doc /// 
@@ -1524,7 +1524,6 @@ doc ///
 	(smallManifold, ZZ, ZZ, ZZ, PolynomialRing)
 	smallManifold
 ///
-
 
 ------------------------------------------------------------------------------
 -- more advanced constructors
@@ -1633,13 +1632,14 @@ doc///
 	    assert all (facets Γ, F -> member(F, faces(#support F - 1, Δ)))
 	Text
 	    As a special case, we can consider induced subcomplexes of the
-	    empty and void comlexes.
+	    void and irrelevant comlexes.
         Example
 	    void = simplicialComplex monomialIdeal(1_S);
 	    inducedSubcomplex(void, {})
-	    empty = simplicialComplex {1_S};
-	    inducedSubcomplex(empty, {})
-	     
+	    assert(void === inducedSubcomplex(void, {}))
+	    irrelevant = simplicialComplex {1_S};
+	    inducedSubcomplex(irrelevant, {})	
+	    assert(irrelevant === inducedSubcomplex(irrelevant, {}))
     SeeAlso 
         "Making an abstract simplicial complex" 
 	(ring, SimplicialComplex)	
@@ -1923,8 +1923,8 @@ doc ///
 	    subset $F$ is not face in $\Delta$, the star of $F$ is a void
 	    complex (having no facets).
     	Text
-	    The star of a subset $F$ may be the entire
-	    complex, a proper subcomplex, or the void complex.
+	    The star of a subset $F$ may be the entire complex, a proper
+	    subcomplex, or the void complex.	    
 	Example
 	    S = ZZ[a..e];
 	    Δ = simplicialComplex {a*b*c, c*d*e}	    
@@ -1995,9 +1995,6 @@ doc ///
 	    Δ' = Δ * Γ	    
 	    prune HH Δ'
 	    assert (dim Δ' === 3)
-	Text
-	Example
-	    Δ * sub(Δ, ZZ[g..l])
     Caveat
         When the variables in the ring of $\Delta$ and the ring of $\Gamma$
         are not disjoint, names of vertices in the join may not be 
@@ -2046,9 +2043,9 @@ doc ///
 	    Δ = simplexComplex(2, S)
 	    R = QQ[d,e,f];
 	    Γ = simplexComplex(2, R)
-	    Δ∨Γ = wedge (Δ, Γ, a, f)
-	    vertices Δ∨Γ
-	    assert (# gens ring Δ∨Γ === # gens ring Δ + # gens ring Γ - 1)
+	    ΔvΓ = wedge (Δ, Γ, a, f)
+	    vertices ΔvΓ
+	    assert (# gens ring ΔvΓ === # gens ring Δ + # gens ring Γ - 1)
 	Text
 	    When the optional argument $\mathrm{Variables}$ is used, the wedge sum
 	    is represented by its Stanley–Reisner ideal in a new polynomial
@@ -2060,11 +2057,11 @@ doc ///
 	    when taking the wedge sum of two abstract simplical complexes
 	    already defined in the same ring.
 	Example
-	    Δ∨Γ' = wedge (Δ, Γ, a, d, Variables => toList(x_0..x_4))
-	    vertices Δ∨Γ'
-	    Δ∨Γ'' = wedge (Δ, Δ, a, a, Variables => {a,b,c,d,e})
-	    vertices Δ∨Γ''
-	    ring Δ∨Γ''
+	    ΔvΓ' = wedge (Δ, Γ, a, d, Variables => toList(x_0..x_4))
+	    vertices ΔvΓ'
+	    ΔvΓ'' = wedge (Δ, Δ, a, a, Variables => {a,b,c,d,e})
+	    vertices ΔvΓ''
+	    ring ΔvΓ''
     Caveat
         When the variables in the ring of $\Delta$ and the ring of $\Gamma$
         are not disjoint, names of vertices in the wedge sum may not be
@@ -2083,48 +2080,6 @@ doc ///
 ------------------------------------------------------------------------------
 -- basic properties and invariants
 ------------------------------------------------------------------------------
-
-doc ///
-    Key 
-        (connectedComponents, SimplicialComplex)
-	connectedComponents
-    Headline
-        find the connected components of an abstract simplicial complex
-    Usage 
-        connectedComponents Delta
-    Inputs
-        Delta : SimplicialComplex  
-    Outputs 
-        : List
-	    of induced subcomplexes of $\Delta$, each one a distinct connected
-	    component of $\Delta$.
-    Description
-        Text
-	    The verticies $v,w \in \Delta$ are connected if there is a sequence of 
-	    facets $F_0, F_1,..., F_k \in \Delta$ such that $v \in F_0$, $w \in F_k$ 
-	    and $F_i \cap F_{i+1} \neq \varnothing$ for each $i = 1,2,...,k-1$. A
-	    connected component of $\Delta$ is a maximal subcomplex of $\Delta$ for
-	    which all pairs of vertices are connected.
-	Text
-	    In the following example, we look at a simplicial complex with two
-	    connected components
-	Example
-	    R = QQ[x_0..x_6]
-	    D = simplicialComplex {x_0*x_1, x_1*x_2, x_3*x_4, x_4*x_5, x_5*x_6}
-	    connectedComponents D
-	Text
-	    The void complex, and the empty complex each have one connected
-	    component.
-	Example
-	    void = simplicialComplex monomialIdeal(1_R)
-	    connectedComponents void
-	    empty = simplicialComplex {1_R}
-	    connectedComponents empty
-    SeeAlso
-        (star, SimplicialComplex, RingElement)
-	(link, SimplicialComplex, RingElement)
-///
-
 doc ///
     Key 
         "Finding attributes and properties"
@@ -2148,6 +2103,7 @@ doc ///
 		TO (isPure, SimplicialComplex),
 		TO (vertices, SimplicialComplex),
         	TO (faces, ZZ, SimplicialComplex),
+		TO (connectedComponents, SimplicialComplex),
 		TO (fVector, SimplicialComplex),
 		TO (flagfVector, List, SimplicialComplex),
 		TO (isProper, SimplicialComplex)
@@ -2274,8 +2230,6 @@ doc ///
 	(fVector, SimplicialComplex)	
 ///
 
--- TODO: clean up the assertion using new faces functionality
-
 doc /// 
     Key
     	(faces, ZZ, SimplicialComplex)
@@ -2346,7 +2300,6 @@ doc ///
 	(fVector, SimplicialComplex)
 ///
 
-
 doc /// 
     Key
         (isPure, SimplicialComplex)
@@ -2400,6 +2353,52 @@ doc ///
 	(dim, SimplicialComplex)
 	(facets, SimplicialComplex)
 	(skeleton, ZZ, SimplicialComplex)
+///
+
+doc ///
+    Key 
+        (connectedComponents, SimplicialComplex)
+	connectedComponents
+    Headline
+        find the connected components of an abstract simplicial complex
+    Usage 
+        connectedComponents Delta
+    Inputs
+        Delta : SimplicialComplex  
+    Outputs 
+        : List
+	    of induced subcomplexes of $\Delta$, each one a distinct connected
+	    component of $\Delta$.
+    Description
+        Text
+	    Two vertices $v$ and $w$ in $\Delta$ are {\em connected} if there
+	    is a sequence of facets $F_0, F_1, \ldots, F_k \in \Delta$ such
+	    that $v \in F_0$, $w \in F_k$ and $F_i \cap F_{i+1} \neq
+	    \varnothing$ for all $1 \leq i \leq k-1$. A 
+	    {\em connected component} of $\Delta$ is a maximal subcomplex of
+	    $\Delta$ in which all pairs of vertices are connected.	    
+	Text
+	    Our first example is an abstract simplicial complex with two connected
+	    components.
+	Example
+	    S = QQ[x_0..x_6];
+	    Δ = simplicialComplex {x_0*x_1, x_1*x_2, x_3*x_4, x_4*x_5, x_5*x_6}
+	    C = connectedComponents Δ
+	    assert all(C, Γ -> connectedComponents Γ === {Γ})
+	Text
+	    The void and irrelevant complexes each have one connected
+	    component.
+	Example
+	    void = simplicialComplex monomialIdeal(1_S)
+	    connectedComponents void
+	    assert({void} === connectedComponents void)
+	    irrelevant = simplicialComplex {1_S}
+	    connectedComponents irrelevant
+	    assert({irrelevant} === connectedComponents irrelevant)
+    SeeAlso
+    	"Finding attributes and properties"  
+        (star, SimplicialComplex, RingElement)
+	(link, SimplicialComplex, RingElement)
 ///
  
 doc ///
@@ -3099,302 +3098,103 @@ doc ///
             figureEight = simplicialComplex {x_0*x_1, x_0*x_2, x_1*x_2, x_2*x_3, x_2*x_4, x_3*x_4}
             prune cohomology(1, figureEight)
     SeeAlso
-        (cohomology,ZZ,SimplicialComplex,Ring)
+    	"Working with associated chain complexes" 
+        (cohomology, ZZ, SimplicialComplex, Ring)
         boundaryMap
-        (chainComplex,SimplicialComplex)
-        (cohomology,ZZ,SimplicialComplex,SimplicialComplex)
+        (chainComplex, SimplicialComplex)
+        (cohomology, ZZ, SimplicialComplex, SimplicialComplex)
 ///
-	    
+
 doc ///
-    Key    
-        (homology, SimplicialMap)
-        (homology, Nothing, SimplicialMap)
+    Key
+        algebraicShifting
+	(algebraicShifting, SimplicialComplex)
+	[algebraicShifting, Multigrading]
     Headline
-        Compute the induced map on homology of a simplicial map.
+        the algebraic shifting of a simplicial complex
     Usage
-        homology f
-    Inputs
-        f : SimplicialMap
-    Outputs
-        : GradedModuleMap
-	    which is the map on homology induced by $f$
-    Description
-        Text
-            The graded module map from the homology of the source of $f$
-	    to the homology of the target of $f$. As an example, we map a
-	    circle into the torus in two ways, and we get two distinct
-	    maps in homology.
-        Example
-            S = ZZ[x_0..x_6];
-            R = ZZ[y_0..y_2];
-            Torus = smallManifold(2,7,6,S);
-            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
-            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
-            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
-	    prune homology f1
-	    prune homology f2	    
-    SeeAlso
-        (map, SimplicialComplex, SimplicialComplex, Matrix)
-        (homology,ZZ,SimplicialMap)
-        (homology,SimplicialComplex,Ring)
-        (homology,ZZ,SimplicialComplex)
-        (homology,ZZ,SimplicialComplex,Ring)
-        (homology,SimplicialComplex,SimplicialComplex)
-///
-
-doc ///
-    Key    
-        (homology, ZZ, SimplicialMap)
-    Headline
-        Compute the induced map on homology of a simplicial map.
-    Usage
-        homology(i,f)
-    Inputs
-	i : ZZ
-	f : SimplicialMap
-    Outputs
-        : Matrix
-	    which is the induced map on homology
-    Description
-        Text
-            The map from the $i$-th homology of the source of $f$
-	    to the $i$-th homology of the target of $f$. As an example, we map a
-	    circle into the torus in two ways, and we get two distinct
-	    maps in homology.
-        Example
-            S = ZZ[x_0..x_6];
-            R = ZZ[y_0..y_2];
-            Torus = smallManifold(2,7,6,S);
-            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
-            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
-            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
-	    prune homology(1, f1)
-	    prune homology(1, f2)
-    SeeAlso
-        (map, SimplicialComplex, SimplicialComplex, Matrix)
-        (homology,ZZ,SimplicialMap)
-        (homology,SimplicialComplex,Ring)
-        (homology,ZZ,SimplicialComplex)
-        (homology,ZZ,SimplicialComplex,Ring)
-        (homology,SimplicialComplex,SimplicialComplex)
-///
-
-
-
-doc ///
-    Key    
-        (cohomology, ZZ, SimplicialMap)
-	[(cohomology, ZZ, SimplicialMap), Degree]
-    Headline
-        Compute the induced map on cohomology of a simplicial map.
-    Usage
-        cohomology(i,f)
-    Inputs
-	i : ZZ
-	f : SimplicialMap
-	Degree => ZZ
-	    which is ignored by this particual function	
-    Outputs
-        : Matrix
-	    which is the induced map on cohomology
-    Description
-        Text
-            The map from the $i$-th cohomology of the source of $f$
-	    to the $i$-th cohomology of the target of $f$. As an example, we map a
-	    circle into the torus in two ways, and we get two distinct
-	    maps in cohomology.
-        Example
-            S = ZZ[x_0..x_6];
-            R = ZZ[y_0..y_2];
-            Torus = smallManifold(2,7,6,S);
-            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
-            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
-            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
-	    prune cohomology(1, f1)
-	    prune cohomology(1, f2)
-    SeeAlso
-        (map, SimplicialComplex, SimplicialComplex, Matrix)
-        (cohomology,ZZ,SimplicialMap)
-        (cohomology,ZZ,SimplicialComplex)
-        (cohomology,ZZ,SimplicialComplex,Ring)
-        (cohomology,ZZ,SimplicialComplex,SimplicialComplex)
-///
-
-
-
-
-
-
-
-
-doc ///
-    Key 
-        (elementaryCollapse, SimplicialComplex, RingElement)
-	elementaryCollapse
-    Headline 
-        construct the elementary collapse of a free face in a simplicial complex
-    Usage 
-        elementaryCollapse(Delta, F)
-    Inputs
-        Delta : SimplicialComplex  
-	F : RingElement
-	    Corresponding to a free face of $\Delta$
-    Outputs 
-        : SimplicialComplex
-	    the simplicial complex where the face $F$ and the unique facet
-	    containing $F$ are removed
-    Description
-        Text
-	    A free face of a simplicial complex $\Delta$ is a face that is a proper maximal
-	    subface of exactly one facet. The elementary collapse is the simplicial
-	    complex obtained by removing the free face, and the facet containing it,
-	    from $\Delta$. A simplicial complex that can be collapsed
-	    to a single vertex is called collapsible. Every collapsible simplicial
-	    complex is contractible, but the converse is not true.
-        Example
-       	    R = ZZ/103[x_0..x_3];
-       	    Δ = simplicialComplex{R_0*R_1*R_2,R_0*R_2*R_3,R_0*R_1*R_3}
-       	    C1 = elementaryCollapse(Δ,R_1*R_2)
-	    C2 = elementaryCollapse(C1,R_2*R_3)
-	    C3 = elementaryCollapse(C2,R_1*R_3)
-	    C4 = elementaryCollapse(C3,R_1)	   
-	    C5 = elementaryCollapse(C4,R_2)
-	    C6 = elementaryCollapse(C5,R_3)   
-    SeeAlso
-        "Making an abstract simplicial complex"
-        SimplicialComplex
-///
-
-doc ///
-    Key 
-        (barycentricSubdivision, SimplicialComplex, Ring)
-	barycentricSubdivision
-    Headline 
-        create the barycentric subdivision of a simplicial complex
-    Usage 
-        barycentricSubdivision(D,R)
+        A = algebraicShifting D
     Inputs
         D : SimplicialComplex
-	R : Ring
-	    the ambient ring for the barycentric subdivision of $D$
-    Outputs 
-        : SimplicialComplex
-	    the barycentric subdivision of $D$
+	Multigrading => Boolean
+	    which, if true, returns the colored algebraic shifting
+	    with respect to the multigrading of the underlying ring.
+    Outputs
+        A : SimplicialComplex
+	    which is the algebraic shifting of {\tt D}. If Multigrading
+	    is true, then it returns the so-called colored shifted
+	    complex.
     Description
         Text
-    	    If $D$ is an abstract simplicial complex, the barycentric subdivision
-	    of $D$ is the abstact simplicial complex whose ground set (vertices) is the
-	    set of faces of $D$ and whose faces correspond to sequences
-	    $\{(F_0, F_1, ..., F_k)\}$ where $F_i$ is an $i$-dimensional
-	    face containing $F_{i-1}$. In order to understand how the data of the
-	    barycentric subdivision is organized, we work through a simple example.
-        Example
-	    R = QQ[x_0..x_2];
-	    S = QQ[y_0..y_6];
-	    D = simplexComplex(2,R)
-	    B = barycentricSubdivision(D,S)
-	    BFacets = facets B
-	Text
-	    To make sense of the facets of the barycentric subdivision, we order
-	    the faces of $D$ as follows.
-        Example
-	    DFaces = flatten for i to dim D + 1 list faces(i, D)
-        Text
-	    The indices of the variables appearing in each monomial (Facet) $F$
-	    in the facets of $\mathrm{B}$ determines a sequence of monomials (faces) in
-	    $D$. More concretely, the correspondence is:
+	    The boundary of the stacked 4-polytope on 6 vertices.
+	    Algebraic shifting preserves the f-vector.
 	Example
-	    netList for F in BFacets list(F => DFaces_(indices F))
-    SeeAlso
-        "Making an abstract simplicial complex"    
-        (barycentricSubdivision, SimplicialMap, Ring, Ring)
+            R = QQ[x_1..x_6];
+            I = monomialIdeal(x_2*x_3*x_4*x_5, x_1*x_6);
+      	    stacked = simplicialComplex I
+      	    shifted = algebraicShifting stacked
+      	    fVector stacked
+      	    fVector shifted
+	Text
+	    An empty triangle is a shifted complex.
+	Example
+	    R' = QQ[a,b,c];
+	    triangle = simplicialComplex {a*b, b*c, a*c}
+	    algebraicShifting triangle === triangle
+	Text
+	    The multigraded algebraic shifting does not preserve the Betti numbers.
+	Example
+            grading = {{1,0,0}, {1,0,0}, {1,0,0}, {0,1,0}, {0,0,1}};
+      	    R = QQ[x_{1,1}, x_{1,2}, x_{1,3}, x_{2,1}, x_{3,1}, Degrees => grading];
+      	    delta = simplicialComplex({x_{1,3}*x_{2,1}*x_{3,1}, x_{1,1}*x_{2,1}, x_{1,2}*x_{3,1}})
+      	    shifted = algebraicShifting(delta, Multigrading => true)
+      	    prune (homology(delta))_1
+      	    prune (homology(shifted))_1
+	Text
+	    References:
+	Text
+	    G. Kalai, Algebraic Shifting, Computational Commutative Algebra and Combinatorics, 2001;
+	Text
+	    S. Murai, Betti numbers of strongly color-stable ideals and squarefree strongly color-stable ideals, Journal of Algebraic Combinatorics.
 ///
+
+--These are documented in the above node.
+undocumented { "Multigrading" }
 
 doc ///
-    Key 
-        (barycentricSubdivision, SimplicialMap, Ring, Ring)
-    Headline 
-        create the map between barycentric subdivisions corresponding to a simplicial map
-    Usage 
-        barycentricSubdivision(f,R,S)
+    Key    
+        (substitute, SimplicialComplex, PolynomialRing)
+    Headline
+        change the ring of a simplicial complex
+    Usage
+        substitute(Delta, R)
     Inputs
-        f : SimplicialMap
-	    from the simplicial complex $D$ to the simplicial complex $E$
-	R : Ring
-	    the ambient ring for the barycentric subdivision of $E$
-	S : Ring
-	    the ambient ring for the barycentric subdivision of $D$
-    Outputs 
-        : SimplicialMap
-	    from the barycentric subdivision of $D$ to the barycentric
-	    subdivision of $E$.
+        Delta : SimplicialComplex
+        R : PolynomialRing
+    Outputs
+        : SimplicialComplex
     Description
         Text
-            The vertices of the barycentric subdivision of $D$ correspond to
-	    faces of $D$. For every face $F$ in $D$, $\operatorname{barycentricSubdivision}
-	    (f,R,S)$ maps the vertex corresponding to $F$ in the barycentric subdivision of
-	    $D$ to the vertex corresponding to $f(F)$ in the barycentric subdivision of $E$.
-	    We work out these correspondences, and the resulting simplicial map between 
-	    barycentric subdivisions in the example below.
+            Given a polynomial ring $R$, with enough variables, we can create
+	    a simplicial complex identical to $\Delta$, defined over the ring
+	    $R$.
         Example
-	    T = ZZ/2[x_0,x_1,x_2];
-	    D = simplicialComplex{T_1*T_2}
-	    E = simplicialComplex{T_0*T_1}
-	    f = map(E, D, reverse gens T)
+            S = ZZ/23[x,y,z,w];
+            Δ = simplexComplex(3,S)
+            R = ZZ/101[a,b,c,d,e];     
+            Γ = substitute(Δ, R)
         Text
-	    The barycentric subdivisions of $D$, $E$, and $f$ are:	    
-	Example
-	    R = ZZ/2[y_0..y_2];
-	    S = ZZ/2[z_0..z_2];
-	    BD = barycentricSubdivision(D,R)	    
-    	    BE = barycentricSubdivision(E,S)
-	    Bf = barycentricSubdivision(f,S,R)
-        Text
-	    In order to understand the data of $Bf$, we first look at 
-	    the corresponce between the faces of $D$, $E$ and
-	    the vertices of $BD$, $BE$, respectively.
+            This method is a works by applying @TO(substitute, RingElement, Ring)@
+	    to the facets of $\Delta$.
         Example
-	    DFaces = flatten for i to dim D + 1 list faces(i,D)
-	    EFaces = flatten for i to dim E + 1 list faces(i,E)
-	    (netList for y in vertices BD list(y => DFaces_(index y)),
-	     netList for z in vertices BE list(z => EFaces_(index z)))
-        Text
-	    These correspondences, together the images of each face of $D$
-	    under $f$, will completely determine the map $Bf$.
-	Example
-    	    (netList for F in DFaces list(F => (map f)(F)),
-	     netList for v in vertices BD list(v => (map Bf)(v)))
-	    Bf 
+            code(substitute, SimplicialComplex, PolynomialRing)
     SeeAlso
-        "Making an abstract simplicial complex"    
-        (barycentricSubdivision, SimplicialComplex, Ring)
-        SimplicialComplex
+        "Making an abstract simplicial complex"
 ///
 
-
-
-
-///
--- need another example for star; to be added when suspension is completed?
-   	Text
-	    Given any face $G$ in the link of a face $F$, the link of $F$ in
-	    the star of $G$ is the suspension of $G$ and the link of $F$ in
-	    the link $G$.
-	Example
-	    S' = ZZ/101[a..g];
-	    hexagon = simplicialComplex {a*b*c, a*c*d, a*d*e, a*e*f, a*f*g, a*b*g}  
-	    link (hexagon, a*b)  
-	    link (hexagon, g)
-	    link(star(hexagon, g), a*b)
-	    (simplicialComplex {g}) * link(link(hexagon,g), a*b)
-	    link (hexagon, c)
-	    link 
-    	    star(hexagon, g)
-	    link(star(hexagon, g), a*b)	
-///
-
-
-
+--------------------------------------------------------------------------
+-- monomial resolutions        
+--------------------------------------------------------------------------
 doc ///
     Key
     	buchbergerSimplicialComplex
@@ -3710,7 +3510,7 @@ doc///
 	lyubeznikSimplicialComplex
 ///
 
-doc///
+doc ///
     Key 
         scarfChainComplex    
 	(scarfChainComplex, List)    
@@ -3729,21 +3529,20 @@ doc///
         C : ChainComplex
     Description
         Text
-	    For a monomial ideal $M$, minimally generated by a list
-	    of monomials $L$ in a polynomial ring $S$, the Scarf complex 
-	    is the subcomplex of the Taylor resolution of $S/M$ that is
-	    induced on the multihomogeneous basis elements with unique
-	    multidegrees. If the Scarf Complex is a resolution, then it 
-	    is the minimal free resolution of $S/M$. For more information
-	    on the Scarf complex and its construction, see Bayer, Dave; Peeva, 
-	    Irena; Sturmfels, Bernd 
+	    For a monomial ideal $M$, minimally generated by a list of
+	    monomials $L$ in a polynomial ring $S$, the Scarf complex is the
+	    subcomplex of the Taylor resolution of $S/M$ that is induced on
+	    the multihomogeneous basis elements with unique multidegrees. If
+	    the Scarf Complex is a resolution, then it is the minimal free
+	    resolution of $S/M$. For more information on the Scarf complex and
+	    its construction, see Bayer, Dave; Peeva, Irena; Sturmfels, Bernd	    
 	    @HREF("https://www.intlpress.com/site/pub/files/_fulltext/journals/mrl/1998/0005/0001/MRL-1998-0005-0001-a003.pdf","Monomial Resolutions")@.
 	    Math. Res. Lett. 5 (1998), no. 1-2, 31–46, or Jeff Mermin 
 	    @HREF("https://www.degruyter.com/view/book/9783110250404/10.1515/9783110250404.127.xml", 
 	    "Three Simplicial Resolutions")@, (English summary) Progress in
 	    commutative algebra 1, 127–141, de Gruyter, Berlin, 2012.
 	Example
-	    S = QQ[x_0..x_3,Degrees=>{{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}}];
+	    S = QQ[x_0..x_3, Degrees => {{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}}];
 	    M = monomialIdeal(x_0*x_1,x_0*x_3,x_1*x_2,x_2*x_3);
 	    T = taylorResolution M;
 	    C = scarfChainComplex M;
@@ -3762,411 +3561,6 @@ doc///
     	scarfSimplicialComplex
 	taylorResolution
 	lyubeznikSimplicialComplex
-///
-
-
-
-
-
-
-
-doc ///
-    Key
-        algebraicShifting
-	(algebraicShifting, SimplicialComplex)
-	[algebraicShifting, Multigrading]
-    Headline
-        the algebraic shifting of a simplicial complex
-    Usage
-        A = algebraicShifting D
-    Inputs
-        D : SimplicialComplex
-	Multigrading : Boolean
-	    which, if true, returns the colored algebraic shifting
-	    with respect to the multigrading of the underlying ring.
-    Outputs
-        A : SimplicialComplex
-	    which is the algebraic shifting of {\tt D}. If Multigrading
-	    is true, then it returns the so-called colored shifted
-	    complex.
-    Description
-        Text
-	    The boundary of the stacked 4-polytope on 6 vertices.
-	    Algebraic shifting preserves the f-vector.
-	Example
-            R = QQ[x_1..x_6];
-            I = monomialIdeal(x_2*x_3*x_4*x_5, x_1*x_6);
-      	    stacked = simplicialComplex I
-      	    shifted = algebraicShifting stacked
-      	    fVector stacked
-      	    fVector shifted
-	Text
-	    An empty triangle is a shifted complex.
-	Example
-	    R' = QQ[a,b,c];
-	    triangle = simplicialComplex {a*b, b*c, a*c}
-	    algebraicShifting triangle === triangle
-	Text
-	    The multigraded algebraic shifting does not preserve the Betti numbers.
-	Example
-            grading = {{1,0,0}, {1,0,0}, {1,0,0}, {0,1,0}, {0,0,1}};
-      	    R = QQ[x_{1,1}, x_{1,2}, x_{1,3}, x_{2,1}, x_{3,1}, Degrees => grading];
-      	    delta = simplicialComplex({x_{1,3}*x_{2,1}*x_{3,1}, x_{1,1}*x_{2,1}, x_{1,2}*x_{3,1}})
-      	    shifted = algebraicShifting(delta, Multigrading => true)
-      	    prune (homology(delta))_1
-      	    prune (homology(shifted))_1
-	Text
-	    References:
-	Text
-	    G. Kalai, Algebraic Shifting, Computational Commutative Algebra and Combinatorics, 2001;
-	Text
-	    S. Murai, Betti numbers of strongly color-stable ideals and squarefree strongly color-stable ideals, Journal of Algebraic Combinatorics.
-///
-
---These are documented in the above node.
-undocumented { "Multigrading" }
-
-
-///
-  Key
-    Face
-  Headline
-   The class of faces of simplicial complexes.
-  Description
-   Text
-        The class of faces of simplicial complexes on the variables of a polynomial ring.
-        The faces are @TO MutableHashTable@s F with two @TO keys@
-        
-        F.vertices is a @TO List@ of vertices in the @TO PolynomialRing@ F.ring
-
-   Example
-     R=QQ[x_0..x_4];
-     F=face {x_0,x_2}
-     F.vertices
-     I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);
-     D=simplicialComplex I
-     fc=faces(1,D)
-     -- select(fc,j->j==F)
-  SeeAlso
-     SimplicialComplex
-     faces
-     facets
-///
-
-///
-  Key
-    (symbol ==,Face,Face)
-  Headline
-   Compare two faces.
-  Usage
-    F==G
-  Inputs
-    F:Face
-    G:Face
-  Outputs
-    :Boolean
-  Description
-   Text
-        Checks whether F and G are equal.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     F=face {x_0,x_1}
-     G1=face {x_1,x_0}
-     G2=face {x_1,x_2}
-     F==G1
-     F==G2
-  SeeAlso
-     Face
-     face
-///
-
-
-///
-  Key
-    face
-    (face,List)
-    (face,List,PolynomialRing)
-    (face,RingElement)
-  Headline
-    Generate a face.
-  Usage
-    face(L)
-    face(L,R)
-    face(m)
-  Inputs
-    L:List
-    R:PolynomialRing
-    m:RingElement
-        a monomial
-  Outputs
-    :Face
-  Description
-   Text
-        Generates a face out of a list L or a squarefree monomial.
-        If L is not empty or a monomial the argument R is not required.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     F=face {x_0,x_1}
-  SeeAlso
-     SimplicialComplex
-     faces
-     facets
-///
-
-///
-  Key
-    (dim,Face)
-  Headline
-    The dimension of a face.
-  Usage
-    dimension(F)
-  Inputs
-    F:Face
-  Outputs
-    :ZZ
-      bigger or equal to -1
-  Description
-   Text
-        Returns the dimension of a @TO Face@, i.e., the number of @TO vertices@ F minus 1.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     I=monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);
-     D=simplicialComplex I
-     fc = faces(D)
-     -- apply(-1..1, j->apply(fc#j,dim))
-  SeeAlso
-     face
-     facets
-     faces
-///
-
-///
-  Key
-    (vertices, Face)
-  Headline
-    The vertices of a face of a simplicial complex.
-  Usage
-    vertices(F)
-  Inputs
-    F:Face
-  Outputs
-    :List
-  Description
-   Text
-        Returns a @TO List@ with the vertices of a @TO Face@ of a simplicial complex.
-   Example
-     R = QQ[x_0..x_4];
-     I = monomialIdeal(x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_0);
-     D = simplicialComplex I
-     fc = facets(D)
-     (faces D)#(1)
-     --vertices fc#1
-  SeeAlso
-     face
-     (facets,SimplicialComplex)
-     (faces, SimplicialComplex)
-///
-
-///
-  Key
-    isSubface
-    (isSubface,Face,Face)
-  Headline
-    Test whether a face is a subface of another face.
-  Usage
-    isSubface(F,G)
-  Inputs
-    F:Face
-    G:Face
-  Outputs
-    :Boolean
-  Description
-   Text
-        Test whether F is a subface of G.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     G=face {x_0,x_1,x_2}
-     F1=face {x_0,x_2}
-     F2=face {x_0,x_3}
-     isSubface(F1,G)
-     isSubface(F2,G)
-///
-
-///
-  Key
-    (substitute,Face,PolynomialRing)
-  Headline
-    Substitute a face to a different ring.
-  Usage
-    substituteFace(F,R)
-  Inputs
-    F:Face
-    R:PolynomialRing
-  Outputs
-    :Face
-  Description
-   Text
-        Substitute a face to a different ring.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     F=face {x_0,x_1,x_2}
-     S=R**K[y]
-     substitute(F,S)
-///
-
-///
-  Key
-    (ring,Face)
-  Headline
-    Ring of a face.
-  Usage
-    ring(F)
-  Inputs
-    F:Face
-  Outputs
-    :Ring
-  Description
-   Text
-        Ring of a face.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     F=face {x_0,x_1,x_2}
-     ring F
-///
-
-
-///
-  Key
-    isFaceOf
-    (isFaceOf,Face,SimplicialComplex)
-  Headline
-    Substitute a face to a different ring.
-  Usage
-    substitute(F,R)
-  Inputs
-    F:Face
-    R:PolynomialRing
-  Outputs
-    :Face
-  Description
-   Text
-        Substitute a face to a different ring.
-
-   Example
-     R = QQ[x_1..x_5];
-     C = simplicialComplex monomialIdeal (x_1*x_2,x_3*x_4*x_5)
-     F1 = face {x_1,x_2}
-     F2 = face {x_1,x_3}
-     -- isFaceOf(F1,C)
-     -- isFaceOf(F2,C)
-///
-
-///
-  Key
-    (net,Face)
-  Headline
-    Printing a face.
-  Usage
-    net(F)
-  Inputs
-    F:Face
-  Outputs
-    :Net
-  Description
-   Text
-        Prints a face. The vertices are printed without any brackets and with one space between them. Also prints the polynomial ring which contains the vertices.
-
-   Example
-     K=QQ;
-     R=K[x_0..x_4];
-     face {x_0,x_1}
-///
-
-///
-  Key
-    useFaceClass
-    [faces,useFaceClass]
-    [facets,useFaceClass]
-  Headline
-    Option to return faces in the class Face
-  Description
-   Text
-    @TO Boolean@ @TO Option@ to return in the methods @TO faces@ and @TO facets@ a @TO List@ of @TO Face@s instead of a @TO Matrix@.
-///
-
-
-
-
--------------------------------------------------------------------
--- some previously missing documentation
-
-
-///
-  Key
-    (symbol ==,SimplicialComplex,SimplicialComplex)
-  Headline
-   Compare two simplicial complexes.
-  Usage
-    C1==C2
-  Inputs
-    C1:SimplicialComplex
-    C2:SimplicialComplex
-  Outputs
-    :Boolean
-  Description
-   Text
-        Checks whether C1 and C2 are equal.
-
-   Example
-    K=QQ;
-    R=K[x_1..x_3];
-    C1=simplicialComplex monomialIdeal (x_1*x_2*x_3)
-    C2=simplicialComplex {face {x_1,x_2},face {x_2,x_3},face {x_3,x_1}}
-    C1==C2
-///
-
-
-doc///
-    Key    
-        (substitute,SimplicialComplex,PolynomialRing)
-    Headline
-        change the ring of a simplicial complex
-    Usage
-        substitute(Delta, R)
-    Inputs
-        Delta : SimplicialComplex
-        R : PolynomialRing
-    Outputs
-        : SimplicialComplex
-    Description
-        Text
-            Given a polynomial ring $R$, with enough variables, we can create
-	    a simplicial complex identical to $\Delta$, defined over the ring
-	    $R$.
-        Example
-            S = ZZ/23[x,y,z,w];
-            Δ = simplexComplex(3,S)
-            R = ZZ/101[a,b,c,d,e];     
-            Γ = substitute(Δ, R)
-        Text
-            This method is a works by applying @TO(substitute,RingElement,Ring)@
-	    to the facets of $\Delta$.
-        Example
-            code(substitute, SimplicialComplex, PolynomialRing)
-    SeeAlso
-        "Making an abstract simplicial complex"
 ///
 
 ------------------------------------------------------------------------------
@@ -4243,13 +3637,241 @@ doc ///
 
 doc ///
     Key
+        (source, SimplicialMap)
+    Headline
+        get the source of the map
+    Usage
+    	X = source f
+    Inputs
+    	f : SimplicialMap
+    Outputs
+    	X : SimplicialComplex
+    	    that is the source of the map f
+    Description
+        Text
+	    Given a map $f \colon \Delta \to \Gamma$, this method returns the
+	    abstract simplicial complex $\Delta$.  The source is one of the
+	    defining attributes of a simplicial map
+	Text
+	    For the identity map, the source and target are equal.
+	Example
+            S = ZZ[x_0..x_5];
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Δ
+	    source id_Δ
+	    assert(source id_Δ === Δ)
+	    assert(source id_Δ === target id_Δ)
+	Text
+    	    The next map projects an octohedron onto a square.
+	Example
+	    R = ZZ[y_0..y_3];
+	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    assert isWellDefined f
+	    source f
+	    assert(source f === Δ)  
+	    peek f  
+    SeeAlso
+        "Working with simplicial maps"
+        (target, SimplicialMap)    
+        (matrix, SimplicialMap)    		
+	(isWellDefined, SimplicialMap)
+        (map, SimplicialComplex, SimplicialComplex, Matrix)	
+///
+
+doc ///
+    Key
+	(target, SimplicialMap)
+    Headline 
+    	get the target of the map
+    Usage
+    	Y = target f
+    Inputs
+    	f : SimplicialMap
+    Outputs
+    	Y : SimplicialComplex
+    	    that is the target of the map f	
+    Description	    
+        Text
+	    Given a map $f \colon \Delta \to \Gamma$, this method returns the
+	    abstract simplicial complex $\Gamma$.  The target is one of the
+	    defining attributes of a simplicial map
+	Text
+	    For the identity map, the source and target are equal.
+	Example
+            S = ZZ[x_0..x_5];
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Δ 
+	    source id_Δ
+	    assert(target id_Δ === Δ)
+	    assert(target id_Δ === source id_Δ)
+	Text
+    	    The next map projects an octohedron onto a square.
+	Example
+	    R = ZZ[y_0..y_3];
+	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    assert isWellDefined f
+	    target f
+	    assert(target f === Γ)
+	    peek f
+    SeeAlso
+        "Working with simplicial maps"    
+        (source, SimplicialMap)    
+        (matrix, SimplicialMap)    		
+	(isWellDefined, SimplicialMap)
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+///
+
+doc ///
+    Key
+        (map, SimplicialMap)
+    Headline
+        the underlying ring map associated to a simplicial map
+    Usage
+    	phi = map f
+    Inputs
+    	f : SimplicialMap
+	: Degree
+	    ignored
+	: DegreeLift
+	    ignored
+	: DegreeMap
+	    ignored
+    Outputs
+        phi : RingMap
+	    a map from the ring of the source of $f$ to the 
+	    ring of the target of $f$.
+    Description
+        Text
+            Every simplicial map sends the vertices of the source of $f$
+	    to the vertices of the target of $f$. Consequently, this 
+	    determines a ring map between the ring of the source of $f$ 
+	    and the ring of the target of $f$.
+        Example
+            S = ZZ/101[a,b,c,d];
+	    Δ = simplexComplex(3,S)
+	    f = map(Δ,Δ,matrix{{a,b,c,d}})
+	    map f	
+    SeeAlso
+        "Working with simplicial maps"
+	(map, SimplicialComplex,SimplicialComplex, RingMap)
+	(source, SimplicialMap)
+        (target, SimplicialMap)
+        (matrix, SimplicialMap)
+	(isWellDefined, SimplicialMap)
+///	  
+
+doc ///
+    Key
+	(matrix, SimplicialMap)
+    Headline 
+    	get the underlying map of rings
+    Usage
+    	g = matrix f
+    Inputs
+    	f : SimplicialMap
+	Degree =>
+	    unused
+    Outputs
+    	g : Matrix
+            having one row
+    Description	    
+        Text
+    	    A simplicial map is a map $f \colon \Delta \to \Gamma$ such that
+    	    for any face $F \subset \Delta$, the image $f(F)$ is contained in
+    	    a face of $\Gamma$.  Since an abstract simplicial complex is, in
+    	    this package, represented by its Stanley–Reisner ideal in a
+    	    polynomial ring, the simplicial map $f$ corresponds to a ring map
+    	    from the ring of $\Delta$ to the ring of $\Gamma$.  The ring map
+    	    is described by a matrix having one row; the entry in the $i$-th
+    	    column is the image in the ring of $\Gamma$ of the $i$-th variable
+    	    in the ring $\Delta$.  This method returns this matrix.
+	Text
+	    For the identity map, the matrix of variables in the ambient
+	    polynomial ring.
+	Example
+            S = ZZ[x_0..x_5];
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Δ 
+	    matrix id_Δ
+	    assert(matrix id_Δ === vars S)
+	Text
+    	    The next map projects an octehedron onto a square.
+	Example
+	    R = ZZ[y_0..y_3];
+	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
+    	    matrix f
+	Text
+	    This matrix is simply extracted from the underlying map of rings.
+	Example
+	    code(matrix, SimplicialMap)
+    SeeAlso
+        "Working with simplicial maps"    
+        (source, SimplicialMap)    
+        (target, SimplicialMap)    		
+	(isWellDefined, SimplicialMap)
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+///
+
+undocumented {
+    (expression, SimplicialMap), 
+    (toString, SimplicialMap), 
+    (texMath, SimplicialMap)
+    }
+
+doc ///
+    Key
+        (net, SimplicialMap)
+    Headline
+        make a symbolic representation for a map of abstract simplicial complexes
+    Usage
+        net f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Net
+	    a symbolic representation used for printing
+    Description
+        Text
+	    The net of map $f \colon \Delta \to \Gamma$ between abstract
+	    simplicial complexes is a list of variables in the ring of
+	    $\Gamma$.  This list determines a ring map from the ring of
+	    $\Delta$ to the ring of $\Gamma$ by sending the $i$-th variable
+	    in the ring of $\Delta$ to the $i$-th monomial on the list.
+    	Text
+	    The identity map $\operatorname{id} \colon \Delta \to \Delta$
+	    corresponds to list of variables in the ring of $\Delta$.
+        Example
+            S = ZZ[x_0..x_5];
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+    	    id_Δ
+	    net id_Δ
+	    matrix id_Δ
+	Text
+    	    The next example does not come from the identity map.
+	Example
+	    S' = ZZ[y_0..y_3];
+	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
+	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
+	    assert isWellDefined f
+	    net f
+	    matrix f
+    SeeAlso
+        "Working with simplicial maps"
+        (matrix, SimplicialMap)
+	(net, SimplicialComplex)	
+///	  
+
+doc ///
+    Key
         (map, SimplicialComplex, SimplicialComplex, Matrix)
 	(map, SimplicialComplex, SimplicialComplex, List)
         (map, SimplicialComplex, SimplicialComplex, RingMap)
 	(map, SimplicialComplex, Matrix)
 	(map, SimplicialComplex, List)
-	(map, SimplicialComplex, RingMap)
-	
+	(map, SimplicialComplex, RingMap)	
     Headline
         create a simplicial map between simplicial complexes
     Usage
@@ -4306,234 +3928,6 @@ doc ///
 
 doc ///
     Key
-        (map, SimplicialMap)
-    Headline
-        the underlying ring map associated to a simplicial map
-    Usage
-    	phi = map f
-    Inputs
-    	f : SimplicialMap
-	: Degree
-	    ignored
-	: DegreeLift
-	    ignored
-	: DegreeMap
-	    ignored
-    Outputs
-        phi : RingMap
-	    a map from the ring of the source of $f$ to the 
-	    ring of the target of $f$.
-    Description
-        Text
-            Every simplicial map sends the vertices of the source of $f$
-	    to the vertices of the target of $f$. Consequently, this 
-	    determines a ring map between the ring of the source of $f$ 
-	    and the ring of the target of $f$.
-        Example
-            S = ZZ/101[a,b,c,d];
-	    Δ = simplexComplex(3,S)
-	    f = map(Δ,Δ,matrix{{a,b,c,d}})
-	    map f	
-    SeeAlso
-        "Working with simplicial maps"
-	(map, SimplicialComplex,SimplicialComplex, RingMap)
-	(source, SimplicialMap)
-        (target, SimplicialMap)
-        (matrix, SimplicialMap)
-	(isWellDefined, SimplicialMap)
-///
-
-
-
-doc ///
-    Key
-        (source, SimplicialMap)
-    Headline
-        get the source of the map
-    Usage
-    	X = source f
-    Inputs
-    	f : SimplicialMap
-    Outputs
-    	X : SimplicialComplex
-    	    that is the source of the map f
-    Description
-        Text
-	    Given a map $f \colon \Delta \to \Gamma$, this method returns the
-	    abstract simplicial complex $\Delta$.  The source is one of the
-	    defining attributes of a simplicial map
-	Text
-	    For the identity map, the source and target are equal.
-	Example
-            S = ZZ[x_0..x_5];
-	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
-    	    id_Δ
-	    source id_Δ
-	    assert(source id_Δ === Δ)
-	    assert(source id_Δ === target id_Δ)
-	Text
-    	    The next map projects an octohedron onto a square.
-	Example
-	    R = ZZ[y_0..y_3];
-	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
-	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
-	    assert isWellDefined f
-	    source f
-	    assert(source f === Δ)  
-	    peek f  
-    SeeAlso
-        "Working with simplicial maps"
-        (target, SimplicialMap)    
-        (matrix, SimplicialMap)    		
-	(isWellDefined, SimplicialMap)
-        (map, SimplicialComplex, SimplicialComplex, Matrix)	
-///
-
-
-doc ///
-    Key
-	(target, SimplicialMap)
-    Headline 
-    	get the target of the map
-    Usage
-    	Y = target f
-    Inputs
-    	f : SimplicialMap
-    Outputs
-    	Y : SimplicialComplex
-    	    that is the target of the map f	
-    Description	    
-        Text
-	    Given a map $f \colon \Delta \to \Gamma$, this method returns the
-	    abstract simplicial complex $\Gamma$.  The target is one of the
-	    defining attributes of a simplicial map
-	Text
-	    For the identity map, the source and target are equal.
-	Example
-            S = ZZ[x_0..x_5];
-	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
-    	    id_Δ 
-	    source id_Δ
-	    assert(target id_Δ === Δ)
-	    assert(target id_Δ === source id_Δ)
-	Text
-    	    The next map projects an octohedron onto a square.
-	Example
-	    R = ZZ[y_0..y_3];
-	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
-	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
-	    assert isWellDefined f
-	    target f
-	    assert(target f === Γ)
-	    peek f
-    SeeAlso
-        "Working with simplicial maps"    
-        (source, SimplicialMap)    
-        (matrix, SimplicialMap)    		
-	(isWellDefined, SimplicialMap)
-        (map, SimplicialComplex, SimplicialComplex, Matrix)
-///	  
-
-doc ///
-    Key
-	(matrix, SimplicialMap)
-    Headline 
-    	get the underlying map of rings
-    Usage
-    	g = matrix f
-    Inputs
-    	f : SimplicialMap
-	Degree =>
-	    unused
-    Outputs
-    	g : Matrix
-            having one row
-    Description	    
-        Text
-    	    A simplicial map is a map $f \colon \Delta \to \Gamma$ such that
-    	    for any face $F \subset \Delta$, the image $f(F)$ is contained in
-    	    a face of $\Gamma$.  Since an abstract simplicial complex is, in
-    	    this package, represented by its Stanley–Reisner ideal in a
-    	    polynomial ring, the simplicial map $f$ corresponds to a ring map
-    	    from the ring of $\Delta$ to the ring of $\Gamma$.  The ring map
-    	    is described by a matrix having one row; the entry in the $i$-th
-    	    column is the image in the ring of $\Gamma$ of the $i$-th variable
-    	    in the ring $\Delta$.  This method returns this matrix.
-	Text
-	    For the identity map, the matrix of variables in the ambient
-	    polynomial ring.
-	Example
-            S = ZZ[x_0..x_5];
-	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
-    	    id_Δ 
-	    matrix id_Δ
-	    assert(matrix id_Δ === vars S)
-	Text
-    	    The next map projects an octehedron onto a square.
-	Example
-	    R = ZZ[y_0..y_3];
-	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
-	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
-    	    matrix f
-	Text
-	    This matrix is simply extracted from the underlying map of rings.
-	Example
-	    code(matrix, SimplicialMap)
-    SeeAlso
-        "Working with simplicial maps"    
-        (source, SimplicialMap)    
-        (target, SimplicialMap)    		
-	(isWellDefined, SimplicialMap)
-        (map, SimplicialComplex, SimplicialComplex, Matrix)
-///
-
-undocumented {(expression, SimplicialMap), (toString, SimplicialMap), (texMath, SimplicialMap)}
-
-doc ///
-    Key
-        (net, SimplicialMap)
-    Headline
-        make a symbolic representation for a map of abstract simplicial complexes
-    Usage
-        net f
-    Inputs
-        f : SimplicialMap
-    Outputs
-        : Net
-	    a symbolic representation used for printing
-    Description
-        Text
-	    The net of map $f \colon \Delta \to \Gamma$ between abstract
-	    simplicial complexes is a list of variables in the ring of
-	    $\Gamma$.  This list determines a ring map from the ring of
-	    $\Delta$ to the ring of $\Gamma$ by sending the $i$-th variable
-	    in the ring of $\Delta$ to the $i$-th monomial on the list.
-    	Text
-	    The identity map $\operatorname{id} \colon \Delta \to \Delta$
-	    corresponds to list of variables in the ring of $\Delta$.
-        Example
-            S = ZZ[x_0..x_5];
-	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
-    	    id_Δ
-	    net id_Δ
-	    matrix id_Δ
-	Text
-    	    The next example does not come from the identity map.
-	Example
-	    S' = ZZ[y_0..y_3];
-	    Γ = simplicialComplex monomialIdeal(y_1*y_2)
-	    f = map(Γ, Δ, {y_0,y_0,y_1,y_2,y_3,y_3})
-	    assert isWellDefined f
-	    net f
-	    matrix f
-    SeeAlso
-        "Working with simplicial maps"
-        (matrix, SimplicialMap)
-	(net, SimplicialComplex)	
-///	         
-
-doc ///
-    Key
         (id, SimplicialComplex)
     Headline
     	make the identity map from a SimplicialComplex to itself
@@ -4568,112 +3962,6 @@ doc ///
 	(map, SimplicialComplex, SimplicialComplex, Matrix)	   
 	id 
 ///    
-
-doc ///
-    Key
-        (isInjective, SimplicialMap)
-    Headline
-        checks if a simplicial map is injective
-    Usage
-        isInjective f
-    Inputs
-        f : SimplicialMap
-    Outputs
-        : Boolean
-    Description
-        Text
-	    Checks if vertices map to unique vertices.
-	Text
-	    The inclusion of a face is injective.
-	Example
-	    R = ZZ[a..f];
-	    fish = simplicialComplex {a*b*c, b*c*d, d*e*f}
-	    R' = ZZ[x_0,x_1,x_2];
-	    fishface = simplicialComplex {x_0*x_1*x_2}
-	    f = map(fish,fishface,{a,b,c})
-	    isInjective f
-	Text
-	    The identity map should always be injective.
-	Example
-	    isInjective id_fish
-        Text
-	    Collapsing a triangle to an edge should not be injective.
-	Example
-	    f' = map(fish,fishface,{b,c,c})
-	    isInjective f'
-    SeeAlso
-        isSurjective
-	id
-///
-
-doc ///
-    Key
-        (isSurjective, SimplicialMap)
-    Headline
-        checks if a simplicial map is surjective
-    Usage
-        isSurjective f
-    Inputs
-        f : SimplicialMap
-    Outputs
-        : Boolean
-    Description
-        Text
-	    Checks if every vertex in the target has a preimage.
-	Text
-	    Collapsing a triangle to an edge is surjective.
-	Example
-	    R = ZZ[a,b,c];
-	    triangle = simplicialComplex {a*b*c}
-	    R' = ZZ[x_0,x_1];
-	    edge = simplicialComplex {x_0*x_1}
-	    f = map(edge,triangle,{x_0,x_0,x_1})
-	    isSurjective f
-	Text
-	    The identity map should always be surjective.
-	Example
-	    isSurjective id_triangle
-        Text
-	    The inclusion of an edge in a triangle is not surjective.
-	Example
-	    f' = map(triangle,edge,{a,b});
-	    isSurjective f'
-    SeeAlso
-        isSurjective
-	id
-///
-
-doc ///
-    Key
-        (image, SimplicialMap)
-    Headline
-        construct the image of a simplicial map
-    Usage
-        image f
-    Inputs
-        f : SimplicialMap
-    Outputs
-        : SimplicialComplex
-	    the image of the source of $f$ in the target of $f$
-    Description
-        Text
-	    The image of $f$ is the subcomplex of the target of $f$
-	    whose faces are of the form $f(F)$ for some face $F$ in 
-	    the source of $f$.
-	Example
-	    R = ZZ/229[a,b,c];
-	    D = simplicialComplex{a*b*c}
-	    E = simplicialComplex{a*b,b*c}
-	    f = map(E,D,{a,b,a})
-	    isWellDefined f
-	    image f
-    SeeAlso
-        SimplicialMap
-	(source, SimplicialMap)
-	(target, SimplicialMap)
-	(isInjective,SimplicialMap)
-	(isSurjective,SimplicialMap)
-///
 
 doc ///
     Key 
@@ -4753,57 +4041,419 @@ doc ///
 
 doc ///
     Key
+    	(chainComplex, SimplicialMap)
+    Headline
+    	constructs the associated map between chain complexes
+    Usage
+    	chainComplex f
+    Inputs
+        f : SimplicialMap
+    Outputs
+    	 : ChainComplexMap
+    Description
+    	Text
+	    Given a simplicial map, this constructs the map between the associated
+	    chain complexes of the two simplicial complexes.
+	Example
+	    S = ZZ[x_0..x_5];
+	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
+	    Γ = simplicialComplex monomialIdeal(x_1*x_2)
+	    f = map(Γ, Δ, {x_0,x_0,x_1,x_2,x_3,x_3})
+	    F = chainComplex f
+	Text
+	    The inclusion of a face induces an inclusion of chain complexes.
+	Example
+	    S' = ZZ[y_0..y_5];
+	    fish = simplicialComplex {y_0*y_1*y_2, y_1*y_2*y_3, y_3*y_4*y_5}
+	    S'' = ZZ[z_0,z_1,z_2];
+	    fishface = simplicialComplex {z_0*z_1*z_2}
+	    f = map(fish,fishface,{y_0,y_1,y_2});
+	    F = chainComplex f
+    	    kernel F == 0
+    SeeAlso
+        "Working with simplicial maps" 
+    	(chainComplex, SimplicialComplex)
+	ChainComplexMap
+///	
+
+doc ///
+    Key 
+        (barycentricSubdivision, SimplicialComplex, Ring)
+	barycentricSubdivision
+    Headline 
+        create the barycentric subdivision of a simplicial complex
+    Usage 
+        barycentricSubdivision(D,R)
+    Inputs
+        Delta : SimplicialComplex
+	R : Ring
+	    the ambient ring for the barycentric subdivision of $D$
+    Outputs 
+        : SimplicialComplex
+	    the barycentric subdivision of $D$
+    Description
+        Text
+    	    If $\Delta$ is an abstract simplicial complex, the barycentric
+	    subdivision of $\Delta$ is the abstact simplicial complex whose
+	    ground set (vertices) is the set of faces of $D$ and whose faces
+	    correspond to sequences $\{(F_0, F_1, \ldots, F_k)\}$ where $F_i$ is
+	    an $i$-dimensional face containing $F_{i-1}$. In order to
+	    understand how the data of the barycentric subdivision is
+	    organized, we work through a simple example.
+        Example
+	    R = QQ[x_0..x_2];
+	    S = QQ[y_0..y_6];
+	    Δ = simplexComplex(2, R)
+	    Γ = barycentricSubdivision(Δ, S)
+	    ΓFacets = facets Γ
+	Text
+	    To make sense of the facets of the barycentric subdivision, we order
+	    the faces of $\Delta$ as follows.
+        Example
+	    ΔFaces = flatten for i to 1 + dim Δ list faces(i, Δ)
+        Text
+	    The indices of the variables appearing in each monomial (or facet)
+	    $F$ in the facets of $\Gamma$ determines a sequence of monomials
+	    (faces) in $\Delta$.
+	Example
+	    netList for F in ΓFacets list F => ΔFaces_(indices F)
+    SeeAlso
+        "Making an abstract simplicial complex"    
+        (barycentricSubdivision, SimplicialMap, Ring, Ring)
+///
+
+doc ///
+    Key 
+        (barycentricSubdivision, SimplicialMap, Ring, Ring)
+    Headline 
+        create the map between barycentric subdivisions corresponding to a simplicial map
+    Usage 
+        barycentricSubdivision(f, R, S)
+    Inputs
+        f : SimplicialMap
+	    from the simplicial complex $D$ to the simplicial complex $E$
+	R : Ring
+	    the ambient ring for the barycentric subdivision of $E$
+	S : Ring
+	    the ambient ring for the barycentric subdivision of $D$
+    Outputs 
+        : SimplicialMap
+	    from the barycentric subdivision of $D$ to the barycentric
+	    subdivision of $E$.
+    Description
+        Text
+            The vertices of the barycentric subdivision of $D$ correspond to
+	    faces of $D$. For every face $F$ in $D$, $\operatorname{barycentricSubdivision}
+	    (f,R,S)$ maps the vertex corresponding to $F$ in the barycentric subdivision of
+	    $D$ to the vertex corresponding to $f(F)$ in the barycentric subdivision of $E$.
+	    We work out these correspondences, and the resulting simplicial map between 
+	    barycentric subdivisions in the example below.
+        Example
+	    T = ZZ/2[x_0,x_1,x_2];
+	    Δ = simplicialComplex{T_1*T_2}
+	    Γ = simplicialComplex{T_0*T_1}
+	    f = map(Γ, Δ, reverse gens T)
+        Text
+	    The barycentric subdivisions of $D$, $E$, and $f$ are:	    
+	Example
+	    R = ZZ/2[y_0..y_2];
+	    S = ZZ/2[z_0..z_2];
+	    BΔ = barycentricSubdivision(Δ, R)	    
+    	    BΓ = barycentricSubdivision(Γ, S)
+	    Bf = barycentricSubdivision(f, S, R)
+        Text
+	    In order to understand the data for $Bf$, we first look at the
+	    corresponce between the faces of $\Delta$, $\Gamma$, and the
+	    vertices of $B\Delta$, $B\Gamma$, respectively.
+        Example
+	    ΔFaces = flatten for i to dim Δ + 1 list faces(i, Δ)
+	    ΓFaces = flatten for i to dim Γ + 1 list faces(i, Γ)
+	    netList transpose {for y in vertices BΔ list y => ΔFaces_(index y),
+		for z in vertices BΓ list z => ΓFaces_(index z)}
+        Text
+	    These correspondences, together the images of each face of $D$
+	    under $f$, will completely determine the map $Bf$.
+	Example
+    	    netList transpose {for F in ΔFaces list F => (map f)(F),
+		for v in vertices BΔ list v => (map Bf)(v) }
+	    Bf 
+    SeeAlso
+        "Making an abstract simplicial complex"    
+        (barycentricSubdivision, SimplicialComplex, Ring)
+        SimplicialComplex
+///	
+
+doc ///
+    Key
+        (isInjective, SimplicialMap)
+    Headline
+        checks if a simplicial map is injective
+    Usage
+        isInjective f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Boolean
+    Description
+        Text
+	    Checks if vertices map to unique vertices.
+	Text
+	    The inclusion of a face is injective.
+	Example
+	    R = ZZ[a..f];
+	    fish = simplicialComplex {a*b*c, b*c*d, d*e*f}
+	    R' = ZZ[x_0,x_1,x_2];
+	    fishface = simplicialComplex {x_0*x_1*x_2}
+	    f = map(fish,fishface,{a,b,c})
+	    isInjective f
+	Text
+	    The identity map should always be injective.
+	Example
+	    isInjective id_fish
+	    assert isInjective id_fish
+        Text
+	    Collapsing a triangle to an edge should not be injective.
+	Example
+	    f' = map(fish, fishface, {b,c,c})
+	    isInjective f'
+	    assert not isInjective f'
+    SeeAlso
+        "Working with simplicial maps" 
+        (isSurjective, SimplicialMap)
+	(id, SimplicialComplex)
+///
+
+doc ///
+    Key
+        (isSurjective, SimplicialMap)
+    Headline
+        checks if a simplicial map is surjective
+    Usage
+        isSurjective f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : Boolean
+    Description
+        Text
+	    Checks if every vertex in the target has a preimage.
+	Text
+	    Collapsing a triangle to an edge is surjective.
+	Example
+	    R = ZZ[a,b,c];
+	    triangle = simplicialComplex {a*b*c}
+	    R' = ZZ[x_0,x_1];
+	    edge = simplicialComplex {x_0*x_1}
+	    f = map(edge,triangle,{x_0,x_0,x_1})
+	    isSurjective f
+	Text
+	    The identity map should always be surjective.
+	Example
+	    isSurjective id_triangle
+	    assert isSurjective id_triangle
+        Text
+	    The inclusion of an edge in a triangle is not surjective.
+	Example
+	    f' = map(triangle,edge,{a,b});
+	    isSurjective f'
+	    assert not isSurjective f'
+    SeeAlso
+    	"Working with simplicial maps" 
+        (isInjective, SimplicialMap)
+	(id, SimplicialComplex)
+///
+
+doc ///
+    Key
+        (image, SimplicialMap)
+    Headline
+        construct the image of a simplicial map
+    Usage
+        image f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : SimplicialComplex
+	    the image of the source of $f$ in the target of $f$
+    Description
+        Text
+	    The image of $f$ is the subcomplex of the target of $f$
+	    whose faces are of the form $f(F)$ for some face $F$ in 
+	    the source of $f$.
+	Example
+	    R = ZZ/229[a,b,c];
+	    D = simplicialComplex{a*b*c}
+	    E = simplicialComplex{a*b,b*c}
+	    f = map(E,D,{a,b,a})
+	    isWellDefined f
+	    image f
+    SeeAlso
+    	"Working with simplicial maps" 
+	(source, SimplicialMap)
+	(target, SimplicialMap)
+	(isInjective, SimplicialMap)
+	(isSurjective, SimplicialMap)
+///
+
+
+doc ///
+    Key    
+        (homology, SimplicialMap)
+        (homology, Nothing, SimplicialMap)
+    Headline
+        Compute the induced map on homology of a simplicial map.
+    Usage
+        homology f
+    Inputs
+        f : SimplicialMap
+    Outputs
+        : GradedModuleMap
+	    which is the map on homology induced by $f$
+    Description
+        Text
+            The graded module map from the homology of the source of $f$
+	    to the homology of the target of $f$. As an example, we map a
+	    circle into the torus in two ways, and we get two distinct
+	    maps in homology.
+        Example
+            S = ZZ[x_0..x_6];
+            R = ZZ[y_0..y_2];
+            Torus = smallManifold(2,7,6,S);
+            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
+            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
+            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
+	    prune homology f1
+	    prune homology f2	    
+    SeeAlso
+        "Working with simplicial maps" 
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+        (homology, ZZ, SimplicialMap)
+        (homology, SimplicialComplex, Ring)
+        (homology, ZZ, SimplicialComplex)
+        (homology, SimplicialComplex, SimplicialComplex)
+///
+
+doc ///
+    Key    
+        (homology, ZZ, SimplicialMap)
+    Headline
+        Compute the induced map on homology of a simplicial map.
+    Usage
+        homology(i,f)
+    Inputs
+	i : ZZ
+	f : SimplicialMap
+    Outputs
+        : Matrix
+	    which is the induced map on homology
+    Description
+        Text
+            The map from the $i$-th homology of the source of $f$ to the
+	    $i$-th homology of the target of $f$. As an example, we map a
+	    circle into the torus in two ways, and we get two distinct maps in
+	    homology.
+        Example
+            S = ZZ[x_0..x_6];
+            R = ZZ[y_0..y_2];
+            Torus = smallManifold(2,7,6,S);
+            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
+            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
+            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
+	    prune homology(1, f1)
+	    prune homology(1, f2)
+    SeeAlso
+        "Working with simplicial maps" 
+        (map, SimplicialComplex, SimplicialComplex, Matrix)
+        (homology, ZZ, SimplicialMap)
+        (homology, SimplicialComplex, Ring)
+        (homology, ZZ, SimplicialComplex)
+        (homology, SimplicialComplex, SimplicialComplex)
+///
+
+doc ///
+    Key
     	(homology, SimplicialComplex, SimplicialComplex)
 	(homology, ZZ, SimplicialComplex, SimplicialComplex)
 	(homology, Nothing, SimplicialComplex, SimplicialComplex)
     Headline
     	compute the relative homology of two simplicial complexes
     Usage
-    	homology(D,E)
+    	homology(Delta, Gamma)
     Inputs
-        D : SimplicialComplex
-	E : SimplicialComplex
+        Delta : SimplicialComplex
+	Gamma : SimplicialComplex
     Outputs
     	: ChainComplex
     Description
     	Text
-	    This method computes the relative homology of a simplicial complex $D$
-	    contracted along a subcomplex $E$.
+	    This method computes the relative homology of a simplicial complex
+	    $\Delta$ contracted along a subcomplex $\Gamma$.
 	Text
 	    Contracting an edge of a hexagon will not change the homology.
 	Example
-	    R = ZZ[x_0..x_5];
-	    Hexagon = simplicialComplex {x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_0}
-	    Edge = simplicialComplex {x_0*x_1}
-	    prune homology Hexagon
-	    prune homology(Hexagon, Edge) == prune homology Hexagon
+	    S = ZZ[x_0..x_5];
+	    Δ = simplicialComplex {x_0*x_1,x_1*x_2,x_2*x_3,x_3*x_4,x_4*x_5,x_5*x_0}
+	    Γ = simplicialComplex {x_0*x_1}
+	    prune homology Δ
+	    prune homology(Δ, Γ) 
+	    assert(prune homology(Δ, Γ) == prune homology Δ)
 	Text
-	    Gluing two antipodal points on a sphere introduces a non-trivial loop. 
+	    Gluing two antipodal points on a sphere introduces a non-trivial
+	    loop.
 	Example
 	    S = ZZ[y_0..y_4];
-	    Sphere = simplicialComplex {y_0*y_1*y_3, y_0*y_2*y_3, y_1*y_2*y_3, 
-		                        y_0*y_1*y_4, y_0*y_2*y_4, y_1*y_2*y_4}
-	    prune homology Sphere
-	    Poles = simplicialComplex {y_3, y_4}
-	    prune homology(Sphere, Poles)
+	    Δ = simplicialComplex {y_0*y_1*y_3, y_0*y_2*y_3, y_1*y_2*y_3, 
+		                   y_0*y_1*y_4, y_0*y_2*y_4, y_1*y_2*y_4}
+	    prune homology Δ
+	    Γ = simplicialComplex {y_3, y_4}
+	    prune homology(Δ, Γ)
 	Text
-	    This method assumes that $E$ is a subcomplex of $D$, and may still run
-	    nonsensically. Note also that the complexes need not be defined over the same
-	    ring.
-	Example
-	    T = ZZ[z_0..z_5];
-	    Fish = simplicialComplex {z_0*z_1, z_1*z_2, z_2*z_3, z_3*z_0, 
-		                      z_0*z_4, z_0*z_5, z_4*z_5}
-	    prune homology(Fish, Hexagon)
-	    inclusion = map(Hexagon, Fish, gens ring Hexagon);
-	    isWellDefined inclusion
+	    This method assumes that $\Gamma$ is a subcomplex of $\Delta$ and
+	    does not even check that the two abstract simplicial complexes are
+	    defined over the same ring.
     Caveat
-        This method does not check if $E$ is contained in $D$.
+        This method does not check if $\Gamma$ is contained in $\Delta$.
     SeeAlso
-        (homology,SimplicialComplex)
-	(homology,SimplicialComplex,Ring)
-    	(homology,ZZ,SimplicialComplex)
-    	(homology,ZZ,SimplicialComplex,Ring)
+    	"Working with associated chain complexes" 
+        (homology, SimplicialComplex)
+    	(homology, ZZ, SimplicialComplex)
+///
+
+doc ///
+    Key    
+        (cohomology, ZZ, SimplicialMap)
+	[(cohomology, ZZ, SimplicialMap), Degree]
+    Headline
+        Compute the induced map on cohomology of a simplicial map.
+    Usage
+        cohomology(i,f)
+    Inputs
+	i : ZZ
+	f : SimplicialMap
+	Degree => ZZ
+	    which is ignored by this particual function	
+    Outputs
+        : Matrix
+	    which is the induced map on cohomology
+    Description
+        Text
+            The map from the $i$-th cohomology of the source of $f$
+	    to the $i$-th cohomology of the target of $f$. As an example, we map a
+	    circle into the torus in two ways, and we get two distinct
+	    maps in cohomology.
+        Example
+            S = ZZ[x_0..x_6];
+            R = ZZ[y_0..y_2];
+            Torus = smallManifold(2,7,6,S);
+            Circle = simplicialComplex{R_0*R_1, R_0*R_2, R_1*R_2};
+            f1 = map(Torus,Circle,matrix{{S_3,S_6,S_5}});
+            f2 = map(Torus,Circle,matrix{{S_0,S_2,S_3}});
+	    prune cohomology(1, f1)
+	    prune cohomology(1, f2)
+    SeeAlso
+        "Working with associated chain complexes" 
+        (cohomology, ZZ, SimplicialComplex)
+        (cohomology, ZZ, SimplicialComplex, SimplicialComplex)
 ///
 
 doc ///
@@ -4858,42 +4508,45 @@ doc ///
     Caveat
         This method does not check if $E$ is contained in $D$.
     SeeAlso
+    	"Working with associated chain complexes" 
         (cohomology, ZZ, SimplicialComplex)
-    	(cohomology, ZZ, SimplicialComplex, Ring)
+	(homology, ZZ, SimplicialComplex, SimplicialComplex)
 ///
-    
+
 doc ///
-    Key
-    	(chainComplex, SimplicialMap)
-    Headline
-    	constructs the associated map between chain complexes
-    Usage
-    	chainComplex f
+    Key 
+        (elementaryCollapse, SimplicialComplex, RingElement)
+	elementaryCollapse
+    Headline 
+        construct the elementary collapse of a free face in a simplicial complex
+    Usage 
+        elementaryCollapse(Delta, F)
     Inputs
-        f : SimplicialMap
-    Outputs
-    	 : ChainComplexMap
+        Delta : SimplicialComplex  
+	F : RingElement
+	    Corresponding to a free face of $\Delta$
+    Outputs 
+        : SimplicialComplex
+	    the simplicial complex where the face $F$ and the unique facet
+	    containing $F$ are removed
     Description
-    	Text
-	    Given a simplicial map, this constructs the map between the associated
-	    chain complexes of the two simplicial complexes.
-	Example
-	    R = ZZ[x_0..x_5];
-	    Δ = simplicialComplex monomialIdeal(x_0*x_5, x_1*x_4, x_2*x_3)
-	    Γ = simplicialComplex monomialIdeal(x_1*x_2)
-	    f = map(Γ, Δ, {x_0,x_0,x_1,x_2,x_3,x_3})
-	    F = chainComplex f
-	Text
-	    The inclusion of a face induces an inclusion of chain complexes.
-	Example
-	    R' = ZZ[y_0..y_5];
-	    fish = simplicialComplex {y_0*y_1*y_2, y_1*y_2*y_3, y_3*y_4*y_5}
-	    R' = ZZ[z_0,z_1,z_2];
-	    fishface = simplicialComplex {z_0*z_1*z_2}
-	    f = map(fish,fishface,{y_0,y_1,y_2});
-	    F = chainComplex f
-    	    kernel F == 0
+        Text
+	    A free face of a simplicial complex $\Delta$ is a face that is a proper maximal
+	    subface of exactly one facet. The elementary collapse is the simplicial
+	    complex obtained by removing the free face, and the facet containing it,
+	    from $\Delta$. A simplicial complex that can be collapsed
+	    to a single vertex is called collapsible. Every collapsible simplicial
+	    complex is contractible, but the converse is not true.
+        Example
+       	    R = ZZ/103[x_0..x_3];
+       	    Δ = simplicialComplex{R_0*R_1*R_2,R_0*R_2*R_3,R_0*R_1*R_3}
+       	    C1 = elementaryCollapse(Δ,R_1*R_2)
+	    C2 = elementaryCollapse(C1,R_2*R_3)
+	    C3 = elementaryCollapse(C2,R_1*R_3)
+	    C4 = elementaryCollapse(C3,R_1)	   
+	    C5 = elementaryCollapse(C4,R_2)
+	    C6 = elementaryCollapse(C5,R_3)   
     SeeAlso
-    	(chainComplex, SimplicialComplex)
-	ChainComplexMap
-///				  
+        "Making an abstract simplicial complex"
+        SimplicialComplex
+///
