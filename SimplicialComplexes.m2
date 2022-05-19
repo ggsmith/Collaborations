@@ -18,7 +18,7 @@
 newPackage(
     "SimplicialComplexes",
     Version => "2.0", 
-    Date => "4 November 2021",
+    Date => "7 May 2022",
     Authors => {
 	{Name     => "Gregory G. Smith", 
 	 Email    => "ggsmith@mast.queensu.ca", 
@@ -29,31 +29,26 @@ newPackage(
 	 Email => "18az45@queensu.ca"}
      },
     Headline => "exploring abstract simplicial complexes within commutative algebra",
-    Keywords => {"simplicial complex",},
-    PackageImports => { "Polyhedra" },
+    Keywords => {"Combinatorial Commutative Algebra"},
+    PackageExports => { "Polyhedra" },
     AuxiliaryFiles => true,
-    DebuggingMode => false
+    DebuggingMode => true
     )
 
 export {
     -- types
---    "Face",    
     "SimplicialComplex",
     "SimplicialMap",
     -- methods
     "algebraicShifting",    
     "barycentricSubdivision",
---    "boundary",
     "boundaryMap",    
     "buchbergerSimplicialComplex",
     "buchbergerResolution",
     "connectedComponents",
     "elementaryCollapse",
     "flagfVector",
---    "face",  
     "inducedSubcomplex",
---  "isFaceOf",    
---  "isSubface", 
     "isProper",
     "link",
     "lyubeznikSimplicialComplex", 
@@ -81,15 +76,6 @@ export {
     "Multigrading",
     "Labels"
     }
-
-exportFrom(Polyhedra, {
-    "faces",
-    "facets",
-    "fVector",
-    "isPure",
-    "skeleton",
-    "vertices"
-    })
 
 importFrom("GenericInitialIdeal", {"gin", "Multigraded"})
 
@@ -122,4 +108,4 @@ installPackage "SimplicialComplexes"
 check SimplicialComplexes
 
 needsPackage "SimplicialComplexes";
-options SimplicialComplexes
+
