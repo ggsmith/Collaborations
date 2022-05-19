@@ -144,9 +144,9 @@ with a large number of vertices.
 
 The basic constructor for a simplicial complex accepts two different kinds of
 input.  Given a list of monomials, it returns the smallest simplicial complex
-containing the corresponding faces.  Given a radical monomial ideal, it
-returns the simplicial complex having the input as its Stanley--Reisner
-ideal. We illustrate both methods using the `bowtie' complex in
+containing the corresponding faces.  Given a radical monomial ideal $I$, it
+returns the simplicial complex whose Stanley-Reisner ideal is $I$.
+We illustrate both methods using the `bowtie' complex in
 Figure~\ref{bowtie}.
 
 \begin{figure}[t]
@@ -233,7 +233,7 @@ i6 : assert($⧓$ === $⧓$')
 The package also has convenient constructors for some archetypal simplicial
 complexes. For example, we recognize the real projective plane
 and the Klein bottle from the reduced homology groups of some explicit
-traingulations; see Theorems~6.3--6.4 in \cite{Munkres}.
+triangulations; see Theorems~6.3--6.4 in \cite{Munkres}.
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-5pt, aboveskip=3.0pt, belowskip=1.5pt]
 i7 : $ℙ$ = realProjectiveSpaceComplex(2, R = ZZ[a..h])
 \end{lstlisting}
@@ -341,8 +341,8 @@ i16 : assert all(mapList, phi -> isInjective phi)
 %% ---------------------------------------------------------------------------
 \subsection*{\scshape\mdseries Combinatorial Topology}
 
-We showcase some of the key operations on simplicial complex using the bowtie
-complex.  Viewing a simplicial complex as lying in a standard simplex yields a
+We use the bowtie complex to showcase some of the key operations on simplicial
+complexes. Viewing a simplicial complex as a subcomplex of a simplex yields a
 duality theory. For any simplicial complex $\Delta$ whose vertices belong to a
 set $V$, the Alexander dual is the simplicial complex
 $\Delta^* \colequal \{ F \subseteq V \mathrel{|} V \setminus F \in \Delta \}$.
@@ -534,17 +534,17 @@ As David Bayer, Irena Peeva, and Bernd Sturmfels~\cite{BPS} reveal, minimal
 free resolutions of monomial ideals are frequently encoded by a simplicial
 complex.  Consider a monomial ideal $J$ in the polynomial ring
 $R \colequal \mathbb{Q}[y_1, y_2, \dotsc, y_m]$.  Assume that $R$ is equipped
-with the $\mathbb{N}^{m}$-grading given, for all $1 \leqslant i \leqslant m$,
-by $\deg(y_i) = \textbf{e}_i$ where
-$\textbf{e}_1, \textbf{e}_2, \dotsc, \textbf{e}_m$ is the standard basis.  Let
-$\Delta$ be a simplicial complex whose vertices are labelled by the generators
+with the $\mathbb{N}^{m}$-grading given by $\deg(y_i) = \textbf{e}_i$, for each
+$1 \leqslant i \leqslant m$, where
+$\textbf{e}_1, \textbf{e}_2, \dotsc, \textbf{e}_m$ is the standard basis.
+Let $\Delta$ be a simplicial complex whose vertices are labelled by the generators
 of $J$.  We label each face $F$ of $\Delta$ by the least common multiple
 $y^{\,\textbf{a}_{\!F}} \in R$ of its vertices; the empty face is labelled by
 the monomial $1 = y^{\,\textbf{a}_{\!\varnothing}}$.  The chain complex
 $C(\Delta)$ supported on the labelled simplicial complex $\Delta$ is the chain
 complex of free $\mathbb{N}^m$-graded $R$-modules with basis corresponding to
-the faces of $\Delta$.  The differential
-$\partial \colon\! C(\Delta) \to C(\Delta)$ is given by
+the faces of $\Delta$. More precisely, the chain complex $C(\Delta)$ is determined
+by the data
 \begin{align*}
   C_i(\Delta)
   &\colequal \bigoplus_{\dim(F) \,=\, i-1} R(-\textbf{a}_F) 

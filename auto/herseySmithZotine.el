@@ -1,11 +1,12 @@
 (TeX-add-style-hook
- "template"
+ "herseySmithZotine"
  (lambda ()
    (TeX-add-to-alist 'LaTeX-provided-class-options
                      '(("amsart" "12pt" "leqno")))
    (TeX-add-to-alist 'LaTeX-provided-package-options
-                     '(("xcolor" "svgnames") ("amsrefs" "alphabetic") ("fontenc" "T1") ("hyperref" "colorlinks=true" "linkcolor=DarkBlue" "urlcolor=DarkRed" "citecolor=DarkGreen") ("geometry" "centering" "includeheadfoot" "hmargin=1.0in" "tmargin=1.0in" "bmargin=1in" "headheight=6pt")))
+                     '(("xcolor" "svgnames") ("amsrefs" "shortalphabetic") ("fontenc" "T1") ("beramono" "scaled=0.75") ("hyperref" "colorlinks=true" "linkcolor=DarkBlue" "urlcolor=DarkRed" "citecolor=DarkGreen") ("geometry" "centering" "includeheadfoot" "hmargin=0.95in" "tmargin=0.8in" "bmargin=0.8in" "headheight=6pt")))
    (add-to-list 'LaTeX-verbatim-environments-local "lstlisting")
+   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "lstinline")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "href")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperref")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "hyperimage")
@@ -13,9 +14,8 @@
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "nolinkurl")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "url")
    (add-to-list 'LaTeX-verbatim-macros-with-braces-local "path")
-   (add-to-list 'LaTeX-verbatim-macros-with-braces-local "lstinline")
-   (add-to-list 'LaTeX-verbatim-macros-with-delims-local "path")
    (add-to-list 'LaTeX-verbatim-macros-with-delims-local "lstinline")
+   (add-to-list 'LaTeX-verbatim-macros-with-delims-local "path")
    (TeX-run-style-hooks
     "latex2e"
     "amsart"
@@ -25,11 +25,11 @@
     "amsthm"
     "xcolor"
     "tikz"
-    "mathtools"
     "amsrefs"
     "fontenc"
     "mathptmx"
     "microtype"
+    "beramono"
     "hyperref"
     "caption"
     "subcaption"
@@ -37,18 +37,11 @@
     "listings"
     "stix")
    (TeX-add-symbols
+    "colequal"
     "PP")
    (LaTeX-add-labels
-    "example of using database"
-    "S:Constructors"
-    "Figure: The figure-8 and its dual"
-    "F: torus triangulation"
-    "S:Stanley--Reisner Theory"
-    "Figure: the bowtie complex"
-    "Example: Shellability, the Cohen-Macaulay property, and the h-vector"
-    "S:Resolutions of Monomial Ideals"
-    "Example: First example of a homogenized chain complex"
-    "Figure: Example of a labelled simplicial complex")
+    "bowtie"
+    "Gamma")
    (LaTeX-add-amsthm-newtheorems
     "lemma"
     "theorem"
