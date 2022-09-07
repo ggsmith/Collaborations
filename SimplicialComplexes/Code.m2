@@ -300,7 +300,6 @@ kleinBottleComplex PolynomialRing := SimplicialComplex => S -> (
     smallManifold(2, 8, 12, S)
     )
 
---TODO: document
 realProjectiveSpaceComplex = method()
 realProjectiveSpaceComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n == 0 and numgens S < 1 then
@@ -358,7 +357,8 @@ prune SimplicialComplex := SimplicialComplex => opts -> D -> (
 inducedSubcomplex = method()
 inducedSubcomplex (SimplicialComplex,List) := SimplicialComplex => (D, V) -> (
     if any(V, v -> not member(v, vertices D)) then 
-	error "expected verticies of the simplicial complex";
+	error "expected vertices of the simplicial complex";
+    if dim D < -1 then return D;
     S := ring D;
     phi := map(S, S, for x in gens S list if member(x, V) then x else 1_S);
     -- although map(D, phi) is not a well-defined simplicial map, its image is
@@ -431,7 +431,6 @@ wedge (SimplicialComplex, SimplicialComplex, RingElement, RingElement) := Simpli
 ------------------------------------------------------------------------------
 -- basic properties and invariants
 ------------------------------------------------------------------------------
-
 -- 'vertices' method is defined in 'Polyhedra" package
 vertices SimplicialComplex := D -> (
     if dim D < 0 then {}
@@ -473,6 +472,24 @@ isPure SimplicialComplex := Boolean => D -> (
      L := unique apply(F, m -> # support m);
      #L <= 1
      )
+ 
+connectedComponents = method()
+connectedComponents SimplicialComplex := D -> ( 
+    if dim D < 0 then return {D};
+    R := ring D;
+    H := new MutableHashTable;
+    for F in facets D do (
+    	if all(keys H, h -> gcd(F, H#h) == 1_R) then H#F = F
+    	else (
+	    L := {};
+	    for k in keys H do if not (gcd(F, H#k) == 1_R) then L = append(L, k);
+	    m := lcm append(L, F);
+	    for l in L do remove(H, l);
+	    H#m = m;
+	    )
+	);
+    for k in keys H list inducedSubcomplex(D, support H#k)
+    ) 
 
 -- 'fVector' method defined in Polyhedra
 fVector SimplicialComplex := List => D -> (
@@ -602,9 +619,6 @@ cohomology(ZZ, SimplicialComplex) := Module => opts -> (i,Delta) -> (
 
 
 
-
-
-
 -- helper functions for algebraicShifting. Not exported.
 shiftMonomial = (m) -> (
     variables := flatten entries vars ring m;
@@ -653,31 +667,37 @@ algebraicShifting SimplicialComplex := opts -> S -> (
     	)
     )
 
+-- substitute a complex to another ring
+substitute(SimplicialComplex, PolynomialRing) := SimplicialComplex => (D, R) -> (
+    if ideal D === ideal(1_(ring D))
+    then (
+	I := sub(ideal D, R);
+	simplicialComplex monomialIdeal I
+	)
+    else (
+	n := numgens ring D;
+    	simplicialComplex for F in facets D list sub(F, (vars R)_{0..n-1})
+	)
+    )
 
 --------------------------------------------------------------------------
--- Buchberger complex of a monomial ideal (aka improved Taylor complex) --
--- (see Eisenbud-Hosten-Popescu)          
+-- monomial resolutions        
 --------------------------------------------------------------------------
-
 -- lcmMRed and faceBuchberger are specific to buchbergerComplex
-
 lcmMRed = method()
-lcmMRed (List) := (L) -> (
--- lcmMRed finds the lcm of a list of monomial and drops the
--- exponent on each variable by one (if that exponent in nonzero).
+lcmMRed List := (L) -> (
+-- lcmMRed finds the lcm of a list of monomial and drops the exponent on each
+-- variable by one (if that exponent in nonzero).
     m := intersect toSequence apply(L, i-> monomialIdeal(i));
     m_0//(product support m_0)
     )
-
 faceBuchberger = (m, L) -> (
--- true iff the monomial m defines a face in the Buchberger complex.
--- if x has a variable with index greather than #L-1, then this
--- code produces an error
+-- true iff the monomial m defines a face in the Buchberger complex.  if x has
+-- a variable with index greather than #L-1, then this code produces an error
      x := rawIndices raw m;
      mon := lcmMRed(L_x);
      all(L, n -> mon//n == 0)
      )
-
 -- requires numgens R == #L. I dislike this. Currently not exported.
 buchbergerComplex = method()
 buchbergerComplex(List,Ring) := (L,R) -> (
@@ -695,7 +715,6 @@ buchbergerComplex(List,Ring) := (L,R) -> (
 	);
     simplicialComplex monomialIdeal matrix(R, {nonfaces})
     )
-
 buchbergerSimplicialComplex = method()
 buchbergerSimplicialComplex(List, Ring) := (L,R) -> (
     if numgens R < #L 
@@ -715,11 +734,9 @@ buchbergerSimplicialComplex(List, Ring) := (L,R) -> (
 	);    
     simplicialComplex monomialIdeal matrix(R, {nonfaces})
     )
-
 buchbergerSimplicialComplex(MonomialIdeal, Ring) := (I,R) -> (
     buchbergerSimplicialComplex(flatten entries mingens I, R)
     )
-
 buchbergerResolution = method()
 buchbergerResolution List := ChainComplex => M -> (
     -- handle degenerate cases first
@@ -730,7 +747,6 @@ buchbergerResolution List := ChainComplex => M -> (
     B := buchbergerSimplicialComplex(M,R);
     chainComplex(B,Labels=>M)
     )
-
 buchbergerResolution MonomialIdeal := ChainComplex => M -> (
     if M == 0
     then (ring M)^1[0]
@@ -753,7 +769,6 @@ taylorResolution List := ChainComplex => M -> (
     Simplex := simplexComplex(#M-1,R);
     chainComplex(Simplex,Labels=>M)
     )
-
 taylorResolution MonomialIdeal := ChainComplex => M -> (
     if M == 0
     then (ring M)^1[0]
@@ -766,7 +781,6 @@ hasRoot = (F,L) -> (
     root := position(L,m -> faceLabel % m == 0);    
     member(root,indices F)
     )
-
 lyubeznikSimplicialComplex = method(Options => {MonomialOrder => {}})
 lyubeznikSimplicialComplex (List,Ring) := opts -> (M,A) -> (
     -- Deal with degenerate case first
@@ -801,17 +815,15 @@ lyubeznikSimplicialComplex (List,Ring) := opts -> (M,A) -> (
 	);
     simplicialComplex monomialIdeal matrix(A,{nonfaces})
     )
-
 -- Natural implementation for a monomial ideal.
 lyubeznikSimplicialComplex(MonomialIdeal,Ring) := opts -> (I,R) -> (
     minGens := first entries mingens I;
     lyubeznikSimplicialComplex(minGens, R, MonomialOrder => opts.MonomialOrder)
     )
-
 -- We can construct the lyubeznik Resolution by first building the
--- lyubeznikSimplicialComplex and then homogenizing. The MonomialOrder
--- option seems silly, as lists are implicitly ordered, but this 
--- option is needed when we give a method for the MonomialIdeal class.
+-- lyubeznikSimplicialComplex and then homogenizing. The MonomialOrder option
+-- seems silly, as lists are implicitly ordered, but this option is needed
+-- when we give a method for the MonomialIdeal class.
 lyubeznikResolution = method(Options => {MonomialOrder => {}})
 lyubeznikResolution List := opts -> L -> (
     MO := opts.MonomialOrder;
@@ -820,10 +832,9 @@ lyubeznikResolution List := opts -> L -> (
     then chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L)
     else chainComplex(lyubeznikSimplicialComplex(L,R),Labels=>L_MO)
     )
-
 lyubeznikResolution MonomialIdeal := opts -> I -> (
-    -- if I == monomialIdeal(0), then the set of mingens in empty
-    -- and M2 doesn't know what ring to use when constructing the 
+    -- if I == monomialIdeal(0), then the set of mingens in empty and M2
+    -- doesn't know what ring to use when constructing the
     -- resolution. Otherwise straightforward.
     if numgens I == 0 
     then return ((ring I)^1)[0];
@@ -862,125 +873,24 @@ scarfSimplicialComplex (List,Ring) := (L,A) -> (
 	    )
     	)
     )
-
 -- natural functionality for a MonomialIdeal
 scarfSimplicialComplex (MonomialIdeal,Ring) := (I,A) -> (
     if numgens I == 0 
     then return ((coefficientRing(ring I))^1)[0];
     scarfSimplicialComplex(first entries mingens I,A)
     )
-
--- The scarfChainComplex is the homogenization of the scarfSimplicial
--- complex.
+-- The scarfChainComplex is the homogenization of the scarfSimplicial complex.
 scarfChainComplex = method()
 scarfChainComplex List := L ->(
     A := QQ(monoid[vars(0..#L-1)]);
     chainComplex(scarfSimplicialComplex(L,A), Labels=>L)
     )
-
 scarfChainComplex MonomialIdeal := I -> (
     if numgens I == 0 
     then return ((ring I)^1)[0];
     A := QQ(monoid[vars(0..#(mingens I)-1)]);
     chainComplex(scarfSimplicialComplex(I,A), Labels=>(first entries mingens I))
     )
-
------------------------------------------------------------------------
--- Defining a class Face
--- to be used in other package in particular in the KustinMiller package
--- additions by Janko
-
-Face = new Type of MutableHashTable
-viewHelp
--- vertices of a face
--- vertices=method()
-
-
-
--- pretty print
-net Face := (f)-> (
-v:=vertices(f);
-if #v==0 then return(net({}));
-horizontalJoin(apply(v,j->net(j)|net(" "))))
-
--- after print
-Face#{Standard,AfterPrint} = m -> (
-  n:=#vertices(m);
-  if n==0 then vstr:="empty face";
-  if n==1 then vstr="face with "|n|" vertex";
-  if n>1 then vstr="face with "|n|" vertices";
-      << endl;
-      << concatenate(interpreterDepth:"o") << lineNumber << " : "
-      << vstr|" in "|net(ring m)
-      << endl;)
-
--- dimension
-dim Face := F->-1+#(vertices F)
-
--- ring of a face
-ring Face :=F->F.ring;
-
--- construct a face from a List of vertices
-face=method()
-face(List):= (L)-> new Face from {symbol vertices => L, symbol ring=> ring L#0}
-face(List,PolynomialRing):= (L,R)-> new Face from {symbol vertices => L, symbol ring=>R}
-
--- construct a face from a monomial
-face(RingElement):= (m)-> face(support m,ring m)
-
--- compare two faces
-Face == Face := (F,G)->(
-(#(vertices F))==(#(vertices G)) and set vertices F === set vertices G)
-
--- test if a face is a subface of another
-isSubface=method()
-isSubface(Face,Face):=(F,G)->(
-isSubset(set vertices F,set vertices G))
-
--- test if a face is a face of a complex
-isFaceOf = method()
-isFaceOf (Face,SimplicialComplex) := (F,C) -> (
-    fc := facets(C);    
-    #(select(1,fc, G -> isSubface(F,G)))>0
-    )
-
--- substitute a face to another ring
-substitute(Face,PolynomialRing):=(F,R)->(
-v:=vertices(F);
-face(apply(v,j->sub(j,R)),R))
-
--- substitute a complex to another ring
-substitute(SimplicialComplex,PolynomialRing):=(D,R)->(
-    if ideal D === ideal(1_(ring D))
-    then(
-	I := sub(ideal D, R);
-	return simplicialComplex(monomialIdeal I)
-	)
-    else(
-	n := numgens ring D;
-    	return simplicialComplex for F in facets D list sub(F, (vars R)_{0..n-1})
-	)
-    )
-    
-    
-    
--*    
-
-simplicialComplex for F in facets void list sub(F, (vars R)_{0..4})
-
-ideal void
-ideal irrelevant
-
-
-sub(ideal void, newRing(R, Degrees => {1,1,1,1,1}))
-needsPackage "SimplicialComplexes"
-R = QQ[a..e]
-D = simplicialComplex monomialIdeal(a*b*c*d*e)
-substitute(D,R)
-faces(1,D)
-F = (first entries faces(1,D, Output => List))#0
-isFaceOf(F,D)
-*-
 
 
 ------------------------------------------------------------------------------
@@ -1020,25 +930,20 @@ map(SimplicialComplex, SimplicialComplex, Matrix) := SimplicialMap => opts -> (E
     	symbol map => map(ring E, ring D, A),
     	symbol cache => new CacheTable}
     )
-
 map(SimplicialComplex, SimplicialComplex, List) := SimplicialMap => opts -> (E, D, A) -> (
     map(E, D, matrix {A})
     )
-
 map(SimplicialComplex, SimplicialComplex, RingMap) := SimplicialMap => opts -> (E,D,phi) -> (
     map(E, D, matrix phi)
     )
-
 map(SimplicialComplex, Matrix) := SimplicialMap => opts -> (D,A) -> (
     phi := map(ring D, A);
     Image := simplicialComplex(for F in facets D list phi(F));
     map(Image,D,A)
     )
-
 map(SimplicialComplex, List) := SimplicialMap => opts -> (D,A) -> (
     map(D, matrix A)
     )
-
 map(SimplicialComplex, RingMap) := SimplicialMap => opts -> (D,phi) -> (
     map(D,matrix phi)
     )
@@ -1143,8 +1048,9 @@ chainComplex SimplicialMap := ChainComplexMap => f -> (
     map(CE, CD, g)
     )
 
---TODO: If we have constructed the barycentric subdivision, but want to change rings,
--- can we access some cached data here to make the computation faster?
+-- TODO: If we have constructed the barycentric subdivision, but want to
+-- change rings, can we access some cached data here to make the computation
+-- faster?
 barycentricSubdivision = method();
 barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -> (
     if dim D == -infinity then return simplicialComplex(monomialIdeal(1_S));
@@ -1161,15 +1067,13 @@ barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -
     simplicialComplex baryFacets
     )
 
-
 -- TODO: Unexported? I forgot if that's intended
 numFaces = method()
 numFaces SimplicialComplex := ZZ => D -> (
     sum(-1 .. dim D, i -> #faces(i,D))
     )
-
---TODO: Are we using cached data to construct the barycentric subdivisions
--- for the source and target?
+-- TODO: Are we using cached data to construct the barycentric subdivisions for
+-- the source and target?
 barycentricSubdivision (SimplicialMap, Ring, Ring) := SimplicialMap => (f,S,R) -> (
     D := source f;
     E := target f;
@@ -1186,17 +1090,18 @@ barycentricSubdivision (SimplicialMap, Ring, Ring) := SimplicialMap => (f,S,R) -
 isInjective SimplicialMap := Boolean => f -> (
     #vertices(source f) == #unique for x in vertices source f list (map f)(x)
     )
+isSurjective SimplicialMap := Boolean => f -> facets image f === facets target f
 
 image SimplicialMap := SimplicialComplex => f -> (
-    simplicialComplex(for F in facets(source f) list (
-	    sub(product support (map f)(F), ring target f)
-	    )
-	)
+    simplicialComplex for F in facets(source f) list 
+        sub(product support (map f)(F), ring target f)
     )
 
-isSurjective SimplicialMap := Boolean => f -> (
-    facets image f === facets target f
+homology(Nothing, SimplicialMap) :=
+homology SimplicialMap := GradedModuleMap => opts -> f -> (
+    homology(chainComplex f)
     )
+homology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> homology(i, chainComplex f)
 
 homology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E) -> (
     inclusion := map(D, E, gens ring D);
@@ -1211,13 +1116,8 @@ homology(SimplicialComplex, SimplicialComplex) := ChainComplex => opts -> (D,E) 
     homology C
     )
 
-homology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
-    homology(i, chainComplex f)
-    )
-
-homology(Nothing, SimplicialMap) :=
-homology SimplicialMap := GradedModuleMap => opts -> f -> (
-    homology(chainComplex f)
+cohomology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
+    cohomology(i, Hom(chainComplex f, module coefficientRing source f))
     )
 
 cohomology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E) -> (
@@ -1225,11 +1125,6 @@ cohomology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E
     C := coker chainComplex inclusion;
     cohomology(i, Hom(C, module coefficientRing D))
     )
-
-cohomology(ZZ, SimplicialMap) := Matrix => opts -> (i,f) -> (
-    cohomology(i, Hom(chainComplex f, module coefficientRing source f))
-    )
-
 
 elementaryCollapse = method();
 elementaryCollapse (SimplicialComplex,RingElement) := SimplicialComplex => (D,F) -> (
@@ -1250,5 +1145,92 @@ elementaryCollapse (SimplicialComplex,RingElement) := SimplicialComplex => (D,F)
 	);
     simplicialComplex newFacetList
     )
+
+
+
+-----------------------------------------------------------------------
+-- Defining a class Face
+-- to be used in other package in particular in the KustinMiller package
+-- additions by Janko
+-----------------------------------------------------------------------
+
+Face = new Type of MutableHashTable
+viewHelp
+-- vertices of a face
+-- vertices=method()
+
+-- pretty print
+net Face := (f)-> (
+v:=vertices(f);
+if #v==0 then return(net({}));
+horizontalJoin(apply(v,j->net(j)|net(" "))))
+
+-- after print
+Face#{Standard,AfterPrint} = m -> (
+  n:=#vertices(m);
+  if n==0 then vstr:="empty face";
+  if n==1 then vstr="face with "|n|" vertex";
+  if n>1 then vstr="face with "|n|" vertices";
+      << endl;
+      << concatenate(interpreterDepth:"o") << lineNumber << " : "
+      << vstr|" in "|net(ring m)
+      << endl;)
+
+-- dimension
+dim Face := F->-1+#(vertices F)
+
+-- ring of a face
+ring Face :=F->F.ring;
+
+-- construct a face from a List of vertices
+face=method()
+face(List):= (L)-> new Face from {symbol vertices => L, symbol ring=> ring L#0}
+face(List,PolynomialRing):= (L,R)-> new Face from {symbol vertices => L, symbol ring=>R}
+
+-- construct a face from a monomial
+face(RingElement):= (m)-> face(support m,ring m)
+
+-- compare two faces
+Face == Face := (F,G)->(
+(#(vertices F))==(#(vertices G)) and set vertices F === set vertices G)
+
+-- test if a face is a subface of another
+isSubface=method()
+isSubface(Face,Face):=(F,G)->(
+isSubset(set vertices F,set vertices G))
+
+-- test if a face is a face of a complex
+isFaceOf = method()
+isFaceOf (Face,SimplicialComplex) := (F,C) -> (
+    fc := facets(C);    
+    #(select(1,fc, G -> isSubface(F,G)))>0
+    )
+
+-- substitute a face to another ring
+substitute(Face,PolynomialRing):=(F,R)->(
+v:=vertices(F);
+face(apply(v,j->sub(j,R)),R))
+
+
+    
+    
+    
+-*    
+
+simplicialComplex for F in facets void list sub(F, (vars R)_{0..4})
+
+ideal void
+ideal irrelevant
+
+
+sub(ideal void, newRing(R, Degrees => {1,1,1,1,1}))
+needsPackage "SimplicialComplexes"
+R = QQ[a..e]
+D = simplicialComplex monomialIdeal(a*b*c*d*e)
+substitute(D,R)
+faces(1,D)
+F = (first entries faces(1,D, Output => List))#0
+isFaceOf(F,D)
+*-
 
 
