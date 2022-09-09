@@ -96,9 +96,8 @@
   55U10\\
   %
   \indent
-  \texttt{SimplicialComplexes} version 2.0
-}
-% \date{2021--11--04}
+  \href{http://www2.macaulay2.com/Macaulay2/doc/Macaulay2-1.20/share/doc/Macaulay2/SimplicialComplexes/html/index.html}{\texttt{SimplicialComplexes} version 2.0}}
+% \date{2022--09--09}
 
 \begin{abstract}
   We highlight some features of the \emph{SimplicialComplexes} package in
@@ -293,41 +292,34 @@ Exploiting the same loop, we construct the simplicial maps from a minimal
 triangulation of a torus to the induced subcomplex on the first $7$ vertices
 for each of these $3$-manifolds.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i11 : T = smallManifold(2, 7, 1, R = ZZ[a..i])
+i11 : T = smallManifold(2, 7, 6, R = ZZ[a..i])
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o11 = simplicialComplex | dfg afg deg aeg adf cde ace bcd abd abc |
+o11 = simplicialComplex | cfg afg beg aeg cdg bdg def bef adf bcf cde ace abd abc |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
 o11 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i12 : gens monomialIdeal T
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o12 = | acd be ade bf cf ef bg cg adg h i |
+i12 : for j from 0 to 2 list prune HH_j T
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1.5pt]
-              1       11
-o12 : Matrix R  <--- R
+            2   1
+o12 = {0, ZZ, ZZ }
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i13 : for j from 0 to 2 list prune HH_j T
+o12 : List
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1.5pt]
-               1
-o13 = {0, 0, ZZ }
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o13 : List
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1.5pt]
-i14 : mapList = for j from 0 to 1296 list (
-          phi := map(smallManifold(3, 9, j, S), T, gens R);
+i13 : for j from 0 to 1296 list (
+          phi := map(smallManifold(3, 9, j, R), T, gens R);
           if not isWellDefined phi then continue else phi);
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i15 : assert(# mapList === 319 and all(mapList, phi -> isInjective phi))
+o13 : {}
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o13 : List
 \end{lstlisting}
 
 %% ---------------------------------------------------------------------------
@@ -337,52 +329,52 @@ We use the bowtie complex to showcase some of the key operations on simplicial
 complexes. Viewing a simplicial complex as a subcomplex of a simplex yields a
 duality theory. For any simplicial complex $\Delta$ whose vertices belong to a
 set $V$, the Alexander dual is the simplicial complex
-$\Delta^* \colequal \{ F \subseteq V \mathrel{|} V \setminus F \in \Delta \}$.
+$\Delta^* \colequal \{ F \subseteq V \mathrel{|} V \setminus F \not\in \Delta \}$.
 Since each simplicial complex in this package has an underlying polynomial
 ring, the variables in this ring form a canonical superset of the vertices.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i16 : dual $⧓$
+i14 : dual $⧓$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o16 = simplicialComplex | wxz vxz wxy vxy |
+o14 = simplicialComplex | wxz vxz wxy vxy |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o16 : SimplicialComplex
+o14 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i17 : assert(dual dual $⧓$ === $⧓$ and dual monomialIdeal $⧓$ === monomialIdeal dual $⧓$)
+i15 : assert(dual dual $⧓$ === $⧓$ and dual monomialIdeal $⧓$ === monomialIdeal dual $⧓$)
 \end{lstlisting}
 Algebraically, Alexander duality switches the roles of the minimal generators
 and the irreducible components in the Stanley--Reisner ideal.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3pt, belowskip=1.5pt]
-i18 : monomialIdeal dual $⧓$
+i16 : monomialIdeal dual $⧓$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-o18 = monomialIdeal (v*w, y*z)
+o16 = monomialIdeal (v*w, y*z)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o18 : MonomialIdeal of S
+o16 : MonomialIdeal of S
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i19 : irreducibleDecomposition monomialIdeal $⧓$
+i17 : irreducibleDecomposition monomialIdeal $⧓$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-o19 = {monomialIdeal (v, w), monomialIdeal (y, z)}
+o17 = {monomialIdeal (v, w), monomialIdeal (y, z)}
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1pt, belowskip=3pt]
-o19 : List
+o17 : List
 \end{lstlisting}
 The topological form of Alexander duality gives an isomorphism
 between the reduced homology of a simplicial complex and reduced cohomology of
 its dual; see Theorem~5.6 in \cite{MS}.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3pt, belowskip=1.5pt]
-i20 : n = numgens ring $⧓$
+i18 : n = numgens ring $⧓$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-o20 = 5
+o18 = 5
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1pt, belowskip=3pt]
-i21 : assert all(-1..n-1, j -> prune HH^(n-j-3) dual $⧓$ == prune HH_j $⧓$)
+i19 : assert all(-1..n-1, j -> prune HH^(n-j-3) dual $⧓$ == prune HH_j $⧓$)
 \end{lstlisting}
 
 A simplicial complex $\Delta$ is Cohen--Macaulay if the associated quotient
@@ -394,23 +386,23 @@ $\operatorname{link}_\Delta(F) \colequal \{ G \in \Delta \mathrel{|}
 \text{$F \cup G \in \Delta$ and $F \cap G = \varnothing$} \}$.  The link of
 the vertex $x$ in $⧓$ has two disjoint facets.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i22 : L = link($⧓$, x)
+i20 : L = link($⧓$, x)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o22 = simplicialComplex | yz vw |
+o20 = simplicialComplex | yz vw |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o22 : SimplicialComplex
+o20 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i23 : prune HH_0 L
+i21 : prune HH_0 L
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
         1
-o23 = QQ
+o21 = QQ
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-o23 : QQ-module, free
+o21 : QQ-module, free
 \end{lstlisting}
 As discovered by Gerald Reisner, the simplicial complex $\Delta$ is
 Cohen--Macaulay if and only if, for all faces $F$ in $\Delta$ and all integers
@@ -420,35 +412,35 @@ Corollary~5.3.9 in \cite{BH}, Theorem~5.53 in \cite{MS}, or Corollary~II.4.2
 in \cite{Stanley}.  Using this criterion, the $0$-th reduced homology
 certifies that $⧓$ is not Cohen--Macaulay.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i24 : assert(HH_0 L != 0)
+i22 : assert(HH_0 L != 0)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-i25 : assert(dim(S^1/monomialIdeal $⧓$) =!= n - pdim(S^1/monomialIdeal $⧓$))
+i23 : assert(dim(S^1/monomialIdeal $⧓$) =!= n - pdim(S^1/monomialIdeal $⧓$))
 \end{lstlisting}
 However, the $1$-skeleton of $⧓$ is Cohen--Macaulay.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i26 : $⋈$ = skeleton(1, $⧓$)
+i24 : $⋈$ = skeleton(1, $⧓$)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o26 = simplicialComplex | yz xz xy wx vx vw |
+o24 = simplicialComplex | yz xz xy wx vx vw |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o26 : SimplicialComplex
+o24 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i27 : faceList = rsort flatten values faces $⋈$
+i25 : faceList = rsort flatten values faces $⋈$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-o27 = {v*w, v*x, w*x, x*y, x*z, y*z, v, w, x, y, z, 1}
+o25 = {v*w, v*x, w*x, x*y, x*z, y*z, v, w, x, y, z, 1}
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o27 : List
+o25 : List
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i28 : assert all(faceList, F -> (L := link($⋈$, F); all(dim L, j -> HH_j L == 0)))
+i26 : assert all(faceList, F -> (L := link($⋈$, F); all(dim L, j -> HH_j L == 0)))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-i29 : assert(dim(S^1/monomialIdeal $⋈$) === n - pdim(S^1/monomialIdeal $⋈$))
+i27 : assert(dim(S^1/monomialIdeal $⋈$) === n - pdim(S^1/monomialIdeal $⋈$))
 \end{lstlisting}
 
 Alternatively, we verify that bowtie complex $⧓$ is not Cohen--Macaulay by
@@ -460,55 +452,55 @@ $h_j = \sum_{k=0}^{j} (-1)^{j-1}
 \smash{\tbinom{d+1-k}{\raisebox{3pt}{$\scriptstyle j-k$}}} f_{k-1}$.  The
 $h$-vector encodes the numerator of the Hilbert series for $S/I$.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=5.0pt, belowskip=1.5pt]
-i30 : d = dim $⧓$
+i28 : d = dim $⧓$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o30 = 2
+o28 = 2
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i31 : faces $⧓$
+i29 : faces $⧓$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-o31 =  HashTable{-1 => {1}                          }
+o29 =  HashTable{-1 => {1}                          }
                 0 => {v, w, x, y, z}
                 1 => {v*w, v*x, w*x, x*y, x*z, y*z}
                 2 => {v*w*x, x*y*z}
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o31 : HashTable
+o29 : HashTable
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+i30 : fVec = fVector $⧓$
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o30 = {1, 5, 6, 2}
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+o30 : List
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
+i31 : hVec = for j from 0 to d list 
+          sum(j+1, k -> (-1)^(j-k) * binomial(d+1-k, j-k) * fVec#k)
 \end{lstlisting}
 \vfill
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i32 : fVec = fVector $⧓$
+o31 = {1, 2, -1}
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o32 = {1, 5, 6, 2}
+o31 : List
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o32 : List
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
-i33 : hVec = for j from 0 to d list 
-          sum(j+1, k -> (-1)^(j-k) * binomial(d+1-k, j-k) * fVec#k)
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o33 = {1, 2, -1}
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o33 : List
-\end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i34 : hilbertSeries(S^1/monomialIdeal $⧓$, Reduce => true)
+i32 : hilbertSeries(S^1/monomialIdeal $⧓$, Reduce => true)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=4pt, belowskip=1pt]
                 2
       1 + 2T - T
-o34 = -----------
+o32 = -----------
                3
         (1 - T)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=-5.0pt]
-o34 : Expression of class Divide
+o32 : Expression of class Divide
 \end{lstlisting}
 
 
@@ -587,62 +579,62 @@ Label the vertices of $\Gamma$ by the generators of $J$:
 $x_0 \mapsto y_0 y_1$, $x_1 \mapsto y_0 y_2$, $x_2 \mapsto y_0 y_3$, and
 $x_3 \mapsto y_1 y_2 y_3$.  
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i35 : x = getSymbol "x"; S = ZZ[x_0..x_3];
+i33 : x = getSymbol "x"; S = ZZ[x_0..x_3];
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i37 : $Δ$ = simplicialComplex{x_0*x_1*x_2, x_2*x_3}
+i35 : $Δ$ = simplicialComplex{x_0*x_1*x_2, x_2*x_3}
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o37 = simplicialComplex | x_2x_3 x_0x_1x_2 |
+o35 = simplicialComplex | x_2x_3 x_0x_1x_2 |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o37 : SimplicialComplex
+o35 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i38 : chainComplex $Δ$
+i36 : chainComplex $Δ$
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
         1       4       4       1
-o38 = ZZ  <-- ZZ  <-- ZZ  <-- ZZ
+o36 = ZZ  <-- ZZ  <-- ZZ  <-- ZZ
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
       -1      0       1       2
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o38 : ChainComplex
+o36 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i39 : y = getSymbol "y"; R = QQ[y_0..y_3, DegreeRank => 4];
+i37 : y = getSymbol "y"; R = QQ[y_0..y_3, DegreeRank => 4];
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i41 : J = ideal(y_0*y_1, y_0*y_2, y_0*y_3, y_1*y_2*y_3)
+i39 : J = ideal(y_0*y_1, y_0*y_2, y_0*y_3, y_1*y_2*y_3)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o41 = ideal (y y , y y , y y , y y y )
+o39 = ideal (y y , y y , y y , y y y )
               0 1   0 2   0 3   1 2 3
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o41 : Ideal of R
+o39 : Ideal of R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i42 : C = chainComplex($Δ$, Labels => J_*)
+i40 : C = chainComplex($Δ$, Labels => J_*)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
        1      4      4      1
-o42 = R  <-- R  <-- R  <-- R
+o40 = R  <-- R  <-- R  <-- R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]                           
       0      1      2      3
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o42 : ChainComplex
+o40 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i43 : C.dd
+i41 : C.dd
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=3.0pt]
            1                                          4
-o43 = 0 : R  <-------------------------------------- R  : 1
+o41 = 0 : R  <-------------------------------------- R  : 1
                | y_0y_1 y_0y_2 y_0y_3 y_1y_2y_3 |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=3.0pt]
@@ -662,31 +654,31 @@ o43 = 0 : R  <-------------------------------------- R  : 1
                 {1, 1, 1, 1} | 0    |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o43 : ChainComplexMap
+o41 : ChainComplexMap
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-i44 : assert(res(R^1/J) == C)
+i42 : assert(res(R^1/J) == C)
 \end{lstlisting}
 The chain complex $C(\Delta)$ 
 depends on the labelling and is not always a resolution.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i45 : C' = chainComplex($Δ$, Labels => reverse J_*)
+i43 : C' = chainComplex($Δ$, Labels => reverse J_*)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
        1      4      4      1
-o45 = R  <-- R  <-- R  <-- R
+o43 = R  <-- R  <-- R  <-- R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
       0      1      2      3
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
-o45 : ChainComplex
+o43 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
-i46 : prune homology C'
+i44 : prune homology C'
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o46 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
+o44 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
 
       1 : cokernel {1, 1, 0, 1} | y_2 |              
 
@@ -695,86 +687,85 @@ o46 = 0 : cokernel | y_0y_3 y_0y_2 y_0y_1 y_1y_2y_3 |
       3 : 0   
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
-o46 : GradedModule
+o44 : GradedModule
 \end{lstlisting}
-\vfill
-\newpage
 
 Given a monomial ideal $J$, there are several algorithms that return a
 labelled simplicial complex $\Delta$ such that chain complex $C(\Delta)$ is a
 free resolution of $R/J$.  We exhibit a few.
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=3.0pt, belowskip=1.5pt]
-i47 : J' = monomialIdeal(y_1*y_3, y_2^2, y_0*y_2, y_1^2, y_0^2);
+i45 : J' = monomialIdeal(y_1*y_3, y_2^2, y_0*y_2, y_1^2, y_0^2);
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o47 : MonomialIdeal of R
+o45 : MonomialIdeal of R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i48 : T = taylorResolution J'
+i46 : T = taylorResolution J'
 \end{lstlisting}
+\vfill
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
        1      5      10      10      5      1
-o48 = R  <-- R  <-- R   <-- R   <-- R  <-- R
+o46 = R  <-- R  <-- R   <-- R   <-- R  <-- R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt] 
       0      1      2       3       4      5
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o48 : ChainComplex
+o46 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i49 : gensJ' = first entries mingens J'
+i47 : gensJ' = first entries mingens J'
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
               2         2   2
-o49 = {y y , y , y y , y , y }
+o47 = {y y , y , y y , y , y }
         1 3   2   0 2   1   0
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o49 : List
+o47 : List
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i50 : S = ZZ[x_0..x_4];
+i48 : S = ZZ[x_0..x_4];
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i51 : assert(T == chainComplex(simplexComplex(4, S), Labels => gensJ'))
+i49 : assert(T == chainComplex(simplexComplex(4, S), Labels => gensJ'))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i52 : assert(lyubeznikSimplicialComplex(J', S) === simplexComplex(4, S))
+i50 : assert(lyubeznikSimplicialComplex(J', S) === simplexComplex(4, S))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i53 : $Γ$ = buchbergerSimplicialComplex(J',S)
+i51 : $Γ$ = buchbergerSimplicialComplex(J',S)
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o53 = simplicialComplex | x_0x_2x_3x_4 x_0x_1x_2x_3 |
+o52 = simplicialComplex | x_0x_2x_3x_4 x_0x_1x_2x_3 |
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o53 : SimplicialComplex
+o52 : SimplicialComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i54 : B = buchbergerResolution J'
+i53 : B = buchbergerResolution J'
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, lineskip=-10pt, aboveskip=1.5pt, belowskip=1.5pt]
        1      5      9      7      2
-o54 = R  <-- R  <-- R  <-- R  <-- R
+o53 = R  <-- R  <-- R  <-- R  <-- R
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
       0      1      2      3      4
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-o54 : ChainComplex
+o53 : ChainComplex
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i55 : assert all(3, i -> HH_(i+1) B == 0) 
+i54 : assert all(3, i -> HH_(i+1) B == 0) 
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i56 : assert(betti B == betti res J')
+i55 : assert(betti B == betti res J')
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i57 : assert(B == chainComplex($Γ$, Labels => first entries mingens J'))
+i56 : assert(B == chainComplex($Γ$, Labels => first entries mingens J'))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
-i58 : assert($Γ$ === lyubeznikSimplicialComplex(J', S, MonomialOrder => {2,1,0,3,4}))
+i57 : assert($Γ$ === lyubeznikSimplicialComplex(J', S, MonomialOrder => {2,1,0,3,4}))
 \end{lstlisting}
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=3.0pt]
 i59 : assert($Γ$ === scarfSimplicialComplex(J', S))
@@ -793,30 +784,15 @@ Engineering Research Council of Canada (NSERC).
 
 \begin{bibdiv}
   \begin{biblist}%[\normalsize]
-
-    % \bib{MFRG}{article}{
-    %   label={\`AFG},
-    %   author={\`Alvarez Montaner, Josep},
-    %   author={Fern\'{a}ndez-Ramos, Oscar},
-    %   author={Gimenez, Philippe},
-    %   title={Pruned cellular free resolutions of monomial ideals},
-    %   journal={J. Algebra},
-    %   volume={541},
-    %   date={2020},
-    %   pages={126--145},
-    %   % issn={0021-8693},
-    %   % review={\MR{4014733}},
-    %   % doi={10.1016/j.jalgebra.2019.09.013},
-    % }
     
     \bib{BH}{book}{
       author={Bruns, Winfried},
       author={Herzog, J\"{u}rgen},
       title={\href{https://doi.org/10.1017/CBO9780511608681}%
-        {Cohen-Macaulay rings}},
-      series={Cambridge studies in advanced mathematics},
+        {Cohen-Macaulay Rings}},
+      series={Cambridge Studies in Advanced Mathematics},
       volume={39},
-      publisher={Cambridge university press},
+      publisher={Cambridge University Press},
       date={1993},
       pages={xii+403},
       % isbn={0-521-41068-1},
@@ -860,7 +836,7 @@ Engineering Research Council of Canada (NSERC).
       author={Mermin, Jeff},
       title={Three simplicial resolutions},
       book={
-        title={Progress in commutative algebra 1},
+        title={Progress in Commutative Algebra 1},
         publisher={De Gruyter},
       },
       date={2012},
@@ -871,8 +847,8 @@ Engineering Research Council of Canada (NSERC).
     \bib{MS}{book}{
       author={Miller, Ezra},
       author={Sturmfels, Bernd},
-      title={Combinatorial commutative algebra},
-      series={Graduate texts in mathematics},
+      title={Combinatorial Commutative Algebra},
+      series={Graduate Texts in Mathematics},
       volume={227},
       publisher={Springer-Verlag},
       date={2005},
@@ -883,7 +859,7 @@ Engineering Research Council of Canada (NSERC).
     \bib{Munkres}{book}{
       label={Mu},
       author={Munkres, James R.},
-      title={Elements of algebraic topology},
+      title={Elements of Algebraic Topology},
       publisher={Addison-Wesley Publishing},
       date={1984},
       pages={ix+454},
@@ -907,8 +883,8 @@ Engineering Research Council of Canada (NSERC).
 
     \bib{Peeva}{book}{
       author={Peeva, Irena},
-      title={Graded syzygies},
-      series={Algebra and applications},
+      title={Graded Syzygies},
+      series={Algebra and Applications},
       volume={14},
       publisher={Springer-Verlag},
       date={2011},
@@ -919,7 +895,7 @@ Engineering Research Council of Canada (NSERC).
     \bib{Stanley}{book}{
       author={Stanley, Richard~P.},
       title={Combinatorics and commutative algebra},
-      series={Progress in mathematics},
+      series={Progress in Mathematics},
       volume={41},
       edition={2},
       publisher={Birkh{\"a}user},
