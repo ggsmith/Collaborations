@@ -29,8 +29,8 @@ simplicialComplex = method()
 simplicialComplex List := SimplicialComplex => L -> (
     facetsList := select(L, r -> r =!= 0);
     -- need at least one facet to determine the ring   
-    if # facetsList === 0 then error "-- expected at least one facet";
-    if not same apply(facetsList, class) then error "-- expect all elements in the list to have same type";
+    if # facetsList === 0 then error "expected at least one facet";
+    if not same apply(facetsList, class) then error "expect all elements in the list to have same type";
     if class L#0 === Face then 
 	facetsList = apply(facetsList, j -> product vertices j);
     S := ring (facetsList#0);
@@ -39,7 +39,7 @@ simplicialComplex List := SimplicialComplex => L -> (
     -- same commutative polynomial ring
     I := monomialIdeal contract (matrix{facetsList}, G);
     -- we need this ideal to be squarefree
-    if not isSquareFree I then error "-- expected squarefree inputs";
+    if not isSquareFree I then error "expected squarefree inputs";
     -- remove any non-maximal faces from 'facetsList'
     I = monomialIdeal mingens I;
     -- contracting with G complements the support of the monomials
@@ -54,14 +54,14 @@ simplicialComplex List := SimplicialComplex => L -> (
 	}
     )
 simplicialComplex Matrix := SimplicialComplex => f -> (
-    if numrows f =!= 1 then error "-- expected a matrix with 1 row";
+    if numrows f =!= 1 then error "expected a matrix with 1 row";
     simplicialComplex first entries f
     )
 
 simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
     S := ring I;
     -- we need a squarefree ideal
-    if not isSquareFree I then error "-- expected a squarefree ideal";
+    if not isSquareFree I then error "expected a squarefree ideal";
     -- Alexander duality for monomial ideals in part of the 'Core'
     J := dual I;
     -- the void complex is the special case that has no facets
@@ -85,7 +85,7 @@ simplicialComplex MonomialIdeal := SimplicialComplex => I -> (
     )
 
 simplicialComplex Ideal := SimplicialComplex => I -> (
-    if not isMonomialIdeal I then error "-- expected a monomial ideal";
+    if not isMonomialIdeal I then error "expected a monomial ideal";
     simplicialComplex monomialIdeal I
     )
 
@@ -162,9 +162,9 @@ simplexComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n === -1 then 
 	return simplicialComplex {1_S};
     if n < -1 then 
-        error "-- expected integer greater than -1";
+        error "expected integer greater than -1";
     if numgens S < n + 1 then 
-	error concatenate("-- expected a polynomial ring with at least ", 
+	error concatenate("expected a polynomial ring with at least ", 
 	    toString(n+1), " generators");
     simplicialComplex {product(n+1, i -> S_i)}
     )
@@ -181,56 +181,56 @@ hachimoriTable := hashTable apply (lines get hachimoriFile, x -> (
 bartnetteSphereComplex = method()
 bartnetteSphereComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 8 then 
-	error "-- expected a polynomial ring with at least 8 generators";
+	error "expected a polynomial ring with at least 8 generators";
     simplicialComplex apply(hachimoriTable#-1, f -> product(f, i -> S_i))
     )
 
 poincareSphereComplex = method()
 poincareSphereComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 16 then
-        error "-- expected a polynomial ring with at least 16 generators";    
+        error "expected a polynomial ring with at least 16 generators";    
     simplicialComplex apply(hachimoriTable#0, f -> product(f, i -> S_i))
     )
 
 nonPiecewiseLinearSphereComplex = method()
 nonPiecewiseLinearSphereComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 18 then
-        error "-- expected a polynomial ring with at least 18 generators";    
+        error "expected a polynomial ring with at least 18 generators";    
     simplicialComplex apply(hachimoriTable#1, f -> product(f, i -> S_i))
     )
 
 rudinBallComplex = method()
 rudinBallComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 14 then
-        error "-- expected a polynomial ring with at least 14 generators";    
+        error "expected a polynomial ring with at least 14 generators";    
     simplicialComplex apply(hachimoriTable#5, f -> product(f, i -> S_i))
     )
 
 grunbaumBallComplex = method()
 grunbaumBallComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 14 then
-        error "-- expected a polynomial ring with at least 14 generators";    
+        error "expected a polynomial ring with at least 14 generators";    
     simplicialComplex apply(hachimoriTable#6, f -> product(f, i -> S_i))
     )
 
 zieglerBallComplex = method()
 zieglerBallComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 10 then
-        error "-- expected a polynomial ring with at least 10 generators";    
+        error "expected a polynomial ring with at least 10 generators";    
     simplicialComplex apply(hachimoriTable#7, f -> product(f, i -> S_i))
     )
 
 dunceHatComplex = method()
 dunceHatComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 8 then
-        error "-- expected a polynomial ring with at least 8 generators";    
+        error "expected a polynomial ring with at least 8 generators";    
     simplicialComplex apply(hachimoriTable#12, f -> product(f, i -> S_i))
     )
 
 bjornerComplex = method()
 bjornerComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 6 then
-        error "-- expected a polynomial ring with at least 6 generators";    
+        error "expected a polynomial ring with at least 6 generators";    
     simplicialComplex apply(hachimoriTable#13, f -> product(f, i -> S_i))
     )
 
@@ -255,39 +255,39 @@ smallManifoldsTable := memoize((d,v) -> (
 smallManifold = method()
 smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
     if d < 2 or d > 3 then
-    	error "-- expected dimension two or three";
+    	error "expected dimension two or three";
     if v < 4 or i < 0 then
-        error "-- expected at least four vertices or nonnegative index";
+        error "expected at least four vertices or nonnegative index";
     if d === 2 and v === 4 and i > 0 then
-    	error "-- there is only one 2-manifold with four vertices.";
+    	error "there is only one 2-manifold with four vertices.";
     if d === 2 and v === 5 and i > 0 then
-    	error "-- there is only one 2-manifold with five vertices.";
+    	error "there is only one 2-manifold with five vertices.";
     if d === 2 and v === 6 and i > 2 then
-    	error "-- there are only three 2-manifolds with six vertices.";
+    	error "there are only three 2-manifolds with six vertices.";
     if d === 2 and v === 7 and i > 8 then
-    	error "-- there are only nine 2-manifolds with seven vertices.";
+    	error "there are only nine 2-manifolds with seven vertices.";
     if d === 2 and v === 8 and i > 42 then
-    	error "-- there are only 43 2-manifolds with eight vertices.";
+    	error "there are only 43 2-manifolds with eight vertices.";
     if d === 2 and v === 9 and i > 654 then
-    	error "-- there are only 655 2-manifolds with nine vertices.";
+    	error "there are only 655 2-manifolds with nine vertices.";
     if d === 2 and v === 10 and i > 42425 then
-    	error "-- there are only 42426 2-manifolds with ten vertices.";
+    	error "there are only 42426 2-manifolds with ten vertices.";
     if d === 3 and v === 5 and i > 0 then
-    	error "-- there is only one 3-manifold with five vertices.";
+    	error "there is only one 3-manifold with five vertices.";
     if d === 3 and v === 6 and i > 1 then
-    	error "-- there are only two 3-manifolds with six vertices.";
+    	error "there are only two 3-manifolds with six vertices.";
     if d === 3 and v === 7 and i > 4 then
-    	error "-- there are only five 3-manifolds with seven vertices.";
+    	error "there are only five 3-manifolds with seven vertices.";
     if d === 3 and v === 8 and i > 38 then
-    	error "-- there are only 39 3-manifolds with eight vertices.";
+    	error "there are only 39 3-manifolds with eight vertices.";
     if d === 3 and v === 9 and i > 1296 then
-    	error "-- there are only 1297 3-manifolds with nine vertices.";
+    	error "there are only 1297 3-manifolds with nine vertices.";
     if d === 3 and v === 10 then
-    	error "-- the database for 3-manifolds with ten vertices hasn't been included yet.";
+    	error "the database for 3-manifolds with ten vertices hasn't been included yet.";
     if v > 10 then 
-        error "-- database doesn't include manifolds with more than ten vertices";
+        error "database doesn't include manifolds with more than ten vertices";
     if numgens S < v then 
-        error ("-- expected a polynomial ring with at least " | toString v | " generators");
+        error ("expected a polynomial ring with at least " | toString v | " generators");
     -- Since Frank Lutz starts counting at 1 instead of 0, there is
     -- some appropriate index shifting.
     simplicialComplex apply((smallManifoldsTable(d,v))#(v,i+1), f -> product(f, i -> S_(i-1)))
@@ -296,24 +296,24 @@ smallManifold (ZZ,ZZ,ZZ,PolynomialRing) := SimplicialComplex => (d,v,i,S) -> (
 kleinBottleComplex = method()
 kleinBottleComplex PolynomialRing := SimplicialComplex => S -> (
     if numgens S < 8 then
-        error "-- expected a polynomial ring with at least 8 generators";
+        error "expected a polynomial ring with at least 8 generators";
     smallManifold(2, 8, 12, S)
     )
 
 realProjectiveSpaceComplex = method()
 realProjectiveSpaceComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -> (
     if n == 0 and numgens S < 1 then
-    	error "-- expected a polynomial ring with at least 1 generator";
+    	error "expected a polynomial ring with at least 1 generator";
     if n == 1 and numgens S < 3 then
-    	error "-- expected a polynomial ring with at least 3 generators";
+    	error "expected a polynomial ring with at least 3 generators";
     if n == 2 and numgens S < 6 then
-    	error "-- expected a polynomial ring with at least 6 generators";
+    	error "expected a polynomial ring with at least 6 generators";
     if n == 3 and numgens S < 11 then
-    	error "-- expected a polynomial ring with at least 11 generators";
+    	error "expected a polynomial ring with at least 11 generators";
     if n == 4 and numgens S < 16 then
-    	error "-- expected a polynomial ring with at least 16 generators";
+    	error "expected a polynomial ring with at least 16 generators";
     --if n > 4 and numgens S < 2^(n+1)-1 then
-    --	error ("-- expected a polynomial ring with at least " | toString (2^(n+1)-1) | " generators");
+    --	error ("expected a polynomial ring with at least " | toString (2^(n+1)-1) | " generators");
     if n == 0 then return simplicialComplex {S_0};
     if n == 1 then return simplicialComplex {S_0*S_1, S_0*S_2, S_1*S_2};
     if n == 2 then return smallManifold(2, 6, 1, S);
@@ -339,7 +339,7 @@ realProjectiveSpaceComplex (ZZ, PolynomialRing) := SimplicialComplex => (n, S) -
 		{0,5,9,11,15},{4,6,8,10,15},{0,4,5,13,14},{0,4,5,13,15},{1,5,7,9,10},{1,5,7,9,15},{2,4,9,12,14},{3,5,6,10,11},{4,5,7,13,15},{3,8,9,12,13},{3,8,9,12,14},{1,3,4,11,13},{1,7,9,14,15}}, 
 	    f -> product(f, i-> S_i))
 	);
-    if n > 4 then error "--not yet implemented";
+    if n > 4 then error "not yet implemented";
     )
 ------------------------------------------------------------------------------
 -- more advanced constructors 
@@ -556,9 +556,9 @@ boundaryMap (ZZ, SimplicialComplex) := opts -> (r, D) -> (
     L := opts.Labels;
     if L =!= {} then (
 	if #L =!= # vertices D then 
-	    error "-- expected labels to correspond to vertices";
+	    error "expected labels to correspond to vertices";
 	if any(L, m -> size m > 1) then 
-	    error "-- expected Labels to be a list of monomials";
+	    error "expected Labels to be a list of monomials";
 	S := ring L#0;
 	Sext := S(monoid [Variables => #L]);
 	L = apply(#L, i -> L_i*Sext_i);
@@ -762,9 +762,9 @@ taylorResolution List := ChainComplex => M -> (
     if monomialIdeal M == 0
     then return (ring(monomialIdeal M))^1[0];
     if not all(M, m -> size m == 1) then 
-    error "-- expected a list of monomials";
+    error "expected a list of monomials";
     if not all(M, m -> member(m,flatten entries mingens ideal M)) then 
-    error "-- expected minimal generators of a monomial ideal";
+    error "expected minimal generators of a monomial ideal";
     R := ZZ(monoid[vars(0..#M-1)]);
     Simplex := simplexComplex(#M-1,R);
     chainComplex(Simplex,Labels=>M)
@@ -788,18 +788,18 @@ lyubeznikSimplicialComplex (List,Ring) := opts -> (M,A) -> (
     then return simplicialComplex({1_A});
     -- Straightforward error checks
     if not all(M, m -> size m == 1) then 
-    error "-- expected a list of monomials";
+        error "expected a list of monomials";
     if not all(M, m -> member(m,flatten entries mingens ideal M)) then 
-    error "-- expected minimal generators of a monomial ideal";
+        error "expected minimal generators of a monomial ideal";
     if not class A === PolynomialRing then
-    error"-- expected a polynomial ring";
+        error "expected a polynomial ring";
     L := M;
     if not opts.MonomialOrder == {} 
-    then(
+    then (
 	if not sort opts.MonomialOrder == toList(0..#M-1) then
-	error concatenate("-- MonomialOrder should be a permutation of {0,...,",toString(#M-1),"}");
- 	L = M_(opts.MonomialOrder)
-	);
+	    error concatenate("MonomialOrder should be a permutation of {0,...,",toString(#M-1),"}");
+ 	    L = M_(opts.MonomialOrder)
+	    );
     P := ideal join(apply(#L, i -> A_i^2),apply(#L..numgens A-1, i -> A_i));
     -- excess variables in A are always nonfaces
     nonfaces := toList apply(#L..numgens A-1, i -> A_i);
@@ -916,14 +916,14 @@ SimplicialMap#{Standard,AfterPrint} = SimplicialMap#{Standard,AfterNoPrint} = f 
 
 map(SimplicialComplex, SimplicialComplex, Matrix) := SimplicialMap => opts -> (E, D, A) -> (
     if ring A =!= ring E then 
-        error "-- expected a matrix over the ring of the target";
+        error "expected a matrix over the ring of the target";
     if rank target A =!= 1 then 
-        error "-- expected the matrix to have 1 row"; 
+        error "expected the matrix to have 1 row"; 
     n := numgens ring D; 
     if rank source A =!= n then 
-        error("-- expected the matrix to have " | n | " columns");	
+        error("expected the matrix to have " | n | " columns");	
     if coefficientRing D =!= coefficientRing E then
-        error("-- expected the source and target to have the same coefficient ring");
+        error("expected the source and target to have the same coefficient ring");
     new SimplicialMap from {
     	symbol source => D,
     	symbol target => E,
@@ -1055,7 +1055,7 @@ barycentricSubdivision = method();
 barycentricSubdivision (SimplicialComplex, Ring) := SimplicialComplex => (D,S) -> (
     if dim D == -infinity then return simplicialComplex(monomialIdeal(1_S));
     if numgens S < numFaces D - 1
-    then error(" -- expected the ring to have at least " | numFaces D - 1 | " generators");
+    then error("expected the ring to have at least " | numFaces D - 1 | " generators");
     faceList := flatten for i to dim D + 1 list faces(i, D);
     baryFacets := flatten for F in facets D list(
 	for vertexList in permutations(support F) list(
@@ -1128,13 +1128,13 @@ cohomology(ZZ, SimplicialComplex, SimplicialComplex) := Module => opts -> (i,D,E
 
 elementaryCollapse = method();
 elementaryCollapse (SimplicialComplex,RingElement) := SimplicialComplex => (D,F) -> (
-    if not size F == 1 then error "The second argument should be a monomial representing a face";
+    if not size F == 1 then error "second argument should be a monomial representing a face";
     facetsContainingF := {};
     for G in facets D do(
 	if G % F == 0 then facetsContainingF = append(facetsContainingF,G)
 	);
     if #facetsContainingF === 0 then error "this face does not belong to the simplicial complex";
-    if #facetsContainingF > 1 then error "cannont collapse by this face";
+    if #facetsContainingF > 1 then error "cannot collapse by this face";
     G := first facetsContainingF;
     if first degree F =!= first degree G - 1 then error "this face is not a maximal proper subface of a facet";
     newFacetList := delete(G, facets D);
