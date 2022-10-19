@@ -116,7 +116,7 @@ G. Smith, and Mike Stillman, adds constructors for many classic examples,
 implements a new data type for simplicial maps, and incorporates many
 improvements to the methods and documentation.  Emphasizing combinatorial and
 algebraic applications, the primary data type encodes an abstract simplicial
-complex---a family of subsets that is closed under taking subsets.  These
+complex---a family of subsets of a finite set that is closed under taking subsets.  These
 simplicial complexes are the combinatorial counterpart to their geometric
 realizations formed from points, line segments, filled-in triangles, solid
 tetrahedra, and their higher-dimensional analogues in some Euclidean space.
@@ -180,7 +180,7 @@ Figure~\ref{bowtie}.
       \filldraw (1.50,1.50) circle (2pt);
     \end{tikzpicture}
   \end{subfigure}
-  \caption{The left is the bowtie complex $⧓$ and the right its Alexander dual
+  \caption{On the left is the bowtie complex $⧓$ and on the right its Alexander dual
     $⧓^*$}
   \label{bowtie}
   \vspace{-1.0em}
@@ -443,7 +443,7 @@ i26 : assert all(faceList, F -> (L := link($⋈$, F); all(dim L, j -> HH_j L == 
 i27 : assert(dim(S^1/monomialIdeal $⋈$) === n - pdim(S^1/monomialIdeal $⋈$))
 \end{lstlisting}
 
-Alternatively, we verify that bowtie complex $⧓$ is not Cohen--Macaulay by
+Alternatively, we verify that the bowtie complex $⧓$ is not Cohen--Macaulay by
 showing that its $h$-vector has a negative entry; see Theorem~5.1.10 in
 \cite{BH} or Corollary~II.2.5 in \cite{Stanley}.  By definition, the
 $h$-vector of a simplicial complex $\Delta$ is a binomial transform of its
@@ -571,7 +571,7 @@ $R = \mathbb{Q}[y_0,y_1, y_2, y_3]$.
       \filldraw (1.866025,-0.5) circle (2pt);
     \end{tikzpicture}
   \end{subfigure}
-  \caption{The left is simplicial complex $\Gamma$ and the right is the
+  \caption{On the left is simplicial complex $\Gamma$ and on the right is the
     labelling of its vertices}
   \label{Gamma}
 \end{figure}
