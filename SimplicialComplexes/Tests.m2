@@ -59,7 +59,7 @@ assert(prune HH_1 conewrtv == 0)
 ///
 
 ------------------------------------------------------------------------------
--- flagfVector for a colored complex
+-- flagfVector for a coloured complex
 TEST ///
 restart
 needsPackage"SimplicialComplexes"
