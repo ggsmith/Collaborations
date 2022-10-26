@@ -8,8 +8,6 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows,cd}
 \tikzset{>=latex}
-% \usepackage{mathtools}
-% \usepackage[alwaysadjust]{paralist}
 \usepackage[shortalphabetic]{amsrefs}
 \usepackage[T1]{fontenc}
 \usepackage{mathptmx}
@@ -37,40 +35,15 @@
   mathescape
 }
 \usepackage{stix}
-%% --OTHER ENVIRONMENTS-------------------------------------------------------
-\newtheorem{lemma}{Lemma}[section]
-\newtheorem{theorem}[lemma]{Theorem}
-\newtheorem{maintheorem}{Theorem}
-\newtheorem{corollary}[lemma]{Corollary}
-\newtheorem{proposition}[lemma]{Proposition}
-\theoremstyle{definition}
-\newtheorem{definition}[lemma]{Definition}
-\newtheorem{remark}[lemma]{Remark}
-\newtheorem{example}[lemma]{Example}
-% \newenvironment{example}
-% {\pushQED{\qed}\renewcommand{\qedsymbol}{$\diamond$}\examplex}
-% {\popQED\endexamplex}
-\newtheorem{question}[lemma]{Question}
-\renewcommand{\theequation}{\arabic{section}.\arabic{lemma}.\arabic{equation}}
-\renewcommand{\thetable}{\arabic{section}.\arabic{lemma}.\arabic{equation}}
-\renewcommand{\thesubsection}{\arabic{section}}
 
 %% --MATH---------------------------------------------------------------------
 \newcommand{\colequal}{\ensuremath{:\!=}}
-\newcommand{\PP}{\ensuremath{\mathbb{P}}}
-%% Operators
-\DeclareMathOperator{\Hom}{Hom}
-\DeclareMathOperator{\Proj}{Proj}
-\DeclareMathOperator{\Spec}{Spec}
-\DeclareUnicodeCharacter{039A}{\Kappa}
 \DeclareUnicodeCharacter{0393}{\Gamma}
 \DeclareUnicodeCharacter{0394}{\Delta}
 \DeclareUnicodeCharacter{22C8}{\bowtie}
 \DeclareUnicodeCharacter{29D3}{\fbowtie}
 \DeclareUnicodeCharacter{29D1}{\lfbowtie}
 \DeclareUnicodeCharacter{2119}{\mathbb{P}}
-
-%\DeclareUnicodeCharacter{}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -100,7 +73,7 @@
   %
   \indent
   \href{http://www2.macaulay2.com/Macaulay2/doc/Macaulay2-1.20/share/doc/Macaulay2/SimplicialComplexes/html/index.html}{\texttt{SimplicialComplexes} version 2.0}}
-% \date{2022--09--09}
+% \date{2022--10--26}
 
 \begin{abstract}
   We highlight some features of the \emph{SimplicialComplexes} package in
@@ -113,7 +86,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \noindent
-This updated version of the \emph{SimplicialComplqexes} package in
+This updated version of the \emph{SimplicialComplexes} package in
 \emph{Macaulay2}~\cite{M2}, originally developed by Sorin Popescu, Gregory
 G. Smith, and Mike Stillman, adds constructors for many classic examples,
 implements a new data type for simplicial maps, and incorporates many
@@ -318,7 +291,7 @@ i13 : for j from 0 to 1296 list (
 \begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
 o13 : {}
 \end{lstlisting}
-\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=1.5pt]
+\begin{lstlisting}[xleftmargin=10pt, aboveskip=1.5pt, belowskip=-1.0pt]
 o13 : List
 \end{lstlisting}
 
